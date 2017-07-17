@@ -20,10 +20,10 @@
 
 ### Follows
 - `GET /api/follows`
-- `POST /api/follows/:follow_id`
+- `POST /api/follows`
 - `DELETE /api/follows/:follow_id`
 
 ### Tags
 - `GET /api/tags`
-- `POST /api/posts/:post_id/tags`
+- `POST /api/tags`
 - `DELETE /api/tags/:tag_id`
