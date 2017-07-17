@@ -3,9 +3,7 @@
   currentUser: {
     id: 1,
     username: "luffy",
-    errors: {
-      ["Invalid Credentials"]
-    }
+    errors: ["Invalid Credentials"]
   },
 
   posts: {
