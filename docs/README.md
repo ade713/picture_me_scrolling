@@ -7,7 +7,7 @@
 
 Picture Me Scrolling is a single page application developed to provide users with single location to sit back and experience the expression of others through words, sounds and visions. Tumblr served as the inspiration for this application that is supported a Ruby on Rails and React/Redux.
 
-1. User authentication
+1. User Authentication
     + Account creation
     + Login/Logout
     + Guest/demo login/logout
