@@ -1,7 +1,10 @@
 # Picture Me Scrolling (PicMeS)
 
-**Heroku Link**
-**Trello Link**
+**[Heroku][heroku]**
+[heroku]: "heroku-link"
+
+**[Trello][trello]**
+[trello]: https://trello.com/b/cNgJigmJ/picture-me-scrolling
 
 ## Minimum Viable Products (MVP)
 
