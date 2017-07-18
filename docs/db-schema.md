@@ -15,6 +15,7 @@ id          | integer   | not null, primary key
 title       | string    |
 url         | text      |
 body        | text      | not null
+likes_count | integer   | not null
 author_id   | integer   | not null, foreign key, indexed
 
 ## follows
