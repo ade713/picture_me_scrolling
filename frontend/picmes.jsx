@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import Root from './components/root';
 import configureStore from './store/store';
 import { signup,
          login,
@@ -11,8 +12,6 @@ import { signup,
 
 document.addEventListener('DOMContentLoaded', () => {
   const store = configureStore();
-  const root = document.getElementById('root');
-  ReactDOM.render(<h1>Picture Me Scrolling, PicMeS</h1>, root);
 
   window.getState = store.getState;
   window.dispatch = store.dispatch;
@@ -22,4 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
   window.signup = signup;
   window.login = login;
   window.logout = logout;
+
+  const root = document.getElementById('root');
+  ReactDOM.render(<Root store={ store } />, root);
+
 });
