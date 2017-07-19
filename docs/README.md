@@ -1,7 +1,7 @@
 # Picture Me Scrolling (PicMeS)
 
 **[Heroku][heroku]**
-[heroku]: "heroku-link"
+[heroku]: https://picmes.herokuapp.com/#/
 
 **[Trello][trello]**
 [trello]: https://trello.com/b/cNgJigmJ/picture-me-scrolling
