@@ -9,7 +9,7 @@ const sessionLinks = () => (
   </nav>
 );
 
-const personalGreeting = (currentUser, logout) => (
+const personalGreet = (currentUser, logout) => (
   <hgroup className="header-group">
     <h2 className="header-name">
       Welcome to Picture Me Scrolling {currentUser.username}
@@ -18,7 +18,7 @@ const personalGreeting = (currentUser, logout) => (
   </hgroup>
 );
 
-class Greeting extends React.Component {
+class Dashboard extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -27,9 +27,9 @@ class Greeting extends React.Component {
     const { currentUser, logout } = this.props;
 
     return (
-      currentUser ? personalGreeting(currentUser, logout) : sessionLinks()
+      currentUser ? personalGreet(currentUser, logout) : sessionLinks()
     );
   }
 }
 
-export default Greeting;
+export default Dashboard;

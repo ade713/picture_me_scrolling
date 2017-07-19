@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { logout } from '../../actions/session_actions';
-import Greeting from './greeting';
+import Dashboard from './dashboard';
 
 const mapStateToProps = ({ session }) => ({
   currentUser: session.currentUser
@@ -11,8 +11,8 @@ const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout())
 });
 
-const GreetingContainer = connect(
+const DashboardContainer = connect(
   mapStateToProps, mapDispatchToProps
-)(Greeting);
+)(Dashboard);
 
-export default GreetingContainer;
+export default DashboardContainer;
