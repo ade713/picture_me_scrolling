@@ -13,28 +13,18 @@ class Dashboard extends React.Component {
     }
   }
 
-  personalGreet (currentUser, logout) {
-    return (
-      <hgroup className="header-group">
-        <h2 className="header-name">
-          Welcome to Picture Me Scrolling { currentUser.username }
-        </h2>
-        <button className="header-button" onClick={ logout }>Log Out</button>
-      </hgroup>
-    );
-  }
-
-
   render () {
     const { currentUser, logout } = this.props;
 
     return (
-      <hgroup className="header-group">
-        <h2 className="header-name">
-          Welcome to Picture Me Scrolling
-        </h2>
-        <button className="header-button" onClick={ logout }>Log Out</button>
-      </hgroup>
+      <div className="dash-page">
+        <navbar className="dash-nav">
+          <h1 className="dash-title">
+            Picture Me Scrolling
+          </h1>
+          <button className="dash-logout" onClick={ logout }>Log Out</button>
+        </navbar>
+      </div>
     );
   }
 }

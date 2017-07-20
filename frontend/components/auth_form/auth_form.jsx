@@ -4,7 +4,6 @@ import { Link, withRouter } from 'react-router-dom';
 
 class AuthForm extends React.Component {
   constructor(props) {
-    console.log(props);
     super(props);
     this.state = {
       username: "",
@@ -32,56 +31,84 @@ class AuthForm extends React.Component {
   }
 
   navLink() {
-    if (this.props.formType === 'login') {
+    if (this.props.formAction === 'signup') {
       return <Link to="/">Log In</Link>;
     } else {
       return <Link to ="/signup">Sign Up</Link>;
     }
   }
 
-  authActionType() {
-    (this.props.formType === 'login') ? "Login" : "Sign Up";
+  authSubmitType() {
+    return (
+      (this.props.formAction === 'signup') ? "Sign Up" : "Login"
+    );
+  }
+
+
+  renderErrors() {
+    return(
+      <ul>
+        { this.props.errors.map((error, index) => (
+          <li key={`error-${index}`}>
+            { error }
+          </li>
+        ))
+      }
+      </ul>
+    );
   }
 
   render() {
+    console.log(this.authSubmitType());
     return (
       <div className='auth-page'>
-        <header className="">
-          <h1 className='auth-header'>Picture Me Scrolling, PicMeS!</h1>
-        </header>
-        <header className="login-signup">
-          { this.navLink() }
-        </header>
-        <section className="auth-form-container">
-
-            <h1 className="auth-form-header">Get Your Scroll On</h1>
+        <navbar className="auth-navbar">
+          <h1 className='auth-header'>
+            PicMeS
+          </h1>
+          <header className="login-signup">
+            { this.navLink() }
+          </header>
+        </navbar>
+        <div className="auth-body">
+          <section className="auth-body-title">
+            <h1 className="auth-title-top">Picture</h1>
+            <h1 className="auth-title-mid">Me</h1>
+            <h1 className="auth-title-btm">Scrolling</h1>
+          </section>
+          <section className="auth-form-box">
+            <h1 className="auth-form-header">
+              Let's Begin
+            </h1>
             <br />
-            Let's Scroll! { this.props.formType } 
             <br />
             <label className="auth-username">
-              Username:
+
               <input type="text"
-                     value={this.state.username}
-                     ref="username"
-                     onChange={this.update('username')}
-                     className="auth-login-input" />
+                value={this.state.username}
+                ref="username"
+                placeholder="Your Username"
+                onChange={this.update('username')}
+                className="auth-login-input" />
             </label>
             <br />
             <label className="auth-password">
-              Password:
+
               <input type="password"
-                     value={this.state.password}
-                     ref="password"
-                     onChange={this.update('password')}
-                     className="auth-login-input" />
+                value={this.state.password}
+                ref="password"
+                placeholder="Your Password"
+                onChange={this.update('password')}
+                className="auth-login-input" />
             </label>
             <br />
-
-          <button className="auth-submit"
-                  onClick={ this.handleSubmit }>
-                  Log In
-          </button>
-        </section>
+            <button className="auth-submit"
+              onClick={ this.handleSubmit }>
+              { this.authSubmitType() }
+            </button>
+            { this.renderErrors() }
+          </section>
+        </div>
       </div>
     );
   }
