@@ -15,7 +15,7 @@ class AuthForm extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.loggedIn) {
-      this.props.history.push("/");
+      this.props.history.push("/dashboard");
     }
   }
 
@@ -33,14 +33,14 @@ class AuthForm extends React.Component {
 
   navLink() {
     if (this.props.formType === 'login') {
-      return <Link to ="/signup">Sign Up</Link>;
+      return <Link to="/">Log In</Link>;
     } else {
-      return <Link to="/login">Log In</Link>;
+      return <Link to ="/signup">Sign Up</Link>;
     }
   }
 
-  authSubmitType() {
-    this.props.formType === 'login' ? "Login" : "Sign Up";
+  authActionType() {
+    (this.props.formType === 'login') ? "Login" : "Sign Up";
   }
 
   render() {
@@ -49,11 +49,14 @@ class AuthForm extends React.Component {
         <header className="">
           <h1 className='auth-header'>Picture Me Scrolling, PicMeS!</h1>
         </header>
+        <header className="login-signup">
+          { this.navLink() }
+        </header>
         <section className="auth-form-container">
 
             <h1 className="auth-form-header">Get Your Scroll On</h1>
             <br />
-            Please { this.props.formType } or { this.navLink() }
+            Let's Scroll! { this.props.formType } 
             <br />
             <label className="auth-username">
               Username:
@@ -74,11 +77,10 @@ class AuthForm extends React.Component {
             </label>
             <br />
 
-          <Link to="/dashboard"
-                className="auth-submit"
-                onClick={ this.handleSubmit }>
-                Log In
-          </Link>
+          <button className="auth-submit"
+                  onClick={ this.handleSubmit }>
+                  Log In
+          </button>
         </section>
       </div>
     );

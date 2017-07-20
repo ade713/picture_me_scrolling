@@ -15,11 +15,21 @@
  *= require_self
  */
 
-.auth-page {
-  font-family: 'Typewriter';
-  font-size: 20px;
+
+html {
+  height: 100%;
+  width: 100%;
 }
 
 body {
-  
+  background-position: 50% right;
+  background-image: url(https://static.pexels.com/photos/111117/pexels-photo-111117.jpeg);
+}
+
+
+.auth-page {
+  display: block;
+  height: 100%;
+  font-family: 'Typewriter';
+  font-size: 20p;
 }
