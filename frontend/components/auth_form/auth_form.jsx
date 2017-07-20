@@ -40,7 +40,7 @@ class AuthForm extends React.Component {
 
   authSubmitType() {
     return (
-      (this.props.formAction === 'signup') ? "Sign Up" : "Login"
+      (this.props.formAction === 'signup') ? "Sign Up" : "Log In"
     );
   }
 
@@ -59,7 +59,6 @@ class AuthForm extends React.Component {
   }
 
   render() {
-    console.log(this.authSubmitType());
     return (
       <div className='auth-page'>
         <navbar className="auth-navbar">
@@ -83,7 +82,6 @@ class AuthForm extends React.Component {
             <br />
             <br />
             <label className="auth-username">
-
               <input type="text"
                 value={this.state.username}
                 ref="username"
@@ -93,7 +91,6 @@ class AuthForm extends React.Component {
             </label>
             <br />
             <label className="auth-password">
-
               <input type="password"
                 value={this.state.password}
                 ref="password"
@@ -102,13 +99,17 @@ class AuthForm extends React.Component {
                 className="auth-login-input" />
             </label>
             <br />
-            <button className="auth-submit"
+            <Link to="/dashboard" className="auth-submit"
               onClick={ this.handleSubmit }>
               { this.authSubmitType() }
-            </button>
+            </Link>
             { this.renderErrors() }
           </section>
         </div>
+        <footer className="auth-footer">
+          <i className="fa fa-github fa-2x" aria-hidden="true"></i>
+          <i className="fa fa-linkedin-square fa-2x" aria-hidden="true"></i>
+        </footer>
       </div>
     );
   }

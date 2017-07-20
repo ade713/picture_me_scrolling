@@ -35,6 +35,7 @@ button {
 .auth-page {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   height: 800px;
   // background-image: url(https://static.pexels.com/photos/191160/pexels-photo-191160.jpeg);
   // background-size: contain;
@@ -42,6 +43,7 @@ button {
 
 .auth-navbar {
   display: flex;
+  // flex: 1;
   justify-content: space-between;
   background-color: #FFFFFF;
   height: 30px;
@@ -79,6 +81,8 @@ h1.auth-header {
 
 div.auth-body {
   display: flex;
+  flex: 10;
+  flex-wrap: wrap;
   justify-content: space-between;
   margin-top: 25%;
 }
@@ -87,6 +91,7 @@ section.auth-body-title {
   display: flex;
   flex-direction: column;
   font-family: 'Mogra', cursive;
+  padding-left: 5px;
 }
 
 h1.auth-title-top {
@@ -113,6 +118,7 @@ h1.auth-title-btm {
   font-family: 'Mogra', cursive;
   width: 200px;
   text-align: center;
+  padding-right: 7px;
 }
 
 h1.auth-form-header {
@@ -122,6 +128,7 @@ h1.auth-form-header {
 input.auth-login-input {
   text-align: center;
   border-bottom: 2px solid black;
+  width: 90%;
 }
 
 input.auth-login-input::placeholder {
@@ -129,22 +136,39 @@ input.auth-login-input::placeholder {
   color: lightgrey;
 }
 
-button.auth-submit {
+.auth-submit {
   display: flex;
   font-family: 'Mogra', cursive;
-  font-size: 18px;
+  font-size: 20px;
   color: black;
   padding: 5px;
   text-align: center;
   align-self: center;
-  // margin-left: 35%;
-  border-bottom: 2px solid black;
+  border: 2px solid black;
 }
 
-button.auth-submit:hover {
+.auth-submit:hover {
   font-size: 25px;
   text-shadow: 3px grey;
   text-align: center;
+  border-bottom: 2px solid black;
+}
+
+footer.auth-footer {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  width: 100%;
+}
+
+footer i {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px;
+}
+
+footer i:hover {
+  
 }
 
 .dash-nav {
