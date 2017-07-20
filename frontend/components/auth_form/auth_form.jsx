@@ -103,6 +103,7 @@ class AuthForm extends React.Component {
               onClick={ this.handleSubmit }>
               { this.authSubmitType() }
             </Link>
+            <br />
             { this.renderErrors() }
           </section>
         </div>
