@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 class AuthForm extends React.Component {
@@ -10,6 +10,7 @@ class AuthForm extends React.Component {
       password: ""
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.logInAsGuest = this.logInAsGuest.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -32,7 +33,7 @@ class AuthForm extends React.Component {
 
   logInAsGuest(e){
     e.preventDefault();
-    let username = 'Demo PicMeS';
+    let username = 'PicMeS Guest';
     let password = 'pass123';
 
    for (let i = 0; i < username.length; i++) {
@@ -122,6 +123,9 @@ class AuthForm extends React.Component {
               Guest Log In
             </Link>
             <br />
+            <strong className="auth-errors">
+              { this.renderErrors() }
+            </strong>
           </section>
         </div>
         <footer className="auth-footer">
