@@ -16,6 +16,7 @@ class AuthForm extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.loggedIn) {
       this.props.history.push("/dashboard");
+      // this.props.errors = [];
     }
   }
 
@@ -34,7 +35,7 @@ class AuthForm extends React.Component {
   logInAsGuest(e){
     e.preventDefault();
     let username = 'PicMeS Guest';
-    let password = 'pass123';
+    let password = '1Welcome2To3PicMeS';
 
    for (let i = 0; i < username.length; i++) {
       setTimeout(() => this.setState({username: username.slice(0, i + 1)}), (i * 75));
@@ -42,8 +43,8 @@ class AuthForm extends React.Component {
     for (let i = 0; i < password.length; i++) {
       setTimeout(() => this.setState({password: password.slice(0, i + 1)}), ((i + username.length) * 75));
     }
-    const user = {username: 'GuestUser', password: 'password123'};
-    setTimeout(() => this.props.login({user}), (1700));
+    const user = {username: 'PicMeS Guest', password: '1Welcome2To3PicMeS'};
+    setTimeout(() => this.props.login(user), (1700));
   }
 
   navLink() {
@@ -64,10 +65,10 @@ class AuthForm extends React.Component {
   renderErrors() {
     return(
       <ul>
-        { this.props.errors.map((error, index) => (
-          <li key={`error-${index}`}>
-            { error }
-          </li>
+      { this.props.errors.map((error, index) => (
+        <li key={`error-${index}`}>
+          { error }
+        </li>
         ))
       }
       </ul>
