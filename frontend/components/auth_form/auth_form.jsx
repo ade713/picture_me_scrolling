@@ -104,12 +104,15 @@ class AuthForm extends React.Component {
               { this.authSubmitType() }
             </Link>
             <br />
-            { this.renderErrors() }
           </section>
         </div>
         <footer className="auth-footer">
-          <i className="fa fa-github fa-2x" aria-hidden="true"></i>
-          <i className="fa fa-linkedin-square fa-2x" aria-hidden="true"></i>
+          <a href="https://github.com/ade713" target="_blank">
+            <i className="fa fa-github fa-2x" aria-hidden="true"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/ade-farquhar-2a66a233" target="_blank">
+            <i className="fa fa-linkedin-square fa-2x" aria-hidden="true"></i>
+          </a>
         </footer>
       </div>
     );

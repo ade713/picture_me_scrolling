@@ -15,7 +15,7 @@ class Dashboard extends React.Component {
 
   render () {
     const { currentUser, logout } = this.props;
-
+    console.log(currentUser);
     return (
       <div className="dash-page">
         <navbar className="dash-nav">
