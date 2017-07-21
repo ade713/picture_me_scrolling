@@ -1,14 +1,18 @@
-import { RECEIVE_ERRORS,
-         CLEAR_ERRORS } from '../actions/session_actions';
+import { RECEIVE_ERRORS } from '../actions/session_actions';
 
-const ErrorsReducer = (action) => {
+import { CLEAR_ERRORS } from '../actions/errors_actions';
+
+const defaultErrors = [];
+
+const ErrorsReducer = (state = defaultErrors, action) => {
+  console.log(action.type);
   switch (action.type) {
     case RECEIVE_ERRORS:
       return action.errors;
     case CLEAR_ERRORS:
       return [];
     default:
-      return [];
+      return state;
   }
 };
 

@@ -30,6 +30,21 @@ class AuthForm extends React.Component {
     this.props.processForm(user);
   }
 
+  logInAsGuest(e){
+    e.preventDefault();
+    let username = 'Demo PicMeS';
+    let password = 'pass123';
+
+   for (let i = 0; i < username.length; i++) {
+      setTimeout(() => this.setState({username: username.slice(0, i + 1)}), (i * 75));
+    }
+    for (let i = 0; i < password.length; i++) {
+      setTimeout(() => this.setState({password: password.slice(0, i + 1)}), ((i + username.length) * 75));
+    }
+    const user = {username: 'GuestUser', password: 'password123'};
+    setTimeout(() => this.props.login({user}), (1700));
+  }
+
   navLink() {
     if (this.props.formAction === 'signup') {
       return <Link to="/">Log In</Link>;
@@ -102,6 +117,9 @@ class AuthForm extends React.Component {
             <Link to="/dashboard" className="auth-submit"
               onClick={ this.handleSubmit }>
               { this.authSubmitType() }
+            </Link>
+            <Link to="/dashboard" className="guest-login" onClick={ this.logInAsGuest }>
+              Guest Log In
             </Link>
             <br />
           </section>

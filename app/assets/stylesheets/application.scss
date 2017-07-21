@@ -19,13 +19,11 @@
 html {
   position: relative;
   height: 100%;
-  // width: 100%;
   background-image: url(https://static.pexels.com/photos/191160/pexels-photo-191160.jpeg);
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-position: center;
-  // height: 100%;
 }
 
 button {
@@ -37,13 +35,10 @@ button {
   flex-direction: column;
   justify-content: space-between;
   height: 800px;
-  // background-image: url(https://static.pexels.com/photos/191160/pexels-photo-191160.jpeg);
-  // background-size: contain;
 }
 
 .auth-navbar {
   display: flex;
-  // flex: 1;
   justify-content: space-between;
   background-color: #FFFFFF;
   height: 30px;
@@ -128,7 +123,7 @@ h1.auth-form-header {
 input.auth-login-input {
   text-align: center;
   border-bottom: 2px solid black;
-  width: 90%;
+  width: 88%;
 }
 
 input.auth-login-input::placeholder {
@@ -170,6 +165,25 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus {
   text-shadow: 3px grey;
   text-align: center;
   border-bottom: 2px solid black;
+  box-shadow: 0 0 6px black;
+}
+
+.guest-login {
+  display: flex;
+  font-size: 20px;
+  padding: 5px;
+  border: 2px solid black;
+  text-align: center;
+  align-self: center;
+  border: 2px solid black;
+  margin-top: 15px;
+}
+
+.guest-login:hover {
+  font-size: 25px;
+  text-shadow: 5px grey;
+  border-bottom: 2px solid black;
+  box-shadow: 0 0 6px black;
 }
 
 footer.auth-footer {
@@ -183,10 +197,6 @@ footer i {
   display: flex;
   justify-content: flex-end;
   padding: 5px;
-}
-
-footer i:hover {
-
 }
 
 .dash-nav {
