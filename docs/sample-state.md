@@ -6,6 +6,7 @@
   },
 
   errors: [],
+  
   posts: {
     1: {
       title: "First Post",
