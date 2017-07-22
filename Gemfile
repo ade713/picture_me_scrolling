@@ -33,6 +33,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'pry-rails'
 gem 'annotate'
 
+gem 'paperclip', '~> 5.0.0'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
