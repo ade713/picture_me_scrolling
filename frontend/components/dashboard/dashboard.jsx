@@ -18,12 +18,25 @@ class Dashboard extends React.Component {
     console.log(currentUser);
     return (
       <div className="dash-page">
-        <navbar className="dash-nav">
+        <header className="dash-nav">
           <h1 className="dash-title">
             Picture Me Scrolling
           </h1>
           <button className="dash-logout" onClick={ logout }>Log Out</button>
-        </navbar>
+        </header>
+        <div className="dash-main">
+          <div className="dash-show">
+            <div className="post-bar">
+
+            </div>
+            <div className="post-show-item">
+              
+            </div>
+          </div>
+          <div className="dash-feed">
+
+          </div>
+        </div>
       </div>
     );
   }

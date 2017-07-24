@@ -15,7 +15,7 @@ class Api::PostsController < ApplicationController
   end
 
   def show
-    @post = Post.find(params[:id])
+    @post = Post.find_by(id: params[:id])
   end
 
   def update
@@ -29,7 +29,7 @@ class Api::PostsController < ApplicationController
   end
 
   def destroy
-    @post = current_user.posts.find(params[:id])
+    @post = current_user.posts.find_by(id: params[:id])
 
     if @post.delete
       render "api/posts/show"

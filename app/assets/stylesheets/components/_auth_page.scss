@@ -69,10 +69,13 @@ div.auth-body {
   justify-content: space-between;
   margin-top: 50px;
   padding-top: 17%;
+  // padding-left: 3%;
   padding-left: 7%;
+  // padding-right: 4%;
   padding-right: 8%;
+  // background-image: url(https://images.pexels.com/photos/494091/pexels-photo-494091.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb);
   background-image: url(https://static.pexels.com/photos/191160/pexels-photo-191160.jpeg);
-  background-size: cover;
+  background-size: cover, auto;
   background-repeat: no-repeat;
 }
 
@@ -80,23 +83,25 @@ section.auth-body-title {
   display: flex;
   flex-direction: column;
   font-family: 'Mogra', cursive;
+  font-size: 55px;
+  // font-size: 50px;
 }
 
 h1.auth-title-top {
-  font-size: 50px;
   color: black;
+  margin-top: 8%;
 }
 
 h1.auth-title-mid {
-  font-size: 50px;
   color: black;
-  margin-left: 30%
+  margin-left: 30%;
+  margin-top: 15%;
 }
 
 h1.auth-title-btm {
-  font-size: 50px;
   color: black;
-  margin-left: 15%
+  margin-left: 15%;
+  margin-top: 15%;
 }
 
 .auth-form-box {
