@@ -6,7 +6,6 @@ class Api::PostsController < ApplicationController
     if @post.save
       render "api/posts/show"
     else
-      p @post.errors.full_messages
       render json: @post.errors.full_messages, status: 422
     end
   end
@@ -25,7 +24,7 @@ class Api::PostsController < ApplicationController
     if @post.update(post_params)
       render "api/posts/show"
     else
-      render json: ["Posts must belong to user to edit"]
+      render json: ['Post must belong to user to edit'], status: 404
     end
   end
 
@@ -35,7 +34,7 @@ class Api::PostsController < ApplicationController
     if @post.delete
       render "api/posts/show"
     else
-      render json: ["Posts must belong to user to delete"]
+      render json: ['Post must belong to user to delete'], status: 404
     end
   end
 
