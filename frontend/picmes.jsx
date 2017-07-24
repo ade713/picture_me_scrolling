@@ -3,16 +3,19 @@ import ReactDOM from 'react-dom';
 
 import Root from './components/root';
 import configureStore from './store/store';
-import { fetchAllPosts,
-         fetchPost,
+import { requestAllPosts,
+         requestPost,
+         receiveAllPosts,
+         receivePost,
+         removePost,
+         editPost,
          createPost,
          updatePost,
-         deletePost } from './util/post_api_util';
-// import { signup,
-//          login,
-//          logout,
-//          receiveCurrentUser,
-//          receieveErrors } from './actions/session_actions';
+         deletePost } from './actions/posts_actions';
+import { fetchAllPosts,
+         fetchPost
+        } from './util/post_api_util';
+
 
 document.addEventListener('DOMContentLoaded', () => {
   let store;
@@ -31,17 +34,28 @@ document.addEventListener('DOMContentLoaded', () => {
   window.getState = store.getState;
   window.dispatch = store.dispatch;
 
-  window.fetchAllPosts = fetchAllPosts;
-  window.fetchPost = fetchPost;
+  window.requestAllPosts = requestAllPosts;
+  window.requestPost = requestPost;
+  window.receiveAllPosts = receiveAllPosts;
+  window.receivePost = receivePost;
+  window.removePost = removePost;
+  window.editPost = editPost;
   window.createPost = createPost;
   window.updatePost = updatePost;
   window.deletePost = deletePost;
 
-  // window.signup = signup;
-  // window.login = login;
-  // window.logout = logout;
+  window.fetchAllPosts = fetchAllPosts;
+  window.fetchPost = fetchPost;
+  // window.createPost = createPost;
+  // window.updatePost = updatePost;
+  // window.deletePost = deletePost;
 
   const root = document.getElementById('root');
   ReactDOM.render(<Root store={ store } />, root);
 
 });
+
+// ,
+//  createPost,
+//  updatePost,
+//  deletePost

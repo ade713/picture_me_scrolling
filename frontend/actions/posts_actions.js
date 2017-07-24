@@ -34,5 +34,39 @@ export const requestAllPosts = () => dispatch => {
 
 export const requestPost = id => dispatch => {
   return APIUtil.fetchPost(id)
-    .then(post => dispatch(receivePost(id)));
+    .then(post => dispatch(receivePost(post)));
+};
+
+export const createPost = post => dispatch => {
+  return APIUtil.createPost(post)
+    .then(newPost => {
+      dispatch(receivePost(newPost));
+      dispatch(Errors.clearErrors());
+      return newPost;
+    }, errors => (
+      dispatch(Errors.receiveErrors(errors.responseJSON))
+    )
+  );
+};
+
+export const updatePost = post => dispatch => {
+  return APIUtil.updatePost(post)
+    .then(updatedPost => {
+      dispatch(editPost(updatedPost));
+      dispatch(Errors.clearErrors());
+    }, errors => (
+      dispatch(Errors.receiveErrors(errors.responseJSON))
+    )
+  );
+};
+
+export const deletePost = post => dispatch => {
+  return APIUtil.deletePost(post)
+    .then(deletedPost => {
+      dispatch(removePost(deletedPost));
+      dispatch(Errors.clearErrors());
+    }, errors => (
+      dispatch(Errors.receiveErrors(errors.responseJSON))
+    )
+  );
 };
