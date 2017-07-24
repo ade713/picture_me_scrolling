@@ -10,11 +10,17 @@ div.auth-page {
   width: 100%;
   height: 100%;
 
-  background-image: url(https://static.pexels.com/photos/191160/pexels-photo-191160.jpeg);
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: scroll;
-  background-position: center;
+  // background-image: url(https://static.pexels.com/photos/191160/pexels-photo-191160.jpeg);
+  // background-size: cover;
+  // background-repeat: no-repeat;
+  // background-attachment: scroll;
+  // background-position: center;
+}
+
+.auth-main {
+  display: flex;
+  flex-direction: column;
+  flex: 18;
 }
 
 .auth-navbar {
@@ -22,37 +28,38 @@ div.auth-page {
   flex: 1;
   justify-content: space-between;
   background-color: #FFFFFF;
-  height: 30px;
-  opacity: .8;
-  padding: 5px;
+  border-bottom: 1px solid black;
+}
+
+.auth-header {
+  display: flex;
+  font-family: 'Mogra', cursive;
+  font-size: 30px;
+  margin-left: 1%;
+  padding-top: 7px;
 }
 
 .login-signup {
   display: flex;
   justify-content: flex-end;
   font-family: 'Mogra', cursive;
+  font-size: 28px;
   color: black;
+  margin-right: 1%;
+  padding-top: 7px;
 }
 
 .login-signup a:link {
   text-decoration: none;
   color: black;
-  margin-right: 5px;
+  // margin-right: 5px;
 }
 
 .login-signup a:hover {
   text-decoration: none;
-  color: black;
-  font-size: 25px;
-  border-bottom: 2px solid black;
-  padding: 2px;
-}
-
-h1.auth-header {
-  display: flex;
-  font-family: 'Mogra', cursive;
-  font-size: 30px;
-  padding-left: 5px;
+  color: #CE0063;
+  // border-bottom: 2px solid black;
+  // padding: 2px;
 }
 
 div.auth-body {
@@ -60,14 +67,19 @@ div.auth-body {
   flex: 14;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-top: 20%;
+  margin-top: 50px;
+  padding-top: 17%;
+  padding-left: 7%;
+  padding-right: 8%;
+  background-image: url(https://static.pexels.com/photos/191160/pexels-photo-191160.jpeg);
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 section.auth-body-title {
   display: flex;
   flex-direction: column;
   font-family: 'Mogra', cursive;
-  padding-left: 5px;
 }
 
 h1.auth-title-top {
@@ -94,7 +106,6 @@ h1.auth-title-btm {
   font-family: 'Mogra', cursive;
   width: 200px;
   text-align: center;
-  padding-right: 7px;
 }
 
 h1.auth-form-header {
@@ -176,12 +187,14 @@ footer.auth-footer {
   flex: 1;
   justify-content: center;
   width: 100%;
+  border-top: 1px solid black;
 }
 
 footer i {
   display: flex;
   justify-content: flex-end;
   padding: 5px;
+  margin-top: 12%;
 }
 
 .dash-nav {

@@ -78,56 +78,58 @@ class AuthForm extends React.Component {
   render() {
     return (
       <div className='auth-page'>
-        <navbar className="auth-navbar">
-          <h1 className='auth-header'>
-            PicMeS
-          </h1>
-          <header className="login-signup">
-            { this.navLink() }
+        <div className="auth-main">
+          <header className="auth-navbar">
+            <div className='auth-header'>
+              PicMeS
+            </div>
+            <div className="login-signup">
+              { this.navLink() }
+            </div>
           </header>
-        </navbar>
-        <div className="auth-body">
-          <section className="auth-body-title">
-            <h1 className="auth-title-top">Picture</h1>
-            <h1 className="auth-title-mid">Me</h1>
-            <h1 className="auth-title-btm">Scrolling</h1>
-          </section>
-          <section className="auth-form-box">
-            <h1 className="auth-form-header">
-              Let's Begin
-            </h1>
-            <br />
-            <br />
-            <label className="auth-username">
-              <input type="text"
-                value={this.state.username}
-                ref="username"
-                placeholder="Your Username"
-                onChange={this.update('username')}
-                className="auth-login-input" />
-            </label>
-            <br />
-            <label className="auth-password">
-              <input type="password"
-                value={this.state.password}
-                ref="password"
-                placeholder="Your Password"
-                onChange={this.update('password')}
-                className="auth-login-input" />
-            </label>
-            <br />
-            <Link to="/dashboard" className="auth-submit"
-              onClick={ this.handleSubmit }>
-              { this.authSubmitType() }
-            </Link>
-            <Link to="/dashboard" className="guest-login" onClick={ this.logInAsGuest }>
-              Guest Log In
-            </Link>
-            <br />
-            <strong className="auth-errors">
-              { this.renderErrors() }
-            </strong>
-          </section>
+          <div className="auth-body">
+            <section className="auth-body-title">
+              <h1 className="auth-title-top">Picture</h1>
+              <h1 className="auth-title-mid">Me</h1>
+              <h1 className="auth-title-btm">Scrolling</h1>
+            </section>
+            <section className="auth-form-box">
+              <h1 className="auth-form-header">
+                Let's Begin
+              </h1>
+              <br />
+              <br />
+              <label className="auth-username">
+                <input type="text"
+                  value={this.state.username}
+                  ref="username"
+                  placeholder="Your Username"
+                  onChange={this.update('username')}
+                  className="auth-login-input" />
+              </label>
+              <br />
+              <label className="auth-password">
+                <input type="password"
+                  value={this.state.password}
+                  ref="password"
+                  placeholder="Your Password"
+                  onChange={this.update('password')}
+                  className="auth-login-input" />
+              </label>
+              <br />
+              <Link to="/dashboard" className="auth-submit"
+                onClick={ this.handleSubmit }>
+                { this.authSubmitType() }
+              </Link>
+              <Link to="/dashboard" className="guest-login" onClick={ this.logInAsGuest }>
+                Guest Log In
+              </Link>
+              <br />
+              <strong className="auth-errors">
+                { this.renderErrors() }
+              </strong>
+            </section>
+          </div>
         </div>
         <footer className="auth-footer">
           <a href="https://github.com/ade713" target="_blank">

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import Root from './components/root';
 import configureStore from './store/store';
+
 import { requestAllPosts,
          requestPost,
          receiveAllPosts,
@@ -12,11 +13,10 @@ import { requestAllPosts,
          createPost,
          updatePost,
          deletePost } from './actions/posts_actions';
-import { selectPost,
-         selectAllPosts } from './reducers/selectors';
-import { fetchAllPosts,
-         fetchPost
-        } from './util/post_api_util';
+// import { selectPost,
+//          selectAllPosts } from './reducers/selectors';
+// import { fetchAllPosts,
+//          fetchPost } from './util/post_api_util';
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -47,14 +47,14 @@ document.addEventListener('DOMContentLoaded', () => {
   window.deletePost = deletePost;
 
 
-  window.fetchAllPosts = fetchAllPosts;
-  window.fetchPost = fetchPost;
+  // window.fetchAllPosts = fetchAllPosts;
+  // window.fetchPost = fetchPost;
   // window.createPost = createPost;
   // window.updatePost = updatePost;
   // window.deletePost = deletePost;
 
-  window.selectPost = selectPost;
-  window.selectAllPosts = selectAllPosts;
+  // window.selectPost = selectPost;
+  // window.selectAllPosts = selectAllPosts;
   const root = document.getElementById('root');
   ReactDOM.render(<Root store={ store } />, root);
 

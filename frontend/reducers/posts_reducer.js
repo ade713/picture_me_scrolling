@@ -9,7 +9,7 @@ import { RECEIVE_ALL_POSTS,
 const PostsReducer = (state = {}, action) => {
   Object.freeze(state);
 
-  let nextState = merge({}, state);
+  const nextState = merge({}, state);
   let post;
 
   switch (action.type) {
@@ -22,12 +22,10 @@ const PostsReducer = (state = {}, action) => {
       });
     case EDIT_POST:
       post = action.post;
-      console.log(post);
       nextState[post.id] = post;
       return nextState;
     case REMOVE_POST:
       post = action.post;
-      console.log(post);
       delete nextState[post.id];
       return nextState;
     default:

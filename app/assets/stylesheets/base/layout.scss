@@ -1,8 +1,24 @@
 html, body {
   height: 100%;
+  width: 100%;
   margin: 0;
+  position: relative;
+  overflow: auto;
 }
 
 button {
   width: 80px;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  position: fixed;
+  height: 50px;
+  width: 100%;
+  font-family: 'Mogra', cursive;
+  font-size: 30px;
+  // padding: 5%;
+  border-bottom: 1px solid black;
 }

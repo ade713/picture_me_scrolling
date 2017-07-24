@@ -6,7 +6,6 @@ const defaultErrors = [];
 const ErrorsReducer = (state = defaultErrors, action) => {
   switch (action.type) {
     case RECEIVE_ERRORS:
-      console.log(action);
       return action.errors;
     case CLEAR_ERRORS:
       return [];
