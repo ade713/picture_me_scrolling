@@ -22,7 +22,7 @@ class User < ApplicationRecord
   has_many :posts,
     primary_key: :id,
     foreign_key: :author_id,
-    class_name: "Posts"
+    class_name: "Post"
 
   attr_reader :password
 

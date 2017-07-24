@@ -14,7 +14,6 @@
 
 class Post < ApplicationRecord
   validates :title, :likes_count, :author_id, presence: true
-  validates :author_id, uniqueness: true
 
   belongs_to :author,
     primary_key: :id,

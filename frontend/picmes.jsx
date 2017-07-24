@@ -3,11 +3,16 @@ import ReactDOM from 'react-dom';
 
 import Root from './components/root';
 import configureStore from './store/store';
-import { signup,
-         login,
-         logout,
-         receiveCurrentUser,
-         receieveErrors } from './actions/session_actions';
+import { fetchAllPosts,
+         fetchPost,
+         createPost,
+         updatePost,
+         deletePost } from './util/post_api_util';
+// import { signup,
+//          login,
+//          logout,
+//          receiveCurrentUser,
+//          receieveErrors } from './actions/session_actions';
 
 document.addEventListener('DOMContentLoaded', () => {
   let store;
@@ -26,9 +31,15 @@ document.addEventListener('DOMContentLoaded', () => {
   window.getState = store.getState;
   window.dispatch = store.dispatch;
 
-  window.signup = signup;
-  window.login = login;
-  window.logout = logout;
+  window.fetchAllPosts = fetchAllPosts;
+  window.fetchPost = fetchPost;
+  window.createPost = createPost;
+  window.updatePost = updatePost;
+  window.deletePost = deletePost;
+
+  // window.signup = signup;
+  // window.login = login;
+  // window.logout = logout;
 
   const root = document.getElementById('root');
   ReactDOM.render(<Root store={ store } />, root);
