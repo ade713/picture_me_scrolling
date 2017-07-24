@@ -19,13 +19,12 @@ class Api::PostsController < ApplicationController
   end
 
   def update
-    @post = current_user.posts.find(params[:id])
+    @post = current_user.posts.find_by(id: params[:id])
 
-    if @post.update(post_params)
+    if @post && @post.update(post_params)
       render "api/posts/show"
     else
-      render json: @post.errors.full_messages, status: 404
-      # ['Post must belong to user to edit']
+      render json: ['Post must belong to user to edit'], status: 422
     end
   end
 
@@ -35,7 +34,7 @@ class Api::PostsController < ApplicationController
     if @post.delete
       render "api/posts/show"
     else
-      render json: ['Post must belong to user to delete'], status: 404
+      render json: ['Post must belong to user to delete'], status: 422
     end
   end
 

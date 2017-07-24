@@ -5,15 +5,11 @@ import { RECEIVE_ALL_POSTS,
          EDIT_POST,
          REMOVE_POST } from '../actions/posts_actions';
 
-const  defaultState = () => ({
-  currentPost: null
-});
 
-
-const PostsReducer = (state = defaultState(), action) => {
+const PostsReducer = (state = {}, action) => {
   Object.freeze(state);
 
-  let nextState = ({}, state);
+  let nextState = merge({}, state);
   let post;
 
   switch (action.type) {
@@ -22,8 +18,7 @@ const PostsReducer = (state = defaultState(), action) => {
     case RECEIVE_POST:
       post = action.post;
       return merge({}, state, {
-        [post.id]: post,
-        currentPost: post
+        [post.id]: post
       });
     case EDIT_POST:
       post = action.post;

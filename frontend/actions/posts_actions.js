@@ -55,9 +55,10 @@ export const updatePost = post => dispatch => {
     .then(updatedPost => {
       dispatch(editPost(updatedPost));
       dispatch(Errors.clearErrors());
-    }, errors => (
-        dispatch(Errors.receiveErrors(errors.responseJSON))
-      )
+    }, errors => {
+        console.log(errors);
+        dispatch(Errors.receiveErrors(errors.responseJSON));
+      }
     )
   );
 };
@@ -67,8 +68,9 @@ export const deletePost = post => dispatch => {
     .then(deletedPost => {
       dispatch(removePost(deletedPost));
       dispatch(Errors.clearErrors());
-    }, errors => (
-      dispatch(Errors.receiveErrors(errors.responseJSON))
-    )
+    }, errors => {
+      console.log(errors);
+      dispatch(Errors.receiveErrors(errors.responseJSON));
+    }
   );
 };

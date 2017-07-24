@@ -46,8 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
   window.updatePost = updatePost;
   window.deletePost = deletePost;
 
-  window.selectPost = selectPost;
-  window.selectAllPosts = selectAllPosts;
 
   window.fetchAllPosts = fetchAllPosts;
   window.fetchPost = fetchPost;
@@ -55,6 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // window.updatePost = updatePost;
   // window.deletePost = deletePost;
 
+  window.selectPost = selectPost;
+  window.selectAllPosts = selectAllPosts;
   const root = document.getElementById('root');
   ReactDOM.render(<Root store={ store } />, root);
 
