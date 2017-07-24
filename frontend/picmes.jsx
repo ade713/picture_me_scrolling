@@ -12,6 +12,8 @@ import { requestAllPosts,
          createPost,
          updatePost,
          deletePost } from './actions/posts_actions';
+import { selectPost,
+         selectAllPosts } from './reducers/selectors';
 import { fetchAllPosts,
          fetchPost
         } from './util/post_api_util';
@@ -43,6 +45,9 @@ document.addEventListener('DOMContentLoaded', () => {
   window.createPost = createPost;
   window.updatePost = updatePost;
   window.deletePost = deletePost;
+
+  window.selectPost = selectPost;
+  window.selectAllPosts = selectAllPosts;
 
   window.fetchAllPosts = fetchAllPosts;
   window.fetchPost = fetchPost;

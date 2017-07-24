@@ -50,12 +50,14 @@ export const createPost = post => dispatch => {
 };
 
 export const updatePost = post => dispatch => {
-  return APIUtil.updatePost(post)
+  return (
+    APIUtil.updatePost(post)
     .then(updatedPost => {
       dispatch(editPost(updatedPost));
       dispatch(Errors.clearErrors());
     }, errors => (
-      dispatch(Errors.receiveErrors(errors.responseJSON))
+        dispatch(Errors.receiveErrors(errors.responseJSON))
+      )
     )
   );
 };

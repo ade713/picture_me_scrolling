@@ -24,7 +24,8 @@ class Api::PostsController < ApplicationController
     if @post.update(post_params)
       render "api/posts/show"
     else
-      render json: ['Post must belong to user to edit'], status: 404
+      render json: @post.errors.full_messages, status: 404
+      # ['Post must belong to user to edit']
     end
   end
 

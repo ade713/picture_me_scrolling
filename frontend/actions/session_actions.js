@@ -19,7 +19,6 @@ export const signup = user => dispatch => (
 );
 
 export const login = user => dispatch => {
-  console.log(user);
   return(
     APIUtil.login(user).then(previousUser => {
       dispatch(receiveCurrentUser(previousUser));
