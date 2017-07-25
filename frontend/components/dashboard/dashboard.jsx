@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import FeedContainer from '../feed/feed_container';
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -15,7 +16,7 @@ class Dashboard extends React.Component {
 
   render () {
     const { currentUser, logout } = this.props;
-    console.log(currentUser);
+
     return (
       <div className="dash-page">
         <header className="dash-nav">
@@ -25,15 +26,10 @@ class Dashboard extends React.Component {
           <button className="dash-logout" onClick={ logout }>Log Out</button>
         </header>
         <div className="dash-main">
-          <div className="dash-show">
-            <div className="post-bar">
-
-            </div>
-            <div className="post-show-item">
-              
-            </div>
-          </div>
           <div className="dash-feed">
+            <FeedContainer />
+          </div>
+          <div className="dash-right-column">
 
           </div>
         </div>

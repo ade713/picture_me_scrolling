@@ -49,6 +49,18 @@ export const createPost = post => dispatch => {
   );
 };
 
+export const createMediaPost = post => dispatch => {
+  return APIUtil.createMediaPost(post)
+    .then(newPost => {
+      dispatch(receivePost(newPost));
+      dispatch(Errors.clearErrors());
+      return newPost;
+    }, errors => (
+      dispatch(Errors.receiveErrors(errors.responseJSON))
+    )
+  );
+};
+
 export const updatePost = post => dispatch => {
   return (
     APIUtil.updatePost(post)

@@ -1,5 +1,9 @@
 import React from 'react';
 
+import FeedItem from './feed_item';
+import PostBarContainer from '../posts/post_bar_container';
+
+
 class Feed extends React.Component {
   constructor(props) {
     super(props);
@@ -10,16 +14,20 @@ class Feed extends React.Component {
   }
 
   render() {
-    const { posts, deletePost } = this.props;
-    const feedItems = posts.map( post =>
-      <FeedItem key={ post.id } deletePost={ deletePost } post= { post } />
+    const { posts, deletePost, currentUser } = this.props;
+    const feedItems = posts.map((post, index) =>
+      <FeedItem key={ post.id } deletePost={ deletePost } post= { post } currentUser={ currentUser } />
     );
 
     return (
       <div className="feed-posts">
-          <ul>
-            { feedItems }
-          </ul>
+        <div className="post-bar">
+          <PostBarContainer />
+        </div>
+        <br />
+        <ul>
+          { feedItems }
+        </ul>
       </div>
     );
   }

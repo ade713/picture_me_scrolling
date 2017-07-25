@@ -20,6 +20,14 @@ export const createPost = post => {
   });
 };
 
+export const createMediaPost = post => {
+  return $.ajax({
+    method: 'POST',
+    url: 'api/posts',
+    data: { post },
+  });
+};
+
 export const updatePost = post => {
   return $.ajax({
     method: 'PATCH',

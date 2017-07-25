@@ -14,6 +14,7 @@
 #  image_content_type :string
 #  image_file_size    :integer
 #  image_updated_at   :datetime
+#  post_type          :string
 #
 
 class Post < ApplicationRecord
@@ -23,4 +24,9 @@ class Post < ApplicationRecord
     primary_key: :id,
     foreign_key: :author_id,
     class_name: "User"
+
+  has_attached_file :image, default_url: "orange_happy.png"
+  validates_attachment_content_type :image,
+    content_type: [/\Aimage\/.*\z/, 'audio/mp3', 'audio/mpeg', 'audio/wav', 'video/avi', 'video/mp4']
+  validates_attachment_size :image, in: 0..10.megabyte
 end

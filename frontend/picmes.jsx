@@ -11,6 +11,7 @@ import { requestAllPosts,
          removePost,
          editPost,
          createPost,
+         createMediaPost,
          updatePost,
          deletePost } from './actions/posts_actions';
 // import { selectPost,
@@ -43,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.removePost = removePost;
   window.editPost = editPost;
   window.createPost = createPost;
+  window.createMediaPost = createMediaPost;
   window.updatePost = updatePost;
   window.deletePost = deletePost;
 
@@ -59,8 +61,3 @@ document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(<Root store={ store } />, root);
 
 });
-
-// ,
-//  createPost,
-//  updatePost,
-//  deletePost

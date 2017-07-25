@@ -2,19 +2,12 @@ div.auth-page {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
   min-height: 100%;
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-
-  // background-image: url(https://static.pexels.com/photos/191160/pexels-photo-191160.jpeg);
-  // background-size: cover;
-  // background-repeat: no-repeat;
-  // background-attachment: scroll;
-  // background-position: center;
 }
 
 .auth-main {
@@ -52,7 +45,6 @@ div.auth-page {
 .login-signup a:link {
   text-decoration: none;
   color: black;
-  // margin-right: 5px;
 }
 
 .login-signup a:hover {
@@ -69,12 +61,9 @@ div.auth-body {
   justify-content: space-between;
   margin-top: 50px;
   padding-top: 17%;
-  // padding-left: 3%;
-  padding-left: 7%;
-  // padding-right: 4%;
-  padding-right: 8%;
-  // background-image: url(https://images.pexels.com/photos/494091/pexels-photo-494091.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb);
-  background-image: url(https://static.pexels.com/photos/191160/pexels-photo-191160.jpeg);
+  padding-left: 3%;
+  padding-right: 4%;
+  background-image: url(https://images.pexels.com/photos/494091/pexels-photo-494091.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb);
   background-size: cover, auto;
   background-repeat: no-repeat;
 }
@@ -94,13 +83,13 @@ h1.auth-title-top {
 
 h1.auth-title-mid {
   color: black;
-  margin-left: 30%;
+  margin-left: 20%;
   margin-top: 15%;
 }
 
 h1.auth-title-btm {
   color: black;
-  margin-left: 15%;
+  margin-left: 5%;
   margin-top: 15%;
 }
 

@@ -16,7 +16,6 @@ class AuthForm extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.loggedIn) {
       this.props.history.push("/dashboard");
-      // this.props.errors = [];
     }
   }
 
