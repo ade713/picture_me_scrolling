@@ -25,7 +25,7 @@ const formStyles = {
   }
 };
 
-class AudioForm {
+class AudioForm extends React.Component {
   constructor(props) {
     super(props);
 

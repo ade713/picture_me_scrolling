@@ -10,7 +10,6 @@ const mapStateToProps = ({ session }) => ({
 
 const mapDispatchToProps = dispatch => ({
   createPost: post => dispatch(createPost(post)),
-  createMediaPost: post => dispatch(createMediaPost(post))
 });
 
 const TextFormContainer = connect(

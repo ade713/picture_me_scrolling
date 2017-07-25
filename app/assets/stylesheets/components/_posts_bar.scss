@@ -1,0 +1,11 @@
+div.post-bar {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+img.user-avatar {
+  display: flex;
+  margin-right: 15px;
+}

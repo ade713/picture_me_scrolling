@@ -25,7 +25,7 @@ const formStyles = {
   }
 };
 
-class VideoForm {
+class VideoForm extends React.Component {
   constructor(props) {
     super(props);
 

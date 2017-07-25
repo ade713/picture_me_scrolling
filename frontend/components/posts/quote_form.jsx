@@ -96,11 +96,11 @@ class QuoteForm extends React.Component {
                style={ formStyles }
                onRequestClose={ this.closeModal } >
                <div className="new-post-form">
+                 <span className="post-author">
+                   { this.props.currentUser.username }
+                 </span>
                  <div className="post-form">
                    <div className="title-field">
-                     <span className="post-author">
-                       Current User
-                     </span>
                      <textarea className="title-input"
                                type="text"
                                placeholder="Quote"

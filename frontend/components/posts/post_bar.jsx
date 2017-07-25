@@ -1,12 +1,11 @@
 import React from 'react';
 
-// import each form type here
 import TextFormContainer from './text_form_container';
-// import PhotoForm from './photo_form';
-import QuoteForm from './quote_form';
-import LinkForm from './link_form';
-// import AudioForm from './audio_form';
-// import VideoForm from './video_form';
+import PhotoFormContainer from './photo_form_container';
+import QuoteFormContainer from './quote_form_container';
+import LinkFormContainer from './link_form_container';
+import AudioFormContainer from './audio_form_container';
+import VideoFormContainer from './video_form_container';
 
 
 
@@ -23,7 +22,11 @@ class PostBar extends React.Component {
         <img className="user-avatar" src={ this.props.currentUser.avatar_url } />
         <div className="post-form-links">
           <TextFormContainer />
-          <QuoteForm />
+          <PhotoFormContainer />
+          <QuoteFormContainer />
+          <LinkFormContainer />
+          <AudioFormContainer />
+          <VideoFormContainer />
         </div>
       </div>
     );
