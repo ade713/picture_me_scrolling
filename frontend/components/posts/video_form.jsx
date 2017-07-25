@@ -1,9 +1,5 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { withRouter } from 'react-router-dom';
-
-// import PostBarContainer from './post_bar_container';
-
 
 const formStyles = {
   overlay : {
@@ -29,7 +25,7 @@ const formStyles = {
   }
 };
 
-class TextForm extends React.Component {
+class VideoForm {
   constructor(props) {
     super(props);
 
@@ -38,17 +34,19 @@ class TextForm extends React.Component {
       title: '',
       body: '',
       url: '',
-      post_type: 'text'
+      post_type: 'video',
+      image: ''
     };
 
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleMedia = this.handleMedia.bind(this);
   }
 
   update(property) {
     return e => this.setState({
-      [property]: e.currentTarget.value,
+      [property]: e.currentTarget.value
     });
   }
 
@@ -64,20 +62,32 @@ class TextForm extends React.Component {
       title: '',
       body: '',
       url: '',
-      post_type: ''
+      image: ''
     });
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    const post = {
-      title: this.state.title,
-      body: this.state.body,
-      url: this.state.url,
-      post_type: 'text'
-    };
+  handleMedia(e) {
+    let reader = new FileReader();
+    let file = e.currentTarget.files[0];
+    reader.onloadend = function() {
+      this.setState({
+        url: reader.result,
+        image: file
+      });
+    }.bind(this);
 
-    this.props.createPost(post)
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+  }
+
+  handleSubmit(e) {
+    let formData = new FormData();
+    formData.append('post[url]', this.state.url);
+    formData.append('post[title]', this.state.title);
+    formData.append('post[post_type]', 'video');
+    formData.append('post[image]', 'image');
+    this.props.createMediaPost(formData)
       .then(this.closeModal());
   }
 
@@ -86,11 +96,11 @@ class TextForm extends React.Component {
       <div className="post-bar-content">
         <button className="post-bar-button" onClick={ this.openModal }>
           <label className="bar-button">
-            <div className="text-icon">
-              Aa
+            <div className="photo-icon">
+              "Vi"
             </div>
             <span className="new-post-label">
-              Text
+              Video
             </span>
           </label>
         </button>
@@ -104,21 +114,21 @@ class TextForm extends React.Component {
                    { this.props.currentUser.username }
                  </span>
                  <div className="post-form">
+                   <div className="media-field">
+                     <input className="media-input"
+                            type="file"
+                            accept="video/*"
+                            onChange={ this.handleMedia } />
+                   </div>
+
                    <div className="title-field">
                      <textarea className="title-input"
                                type="text"
-                               placeholder="Title"
+                               placeholder="Add caption here"
                                value={ this.state.title }
                                onChange={ this.update('title') } />
+                   </div>
 
-                   </div>
-                   <div className="post-body">
-                     <textarea className="body-input"
-                       type="text"
-                       placeholder="Your text here"
-                       value={ this.state.body }
-                       onChange={ this.update('body') } />
-                   </div>
                    <div className="submit-form">
                      <div className="modal-button">
                        <button className="form-button"
@@ -127,7 +137,7 @@ class TextForm extends React.Component {
                        </button>
                        <button className="post-submit-button"
                                onClick={ this.handleSubmit }
-                               disabled={ !this.state.title && !this.state.body } >
+                               disabled={ !this.state.url } >
                          Post
                        </button>
                      </div>
@@ -140,6 +150,4 @@ class TextForm extends React.Component {
   }
 }
 
-
-
-export default TextForm;
+export default VideoForm;

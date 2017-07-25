@@ -1,12 +1,11 @@
-import { connect } from 'react-redux';
+import { connect} from 'react-redux';
 
 import { createPost,
          createMediaPost } from '../../actions/posts_actions';
-import PostBar from './post_bar';
+import TextForm from './text_form';
 
-const mapStateToProps = ({ session, errors }) => ({
-  currentUser: session.currentUser,
-  errors: errors
+const mapStateToProps = ({ session }) => ({
+  currentUser: session.currentUser
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -14,9 +13,8 @@ const mapDispatchToProps = dispatch => ({
   createMediaPost: post => dispatch(createMediaPost(post))
 });
 
-
-const PostBarContainer = connect(
+const TextFormContainer = connect(
   mapStateToProps, mapDispatchToProps
-)(PostBar);
+)(TextForm);
 
-export default PostBarContainer;
+export default TextFormContainer;

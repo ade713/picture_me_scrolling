@@ -1,9 +1,5 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { withRouter } from 'react-router-dom';
-
-// import PostBarContainer from './post_bar_container';
-
 
 const formStyles = {
   overlay : {
@@ -29,7 +25,7 @@ const formStyles = {
   }
 };
 
-class TextForm extends React.Component {
+class QuoteForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -38,7 +34,7 @@ class TextForm extends React.Component {
       title: '',
       body: '',
       url: '',
-      post_type: 'text'
+      post_type: 'quote'
     };
 
     this.openModal = this.openModal.bind(this);
@@ -48,7 +44,7 @@ class TextForm extends React.Component {
 
   update(property) {
     return e => this.setState({
-      [property]: e.currentTarget.value,
+      [property]: e.currentTarget.value
     });
   }
 
@@ -71,10 +67,10 @@ class TextForm extends React.Component {
   handleSubmit(e) {
     e.preventDefault();
     const post = {
-      title: this.state.title,
-      body: this.state.body,
+      title: `"${this.state.title}"`,
+      body: `- ${this.state.body}`,
       url: this.state.url,
-      post_type: 'text'
+      post_type: 'quote'
     };
 
     this.props.createPost(post)
@@ -86,11 +82,11 @@ class TextForm extends React.Component {
       <div className="post-bar-content">
         <button className="post-bar-button" onClick={ this.openModal }>
           <label className="bar-button">
-            <div className="text-icon">
-              Aa
+            <div className="quote-icon">
+              "Qu"
             </div>
             <span className="new-post-label">
-              Text
+              Quote
             </span>
           </label>
         </button>
@@ -100,14 +96,14 @@ class TextForm extends React.Component {
                style={ formStyles }
                onRequestClose={ this.closeModal } >
                <div className="new-post-form">
-                 <span className="post-author">
-                   { this.props.currentUser.username }
-                 </span>
                  <div className="post-form">
                    <div className="title-field">
+                     <span className="post-author">
+                       Current User
+                     </span>
                      <textarea className="title-input"
                                type="text"
-                               placeholder="Title"
+                               placeholder="Quote"
                                value={ this.state.title }
                                onChange={ this.update('title') } />
 
@@ -115,7 +111,7 @@ class TextForm extends React.Component {
                    <div className="post-body">
                      <textarea className="body-input"
                        type="text"
-                       placeholder="Your text here"
+                       placeholder="Source"
                        value={ this.state.body }
                        onChange={ this.update('body') } />
                    </div>
@@ -140,6 +136,4 @@ class TextForm extends React.Component {
   }
 }
 
-
-
-export default TextForm;
+export default QuoteForm;

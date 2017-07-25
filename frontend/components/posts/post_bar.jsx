@@ -1,7 +1,13 @@
 import React from 'react';
 
 // import each form type here
-import TextForm from './text_form';
+import TextFormContainer from './text_form_container';
+// import PhotoForm from './photo_form';
+import QuoteForm from './quote_form';
+import LinkForm from './link_form';
+// import AudioForm from './audio_form';
+// import VideoForm from './video_form';
+
 
 
 class PostBar extends React.Component {
@@ -16,7 +22,8 @@ class PostBar extends React.Component {
       <div className="post-bar">
         <img className="user-avatar" src={ this.props.currentUser.avatar_url } />
         <div className="post-form-links">
-          <TextForm />
+          <TextFormContainer />
+          <QuoteForm />
         </div>
       </div>
     );
@@ -26,11 +33,4 @@ class PostBar extends React.Component {
 export default PostBar;
 
 
-
-
-
-// <PhotoForm />
-// <QuoteForm />
-// <LinkForm />
-// <AudioForm />
-// <VideoForm />
+//inside bar : createPost={this.props.createPost}

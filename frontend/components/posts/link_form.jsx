@@ -1,9 +1,5 @@
 import React from 'react';
 import Modal from 'react-modal';
-import { withRouter } from 'react-router-dom';
-
-// import PostBarContainer from './post_bar_container';
-
 
 const formStyles = {
   overlay : {
@@ -18,7 +14,7 @@ const formStyles = {
 
   content : {
     position        : 'fixed',
-    height          : '300px',
+    height          : '230px',
     width           : '540px',
     top             : '20%',
     left            : '20%',
@@ -29,7 +25,7 @@ const formStyles = {
   }
 };
 
-class TextForm extends React.Component {
+class LinkForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -38,7 +34,7 @@ class TextForm extends React.Component {
       title: '',
       body: '',
       url: '',
-      post_type: 'text'
+      post_type: 'link'
     };
 
     this.openModal = this.openModal.bind(this);
@@ -48,7 +44,7 @@ class TextForm extends React.Component {
 
   update(property) {
     return e => this.setState({
-      [property]: e.currentTarget.value,
+      [property]: e.currentTarget.value
     });
   }
 
@@ -74,7 +70,7 @@ class TextForm extends React.Component {
       title: this.state.title,
       body: this.state.body,
       url: this.state.url,
-      post_type: 'text'
+      post_type: 'link'
     };
 
     this.props.createPost(post)
@@ -86,11 +82,11 @@ class TextForm extends React.Component {
       <div className="post-bar-content">
         <button className="post-bar-button" onClick={ this.openModal }>
           <label className="bar-button">
-            <div className="text-icon">
-              Aa
+            <div className="link-icon">
+              "Li"
             </div>
             <span className="new-post-label">
-              Text
+              Link
             </span>
           </label>
         </button>
@@ -100,25 +96,26 @@ class TextForm extends React.Component {
                style={ formStyles }
                onRequestClose={ this.closeModal } >
                <div className="new-post-form">
-                 <span className="post-author">
-                   { this.props.currentUser.username }
-                 </span>
                  <div className="post-form">
-                   <div className="title-field">
-                     <textarea className="title-input"
-                               type="text"
-                               placeholder="Title"
-                               value={ this.state.title }
-                               onChange={ this.update('title') } />
-
-                   </div>
                    <div className="post-body">
                      <textarea className="body-input"
                        type="text"
-                       placeholder="Your text here"
-                       value={ this.state.body }
-                       onChange={ this.update('body') } />
+                       placeholder="Type or paste URL here"
+                       value={ this.state.url }
+                       onChange={ this.update('url') } />
                    </div>
+                   <div className="title-field">
+                     <span className="post-author">
+                       { this.props.currentUser.username }
+                     </span>
+                     <textarea className="title-input"
+                       type="text"
+                       placeholder="Describe link here"
+                       value={ this.state.title }
+                       onChange={ this.update('title') } />
+
+                   </div>
+
                    <div className="submit-form">
                      <div className="modal-button">
                        <button className="form-button"
@@ -127,7 +124,7 @@ class TextForm extends React.Component {
                        </button>
                        <button className="post-submit-button"
                                onClick={ this.handleSubmit }
-                               disabled={ !this.state.title && !this.state.body } >
+                               disabled={ !this.state.title && !this.state.url } >
                          Post
                        </button>
                      </div>
@@ -140,6 +137,4 @@ class TextForm extends React.Component {
   }
 }
 
-
-
-export default TextForm;
+export default LinkForm;
