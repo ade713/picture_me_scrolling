@@ -1,0 +1,24 @@
+div.modal-button {
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    border-radius: 3px;
+    width: 60px;
+    height: 30px;
+    text-align: center;
+    color: white;
+  }
+
+  .form-button {
+    background-color: darkgrey;
+  }
+
+  .post-submit-button {
+    background-color: black;
+  }
+
+  .post-submit-button:disabled {
+    background-color: lightslategrey;
+  }
+}

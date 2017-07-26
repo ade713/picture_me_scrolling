@@ -1,29 +1,8 @@
 import React from 'react';
 import Modal from 'react-modal';
 
-const formStyles = {
-  overlay : {
-    position        : 'fixed',
-    top             : 0,
-    left            : 0,
-    right           : 0,
-    bottom          : 0,
-    backgroundColor : 'rgba(211, 211, 211, 0.75)',
-    zIndex          : 10,
-  },
+import formStyles from './modal_style';
 
-  content : {
-    position        : 'fixed',
-    minheight       : '300px',
-    width           : '540px',
-    top             : '20%',
-    left            : '20%',
-    padding         : '20px',
-    border          : '1px solid #C0C0C0',
-    borderRadius    : '4px',
-    zIndex          : 11,
-  }
-};
 
 class PhotoForm extends React.Component {
   constructor(props) {
@@ -117,6 +96,7 @@ class PhotoForm extends React.Component {
                      <span className="post-author">
                        { this.props.currentUser.username }
                      </span>
+                     
                      <input className="media-input"
                             type="file"
                             accept="image/*"
