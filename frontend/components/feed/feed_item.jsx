@@ -4,7 +4,34 @@ import { withRouter } from 'react-router';
 class FeedItem extends React.Component {
   constructor(props) {
     super(props);
+
+
   }
+
+  audio() {
+
+  }
+
+  link() {
+
+  }
+
+  photo() {
+
+  }
+
+  quote() {
+
+  }
+
+  text() {
+
+  }
+
+  video() {
+
+  }
+
 
   render() {
     const { post, deletePost, currentUser } = this.props;

@@ -21,6 +21,7 @@ export const createPost = post => {
 };
 
 export const createMediaPost = post => {
+  console.log(post);
   return $.ajax({
     method: 'POST',
     url: 'api/posts',

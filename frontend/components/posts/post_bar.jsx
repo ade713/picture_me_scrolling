@@ -21,12 +21,24 @@ class PostBar extends React.Component {
       <div className="post-bar">
         <img className="user-avatar" src={ this.props.currentUser.avatar_url } />
         <div className="post-form-links">
-          <TextFormContainer />
-          <PhotoFormContainer />
-          <QuoteFormContainer />
-          <LinkFormContainer />
-          <AudioFormContainer />
-          <VideoFormContainer />
+          <div className="bar-form-button">
+            <TextFormContainer />
+          </div>
+          <div className="bar-form-button">
+            <QuoteFormContainer />
+          </div>
+          <div className="bar-form-button">
+            <PhotoFormContainer />
+          </div>
+          <div className="bar-form-button">
+            <LinkFormContainer />
+          </div>
+          <div className="bar-form-button">
+            <AudioFormContainer />
+          </div>
+          <div className="bar-form-button">
+            <VideoFormContainer />
+          </div>
         </div>
       </div>
     );

@@ -123,7 +123,7 @@ class AudioForm extends React.Component {
                    <div className="title-field">
                      <textarea className="title-input"
                                type="text"
-                               placeholder="Add caption here"
+                               placeholder="Add Audio/Song caption here"
                                value={ this.state.title }
                                onChange={ this.update('title') } />
                    </div>

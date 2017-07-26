@@ -96,18 +96,18 @@ class LinkForm extends React.Component {
                style={ formStyles }
                onRequestClose={ this.closeModal } >
                <div className="new-post-form">
+                 <span className="post-author">
+                   { this.props.currentUser.username }
+                 </span>
                  <div className="post-form">
                    <div className="post-body">
                      <textarea className="body-input"
                        type="text"
-                       placeholder="Type or paste URL here"
+                       placeholder="Type or paste Link URL here"
                        value={ this.state.url }
                        onChange={ this.update('url') } />
                    </div>
                    <div className="title-field">
-                     <span className="post-author">
-                       { this.props.currentUser.username }
-                     </span>
                      <textarea className="title-input"
                        type="text"
                        placeholder="Describe link here"

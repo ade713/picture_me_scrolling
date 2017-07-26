@@ -124,7 +124,7 @@ class VideoForm extends React.Component {
                    <div className="title-field">
                      <textarea className="title-input"
                                type="text"
-                               placeholder="Add caption here"
+                               placeholder="Add Video caption here"
                                value={ this.state.title }
                                onChange={ this.update('title') } />
                    </div>
