@@ -37,7 +37,7 @@ class PostBar extends React.Component {
             <AudioFormContainer />
           </div>
           <div className="bar-form-button">
-            <VideoFormContainer />
+            <div className="last-bfb"><VideoFormContainer /></div>
           </div>
         </div>
       </div>

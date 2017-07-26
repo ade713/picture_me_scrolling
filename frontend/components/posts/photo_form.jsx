@@ -62,7 +62,8 @@ class PhotoForm extends React.Component {
       title: '',
       body: '',
       url: '',
-      image: ''
+      imageFile: null,
+      imageUrl: null
     });
   }
 
@@ -71,8 +72,8 @@ class PhotoForm extends React.Component {
     let file = e.currentTarget.files[0];
     reader.onloadend = function() {
       this.setState({
-        url: reader.result,
-        image: file
+        imageUrl: reader.result,
+        imageFile: file
       });
     }.bind(this);
 
@@ -86,7 +87,8 @@ class PhotoForm extends React.Component {
     formData.append('post[url]', this.state.url);
     formData.append('post[title]', this.state.title);
     formData.append('post[post_type]', 'photo');
-    formData.append('post[image]', this.state.image);
+    formData.append('post[body]', this.state.body);
+    formData.append('post[image]', this.state.imageFile);
     this.props.createMediaPost(formData)
       .then(this.closeModal());
   }
@@ -120,6 +122,7 @@ class PhotoForm extends React.Component {
                             accept="image/*"
                             onChange={ this.handleMedia } />
                    </div>
+
                    <div className="title-field">
                      <textarea className="title-input"
                                type="text"
@@ -128,9 +131,11 @@ class PhotoForm extends React.Component {
                                onChange={ this.update('title') } />
                    </div>
 
+                   <img src={ this.state.imageUrl } />
+
                    <div className="submit-form">
                      <div className="modal-button">
-                       <button className="form-button"
+                       <button className="close-form-button"
                                onClick={ this.closeModal }>
                                Close
                        </button>

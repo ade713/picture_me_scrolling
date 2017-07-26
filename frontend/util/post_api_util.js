@@ -20,12 +20,14 @@ export const createPost = post => {
   });
 };
 
-export const createMediaPost = post => {
-  console.log(post);
+export const createMediaPost = formData => {
+  console.log(formData);
   return $.ajax({
     method: 'POST',
     url: 'api/posts',
-    data: { post },
+    contentType: false,
+    processData: false,
+    data: formData
   });
 };
 

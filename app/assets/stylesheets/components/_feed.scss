@@ -1,0 +1,12 @@
+div.feed-posts {
+  margin-left: 20%;
+}
+
+li.feed-item {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+  min-height: 140px;
+  border: 1px solid black;
+  border-radius: 3px;
+}

@@ -39,13 +39,24 @@ class FeedItem extends React.Component {
     return (
       <li className="feed-item">
         <div className="post-user">
-          { post.author }
+          { post.author_id }
         </div>
+
         <div>
           { post.title }
           <br />
           { post.body }
+          <br />
+
         </div>
+
+        <img className="post-upload"
+          src={ post.image_url } />
+
+        <button className="delete-post-btn"
+                onClick={ () => deletePost(post) } >
+          <i className="fa fa-trash fa-lg" aria-hidden="true"></i>
+        </button>
       </li>
     );
   }

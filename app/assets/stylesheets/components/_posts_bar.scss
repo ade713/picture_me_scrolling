@@ -2,14 +2,14 @@ div.post-bar {
   display: flex;
   flex-direction: row;
   border-radius: 3px;
-  width: 540px;
+  width: 620px;
   height: 100px;
-  margin-left: 15%;
+  margin-top: 30px;
 }
 
 img.user-avatar {
   display: flex;
-  margin-right: 15px;
+  margin-right: 16px;
   width: 64px;
   height: 64px;
 }
@@ -17,4 +17,15 @@ img.user-avatar {
 div.post-form-links {
   display: flex;
   flex-direction: row
+}
+
+div.last-bfb {
+  border: none;
+}
+
+button.post-bar-button {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  border-right: 1px solid black;
 }
