@@ -5,6 +5,7 @@ div.post-bar {
   width: 620px;
   height: 100px;
   margin-top: 30px;
+  font-family: 'Muli', sans-serif;
 }
 
 img.user-avatar {
@@ -19,13 +20,42 @@ div.post-form-links {
   flex-direction: row
 }
 
-div.last-bfb {
-  border: none;
+div.post-form-links:last-child {
+  border-right: 0px;
 }
+
 
 button.post-bar-button {
   display: flex;
   justify-content: center;
   align-content: center;
+}
+
+div.bar-form-button {
+  display: flex;
+  justify-content: center;
+  align-content: center;
   border-right: 1px solid black;
+}
+
+div.post-bar-content {
+  display: flex;
+  justify-content: center;
+  width: 90px;
+}
+
+div.post-bar-content:hover {
+  cursor: pointer;
+  transform: translateY(-7px);
+}
+
+span.new-post-label {
+  width: 90px;
+  display: flex;
+  justify-content: center;
+}
+
+div.button-icon {
+  display: flex;
+  justify-content: center;
 }

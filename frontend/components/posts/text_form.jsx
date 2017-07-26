@@ -86,8 +86,8 @@ class TextForm extends React.Component {
       <div className="post-bar-content">
         <button className="post-bar-button" onClick={ this.openModal }>
           <label className="bar-button">
-            <div className="text-icon">
-              Aa
+            <div className="button-icon">
+              <i className="fa fa-font fa-3x" aria-hidden="true"></i>
             </div>
             <span className="new-post-label">
               Text

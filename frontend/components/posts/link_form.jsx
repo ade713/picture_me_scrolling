@@ -82,8 +82,8 @@ class LinkForm extends React.Component {
       <div className="post-bar-content">
         <button className="post-bar-button" onClick={ this.openModal }>
           <label className="bar-button">
-            <div className="link-icon">
-              "Li"
+            <div className="button-icon">
+              <i className="fa fa-link fa-3x" aria-hidden="true"></i>
             </div>
             <span className="new-post-label">
               Link

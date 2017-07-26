@@ -98,8 +98,8 @@ class PhotoForm extends React.Component {
       <div className="post-bar-content">
         <button className="post-bar-button" onClick={ this.openModal }>
           <label className="bar-button">
-            <div className="photo-icon">
-              "Ph"
+            <div className="button-icon">
+              <i className="fa fa-camera fa-3x" aria-hidden="true"></i>
             </div>
             <span className="new-post-label">
               Photo
@@ -141,7 +141,7 @@ class PhotoForm extends React.Component {
                        </button>
                        <button className="post-submit-button"
                                onClick={ this.handleSubmit }
-                               disabled={ !this.state.imageFile } >
+                               disabled={ !this.state.imageFile && !this.state.title } >
                          Post
                        </button>
                      </div>

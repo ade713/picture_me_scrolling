@@ -62,7 +62,8 @@ class VideoForm extends React.Component {
       title: '',
       body: '',
       url: '',
-      image: ''
+      imageFile: null,
+      imageUrl: null
     });
   }
 
@@ -71,8 +72,8 @@ class VideoForm extends React.Component {
     let file = e.currentTarget.files[0];
     reader.onloadend = function() {
       this.setState({
-        url: reader.result,
-        image: file
+        imageUrl: reader.result,
+        imageFile: file
       });
     }.bind(this);
 
@@ -86,7 +87,8 @@ class VideoForm extends React.Component {
     formData.append('post[url]', this.state.url);
     formData.append('post[title]', this.state.title);
     formData.append('post[post_type]', 'video');
-    formData.append('post[image]', 'image');
+    formData.append('post[body]', this.state.body);
+    formData.append('post[image]', this.state.imageFile);
     this.props.createMediaPost(formData)
       .then(this.closeModal());
   }
@@ -96,8 +98,8 @@ class VideoForm extends React.Component {
       <div className="post-bar-content">
         <button className="post-bar-button" onClick={ this.openModal }>
           <label className="bar-button">
-            <div className="photo-icon">
-              "Vi"
+            <div className="button-icon">
+              <i className="fa fa-video-camera fa-3x" aria-hidden="true"></i>
             </div>
             <span className="new-post-label">
               Video
@@ -129,6 +131,8 @@ class VideoForm extends React.Component {
                                onChange={ this.update('title') } />
                    </div>
 
+                   <img src={ this.state.imageUrl } />
+
                    <div className="submit-form">
                      <div className="modal-button">
                        <button className="form-button"
@@ -137,7 +141,7 @@ class VideoForm extends React.Component {
                        </button>
                        <button className="post-submit-button"
                                onClick={ this.handleSubmit }
-                               disabled={ !this.state.url } >
+                               disabled={ !this.state.imageFile && !this.state.title } >
                          Post
                        </button>
                      </div>

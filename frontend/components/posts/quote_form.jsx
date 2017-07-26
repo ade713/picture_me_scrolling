@@ -82,8 +82,8 @@ class QuoteForm extends React.Component {
       <div className="post-bar-content">
         <button className="post-bar-button" onClick={ this.openModal }>
           <label className="bar-button">
-            <div className="quote-icon">
-              "Qu"
+            <div className="button-icon">
+              <i className="fa fa-quote-left fa-3x" aria-hidden="true"></i>
             </div>
             <span className="new-post-label">
               Quote
