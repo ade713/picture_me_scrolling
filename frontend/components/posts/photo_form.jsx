@@ -14,7 +14,7 @@ const formStyles = {
 
   content : {
     position        : 'fixed',
-    height          : '300px',
+    minheight       : '300px',
     width           : '540px',
     top             : '20%',
     left            : '20%',
@@ -141,7 +141,7 @@ class PhotoForm extends React.Component {
                        </button>
                        <button className="post-submit-button"
                                onClick={ this.handleSubmit }
-                               disabled={ !this.state.url } >
+                               disabled={ !this.state.imageFile } >
                          Post
                        </button>
                      </div>
