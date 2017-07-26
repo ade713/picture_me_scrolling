@@ -21,7 +21,7 @@ class Feed extends React.Component {
 
     return (
       <div className="feed-posts">
-        <div className="post-bar">
+        <div className="new-post-container">
           <PostBarContainer />
         </div>
         <br />
