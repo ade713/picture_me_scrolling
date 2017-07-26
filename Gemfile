@@ -33,6 +33,8 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'pry-rails'
 gem 'annotate'
 
+gem 'font-awesome-sass'
+
 gem 'paperclip', '~> 5.0.0.beta1'
 gem 'aws-sdk', '~> 2.3.0'
 
