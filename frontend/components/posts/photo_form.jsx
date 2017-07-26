@@ -89,6 +89,7 @@ class PhotoForm extends React.Component {
         <Modal isOpen={ this.state.showModal }
                contentLabel="Example Modal"
                style={ formStyles }
+               shouldCloseOnOverlayClick={ false }
                onRequestClose={ this.closeModal } >
                <div className="new-post-form">
                  <div className="post-form">
@@ -96,7 +97,7 @@ class PhotoForm extends React.Component {
                      <span className="post-author">
                        { this.props.currentUser.username }
                      </span>
-                     
+
                      <input className="media-input"
                             type="file"
                             accept="image/*"

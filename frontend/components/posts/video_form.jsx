@@ -89,6 +89,7 @@ class VideoForm extends React.Component {
         <Modal isOpen={ this.state.showModal }
                contentLabel="Example Modal"
                style={ formStyles }
+               shouldCloseOnOverlayClick={ false }
                onRequestClose={ this.closeModal } >
                <div className="new-post-form">
                  <span className="post-author">
@@ -110,7 +111,9 @@ class VideoForm extends React.Component {
                                onChange={ this.update('title') } />
                    </div>
 
-                   <img src={ this.state.imageUrl } />
+                   <video width="540" height="240" controls>
+                     <source src={ this.state.imageUrl } type="video/*" />
+                   </video>
 
                    <div className="submit-form">
                      <div className="modal-button">

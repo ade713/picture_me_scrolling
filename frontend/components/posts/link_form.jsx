@@ -73,6 +73,7 @@ class LinkForm extends React.Component {
         <Modal isOpen={ this.state.showModal }
                contentLabel="Example Modal"
                style={ formStyles }
+               shouldCloseOnOverlayClick={ false }
                onRequestClose={ this.closeModal } >
                <div className="new-post-form">
                  <span className="post-author">
@@ -89,7 +90,7 @@ class LinkForm extends React.Component {
                    <div className="title-field">
                      <textarea className="title-input"
                        type="text"
-                       placeholder="Describe link here"
+                       placeholder="Name link here"
                        value={ this.state.title }
                        onChange={ this.update('title') } />
 

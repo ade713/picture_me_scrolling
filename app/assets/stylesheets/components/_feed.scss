@@ -2,6 +2,14 @@ div.feed-posts {
   margin-left: 20%;
 }
 
+div.post-header {
+  width: 500px;
+  height: 45px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-bottom: 15px;
+}
+
 li.feed-item {
   display: flex;
   flex-direction: column;
@@ -15,10 +23,12 @@ li.feed-item {
 
 div.post-footer {
   display: flex;
-  width: 540px;
+  width: 500px;
   height: 45px;
   justify-content: flex-end;
-  margin-right: 8px;
+  margin-right: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 div.post-options {

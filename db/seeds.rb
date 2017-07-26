@@ -22,4 +22,4 @@ gameofthrones = User.create(username: 'GameOT', password: 'pass123')
 
 rick = User.create(username: 'Rick', password: 'pass123')
 morty = User.create(username: 'Morty', password: 'pass123')
-summer = User.create(username: 'Urien', password: 'pass123')
+summer = User.create(username: 'Summer', password: 'pass123')
