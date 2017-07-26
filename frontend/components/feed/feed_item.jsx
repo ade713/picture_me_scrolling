@@ -68,7 +68,7 @@ class FeedItem extends React.Component {
           </div>
 
           <div className="post-link">
-            <a href={ this.props.post.url }>
+            <a href={ this.props.post.url } target="_blank">
               { this.props.post.title }
             </a>
           </div>
