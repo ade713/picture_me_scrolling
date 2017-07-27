@@ -33,7 +33,7 @@ class User < ApplicationRecord
     foreign_key: :follower_id,
     class_name: "Follow"
 
-  belongs_to :followee,
+  has_many :followees,
     primary_key: :id,
     foreign_key: :followee_id,
     class_name: "Follow"

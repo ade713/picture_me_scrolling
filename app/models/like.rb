@@ -11,6 +11,7 @@
 
 class Like < ApplicationRecord
   validates :user_id, :post_id, presence: true
+  validates :
 
   belongs_to :user,
     primary_key: :id,
