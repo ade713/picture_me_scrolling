@@ -41,7 +41,7 @@ class User < ApplicationRecord
 
   has_attached_file :avatar,
                     styles: { thumb: "64x64>" },
-                    default_url: "b-a-w_avatar.png"
+                    default_url: "b-a-w_happy_avatar-icon.png"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
   validates_attachment_size :avatar, in: 0..2.megabyte
 

@@ -8,7 +8,7 @@
 Post.destroy_all
 User.destroy_all
 
-guest_user1 = User.create(username: 'PicMeS Guest', password: '1Welcome2To3PicMeS')
+# guest_user1 = User.create(username: 'PicMeS Guest', password: '1Welcome2To3PicMeS')
 
 akuma = User.create(username: 'DarkHadouMaster', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/users/avatars/akuma_ssf2.jpg')
 ryu = User.create(username: 'Ryu', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/users/avatars/ryu_sf.gif')
