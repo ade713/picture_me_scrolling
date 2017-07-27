@@ -23,7 +23,7 @@ column name | data type | details
 ------------|-----------|--------
 id          | integer   | not null, primary key
 follower_id | integer   | not null, foreign key, indexed
-followed_id | integer   | not null, foreign key, indexed
+followee_id | integer   | not null, foreign key, indexed
 
 ## likes
 column name | data type | details
