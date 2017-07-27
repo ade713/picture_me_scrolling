@@ -5,13 +5,14 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-
+Post.destroy_all
+User.destroy_all
 
 guest_user1 = User.create(username: 'PicMeS Guest', password: '1Welcome2To3PicMeS')
 
 akuma = User.create(username: 'DarkHadouMaster', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/users/avatars/akuma_ssf2.jpg')
 ryu = User.create(username: 'Ryu', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/users/avatars/ryu_sf.gif')
-guile= User.create(username: 'Guile', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/users/avatars/guile_avatar.png')
+guile = User.create(username: 'Guile', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/users/avatars/guile_avatar.png')
 bobsburger = User.create(username: 'BurgersByBob', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/users/avatars/bobs_burgers_avatar.jpg')
 starwars = User.create(username: 'eps4thru6', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/users/avatars/storm_trooper_avatar.jpg')
 rick = User.create(username: 'WorldsSmartestGenius', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/users/avatars/tiny_rick_avatar.jpg')
