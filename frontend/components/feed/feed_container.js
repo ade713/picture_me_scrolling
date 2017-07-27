@@ -2,12 +2,14 @@ import { connect } from 'react-redux';
 
 import Feed from './feed';
 import { selectAllPosts } from '../../reducers/selectors';
+import { selectUsers } from '../../reducers/selectors';
 import { requestAllPosts,
          deletePost } from '../../actions/posts_actions';
+import { requestUsers } from '../../actions/users_actions';
 
 const mapStateToProps = state => ({
   posts: selectAllPosts(state),
-  currentUser: state.session.currentUser
+  currentUser: state.session.currentUser,
 });
 
 const mapDispatchToProps = dispatch => ({

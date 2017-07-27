@@ -14,9 +14,9 @@ class Feed extends React.Component {
   }
 
   render() {
-    const { posts, deletePost, currentUser } = this.props;
+    const { posts, deletePost, currentUser, users } = this.props;
     const feedItems = posts.map((post, index) =>
-      <FeedItem key={ post.id } deletePost={ deletePost } post= { post } currentUser={ currentUser } />
+      <FeedItem key={ post.id } deletePost={ deletePost } post={ post }  currentUser={ currentUser } />
     );
 
     return (
