@@ -45,3 +45,17 @@ export const deletePost = post => {
     url: `api/posts/${post.id}`
   });
 };
+
+export const createLike = like => {
+  return $.ajax({
+    method: 'POST',
+    url: 'api/follows'
+  });
+};
+
+export const deleteLike = id => {
+  return $.ajax({
+    method: 'DELETE',
+    url: 'api/follows/id'
+  });
+};

@@ -14,6 +14,7 @@ import { requestAllPosts,
          createMediaPost,
          updatePost,
          deletePost } from './actions/posts_actions';
+import { requestUsers } from './actions/users_actions';
 // import { selectPost,
 //          selectAllPosts } from './reducers/selectors';
 // import { fetchAllPosts,
@@ -48,6 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.updatePost = updatePost;
   window.deletePost = deletePost;
 
+  window.requestUsers = requestUsers;
 
   // window.fetchAllPosts = fetchAllPosts;
   // window.fetchPost = fetchPost;
