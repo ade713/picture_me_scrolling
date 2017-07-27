@@ -45,6 +45,8 @@ class User < ApplicationRecord
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
   validates_attachment_size :avatar, in: 0..2.megabyte
 
+
+
   attr_reader :password
 
   def password=(password)
