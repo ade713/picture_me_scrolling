@@ -1,0 +1,25 @@
+/* line 1, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_modal.scss */
+div.modal-button {
+  display: flex;
+  justify-content: space-between;
+}
+/* line 5, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_modal.scss */
+div.modal-button button {
+  border-radius: 3px;
+  width: 60px;
+  height: 30px;
+  text-align: center;
+  color: white;
+}
+/* line 13, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_modal.scss */
+div.modal-button .form-button {
+  background-color: darkgrey;
+}
+/* line 17, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_modal.scss */
+div.modal-button .post-submit-button {
+  background-color: black;
+}
+/* line 21, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_modal.scss */
+div.modal-button .post-submit-button:disabled {
+  background-color: lightslategrey;
+}

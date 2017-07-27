@@ -1,0 +1,21 @@
+/* line 1, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/base/layout.scss */
+html, body {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  position: relative;
+  overflow: auto;
+}
+
+/* line 12, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/base/layout.scss */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-content: center;
+  position: fixed;
+  height: 50px;
+  width: 100%;
+  font-family: 'Mogra', cursive;
+  font-size: 30px;
+  border-bottom: 1px solid black;
+}

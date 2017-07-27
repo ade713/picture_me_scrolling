@@ -13,6 +13,4 @@ class Api::LikesController < ApplicationController
     @like.destroy
     render json: "api/posts/show"
   end
-
-  private
 end

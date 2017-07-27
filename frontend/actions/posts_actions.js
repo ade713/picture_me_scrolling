@@ -5,6 +5,8 @@ export const RECEIVE_ALL_POSTS = 'RECEIVE_ALL_POSTS';
 export const RECEIVE_POST = 'RECEIVE_POST';
 export const REMOVE_POST = 'REMOVE_POST';
 export const EDIT_POST = 'EDIT_POST';
+export const RECEIVE_LIKE = 'RECEIVE_LIKE';
+export const REMOVE_LIKE = 'REMOVE_LIKE';
 
 export const receiveAllPosts = posts => ({
   type: RECEIVE_ALL_POSTS,
@@ -24,6 +26,16 @@ export const removePost = post => ({
 export const editPost = post => ({
   type: EDIT_POST,
   post
+});
+
+export const receiveLike = like => ({
+  type: RECEIVE_LIKE,
+  like
+});
+
+export const removeLike = like => ({
+  type: REMOVE_LIKE,
+  like
 });
 
 
@@ -85,4 +97,14 @@ export const deletePost = post => dispatch => {
       dispatch(Errors.receiveErrors(errors.responseJSON));
     }
   );
+};
+
+export const likePost = id => dispatch => {
+  return APIUtil.createLike(id)
+    .then(like => dispatch(receiveLike(like)));
+};
+
+export const unlikePost = id => dispatch => {
+  return APIUtil.deleteLike(id)
+    .then(like => dispatch(removeLike(like)));
 };

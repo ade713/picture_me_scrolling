@@ -1,0 +1,67 @@
+/* line 1, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_dashboard.scss */
+div.dash-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  font-family: 'Muli', sans-serif;
+}
+
+/* line 14, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_dashboard.scss */
+header.dash-nav {
+  display: flex;
+  flex: 1;
+  height: 50px;
+  border-bottom: 1px solid black;
+  opacity: 1;
+}
+
+/* line 22, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_dashboard.scss */
+div.dash-main {
+  display: flex;
+  flex: 15;
+  margin-top: 50px;
+  height: calc(100vh - 50px);
+}
+
+/* line 29, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_dashboard.scss */
+.dash-title {
+  display: flex;
+  align-self: center;
+  font-size: 25px;
+  padding-left: 1%;
+  width: auto;
+}
+
+/* line 37, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_dashboard.scss */
+button.dash-logout {
+  font-size: 25px;
+  text-align: center;
+  width: 100px;
+  padding-right: 1%;
+}
+
+/* line 44, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_dashboard.scss */
+button.dash-logout:hover {
+  color: #DE0F01;
+}
+
+/* line 48, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_dashboard.scss */
+div.dash-feed {
+  display: flex;
+  flex: 2.5;
+  border-right: 1px solid black;
+  overflow-y: scroll;
+}
+
+/* line 56, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_dashboard.scss */
+div.dash-right-column {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}

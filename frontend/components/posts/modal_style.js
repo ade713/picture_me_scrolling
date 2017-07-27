@@ -11,8 +11,8 @@ const formStyles = {
 
   content : {
     position        : 'fixed',
-    height          : '300px',
-    width           : '540px',
+    minHeight          : '300px',
+    minWidth           : '540px',
     top             : '20%',
     left            : '20%',
     padding         : '20px',

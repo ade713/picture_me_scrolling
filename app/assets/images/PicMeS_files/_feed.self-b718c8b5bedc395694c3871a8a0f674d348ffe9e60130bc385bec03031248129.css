@@ -1,7 +1,9 @@
+/* line 1, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_feed.scss */
 div.feed-posts {
   margin-left: 20%;
 }
 
+/* line 5, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_feed.scss */
 div.post-header {
   width: 500px;
   height: 30px;
@@ -11,21 +13,7 @@ div.post-header {
   padding-top: 15px;
 }
 
-div.feed-post {
-  display: flex;
-  flex-direction: row;
-  width: 621px;
-  border-radius: 3px;
-}
-
-img.author-avatar {
-  display: flex;
-  margin-right: 16px;
-  width: 64px;
-  height: 64px;
-  border-radius: 3px;
-}
-
+/* line 14, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_feed.scss */
 li.feed-item {
   display: flex;
   flex-direction: column;
@@ -37,6 +25,7 @@ li.feed-item {
   width: 540px;
 }
 
+/* line 25, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_feed.scss */
 div.post-footer {
   display: flex;
   width: 500px;
@@ -47,6 +36,7 @@ div.post-footer {
   padding-right: 20px;
 }
 
+/* line 35, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_feed.scss */
 div.post-options {
   display: flex;
   justify-content: space-around;
@@ -54,6 +44,7 @@ div.post-options {
   margin-left: 15px;
 }
 
+/* line 42, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_feed.scss */
 #edit-btn-icon {
   margin-left: 13px;
   margin-right: 13px;

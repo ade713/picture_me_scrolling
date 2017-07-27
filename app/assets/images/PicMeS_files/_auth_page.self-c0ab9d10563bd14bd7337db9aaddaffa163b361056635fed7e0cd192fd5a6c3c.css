@@ -1,0 +1,232 @@
+/* line 1, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+div.auth-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* line 13, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+.auth-main {
+  display: flex;
+  flex-direction: column;
+  flex: 18;
+}
+
+/* line 19, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+.auth-navbar {
+  display: flex;
+  flex: 1;
+  justify-content: space-between;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid black;
+}
+
+/* line 27, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+.auth-header {
+  display: flex;
+  font-family: 'Mogra', cursive;
+  font-size: 30px;
+  margin-left: 1%;
+  padding-top: 7px;
+}
+
+/* line 35, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+.login-signup {
+  display: flex;
+  justify-content: flex-end;
+  font-family: 'Mogra', cursive;
+  font-size: 28px;
+  color: black;
+  margin-right: 1%;
+  padding-top: 7px;
+}
+
+/* line 45, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+.login-signup a:link {
+  text-decoration: none;
+  color: black;
+}
+
+/* line 50, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+.login-signup a:hover {
+  text-decoration: none;
+  color: #CE0063;
+}
+
+/* line 57, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+div.auth-body {
+  display: flex;
+  flex: 14;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 50px;
+  padding-top: 17%;
+  padding-left: 3%;
+  padding-right: 4%;
+  background-image: url(https://images.pexels.com/photos/494091/pexels-photo-494091.jpeg?w=1260&h=750&auto=compress&cs=tinysrgb);
+  background-size: cover, auto;
+  background-repeat: no-repeat;
+}
+
+/* line 71, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+section.auth-body-title {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Mogra', cursive;
+  font-size: 55px;
+}
+
+/* line 79, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+h1.auth-title-top {
+  color: black;
+  margin-top: 8%;
+}
+
+/* line 84, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+h1.auth-title-mid {
+  color: black;
+  margin-left: 20%;
+  margin-top: 15%;
+}
+
+/* line 90, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+h1.auth-title-btm {
+  color: black;
+  margin-left: 5%;
+  margin-top: 15%;
+}
+
+/* line 96, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+.auth-form-box {
+  display: flex;
+  justify-content: center, flex-end;
+  flex-direction: column;
+  font-family: 'Mogra', cursive;
+  width: 200px;
+  text-align: center;
+}
+
+/* line 105, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+h1.auth-form-header {
+  font-size: 25px;
+}
+
+/* line 109, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+input.auth-login-input {
+  text-align: center;
+  border-bottom: 2px solid black;
+  width: 88%;
+}
+
+/* line 115, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+input.auth-login-input::placeholder {
+  font-style: italic;
+  color: lightgrey;
+}
+
+/* line 120, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+input[type=text], textarea {
+  -webkit-transition: all 0.30s ease-in-out;
+  -moz-transition: all 0.30s ease-in-out;
+  -ms-transition: all 0.30s ease-in-out;
+  -o-transition: all 0.30s ease-in-out;
+  outline: none;
+  padding: 5px 3px 3px 3px;
+  margin: 5px 1px 3px 0px;
+  border-bottom: 2px solid black;
+}
+
+/* line 131, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+input[type=text]:focus, input[type=password]:focus, textarea:focus {
+  box-shadow: 0 0 5px #121e33;
+  padding: 5px 3px 3px 3px;
+  margin: 5px 1px 3px 0px;
+  border: 1px solid #121e33;
+}
+
+/* line 138, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+.auth-submit {
+  display: flex;
+  font-family: 'Mogra', cursive;
+  font-size: 20px;
+  color: black;
+  padding: 5px;
+  text-align: center;
+  align-self: center;
+  border: 2px solid black;
+}
+
+/* line 149, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+.auth-submit:hover {
+  font-size: 25px;
+  text-shadow: 3px grey;
+  text-align: center;
+  border-bottom: 2px solid black;
+  box-shadow: 0 0 6px black;
+}
+
+/* line 157, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+.guest-login {
+  display: flex;
+  font-size: 20px;
+  padding: 5px;
+  border: 2px solid black;
+  text-align: center;
+  align-self: center;
+  border: 2px solid black;
+  margin-top: 15px;
+}
+
+/* line 168, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+.guest-login:hover {
+  font-size: 25px;
+  text-shadow: 5px grey;
+  border-bottom: 2px solid black;
+  box-shadow: 0 0 6px black;
+}
+
+/* line 175, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+strong.auth-errors {
+  color: red;
+}
+
+/* line 179, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+footer.auth-footer {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  width: 100%;
+  border-top: 1px solid black;
+}
+
+/* line 187, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+footer i {
+  display: flex;
+  justify-content: flex-end;
+  padding: 5px;
+  margin-top: 12%;
+}
+
+/* line 194, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+.dash-nav {
+  display: flex;
+  justify-content: space-between;
+  background-color: #FFFFFF;
+  height: 40px;
+  opacity: .8;
+  font-family: 'Mogra', cursive;
+  color: black;
+}
+
+/* line 204, /Users/adefarquhar/app_academy/full_stack_project/fsp/app/assets/stylesheets/components/_auth_page.scss */
+.dash-title {
+  display: flex;
+  font-family: 'Mogra', cursive;
+  font-size: 25px;
+}

@@ -46,16 +46,16 @@ export const deletePost = post => {
   });
 };
 
-export const createLike = like => {
+export const createLike = id => {
   return $.ajax({
     method: 'POST',
-    url: 'api/follows'
+    url: 'api/posts/id/like'
   });
 };
 
 export const deleteLike = id => {
   return $.ajax({
     method: 'DELETE',
-    url: 'api/follows/id'
+    url: 'api/posts/id/like'
   });
 };

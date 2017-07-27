@@ -3,7 +3,11 @@ import { merge } from 'lodash';
 import { RECEIVE_ALL_POSTS,
          RECEIVE_POST,
          EDIT_POST,
-         REMOVE_POST } from '../actions/posts_actions';
+         REMOVE_POST,
+         RECEIVE_LIKE,
+         REMOVE_LIKE } from '../actions/posts_actions';
+
+// import
 
 
 const PostsReducer = (state = {}, action) => {
