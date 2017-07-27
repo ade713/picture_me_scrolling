@@ -59,7 +59,7 @@ class FeedItem extends React.Component {
   link() {
     return (
       <li className="feed-item">
-        <div className="post-photo">
+        <div className="post-link">
 
           <div className="post-header">
             <div className="post-user">
@@ -67,8 +67,8 @@ class FeedItem extends React.Component {
             </div>
           </div>
 
-          <div className="post-link">
-            <a href={ this.props.post.url } target="_blank">
+          <div className="post-link-main">
+            <a className="posted-link" href={ this.props.post.url } target="_blank">
               { this.props.post.title }
             </a>
           </div>
@@ -235,6 +235,10 @@ class FeedItem extends React.Component {
             <video width="540" height="440" controls>
               <source src={ this.props.post.image_url } />
             </video>
+          </div>
+
+          <div className="post-caption">
+            { this.props.post.title }
           </div>
 
           <div className="post-footer">

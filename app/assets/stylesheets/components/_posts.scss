@@ -1,0 +1,72 @@
+div.post-link-main {
+  text-align: center;
+  font-size: 20px;
+  min-height: 50px;
+
+  a.posted-link {
+    text-decoration: underline;
+  }
+
+  a.posted-link:hover {
+    text-decoration: none;
+    text-shadow: 4px 4px 8px lightslategrey;
+    font-size: 25px;
+  }
+}
+
+div.post-audio {
+  min-height: 249px
+}
+
+div.post-photo {
+  min-height: 430px;
+}
+
+div.post-video {
+  min-height: 569px;
+}
+
+div.post-quote {
+  min-height: 175px;
+
+  .post-content {
+    width: 500px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .quote {
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    font-size: 36px;
+  }
+
+  .source {
+    font-size: 16px
+  }
+}
+
+div.post-caption {
+  width: 500;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+div.post-text {
+  min-height: 155px;
+
+  .post-content {
+    width: 500px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .post-title {
+    font-size: 36px;
+    line-height: 50px;
+  }
+
+  .post-body {
+    font-size: 16px;
+  }
+}

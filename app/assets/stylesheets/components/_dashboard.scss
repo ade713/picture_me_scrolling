@@ -6,8 +6,8 @@ div.dash-page {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   font-family: 'Muli', sans-serif;
 }
 
@@ -23,6 +23,7 @@ div.dash-main {
   display: flex;
   flex: 15;
   margin-top: 50px;
+  height: calc(100vh - 50px);
 }
 
 .dash-title {
@@ -48,7 +49,8 @@ div.dash-feed {
   display: flex;
   flex: 2.5;
   border-right: 1px solid black;
-  height: 100%;
+
+  overflow-y: scroll;
 }
 
 div.dash-right-column {

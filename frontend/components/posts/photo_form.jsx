@@ -116,7 +116,7 @@ class PhotoForm extends React.Component {
 
                    <div className="submit-form">
                      <div className="modal-button">
-                       <button className="close-form-button"
+                       <button className="form-button"
                                onClick={ this.closeModal }>
                                Close
                        </button>

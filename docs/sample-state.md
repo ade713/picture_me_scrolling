@@ -6,7 +6,7 @@
   },
 
   errors: [],
-  
+
   posts: {
     1: {
       title: "First Post",
@@ -29,6 +29,8 @@
       author_id: 2,
       tag_keys: [3]
   },
+
+  follows
 
   likes: {
     1: {
