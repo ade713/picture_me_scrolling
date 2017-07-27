@@ -28,9 +28,20 @@ class User < ApplicationRecord
     foreign_key: :author_id,
     class_name: "Post"
 
+  has_many :followers,
+    primary_key: :id,
+    foreign_key: :follower_id,
+    class_name: "Follow"
+
+  belongs_to :followee,
+    primary_key: :id,
+    foreign_key: :followee_id,
+    class_name: "Follow"
+
+
   has_attached_file :avatar,
                     styles: { thumb: "64x64>" },
-                    default_url: "orange_happy.png"
+                    default_url: "b-a-w_avatar.png"
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
   validates_attachment_size :avatar, in: 0..2.megabyte
 

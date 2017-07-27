@@ -25,6 +25,11 @@ class Post < ApplicationRecord
     foreign_key: :author_id,
     class_name: "User"
 
+  has_many :likes,
+    primary_key: :id,
+    foreign_key: :post_id,
+    class_name: "Like"
+
   has_attached_file :image, default_url: "orange_happy.png"
   validates_attachment_content_type :image,
     content_type: [/\Aimage\/.*\z/, 'audio/mp3', 'audio/mpeg', 'audio/wav', 'video/avi', 'video/mp4']
