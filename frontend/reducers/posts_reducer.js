@@ -32,6 +32,12 @@ const PostsReducer = (state = {}, action) => {
       post = action.post;
       delete nextState[post.id];
       return nextState;
+    case RECEIVE_LIKE:
+
+      return nextState;
+    case REMOVE_LIKE:
+
+      return nextState;
     default:
       return state;
   }

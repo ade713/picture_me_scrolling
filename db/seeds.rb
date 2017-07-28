@@ -26,9 +26,6 @@ fozzie = User.create!(username: 'FozzieBear', password: 'pass123', avatar: 'http
 miles = User.create!(username: 'CoffeeSpidey', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/miles_morales.jpg')
 silky = User.create!(username: 'SilkyJ02', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/silky_johnson1_avatar.jpg')
 dbz = User.create!(username: 'SonGohan', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/gohan_ssj2.jpg')
-
-
-
 Post.create!(author_id: starwars.id, title: "That moment when he tells you he's your daddy", post_type: "photo", image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/Darth+Vader+Father.jpg')
 Post.create!(author_id: miles.id, title: "With great power, comes great responsibilities", body: "Ben Parker", post_type: 'quote')
 Post.create!(author_id: silky.id, title: "I will be the player hater of the year again!", body: "No one can beat me!!!", post_type: 'text')
@@ -37,9 +34,9 @@ Post.create!(author_id: guile1.id, title: "Stepping back in the ring!", post_typ
 Post.create!(author_id: dbz.id, title: "Even MJ had the power insideh home", post_type: "photo", image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/mj_ssj.gif')
 Post.create!(author_id: jerome.id, title: "Jerome is king of da playas!", body: 'Silky never had a chance', post_type: 'text')
 Post.create!(author_id: akuma.id, title: "I am your worst nightmare... !", post_type: "photo", image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/akuma_dark.jpg')
-Post.create!(author_id: jerome.id, title: "My-start-the-day-right! music play ^_^", post_type: "audio", image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/Ultimate+Rejects+-+Full+Extreme+2017+Release+%5BHD%5D.mp3')
-Post.create!(author_id: luffy.id, title: "Brother of the year!!", post_type: "photo", image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/ace_fire.gif')
-Post.create!(author_id: jerome.id, title: "Steppin in mah phresh kix (watch yo mouf)", post_type: 'video', image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/posts/video/martin_jerome_white_shoes.mp4')
-Post.create!(author_id: kermit.id, title: "I'm interested in this phone", url: 'https://www.youtube.com/watch?v=l5nv86zjPro&t=19s', post_type: 'link')
+# Post.create!(author_id: jerome.id, title: "My-start-the-day-right! music play ^_^", post_type: "audio", image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/Ultimate+Rejects+-+Full+Extreme+2017+Release+%5BHD%5D.mp3')
+# Post.create!(author_id: luffy.id, title: "Brother of the year!!", post_type: "photo", image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/ace_fire.gif')
+# Post.create!(author_id: jerome.id, title: "Steppin in mah phresh kix (watch yo mouf)", post_type: 'video', image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/posts/video/martin_jerome_white_shoes.mp4')
+# Post.create!(author_id: kermit.id, title: "I'm interested in this phone", url: 'https://www.youtube.com/watch?v=l5nv86zjPro&t=19s', post_type: 'link')
 Post.create!(author_id: starks.id, title: "The cavalry is here... #Drogon", post_type: "photo", image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/drogon.gif')
 Post.create!(author_id: fozzie.id, title: "Picmes is AWESOME! =D #WakaWaka", body: 'Silky never had a chance', post_type: 'text')
