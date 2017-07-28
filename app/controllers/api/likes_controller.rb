@@ -3,14 +3,17 @@ class Api::LikesController < ApplicationController
     @like = Like.new
     @like.user_id = current_user.id
     @like.post_id = params[:post_id]
+    @post = @like.post
 
     @like.save!
-    render json: "api/posts/show"
+    render 'api/posts/show'
+    # @post #render single post, find association render
   end
 
   def destroy
     @like = current_user.likes.find_by(post_id: params[:post_id])
+    @post = @like.post
     @like.destroy
-    render json: "api/posts/show"
+    render "api/posts/show"
   end
 end

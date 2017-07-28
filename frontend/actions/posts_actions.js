@@ -28,15 +28,6 @@ export const editPost = post => ({
   post
 });
 
-export const receiveLike = like => ({
-  type: RECEIVE_LIKE,
-  like
-});
-
-export const removeLike = like => ({
-  type: REMOVE_LIKE,
-  like
-});
 
 
 export const requestAllPosts = () => dispatch => {
@@ -101,10 +92,10 @@ export const deletePost = post => dispatch => {
 
 export const likePost = id => dispatch => {
   return APIUtil.createLike(id)
-    .then(like => dispatch(receiveLike(like)));
+    .then(post => dispatch(receivePost(post)));
 };
 
 export const unlikePost = id => dispatch => {
   return APIUtil.deleteLike(id)
-    .then(like => dispatch(removeLike(like)));
+    .then(post => dispatch(receivePost(post)));
 };

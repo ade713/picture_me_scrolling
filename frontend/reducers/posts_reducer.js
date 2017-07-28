@@ -30,17 +30,6 @@ const PostsReducer = (state = {}, action) => {
     case REMOVE_POST:
       delete nextState[post.id];
       return nextState;
-    case RECEIVE_LIKE:
-      if (!state[like.post_id].likes.includes(like.user_id)) {
-        nextState[like.post_id].likes.push(like.user_id);
-      }
-      return nextState;
-    case REMOVE_LIKE:
-      if (state[like.post_id].likes.includes(like.user_id)) {
-        let likeIndex = nextState[like.post_id].likes.indexOf(like.user_id);
-        nextState[like.post_id].likes.splice(likeIndex, 1);
-      }
-      return nextState;
     default:
       return state;
   }

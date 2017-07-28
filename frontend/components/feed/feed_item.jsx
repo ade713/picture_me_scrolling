@@ -14,39 +14,39 @@ class FeedItem extends React.Component {
 
     this.switchLike = this.switchLike.bind(this);
     console.log(this.props.currentUser.id);
-    console.log(this.props.post.author_id);
+    console.log(this.props.post.likers);
   }
 
   switchLike() {
-    if (this.props.post.likes.includes(this.props.currentUser.id)) {
-      () => this.props.unlikePost(this.props.post.id);
+    if (this.props.post.liked) {
+      return () => this.props.unlikePost(this.props.post.id);
     } else {
-      () => this.props.likePost(this.props.post.id);
+      return () => this.props.likePost(this.props.post.id);
     }
   }
 
   likeButton() {
-    if (this.props.post.author_id === this.props.currentUser.id) {
-      if (this.props.post.likes.includes(this.props.currentUser.id)) {
+    if (this.props.post.author_id !== this.props.currentUser.id) {
+      if (this.props.post.liked) {
         return (
-          <button className="like-btn-on" onClick={ this.switchLike }>
+          <button className="like-btn-on" onClick={ this.switchLike() }>
             <i className="fa fa-heart fa-2x" aria-hidden="true"></i>
           </button>
         );
+      } else {
+        return (
+          <button className="like-btn-off" onClick={ this.switchLike() }>
+            <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i>
+          </button>
+        );
       }
-    } else {
-      return (
-        <button className="like-btn-off" onClick={ this.switchLike }>
-          <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i>
-        </button>
-      );
     }
   }
 
   likeCounter() {
     return (
       <div className="post-likes">
-        Likes: { this.props.post.likes.length }
+        Likes: { this.props.post.likes }
       </div>
     );
   }
