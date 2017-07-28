@@ -11,6 +11,7 @@
 
 class Like < ApplicationRecord
   validates :user_id, :post_id, presence: true
+  validates :post, uniqueness: { scope: :user }
 
   belongs_to :user,
     primary_key: :id,

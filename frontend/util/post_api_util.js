@@ -49,13 +49,13 @@ export const deletePost = post => {
 export const createLike = id => {
   return $.ajax({
     method: 'POST',
-    url: 'api/posts/id/like'
+    url: `api/posts/${id}/like`
   });
 };
 
 export const deleteLike = id => {
   return $.ajax({
     method: 'DELETE',
-    url: 'api/posts/id/like'
+    url: `api/posts/${id}/like`
   });
 };
