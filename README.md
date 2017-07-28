@@ -2,7 +2,17 @@
 
 Picture Me Scrolling, a Tumblr inspired clone, is a blogging site (that creates an outlet for users to share their views through a variety of mediums including text, audio and visual. A single page application built with Ruby on Rails and React/Redux, along with PostgreSQL.  PicMeS also lets the user experience the world through the experiences of others.
 
-insert cover page
+![homepage](/Users/adefarquhar/app_academy/full_stack_project/fsp/docs/picmes_home_page.jpeg)
+
+## Technology
+
+In addition to the aforementioned tech, this site was also developed using:
+
++ **Heroku** - for website hosting.
++ **Npm** - to install varying modules for front-end development.
++ **Paperclip** - file attachments to posts.
++ **Amazon Web Services** - to store uploaded data from users.
++ **Figaro** - used to secure API keys provided as security access to AWS
 
 ## Features
 
@@ -44,8 +54,9 @@ An image preview is displayed with use of the imageURL.
   }
   ```
 
-For image uploading, a FormData object 
+For image uploading, we append key/value pairs via the **append** method to a FormData object. This object is used to send data to the server using an AJAX request. this.state.imageFile holds the file of respective type. Also to note, the **post_type** info appending to the object is used to indicate the type of post being created. This info also aids with rendering posts on the feed since correct tags must be used to display each media type.
 
+![dashboard](/Users/adefarquhar/app_academy/full_stack_project/fsp/docs/dashboard_preview.jpeg)
 + Posts are presented on a Feed which also includes a blogger's avatar.
 
 
@@ -66,27 +77,3 @@ Users will be able to follow specific users whose posts will appear on their fee
 
 ### Tags
 One word descriptions of the post that will allow users to view all posts that have the same tag.
-
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
