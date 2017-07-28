@@ -33,7 +33,7 @@ Post.create!(author_id: starwars.id, title: "That moment when he tells you he's 
 Post.create!(author_id: miles.id, title: "With great power, comes great responsibilities", body: "Ben Parker", post_type: 'quote')
 Post.create!(author_id: silky.id, title: "I will be the player hater of the year again!", body: "No one can beat me!!!", post_type: 'text')
 Post.create!(author_id: starks.id, title: "Winter... Is... Here", post_type: 'text')
-Post.create!(author_id: guile.id, title: "Stepping back in the ring!", post_type: 'video', image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/guile+sfv+trailer.mp4')
+Post.create!(author_id: guile1.id, title: "Stepping back in the ring!", post_type: 'video', image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/guile+sfv+trailer.mp4')
 Post.create!(author_id: dbz.id, title: "Even MJ had the power insideh home", post_type: "photo", image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/mj_ssj.gif')
 Post.create!(author_id: jerome.id, title: "Jerome is king of da playas!", body: 'Silky never had a chance', post_type: 'text')
 Post.create!(author_id: akuma.id, title: "I am your worst nightmare... !", post_type: "photo", image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/akuma_dark.jpg')
