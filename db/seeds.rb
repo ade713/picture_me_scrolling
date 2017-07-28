@@ -12,7 +12,7 @@ guest_user1 = User.create!(username: 'PicMeS Guest', password: '1Welcome2To3PicM
 
 akuma = User.create!(username: 'DarkHadouMaster', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/akuma-sf3.jpg')
 ryu = User.create!(username: 'Ryu', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/ryu_sf.gif')
-guile = User.create!(username: 'YellowHighTop', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/guile+sfv+trailer.mp4')
+guile1 = User.create!(username: 'Guile', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/guile+sfv+trailer.mp4')
 bobsburger = User.create!(username: 'BurgersByBob', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/bobs_burgers_avatar.jpg')
 starwars = User.create!(username: 'eps4thru6', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/storm_trooper_avatar.jpg')
 rick = User.create!(username: 'WorldsSmartestGenius', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/tiny_rick_avatar.jpg')
