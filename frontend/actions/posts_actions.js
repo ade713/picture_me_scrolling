@@ -71,7 +71,6 @@ export const updatePost = post => dispatch => {
       dispatch(editPost(updatedPost));
       dispatch(Errors.clearErrors());
     }, errors => {
-        console.log(errors);
         dispatch(Errors.receiveErrors(errors.responseJSON));
       }
     )
@@ -84,7 +83,6 @@ export const deletePost = post => dispatch => {
       dispatch(removePost(deletedPost));
       dispatch(Errors.clearErrors());
     }, errors => {
-      console.log(errors);
       dispatch(Errors.receiveErrors(errors.responseJSON));
     }
   );

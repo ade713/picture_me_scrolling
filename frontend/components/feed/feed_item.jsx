@@ -13,8 +13,6 @@ class FeedItem extends React.Component {
     this.video = this.video.bind(this);
 
     this.switchLike = this.switchLike.bind(this);
-    console.log(this.props.currentUser.id);
-    console.log(this.props.post.likers);
   }
 
   switchLike() {
