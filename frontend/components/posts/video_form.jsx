@@ -111,7 +111,7 @@ class VideoForm extends React.Component {
                                onChange={ this.update('title') } />
                    </div>
 
-                   <video width="540" height="240" controls>
+                   <video width="500" height="160" controls>
                      <source src={ this.state.imageUrl } type="video/*" />
                    </video>
 

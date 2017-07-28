@@ -4,6 +4,9 @@ import Feed from './feed';
 import { selectAllPosts } from '../../reducers/selectors';
 import { selectUsers } from '../../reducers/selectors';
 import { requestAllPosts,
+         likePost,
+         unlikePost,
+         updatePost,
          deletePost } from '../../actions/posts_actions';
 import { requestUsers } from '../../actions/users_actions';
 
@@ -14,7 +17,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   requestAllPosts: () => dispatch(requestAllPosts()),
-  deletePost: post => dispatch(deletePost(post))
+  deletePost: post => dispatch(deletePost(post)),
+  likePost: id => dispatch(likePost(id)),
+  unlikePost: id => dispatch(unlikePost(id))
 });
 
 const FeedContainer = connect(

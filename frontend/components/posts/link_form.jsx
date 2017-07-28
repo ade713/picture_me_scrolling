@@ -75,7 +75,7 @@ class LinkForm extends React.Component {
                style={ formStyles }
                shouldCloseOnOverlayClick={ false }
                onRequestClose={ this.closeModal } >
-               <div className="new-post-form">
+               <div className="link-post-form">
                  <span className="post-author">
                    { this.props.currentUser.username }
                  </span>

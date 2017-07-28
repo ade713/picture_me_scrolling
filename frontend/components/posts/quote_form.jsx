@@ -79,7 +79,7 @@ class QuoteForm extends React.Component {
                  <span className="post-author">
                    { this.props.currentUser.username }
                  </span>
-                 <div className="post-form">
+                 <div className="quote-post-form">
                    <div className="title-field">
                      <textarea className="title-input"
                                type="text"

@@ -14,6 +14,7 @@ img.user-avatar {
   width: 64px;
   height: 64px;
   border-radius: 3px;
+  border: 1px solid black;
 }
 
 div.post-form-links {
@@ -38,6 +39,8 @@ div.bar-form-button {
   align-content: center;
   border-right: 1px solid black;
 }
+
+
 
 div.post-bar-content {
   display: flex;

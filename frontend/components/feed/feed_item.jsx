@@ -11,6 +11,44 @@ class FeedItem extends React.Component {
     this.quote = this.quote.bind(this);
     this.text = this.text.bind(this);
     this.video = this.video.bind(this);
+
+    this.switchLike = this.switchLike.bind(this);
+    console.log(this.props.currentUser.id);
+    console.log(this.props.post.author_id);
+  }
+
+  switchLike() {
+    if (this.props.post.likes.includes(this.props.currentUser.id)) {
+      () => this.props.unlikePost(this.props.post.id);
+    } else {
+      () => this.props.likePost(this.props.post.id);
+    }
+  }
+
+  likeButton() {
+    if (this.props.post.author_id === this.props.currentUser.id) {
+      if (this.props.post.likes.includes(this.props.currentUser.id)) {
+        return (
+          <button className="like-btn-on" onClick={ this.switchLike }>
+            <i className="fa fa-heart fa-2x" aria-hidden="true"></i>
+          </button>
+        );
+      }
+    } else {
+      return (
+        <button className="like-btn-off" onClick={ this.switchLike }>
+          <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i>
+        </button>
+      );
+    }
+  }
+
+  likeCounter() {
+    return (
+      <div className="post-likes">
+        Likes: { this.props.post.likes.length }
+      </div>
+    );
   }
 
   audio() {
@@ -38,10 +76,11 @@ class FeedItem extends React.Component {
             </div>
 
             <div className="post-footer">
+              { this.likeCounter() }
               <div className="post-options">
-                <button className="like-post-btn">
-                  <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i>
-                </button>
+                <div className="like-post-btn">
+                  { this.likeButton() }
+                </div>
                 <button className="edit-post-btn">
                   <i className="fa fa-pencil-square-o fa-2x"
                     id="edit-btn-icon"
@@ -81,10 +120,11 @@ class FeedItem extends React.Component {
             </div>
 
             <div className="post-footer">
+              { this.likeCounter() }
               <div className="post-options">
-                <button className="like-post-btn">
-                  <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i>
-                </button>
+                <div className="like-post-btn">
+                  { this.likeButton() }
+                </div>
                 <button className="edit-post-btn">
                   <i className="fa fa-pencil-square-o fa-2x"
                     id="edit-btn-icon"
@@ -126,10 +166,11 @@ class FeedItem extends React.Component {
             </div>
 
             <div className="post-footer">
+              { this.likeCounter() }
               <div className="post-options">
-                <button className="like-post-btn">
-                  <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i>
-                </button>
+                <div className="like-post-btn">
+                  { this.likeButton() }
+                </div>
                 <button className="edit-post-btn">
                   <i className="fa fa-pencil-square-o fa-2x"
                     id="edit-btn-icon"
@@ -172,10 +213,11 @@ class FeedItem extends React.Component {
             </div>
 
             <div className="post-footer">
+              { this.likeCounter() }
               <div className="post-options">
-                <button className="like-post-btn">
-                  <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i>
-                </button>
+                <div className="like-post-btn">
+                  { this.likeButton() }
+                </div>
                 <button className="edit-post-btn">
                   <i className="fa fa-pencil-square-o fa-2x"
                     id="edit-btn-icon"
@@ -218,10 +260,11 @@ class FeedItem extends React.Component {
             </div>
 
             <div className="post-footer">
+              { this.likeCounter() }
               <div className="post-options">
-                <button className="like-post-btn">
-                  <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i>
-                </button>
+                <div className="like-post-btn">
+                  { this.likeButton() }
+                </div>
                 <button className="edit-post-btn">
                   <i className="fa fa-pencil-square-o fa-2x"
                     id="edit-btn-icon"
@@ -266,10 +309,11 @@ class FeedItem extends React.Component {
             </div>
 
             <div className="post-footer">
+              { this.likeCounter() }
               <div className="post-options">
-                <button className="like-post-btn">
-                  <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i>
-                </button>
+                <div className="like-post-btn">
+                  { this.likeButton() }
+                </div>
                 <button className="edit-post-btn">
                   <i className="fa fa-pencil-square-o fa-2x"
                     id="edit-btn-icon"

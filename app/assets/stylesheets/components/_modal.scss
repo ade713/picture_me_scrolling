@@ -1,6 +1,7 @@
 div.modal-button {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 15px;
 
   button {
     border-radius: 3px;
@@ -21,4 +22,56 @@ div.modal-button {
   .post-submit-button:disabled {
     background-color: lightslategrey;
   }
+}
+
+div.audio-post-form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+
+div.audio-post-form {
+  textarea {
+    resize: none;
+    border-bottom: none;
+    width: 494px;
+    height: 155px;
+    margin-top: 72px;
+    margin-bottom: 73px;
+  }
+}
+
+.text-post-form .quote-post-form .link-post-form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  textarea {
+    margin-top: 72px;
+    margin-bottom: 73px;
+  }
+}
+
+div.photo-post-form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+
+  textarea.title-input {
+    margin-top: 80px;
+    margin-bottom: 80px;
+  }
+}
+
+div.media-field {
+  display: flex;
+  flex-direction: column;
+}
+
+textarea {
+  resize: none;
+  width: 494px;
+  height: 178px;
 }

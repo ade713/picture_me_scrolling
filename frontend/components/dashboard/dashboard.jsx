@@ -21,7 +21,7 @@ class Dashboard extends React.Component {
       <div className="dash-page">
         <header className="dash-nav">
           <h1 className="dash-title">
-            Picture Me Scrolling
+            PicMeS
           </h1>
           <button className="dash-logout" onClick={ logout }>Log Out</button>
         </header>

@@ -91,7 +91,7 @@ class AudioForm extends React.Component {
                style={ formStyles }
                shouldCloseOnOverlayClick={ false }
                onRequestClose={ this.closeModal } >
-               <div className="new-post-form">
+               <div className="audio-post-form">
                  <div className="post-form">
                    <div className="media-field">
                      <span className="post-author">
@@ -111,7 +111,9 @@ class AudioForm extends React.Component {
                                onChange={ this.update('title') } />
                    </div>
 
-                   <img src={ this.state.imageUrl } />
+                   <audio controls>
+                     <source src={ this.state.imageUrl } />
+                   </audio>
 
                    <div className="submit-form">
                      <div className="modal-button">

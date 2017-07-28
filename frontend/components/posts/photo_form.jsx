@@ -91,7 +91,7 @@ class PhotoForm extends React.Component {
                style={ formStyles }
                shouldCloseOnOverlayClick={ false }
                onRequestClose={ this.closeModal } >
-               <div className="new-post-form">
+               <div className="photo-post-form">
                  <div className="post-form">
                    <div className="media-field">
                      <span className="post-author">
