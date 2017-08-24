@@ -57,6 +57,20 @@ class TextForm extends React.Component {
       .then(this.closeModal());
   }
 
+  renderErrors () {
+    return(
+      <ul>
+        {
+          this.props.errors.map((error, index) => (
+            <li key={ `error-${index}` }>
+              { error }
+            </li>  
+          ))
+        }
+      </ul>
+    );
+  }
+
   render() {
     return (
       <div className="post-bar-content">
