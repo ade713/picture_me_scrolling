@@ -104,7 +104,8 @@ class LinkForm extends React.Component {
                        </button>
                        <button className="post-submit-button"
                                onClick={ this.handleSubmit }
-                               disabled={ !this.state.title && !this.state.url } >
+                               disabled={ !this.state.title }
+                               disabled={ !this.state.url } >
                          Post
                        </button>
                      </div>

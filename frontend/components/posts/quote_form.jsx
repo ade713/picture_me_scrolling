@@ -103,7 +103,8 @@ class QuoteForm extends React.Component {
                        </button>
                        <button className="post-submit-button"
                                onClick={ this.handleSubmit }
-                               disabled={ !this.state.title && !this.state.body } >
+                               disabled={ !this.state.title }
+                               disabled={ !this.state.body } >
                          Post
                        </button>
                      </div>
