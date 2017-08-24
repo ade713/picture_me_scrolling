@@ -93,17 +93,17 @@ class PhotoForm extends React.Component {
                onRequestClose={ this.closeModal } >
                <div className="photo-post-form">
                  <div className="post-form">
+                    <span className="post-author">
+                      {this.props.currentUser.username}
+                    </span>
                    <div className="media-field">
-                     <span className="post-author">
-                       { this.props.currentUser.username }
-                     </span>
-
                      <input className="media-input"
                             type="file"
                             accept="image/*"
                             onChange={ this.handleMedia } />
+                     <img src={this.state.imageUrl} />
                    </div>
-
+              
                    <div className="title-field">
                      <textarea className="title-input"
                                type="text"
@@ -112,7 +112,7 @@ class PhotoForm extends React.Component {
                                onChange={ this.update('title') } />
                    </div>
 
-                   <img src={ this.state.imageUrl } />
+                   
 
                    <div className="submit-form">
                      <div className="modal-button">

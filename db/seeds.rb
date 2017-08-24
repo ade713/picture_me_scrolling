@@ -38,4 +38,4 @@ Post.create!(author_id: luffy.id, title: "Brother of the year!!", post_type: "ph
 Post.create!(author_id: jerome.id, title: "Steppin in mah phresh kix (watch yo mouf)", post_type: 'video', image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/martin_jerome_white_shoes.mp4')
 Post.create!(author_id: kermit.id, title: "I'm interested in this phone", url: 'https://www.youtube.com/watch?v=l5nv86zjPro&t=19s', post_type: 'link')
 Post.create!(author_id: starks.id, title: "The cavalry is here... #Drogon", post_type: "photo", image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/drogon.gif')
-Post.create!(author_id: fozzie.id, title: "Picmes is AWESOME! =D #WakaWaka", body: 'Silky never had a chance', post_type: 'text')
+Post.create!(author_id: fozzie.id, title: "Picmes is AWESOME! =D #WakaWaka", post_type: 'text')
