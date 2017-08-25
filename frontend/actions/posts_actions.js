@@ -45,7 +45,7 @@ export const createPost = post => dispatch => {
     .then(newPost => {
       dispatch(receivePost(newPost));
       dispatch(Errors.clearErrors());
-      return newPost;
+      // return newPost;
     }, errors => (
       dispatch(Errors.receiveErrors(errors.responseJSON))
     )
@@ -57,7 +57,7 @@ export const createMediaPost = post => dispatch => {
     .then(newPost => {
       dispatch(receivePost(newPost));
       dispatch(Errors.clearErrors());
-      return newPost;
+      // return newPost;
     }, errors => (
       dispatch(Errors.receiveErrors(errors.responseJSON))
     )

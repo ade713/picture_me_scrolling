@@ -123,8 +123,7 @@ class VideoForm extends React.Component {
                        </button>
                        <button className="post-submit-button"
                                onClick={ this.handleSubmit }
-                               disabled={ !this.state.imageFile }
-                               disabled={ !this.state.title } >
+                               disabled={ !this.state.imageFile } >
                          Post
                        </button>
                      </div>

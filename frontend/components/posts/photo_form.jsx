@@ -21,6 +21,7 @@ class PhotoForm extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleMedia = this.handleMedia.bind(this);
+    this.handleErrors = this.handleErrors.bind(this);
   }
 
   update(property) {
@@ -61,6 +62,15 @@ class PhotoForm extends React.Component {
     }
   }
 
+  handleErrors() {
+    if (this.props.errors.length > 0) {
+      console.log('HERE')
+      this.renderErrors();
+    } else {
+      this.closeModal();
+    }
+  }
+
   handleSubmit(e) {
     let formData = new FormData();
     formData.append('post[url]', this.state.url);
@@ -69,11 +79,26 @@ class PhotoForm extends React.Component {
     formData.append('post[body]', this.state.body);
     formData.append('post[image]', this.state.imageFile);
     this.props.createMediaPost(formData)
-      .then(this.closeModal());
+      // .then(() => this.closeModal());
+      .then(this.closeModal);
+  }
+
+  renderErrors() {
+    return (
+      <ul>
+        {this.props.errors.map((error, index) => (
+          <li key={`error-${index}`}>
+            {error}
+          </li>
+        ))
+        }
+      </ul>
+    );
   }
 
   render() {
-    console.log('IMG', this.state.image, this.state.imageFile);
+    console.log('IMG', this.state.imageFile);
+    console.log('ERR', this.props.errors);
     return (
       <div className="post-bar-content">
         <button className="post-bar-button" onClick={ this.openModal }>
@@ -121,13 +146,16 @@ class PhotoForm extends React.Component {
                                onClick={ this.closeModal }>
                                Close
                        </button>
+
                        <button className="post-submit-button"
                                onClick={ this.handleSubmit }
-                               disabled={ this.state.imageFile === null ||
-                                          this.state.imageFile === undefined }
+                               disabled={ !this.state.imageFile }
                          >
                          Post
                        </button>
+                     </div>
+                     <div>
+                       <strong>{ this.renderErrors() }</strong>
                      </div>
                    </div>
                  </div>
