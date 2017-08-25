@@ -123,7 +123,8 @@ class PhotoForm extends React.Component {
                        </button>
                        <button className="post-submit-button"
                                onClick={ this.handleSubmit }
-                               disabled={ this.state.imageFile === null || this.state.imageFile === undefined } 
+                               disabled={ this.state.imageFile === null ||
+                                          this.state.imageFile === undefined }
                          >
                          Post
                        </button>
