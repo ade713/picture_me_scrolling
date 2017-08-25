@@ -14,7 +14,7 @@ const formStyles = {
     position: 'absolute',
     width           : '500px',
     top             : '20%',
-    left            : '22%',
+    left            : '22.3%',
     padding         : '20px',
     bottom          : 'clear',
     border          : '1px solid #C0C0C0',

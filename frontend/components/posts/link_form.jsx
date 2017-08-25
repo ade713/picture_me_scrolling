@@ -80,13 +80,6 @@ class LinkForm extends React.Component {
                    { this.props.currentUser.username }
                  </span>
                  <div className="post-form">
-                   <div className="post-body">
-                     <textarea className="body-input"
-                       type="text"
-                       placeholder="Type or paste Link URL here"
-                       value={ this.state.url }
-                       onChange={ this.update('url') } />
-                   </div>
                    <div className="title-field">
                      <textarea className="title-input"
                        type="text"
@@ -94,6 +87,14 @@ class LinkForm extends React.Component {
                        value={ this.state.title }
                        onChange={ this.update('title') } />
 
+                   </div>
+                   
+                   <div className="post-body">
+                     <textarea className="body-input"
+                       type="text"
+                       placeholder="Type or paste Link URL here"
+                       value={ this.state.url }
+                       onChange={ this.update('url') } />
                    </div>
 
                    <div className="submit-form">
