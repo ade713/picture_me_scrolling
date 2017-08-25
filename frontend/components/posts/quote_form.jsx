@@ -53,7 +53,7 @@ class QuoteForm extends React.Component {
     };
 
     this.props.createPost(post)
-      .then(this.closeModal());
+      .then(this.closeModal);
   }
 
   render() {

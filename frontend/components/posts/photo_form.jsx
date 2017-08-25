@@ -79,7 +79,6 @@ class PhotoForm extends React.Component {
     formData.append('post[body]', this.state.body);
     formData.append('post[image]', this.state.imageFile);
     this.props.createMediaPost(formData)
-      // .then(() => this.closeModal());
       .then(this.closeModal);
   }
 
@@ -154,7 +153,7 @@ class PhotoForm extends React.Component {
                          Post
                        </button>
                      </div>
-                     <div>
+                     <div className="form-errors">
                        <strong>{ this.renderErrors() }</strong>
                      </div>
                    </div>

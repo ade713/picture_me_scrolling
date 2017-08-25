@@ -53,7 +53,7 @@ class LinkForm extends React.Component {
     };
 
     this.props.createPost(post)
-      .then(this.closeModal());
+      .then(this.closeModal);
   }
 
   render() {
@@ -88,7 +88,7 @@ class LinkForm extends React.Component {
                        onChange={ this.update('title') } />
 
                    </div>
-                   
+
                    <div className="post-body">
                      <textarea className="body-input"
                        type="text"
