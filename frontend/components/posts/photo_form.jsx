@@ -73,6 +73,7 @@ class PhotoForm extends React.Component {
   }
 
   render() {
+    console.log('IMG', this.state.image, this.state.imageFile);
     return (
       <div className="post-bar-content">
         <button className="post-bar-button" onClick={ this.openModal }>
@@ -122,8 +123,8 @@ class PhotoForm extends React.Component {
                        </button>
                        <button className="post-submit-button"
                                onClick={ this.handleSubmit }
-                               disabled={ !this.state.imageFile } 
-                               disabled={ !this.state.title } >
+                               disabled={ this.state.imageFile === null || this.state.imageFile === undefined } 
+                         >
                          Post
                        </button>
                      </div>

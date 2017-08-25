@@ -99,7 +99,8 @@ class AuthForm extends React.Component {
               <br />
               <br />
               <label className="auth-username">
-                <input type="text"
+                <input 
+                  type="text"
                   value={this.state.username}
                   ref="username"
                   placeholder="Your Username"
@@ -108,7 +109,8 @@ class AuthForm extends React.Component {
               </label>
               <br />
               <label className="auth-password">
-                <input type="password"
+                <input 
+                type="password"
                   value={this.state.password}
                   ref="password"
                   placeholder="Your Password"
@@ -116,11 +118,16 @@ class AuthForm extends React.Component {
                   className="auth-login-input" />
               </label>
               <br />
-              <Link to="/dashboard" className="auth-submit"
+              <Link 
+                to="/dashboard" 
+                className="auth-submit"
                 onClick={ this.handleSubmit }>
                 { this.authSubmitType() }
               </Link>
-              <Link to="/dashboard" className="guest-login" onClick={ this.logInAsGuest }>
+              <Link 
+                to="/dashboard" 
+                className="guest-login" 
+                onClick={ this.logInAsGuest }>
                 Guest Log In
               </Link>
               <br />
