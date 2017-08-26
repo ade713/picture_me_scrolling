@@ -6,7 +6,7 @@ class Api::PostsController < ApplicationController
     if @post.save
       render "api/posts/show"
     else
-      render json: ['Unable to create post, check title/ caption input'], status: 422
+      render json: ['Unable to create post, check title/caption input'], status: 422
     end
   end
 

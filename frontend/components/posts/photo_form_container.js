@@ -2,6 +2,7 @@ import { connect} from 'react-redux';
 
 import { createPost,
          createMediaPost } from '../../actions/posts_actions';
+import { clearErrors } from '../../actions/errors_actions';
 import PhotoForm from './photo_form';
 
 const mapStateToProps = ({ session, errors }) => ({
@@ -10,7 +11,8 @@ const mapStateToProps = ({ session, errors }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  createMediaPost: post => dispatch(createMediaPost(post))
+  createMediaPost: post => dispatch(createMediaPost(post)),
+  clearErrors: () => dispatch(clearErrors())
 });
 
 const PhotoFormContainer = connect(

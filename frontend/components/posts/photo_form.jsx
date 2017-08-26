@@ -44,6 +44,7 @@ class PhotoForm extends React.Component {
       imageFile: null,
       imageUrl: null
     });
+    this.props.clearErrors();
   }
 
   handleMedia(e) {
@@ -86,8 +87,6 @@ class PhotoForm extends React.Component {
   }
 
   render() {
-    console.log('IMG', this.state.imageFile);
-    console.log('ERR', this.props.errors);
     return (
       <div className="post-bar-content">
         <button className="post-bar-button" onClick={ this.openModal }>

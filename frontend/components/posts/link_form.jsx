@@ -113,11 +113,10 @@ class LinkForm extends React.Component {
                    </div>
 
                    <div className="submit-form">
+                     <div className="form-errors">
+                       <strong>{this.renderErrors()}</strong>
+                     </div>
                      <div className="modal-button">
-                       <div className="form-errors">
-                         <strong>{this.renderErrors()}</strong>
-                       </div>
-
                        <button 
                          className="form-button"
                          onClick={ this.closeModal }>
