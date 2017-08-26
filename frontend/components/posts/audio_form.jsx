@@ -44,6 +44,7 @@ class AudioForm extends React.Component {
       imageFile: null,
       imageUrl: null
     });
+    this.props.clearErrors();
   }
 
   handleMedia(e) {

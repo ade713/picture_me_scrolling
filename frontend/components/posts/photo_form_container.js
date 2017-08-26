@@ -1,7 +1,6 @@
 import { connect} from 'react-redux';
 
-import { createPost,
-         createMediaPost } from '../../actions/posts_actions';
+import { createMediaPost } from '../../actions/posts_actions';
 import { clearErrors } from '../../actions/errors_actions';
 import PhotoForm from './photo_form';
 

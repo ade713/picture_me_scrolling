@@ -42,6 +42,7 @@ class TextForm extends React.Component {
       url: '',
       post_type: ''
     });
+    this.props.clearErrors();
   }
 
   handleSubmit(e) {

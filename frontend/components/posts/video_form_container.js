@@ -1,7 +1,7 @@
 import { connect} from 'react-redux';
 
-import { createPost,
-         createMediaPost } from '../../actions/posts_actions';
+import { createMediaPost } from '../../actions/posts_actions';
+import { clearErrors } from '../../actions/errors_actions';
 import VideoForm from './video_form';
 
 const mapStateToProps = ({ session, errors }) => ({
@@ -10,8 +10,8 @@ const mapStateToProps = ({ session, errors }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  createPost: post => dispatch(createPost(post)),
-  createMediaPost: post => dispatch(createMediaPost(post))
+  createMediaPost: post => dispatch(createMediaPost(post)),
+  clearErrors: () => dispatch(clearErrors())
 });
 
 const VideoFormContainer = connect(
