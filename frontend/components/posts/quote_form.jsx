@@ -56,6 +56,20 @@ class QuoteForm extends React.Component {
       .then(this.closeModal);
   }
 
+  renderErrors() {
+    return (
+      <ul>
+        {
+          this.props.errors.map((error, index) => (
+            <li key={`error-${index}`}>
+              {error}
+            </li>
+          ))
+        }
+      </ul>
+    );
+  }
+
   render() {
     return (
       <div className="post-bar-content">
@@ -96,6 +110,10 @@ class QuoteForm extends React.Component {
                        onChange={ this.update('body') } />
                    </div>
                    <div className="submit-form">
+                     <div className="form-errors">
+                       <strong>{this.renderErrors()}</strong>
+                     </div>
+
                      <div className="modal-button">
                        <button className="form-button"
                                onClick={ this.closeModal }>

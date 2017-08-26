@@ -96,21 +96,27 @@ class TextForm extends React.Component {
                  </span>
                  <div className="text-post-form">
                    <div className="title-field">
-                     <textarea className="title-input"
-                               type="text"
-                               placeholder="Title"
-                               value={ this.state.title }
-                               onChange={ this.update('title') } />
+                     <textarea 
+                       className="title-input"
+                       type="text"
+                       placeholder="Title"
+                       value={ this.state.title }
+                       onChange={ this.update('title') } />
 
                    </div>
                    <div className="post-body">
-                     <textarea className="body-input"
+                     <textarea 
+                       className="body-input"
                        type="text"
                        placeholder="Your text here"
                        value={ this.state.body }
                        onChange={ this.update('body') } />
                    </div>
                    <div className="submit-form">
+                     <div className="form-errors">
+                       <strong>{this.renderErrors()}</strong>
+                     </div>
+
                      <div className="modal-button">
                        <button className="form-button"
                                onClick={ this.closeModal }>
@@ -118,9 +124,7 @@ class TextForm extends React.Component {
                        </button>
                        <button className="post-submit-button"
                                onClick={ this.handleSubmit }
-                               disabled={ !this.state.body } 
-                               disabled={ !this.state.title } 
-                               >
+                               disabled={ !this.state.title } >
                          Post
                        </button>
                      </div>

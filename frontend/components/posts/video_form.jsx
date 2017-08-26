@@ -72,10 +72,26 @@ class VideoForm extends React.Component {
       .then(this.closeModal);
   }
 
+  renderErrors() {
+    return (
+      <ul>
+        {
+          this.props.errors.map((error, index) => (
+            <li key={`error-${index}`}>
+              {error}
+            </li>
+          ))
+        }
+      </ul>
+    );
+  }
+
   render() {
     return (
       <div className="post-bar-content">
-        <button className="post-bar-button" onClick={ this.openModal }>
+        <button 
+          className="post-bar-button" 
+          onClick={ this.openModal }>
           <label className="bar-button">
             <div className="button-icon">
               <i className="fa fa-video-camera fa-3x" aria-hidden="true"></i>
@@ -86,21 +102,23 @@ class VideoForm extends React.Component {
           </label>
         </button>
 
-        <Modal isOpen={ this.state.showModal }
-               contentLabel="Example Modal"
-               style={ formStyles }
-               shouldCloseOnOverlayClick={ false }
-               onRequestClose={ this.closeModal } >
+        <Modal 
+          isOpen={ this.state.showModal }
+          contentLabel="Example Modal"
+          style={ formStyles }
+          shouldCloseOnOverlayClick={ false }
+          onRequestClose={ this.closeModal } >
                <div className="new-post-form">
                  <span className="post-author">
                    { this.props.currentUser.username }
                  </span>
                  <div className="post-form">
                    <div className="media-field">
-                     <input className="media-input"
-                            type="file"
-                            accept="video/*"
-                            onChange={ this.handleMedia } />
+                     <input 
+                       className="media-input"
+                       type="file"
+                       accept="video/*"
+                       onChange={ this.handleMedia } />
                    </div>
 
                    <div className="title-field">
@@ -116,6 +134,10 @@ class VideoForm extends React.Component {
                    </video>
 
                    <div className="submit-form">
+                     <div className="form-errors">
+                       <strong>{this.renderErrors()}</strong>
+                     </div>
+
                      <div className="modal-button">
                        <button className="form-button"
                                onClick={ this.closeModal }>

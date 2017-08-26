@@ -72,6 +72,20 @@ class AudioForm extends React.Component {
       .then(this.closeModal);
   }
 
+  renderErrors() {
+    return (
+      <ul>
+        {
+          this.props.errors.map((error, index) => (
+            <li key={`error-${index}`}>
+              {error}
+            </li>
+          ))
+        }
+      </ul>
+    );
+  }
+
   render() {
     return (
       <div className="post-bar-content">
@@ -104,11 +118,12 @@ class AudioForm extends React.Component {
                             onChange={ this.handleMedia } />
                    </div>
                    <div className="title-field">
-                     <textarea className="title-input"
-                               type="text"
-                               placeholder="Add Audio/Song caption here"
-                               value={ this.state.title }
-                               onChange={ this.update('title') } />
+                     <textarea 
+                       className="title-input"
+                       type="text"
+                       placeholder="Add Audio/Song caption here"
+                       value={ this.state.title }
+                       onChange={ this.update('title') } />
                    </div>
 
                    <audio controls>
@@ -116,14 +131,20 @@ class AudioForm extends React.Component {
                    </audio>
 
                    <div className="submit-form">
+                     <div className="form-errors">
+                       <strong>{this.renderErrors()}</strong>
+                     </div>
+
                      <div className="modal-button">
-                       <button className="form-button"
-                               onClick={ this.closeModal }>
-                               Close
+                       <button 
+                         className="form-button"
+                         onClick={ this.closeModal }>
+                         Close
                        </button>
-                       <button className="post-submit-button"
-                               onClick={ this.handleSubmit }
-                               disabled={ !this.state.imageFile } >
+                       <button 
+                         className="post-submit-button"
+                         onClick={ this.handleSubmit }
+                         disabled={ !this.state.imageFile } >
                          Post
                        </button>
                      </div>

@@ -21,7 +21,6 @@ class PhotoForm extends React.Component {
     this.closeModal = this.closeModal.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleMedia = this.handleMedia.bind(this);
-    this.handleErrors = this.handleErrors.bind(this);
   }
 
   update(property) {
@@ -59,15 +58,6 @@ class PhotoForm extends React.Component {
 
     if (file) {
       reader.readAsDataURL(file);
-    }
-  }
-
-  handleErrors() {
-    if (this.props.errors.length > 0) {
-      console.log('HERE')
-      this.renderErrors();
-    } else {
-      this.closeModal();
     }
   }
 
@@ -140,6 +130,10 @@ class PhotoForm extends React.Component {
                    
 
                    <div className="submit-form">
+                     <div className="form-errors">
+                       <strong>{ this.renderErrors() }</strong>
+                     </div>
+
                      <div className="modal-button">
                        <button className="form-button"
                                onClick={ this.closeModal }>
@@ -148,13 +142,9 @@ class PhotoForm extends React.Component {
 
                        <button className="post-submit-button"
                                onClick={ this.handleSubmit }
-                               disabled={ !this.state.imageFile }
-                         >
+                               disabled={ !this.state.imageFile } >
                          Post
                        </button>
-                     </div>
-                     <div className="form-errors">
-                       <strong>{ this.renderErrors() }</strong>
                      </div>
                    </div>
                  </div>

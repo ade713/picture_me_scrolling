@@ -1,7 +1,7 @@
 div.modal-button {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 15px;
+  margin-top: 10px;
 
   button {
     border-radius: 3px;
@@ -78,4 +78,9 @@ textarea {
   background-color: lightgrey;
   width: 500px;
   height: 50px;
+}
+
+div.form-errors {
+  color: red;
+  font-weight: bold;
 }

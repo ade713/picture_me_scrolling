@@ -56,6 +56,20 @@ class LinkForm extends React.Component {
       .then(this.closeModal);
   }
 
+  renderErrors() {
+    return (
+      <ul>
+        {
+          this.props.errors.map((error, index) => (
+            <li key={`error-${index}`}>
+              {error}
+            </li>
+          ))
+        }
+      </ul>
+    );
+  }
+
   render() {
     return (
       <div className="post-bar-content">
@@ -90,7 +104,8 @@ class LinkForm extends React.Component {
                    </div>
 
                    <div className="post-body">
-                     <textarea className="body-input"
+                     <textarea 
+                       className="body-input"
                        type="text"
                        placeholder="Type or paste Link URL here"
                        value={ this.state.url }
@@ -99,14 +114,19 @@ class LinkForm extends React.Component {
 
                    <div className="submit-form">
                      <div className="modal-button">
-                       <button className="form-button"
-                               onClick={ this.closeModal }>
-                               Close
+                       <div className="form-errors">
+                         <strong>{this.renderErrors()}</strong>
+                       </div>
+
+                       <button 
+                         className="form-button"
+                         onClick={ this.closeModal }>
+                         Close
                        </button>
-                       <button className="post-submit-button"
-                               onClick={ this.handleSubmit }
-                               disabled={ !this.state.title }
-                               disabled={ !this.state.url } >
+                       <button 
+                         className="post-submit-button"
+                         onClick={ this.handleSubmit }
+                         disabled={ !this.state.url } >
                          Post
                        </button>
                      </div>
