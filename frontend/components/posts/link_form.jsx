@@ -98,7 +98,7 @@ class LinkForm extends React.Component {
                    <div className="title-field">
                      <textarea className="title-input"
                        type="text"
-                       placeholder="Name link here"
+                       placeholder="Name/describe link here"
                        value={ this.state.title }
                        onChange={ this.update('title') } />
 

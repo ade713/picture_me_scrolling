@@ -36,9 +36,9 @@ div.audio-post-form {
     resize: none;
     border-bottom: none;
     width: 494px;
-    height: 155px;
-    margin-top: 72px;
-    margin-bottom: 73px;
+    min-height: 100px;
+    margin-top: 20px;
+    margin-bottom: 21px;
   }
 }
 
@@ -46,9 +46,14 @@ div.audio-post-form {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
   textarea {
     margin-top: 72px;
     margin-bottom: 73px;
+  }
+
+  textarea.title-input {
+    font-size: 36px;
   }
 }
 
@@ -65,7 +70,7 @@ div.photo-post-form {
 }
 
 div.post-body textarea{
-  min-height: 320px;
+  min-height: 150px;
 }
 
 div.media-field {
@@ -78,6 +83,7 @@ textarea {
   background-color: lightgrey;
   width: 500px;
   height: 50px;
+  font-size: 18px;
 }
 
 div.form-errors {
