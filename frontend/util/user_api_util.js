@@ -4,3 +4,10 @@ export const fetchUsers = () => {
     url: 'api/users'
   });
 };
+
+// export const createFollow = id => {
+//   return $.ajax({
+//     method: 'POST',
+//     url: `api`
+//   });
+// };
