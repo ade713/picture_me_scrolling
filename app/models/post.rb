@@ -31,7 +31,7 @@ class Post < ApplicationRecord
 
   has_many :likers,
     through: :likes,
-    source: :user
+    source: "User"
 
   def likers_ids
     liker_ids = []
