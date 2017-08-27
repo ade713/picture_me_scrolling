@@ -8,6 +8,10 @@ class Api::FollowsController < ApplicationController
     render json: "api/posts/show"
   end
 
+  def index
+    @follows = current_user.follows
+  end
+
   def destroy
     @follow = current_user.follows.find_by(followee_id: params[:user_id])
     @follow.destroy

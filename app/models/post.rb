@@ -46,6 +46,10 @@ class Post < ApplicationRecord
     self.likers_ids.include?(current_user.id)
   end
 
+  def current_user_follows?
+    self.author.followees.include?(current_user.id)
+  end
+
   has_attached_file :image, default_url: "orange_happy.png"
   validates_attachment_content_type :image,
     content_type: [/\Aimage\/.*\z/, 'audio/mp3', 'audio/mpeg', 'audio/wav', 'video/avi', 'video/mp4']
