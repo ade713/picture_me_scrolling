@@ -49,14 +49,6 @@ class FeedItem extends React.Component {
     );
   }
 
-  editButton() {
-    
-  }
-  
-  deleteButton() {
-
-  }
-
   audio() {
     return (
       <div className="feed-post">
