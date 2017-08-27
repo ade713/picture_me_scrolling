@@ -109,7 +109,7 @@ class VideoForm extends React.Component {
           style={ formStyles }
           shouldCloseOnOverlayClick={ false }
           onRequestClose={ this.closeModal } >
-               <div className="new-post-form">
+               <div className="video-post-form">
                  <span className="post-author">
                    { this.props.currentUser.username }
                  </span>
@@ -125,7 +125,7 @@ class VideoForm extends React.Component {
                    <div className="title-field">
                      <textarea className="title-input"
                                type="text"
-                               placeholder="Add Video caption here"
+                               placeholder="Upload Video above&#10;Add Video caption here"
                                value={ this.state.title }
                                onChange={ this.update('title') } />
                    </div>

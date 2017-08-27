@@ -1,7 +1,10 @@
 div.modal-button {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  padding-top: 10px;
+  border-top: lightgrey;
+  border-top-width: 1px;
+  border-top-style: solid;
 
   button {
     border-radius: 3px;
@@ -24,6 +27,10 @@ div.modal-button {
   }
 }
 
+input.media-input {
+  margin-bottom: 10px;
+}
+
 div.audio-post-form {
   display: flex;
   flex-direction: column;
@@ -37,25 +44,36 @@ div.audio-post-form {
     border-bottom: none;
     width: 494px;
     min-height: 100px;
-    margin-top: 20px;
-    margin-bottom: 21px;
+    // margin-top: 10px;
+    margin-bottom: 11px;
   }
 }
 
-.text-post-form .quote-post-form .link-post-form {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-
+div.video-post-form {
   textarea {
-    margin-top: 72px;
-    margin-bottom: 73px;
-  }
-
-  textarea.title-input {
-    font-size: 36px;
+    resize: none;
+    border-bottom: none;
+    width: 494px;
+    min-height: 100px;
+    // margin-top: 10px;
+    margin-bottom: 11px;
   }
 }
+
+// .text-post-form .quote-post-form .link-post-form {
+//   display: flex;
+//   flex-direction: column;
+//   justify-content: space-between;
+
+//   textarea {
+//     margin-top: 72px;
+//     margin-bottom: 73px;
+//   }
+
+//   textarea.title-input {
+//     font-size: 36px;
+//   }
+// }
 
 div.photo-post-form {
   display: flex;
@@ -64,8 +82,14 @@ div.photo-post-form {
   justify-content: space-between;
 
   textarea.title-input {
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+    margin-bottom: 11px;
+    resize: none;
+    border-bottom: none;
+    width: 494px;
+    min-height: 100px;
+    // margin-top: 15px;
+    margin-bottom: 11px;
   }
 }
 

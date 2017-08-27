@@ -121,7 +121,7 @@ class PhotoForm extends React.Component {
                    <div className="title-field">
                      <textarea className="title-input"
                                type="text"
-                               placeholder="Add caption here"
+                               placeholder="Upload Photo above&#10;Add Photo caption here"
                                value={ this.state.title }
                                onChange={ this.update('title') } />
                    </div>
