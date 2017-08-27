@@ -96,15 +96,9 @@ class FeedItem extends React.Component {
                 <div className="like-post-btn">
                   { this.likeButton() }
                 </div>
-                <button className="edit-post-btn">
-                  <i className="fa fa-pencil-square-o fa-2x"
-                    id="edit-btn-icon"
-                    aria-hidden="true"></i>
-                </button>
-                <button className="delete-post-btn"
-                  onClick={ () => this.props.deletePost(this.props.post) } >
-                  <i className="fa fa-trash fa-2x" aria-hidden="true"></i>
-                </button>
+                <div className="post-btns">
+                  {this.renderEditDeleteButtons()}
+                </div>
               </div>
             </div>
 
@@ -140,15 +134,9 @@ class FeedItem extends React.Component {
                 <div className="like-post-btn">
                   { this.likeButton() }
                 </div>
-                <button className="edit-post-btn">
-                  <i className="fa fa-pencil-square-o fa-2x"
-                    id="edit-btn-icon"
-                    aria-hidden="true"></i>
-                </button>
-                <button className="delete-post-btn"
-                  onClick={ () => this.props.deletePost(this.props.post) } >
-                  <i className="fa fa-trash fa-2x" aria-hidden="true"></i>
-                </button>
+                <div className="post-btns">
+                  {this.renderEditDeleteButtons()}
+                </div>
               </div>
             </div>
 
@@ -186,15 +174,9 @@ class FeedItem extends React.Component {
                 <div className="like-post-btn">
                   { this.likeButton() }
                 </div>
-                <button className="edit-post-btn">
-                  <i className="fa fa-pencil-square-o fa-2x"
-                    id="edit-btn-icon"
-                    aria-hidden="true"></i>
-                </button>
-                <button className="delete-post-btn"
-                  onClick={ () => this.props.deletePost(this.props.post) } >
-                  <i className="fa fa-trash fa-2x" aria-hidden="true"></i>
-                </button>
+                <div className="post-btns">
+                  {this.renderEditDeleteButtons()}
+                </div>
               </div>
             </div>
 
@@ -233,15 +215,9 @@ class FeedItem extends React.Component {
                 <div className="like-post-btn">
                   { this.likeButton() }
                 </div>
-                <button className="edit-post-btn">
-                  <i className="fa fa-pencil-square-o fa-2x"
-                    id="edit-btn-icon"
-                    aria-hidden="true"></i>
-                </button>
-                <button className="delete-post-btn"
-                  onClick={ () => this.props.deletePost(this.props.post) } >
-                  <i className="fa fa-trash fa-2x" aria-hidden="true"></i>
-                </button>
+                <div className="post-btns">
+                  {this.renderEditDeleteButtons()}
+                </div>
               </div>
             </div>
 
@@ -280,15 +256,9 @@ class FeedItem extends React.Component {
                 <div className="like-post-btn">
                   { this.likeButton() }
                 </div>
-                <button className="edit-post-btn">
-                  <i className="fa fa-pencil-square-o fa-2x"
-                    id="edit-btn-icon"
-                    aria-hidden="true"></i>
-                </button>
-                <button className="delete-post-btn"
-                  onClick={ () => this.props.deletePost(this.props.post) } >
-                  <i className="fa fa-trash fa-2x" aria-hidden="true"></i>
-                </button>
+                <div className="post-btns">
+                  {this.renderEditDeleteButtons()}
+                </div>
               </div>
             </div>
 
@@ -329,15 +299,9 @@ class FeedItem extends React.Component {
                 <div className="like-post-btn">
                   { this.likeButton() }
                 </div>
-                <button className="edit-post-btn">
-                  <i className="fa fa-pencil-square-o fa-2x"
-                    id="edit-btn-icon"
-                    aria-hidden="true"></i>
-                </button>
-                <button className="delete-post-btn"
-                  onClick={ () => this.props.deletePost(this.props.post) } >
-                  <i className="fa fa-trash fa-2x" aria-hidden="true"></i>
-                </button>
+                <div className="post-btns">
+                  {this.renderEditDeleteButtons()}
+                </div>
               </div>
             </div>
 
