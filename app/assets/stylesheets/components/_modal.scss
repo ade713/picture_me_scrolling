@@ -31,67 +31,78 @@ input.media-input {
   margin-bottom: 10px;
 }
 
-div.audio-post-form {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  justify-content: space-between;
-}
-
-div.audio-post-form {
-  textarea {
-    resize: none;
-    border-bottom: none;
-    width: 494px;
-    min-height: 100px;
-    // margin-top: 10px;
-    margin-bottom: 11px;
-  }
-}
-
-div.video-post-form {
-  textarea {
-    resize: none;
-    border-bottom: none;
-    width: 494px;
-    min-height: 100px;
-    // margin-top: 10px;
-    margin-bottom: 11px;
-  }
-}
-
-// .text-post-form .quote-post-form .link-post-form {
+// div.audio-post-form {
 //   display: flex;
 //   flex-direction: column;
+//   height: 100%;
 //   justify-content: space-between;
+// }
 
+// .audio-post-form, .photo-post-form {
+//   display: flex;
+//   flex-direction: column;
+//   height: 100%;
+//   justify-content: space-between;
+// }
+
+// div.audio-post-form {
 //   textarea {
-//     margin-top: 72px;
-//     margin-bottom: 73px;
-//   }
-
-//   textarea.title-input {
-//     font-size: 36px;
+//     resize: none;
+//     border-bottom: none;
+//     width: 494px;
+//     min-height: 100px;
+//     margin-bottom: 11px;
 //   }
 // }
 
-div.photo-post-form {
+.audio-post-form, .photo-post-form, .video-post-form {
   display: flex;
   flex-direction: column;
   height: 100%;
   justify-content: space-between;
-
-  textarea.title-input {
-    margin-top: 10px;
-    margin-bottom: 11px;
+  
+  textarea {
     resize: none;
     border-bottom: none;
     width: 494px;
     min-height: 100px;
-    // margin-top: 15px;
     margin-bottom: 11px;
   }
 }
+
+// div.video-post-form {
+//   textarea {
+//     resize: none;
+//     border-bottom: none;
+//     width: 494px;
+//     min-height: 100px;
+//     // margin-top: 10px;
+//     margin-bottom: 11px;
+//   }
+// }
+
+.text-post-form, .quote-post-form {
+  textarea.title-input {
+    font-size: 36px;
+  }
+}
+
+// div.photo-post-form {
+//   display: flex;
+//   flex-direction: column;
+//   height: 100%;
+//   justify-content: space-between;
+
+//   textarea.title-input {
+//     margin-top: 10px;
+//     margin-bottom: 11px;
+//     resize: none;
+//     border-bottom: none;
+//     width: 494px;
+//     min-height: 100px;
+//     margin-bottom: 11px;
+//   }
+// }
 
 div.post-body textarea{
   min-height: 150px;

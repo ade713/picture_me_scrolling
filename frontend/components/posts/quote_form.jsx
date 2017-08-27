@@ -22,6 +22,7 @@ class QuoteForm extends React.Component {
   }
 
   update(property) {
+    // console.log("HI");
     return e => this.setState({
       [property]: e.currentTarget.value
     });
@@ -98,7 +99,7 @@ class QuoteForm extends React.Component {
                    <div className="title-field">
                      <textarea className="title-input"
                                type="text"
-                               placeholder="Quote"
+                               placeholder="&quot;Quote&quot;"
                                value={ this.state.title }
                                onChange={ this.update('title') } />
 
@@ -106,7 +107,7 @@ class QuoteForm extends React.Component {
                    <div className="post-body">
                      <textarea className="body-input"
                        type="text"
-                       placeholder="Source"
+                       placeholder="- Source"
                        value={ this.state.body }
                        onChange={ this.update('body') } />
                    </div>
