@@ -44,16 +44,16 @@ class Post < ApplicationRecord
 
   def followers_ids
     follower_ids = []
-    self.author.followers.each do |follower|
-      follower_ids << follower.id 
+    self.author.followers.each do |follow|
+      follower_ids << follow.follower_id
     end
 
     follower_ids
   end
 
-  def current_user_liked?
-    self.likers_ids.include?(current_user.id)
-  end
+  # def current_user_liked?
+  #   self.likers_ids.include?(current_user.id)
+  # end
 
   # def current_user_follows?
   #   self.author.followees.include?(current_user.id)
