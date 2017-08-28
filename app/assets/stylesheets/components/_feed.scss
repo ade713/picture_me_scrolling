@@ -3,12 +3,19 @@ div.feed-posts {
 }
 
 div.post-header {
+  display: flex;
+  flex-direction: row;
   width: 500px;
   height: 30px;
   padding-left: 20px;
   padding-right: 20px;
   margin-bottom: 15px;
   padding-top: 15px;
+}
+
+div.follow-btn {
+  color: blue;
+  text-decoration: underline;
 }
 
 div.feed-post {

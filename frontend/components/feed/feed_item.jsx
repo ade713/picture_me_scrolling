@@ -27,7 +27,11 @@ class FeedItem extends React.Component {
   }
 
   renderFollow() {
-    
+    if (this.props.post.followed) {
+      return <p>Unfollow</p>;
+    } else {
+      return <p>Follow</p>;
+    }
   }
   
   switchLike() {
@@ -112,7 +116,7 @@ class FeedItem extends React.Component {
                   { this.likeButton() }
                 </div>
                 <div className="post-btns">
-                  {this.renderEditDeleteButtons()}
+                  { this.renderEditDeleteButtons() }
                 </div>
               </div>
             </div>
@@ -173,6 +177,11 @@ class FeedItem extends React.Component {
               <div className="post-user">
                 { this.props.post.author }
               </div>
+              <button 
+                className="follow-btn"
+                onClick={ this.switchFollow() }>
+                { this.renderFollow() }
+              </button>
             </div>
 
             <div className="post-upload-photo">
@@ -272,7 +281,7 @@ class FeedItem extends React.Component {
                   { this.likeButton() }
                 </div>
                 <div className="post-btns">
-                  {this.renderEditDeleteButtons()}
+                  { this.renderEditDeleteButtons() }
                 </div>
               </div>
             </div>
