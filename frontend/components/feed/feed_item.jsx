@@ -19,11 +19,11 @@ class FeedItem extends React.Component {
   }
 
   switchFollow() {
-    // if (this.props) {
-      
-    // } else {
-      
-    // }
+    if (this.props.post.followed) {
+      return () => this.props.unfollowUser(this.props.post.author_id);
+    } else {
+      return () => this.props.followUser(this.props.post.author_id);
+    }
   }
 
   renderFollow() {
