@@ -68,8 +68,6 @@ div.auth-page {
 .login-signup a:hover {
   text-decoration: none;
   color: #CE0063;
-  // border-bottom: 2px solid black;
-  // padding: 2px;
 }
 
 div.auth-body {
@@ -91,7 +89,6 @@ section.auth-body-title {
   flex-direction: column;
   font-family: 'Mogra', cursive;
   font-size: 55px;
-  // font-size: 50px;
 }
 
 h1.auth-title-top {
@@ -133,7 +130,7 @@ input.auth-login-input {
 input.auth-login-input::placeholder {
   font-style: italic;
   color: lightgrey;
-}  
+}
 
 .auth-submit {
   display: flex;
