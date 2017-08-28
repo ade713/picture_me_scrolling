@@ -14,15 +14,26 @@ class Feed extends React.Component {
 
   render() {
     const {
-        posts, deletePost, likePost, unlikePost, currentUser, users
+        posts, 
+        deletePost, 
+        likePost, 
+        unlikePost, 
+        currentUser,
+        followUser,
+        unfollowUser, 
+        users
       } = this.props;
+
     const feedItems = posts.map((post, index) =>
-      <FeedItem key={ post.id }
-                post={ post }
-                deletePost={ deletePost }
-                currentUser={ currentUser }
-                likePost={ likePost }
-                unlikePost={ unlikePost } />
+      <FeedItem 
+        key={ post.id }
+        post={ post }
+        deletePost={ deletePost }
+        currentUser={ currentUser }
+        followUser={ followUser }
+        unfollowUser={ unfollowUser }
+        likePost={ likePost }
+        unlikePost={ unlikePost } />
     );
 
     return (

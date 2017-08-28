@@ -20,10 +20,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   requestAllPosts: () => dispatch(requestAllPosts()),
   deletePost: post => dispatch(deletePost(post)),
+  followUser: id => dispatch(followUser(id)),
+  unfollowUser: id => dispatch(unfollowUser(id)),
   likePost: id => dispatch(likePost(id)),
   unlikePost: id => dispatch(unlikePost(id)),
-  followUser: id => dispatch(followUser(id)),
-  unfollowUser: id => dispatch(unfollowUser(id))
 });
 
 const FeedContainer = connect(

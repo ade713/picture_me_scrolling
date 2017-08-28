@@ -42,13 +42,22 @@ class Post < ApplicationRecord
     liker_ids
   end
 
+  def followers_ids
+    follower_ids = []
+    self.author.followers.each do |follower|
+      follower_ids << follower.id 
+    end
+
+    follower_ids
+  end
+
   def current_user_liked?
     self.likers_ids.include?(current_user.id)
   end
 
-  def current_user_follows?
-    self.author.followees.include?(current_user.id)
-  end
+  # def current_user_follows?
+  #   self.author.followees.include?(current_user.id)
+  # end
 
   has_attached_file :image, default_url: "orange_happy.png"
   validates_attachment_content_type :image,
