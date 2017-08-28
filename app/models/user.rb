@@ -33,28 +33,15 @@ class User < ApplicationRecord
     foreign_key: :user_id,
     class_name: "Like"
 
-  # has_many :followers,
-  #   primary_key: :id,
-  #   foreign_key: :followee_id,
-  #   class_name: "Follow"
+  has_many :followers,
+    primary_key: :id,
+    foreign_key: :followee_id,
+    class_name: "Follow"
 
-  # has_many :followees,
-  #   primary_key: :id,
-  #   foreign_key: :follower_id,
-  #   class_name: "Follow"
-
-  has_many :follows,
+  has_many :followees,
     primary_key: :id,
     foreign_key: :follower_id,
     class_name: "Follow"
-  
-  has_many :followers,
-    through: :follows,
-    source: :followee
-
-  has_many :followees,
-    through: :follows,
-    source: :follower
 
   has_attached_file :avatar,
                     styles: { thumb: "64x64>" },

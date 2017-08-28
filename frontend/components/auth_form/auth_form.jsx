@@ -60,7 +60,6 @@ class AuthForm extends React.Component {
     );
   }
 
-
   renderErrors() {
     return(
       <ul>

@@ -14,7 +14,6 @@ class FeedItem extends React.Component {
 
     this.switchLike = this.switchLike.bind(this);
     this.switchFollow = this.switchFollow.bind(this);
-    console.log('PROP', this.props);
   }
 
   switchFollow() {
