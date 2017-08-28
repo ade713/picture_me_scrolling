@@ -11,9 +11,13 @@ div.post-header {
   padding-right: 20px;
   margin-bottom: 15px;
   padding-top: 15px;
+
+  .post-user {
+    margin-right: 15px;
+  }
 }
 
-div.follow-btn {
+.follow-hdr {
   color: blue;
   text-decoration: underline;
 }
