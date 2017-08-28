@@ -3,12 +3,7 @@ import { merge } from 'lodash';
 import { RECEIVE_ALL_POSTS,
          RECEIVE_POST,
          EDIT_POST,
-         REMOVE_POST,
-         RECEIVE_LIKE,
-         REMOVE_LIKE } from '../actions/posts_actions';
-
-// import
-
+         REMOVE_POST } from '../actions/posts_actions';
 
 const PostsReducer = (state = {}, action) => {
   Object.freeze(state);
