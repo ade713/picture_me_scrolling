@@ -8,7 +8,9 @@ import { requestAllPosts,
          unlikePost,
          updatePost,
          deletePost } from '../../actions/posts_actions';
-import { requestUsers } from '../../actions/users_actions';
+import { followUser,
+         unfollowUser } from '../../actions/users_actions';
+// import { requestUsers } from '../../actions/users_actions';
 
 const mapStateToProps = state => ({
   posts: selectAllPosts(state),
@@ -19,7 +21,9 @@ const mapDispatchToProps = dispatch => ({
   requestAllPosts: () => dispatch(requestAllPosts()),
   deletePost: post => dispatch(deletePost(post)),
   likePost: id => dispatch(likePost(id)),
-  unlikePost: id => dispatch(unlikePost(id))
+  unlikePost: id => dispatch(unlikePost(id)),
+  followUser: id => dispatch(followUser(id)),
+  unfollowUser: id => dispatch(unfollowUser(id))
 });
 
 const FeedContainer = connect(
