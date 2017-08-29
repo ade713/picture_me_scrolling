@@ -7,7 +7,6 @@ class Api::LikesController < ApplicationController
 
     @like.save!
     render 'api/posts/show'
-    # @post #render single post, find association render
   end
 
   def destroy
