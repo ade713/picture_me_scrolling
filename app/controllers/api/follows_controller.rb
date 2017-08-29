@@ -5,19 +5,15 @@ class Api::FollowsController < ApplicationController
     @follow.followee_id = params[:user_id]
     @author = User.find_by(id: @follow.followee_id)
     @posts = @author.posts
-    # @posts = Post.all
 
     @follow.save!
     render 'api/posts/index'
   end
 
   def destroy
-    # @follow = current_user.followees.find_by(followee_id: params[:user_id])
     @follow = current_user.followees.find_by(followee_id: params[:user_id])
     @author = User.find_by(id: @follow.followee_id)
     @posts = @author.posts
-    # @posts = Post.all
-    
 
     @follow.destroy
     render 'api/posts/index'
