@@ -13,6 +13,6 @@ class Api::LikesController < ApplicationController
     @like = current_user.likes.find_by(post_id: params[:post_id])
     @post = @like.post
     @like.destroy
-    render "api/posts/show"
+    render 'api/posts/show'
   end
 end

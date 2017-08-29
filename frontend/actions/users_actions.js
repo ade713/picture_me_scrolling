@@ -1,5 +1,5 @@
 import * as APIUtil from '../util/user_api_util';
-import { receivePost } from './posts_actions';
+import { receivePost, receiveAllPosts } from './posts_actions';
 
 export const RECEIVE_USERS = 'RECEIVE_USERS';
 
@@ -15,10 +15,10 @@ export const requestUsers = () => dispatch => {
 
 export const followUser = id => dispatch => {
   return APIUtil.createFollow(id)
-    .then(post => dispatch(receivePost(post)));
+    .then(posts => dispatch(receiveAllPosts(posts)));
 };
 
 export const unfollowUser = id => dispatch => {
   return APIUtil.deleteFollow(id)
-    .then(post => dispatch(receivePost(post)));
+    .then(posts => dispatch(receiveAllPosts(posts)));
 };
