@@ -25,12 +25,6 @@ class FeedItem extends React.Component {
   }
 
   renderFollow() {
-    // if (this.props.post.followed) {
-    //   return <p>Unfollow</p>;
-    // } else {
-    //   return <p>Follow</p>;
-    // }
-
     if (this.props.post.followed) {
       return (
         <button
@@ -113,6 +107,9 @@ class FeedItem extends React.Component {
               <div className="post-user">
                 { this.props.post.author }
               </div>
+              <div className="follow-hdr">
+                { this.renderFollow() }
+              </div>
             </div>
 
             <div className="post-upload-audio">
@@ -154,6 +151,9 @@ class FeedItem extends React.Component {
             <div className="post-header">
               <div className="post-user">
                 { this.props.post.author }
+              </div>
+              <div className="follow-hdr">
+                { this.renderFollow() }
               </div>
             </div>
 
@@ -236,6 +236,9 @@ class FeedItem extends React.Component {
               <div className="post-user">
                 { this.props.post.author }
               </div>
+              <div className="follow-hdr">
+                { this.renderFollow() }
+              </div>
             </div>
 
             <div className="post-content">
@@ -276,6 +279,9 @@ class FeedItem extends React.Component {
             <div className="post-header">
               <div className="post-user">
                 { this.props.post.author }
+              </div>
+              <div className="follow-hdr">
+                { this.renderFollow() }
               </div>
             </div>
 
@@ -318,6 +324,9 @@ class FeedItem extends React.Component {
             <div className="post-header">
               <div className="post-user">
                 { this.props.post.author }
+              </div>
+              <div className="follow-hdr">
+                { this.renderFollow() }
               </div>
             </div>
 
