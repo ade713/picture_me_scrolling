@@ -14,10 +14,10 @@ class Feed extends React.Component {
   }
 
   componentDidMount() {
-    this.props.requestAllPosts();
     setTimeout(() => this.setState({
       loading: false
-    }), 2000);
+    }), 5000);
+    this.props.requestAllPosts();
   }
 
   render() {
@@ -44,6 +44,7 @@ class Feed extends React.Component {
         unlikePost={ unlikePost } />
     );
 
+    console.log('rdr', this.state);
     if (this.state.loading) {
       return (
         <div className="sk-folding-cube">
