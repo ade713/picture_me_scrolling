@@ -131,7 +131,7 @@ class FeedItem extends React.Component {
                   { this.likeButton() }
                 </div>
                 <div className="post-btns">
-                  { this.renderEditDeleteButtons() }
+                  { this.renderDeleteButtons() }
                 </div>
               </div>
             </div>
@@ -172,7 +172,7 @@ class FeedItem extends React.Component {
                   { this.likeButton() }
                 </div>
                 <div className="post-btns">
-                  { this.renderEditDeleteButtons() }
+                  { this.renderDeleteButtons() }
                 </div>
               </div>
             </div>
@@ -215,7 +215,7 @@ class FeedItem extends React.Component {
                   { this.likeButton() }
                 </div>
                 <div className="post-btns">
-                  { this.renderEditDeleteButtons() }
+                  { this.renderDeleteButtons() }
                 </div>
               </div>
             </div>
@@ -259,7 +259,7 @@ class FeedItem extends React.Component {
                   { this.likeButton() }
                 </div>
                 <div className="post-btns">
-                  { this.renderEditDeleteButtons() }
+                  { this.renderDeleteButtons() }
                 </div>
               </div>
             </div>
@@ -303,7 +303,7 @@ class FeedItem extends React.Component {
                   { this.likeButton() }
                 </div>
                 <div className="post-btns">
-                  { this.renderEditDeleteButtons() }
+                  { this.renderDeleteButtons() }
                 </div>
               </div>
             </div>
@@ -349,7 +349,7 @@ class FeedItem extends React.Component {
                   { this.likeButton() }
                 </div>
                 <div className="post-btns">
-                  { this.renderEditDeleteButtons() }
+                  { this.renderDeleteButtons() }
                 </div>
               </div>
             </div>
