@@ -8,7 +8,7 @@ class Feed extends React.Component {
     super(props);
     
     this.state = {
-      looading: true
+      loading: true
     };
     console.log('state', this.state);
   }
@@ -16,7 +16,7 @@ class Feed extends React.Component {
   componentDidMount() {
     setTimeout(() => this.setState({
       loading: false
-    }), 5000);
+    }), 1500);
     this.props.requestAllPosts();
   }
 
@@ -45,7 +45,7 @@ class Feed extends React.Component {
     );
 
     console.log('rdr', this.state);
-    if (this.state.loading) {
+    if (this.state.loading === true) {
       return (
         <div className="sk-folding-cube">
           <div className="sk-cube1 sk-cube"></div>

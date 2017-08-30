@@ -25,22 +25,25 @@ class FeedItem extends React.Component {
   }
 
   renderFollow() {
-    if (this.props.post.followed) {
-      return (
-        <button
-          className="unfollow-btn"
-          onClick={ this.switchFollow() }>
-          Unfollow
-        </button>
-      );
-    } else {
-      return (
-        <button
-          className="follow-btn"
-          onClick={ this.switchFollow() }>
-          Follow
-        </button>
-      );
+    if (this.props.post.author_id !== this.props.currentUser.id) {
+
+      if (this.props.post.followed) {
+        return (
+          <button
+            className="unfollow-btn"
+            onClick={ this.switchFollow() }>
+            Unfollow
+          </button>
+        );
+      } else {
+        return (
+          <button
+            className="follow-btn"
+            onClick={ this.switchFollow() }>
+            Follow
+          </button>
+        );
+      }
     }
   }
   
