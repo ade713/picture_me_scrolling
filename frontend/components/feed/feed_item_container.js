@@ -8,6 +8,7 @@ import { likePost,
          deletePost } from '../../actions/posts_actions';
 import { followUser,
          unfollowUser } from '../../actions/users_actions';
+         
 
 const mapStateToProps = state => ({
     currentUser: state.session.currentUser
