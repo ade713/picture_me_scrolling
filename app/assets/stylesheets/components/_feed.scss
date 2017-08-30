@@ -14,6 +14,7 @@ div.post-header {
 
   .post-user {
     margin-right: 15px;
+    font-weight: bold;
   }
 }
 
@@ -26,7 +27,10 @@ div.follow-hdr {
 
   button.follow-btn:hover {
     text-shadow: 2px 2px 4px lightblue;
-    font-size: 20px;
+  }
+
+  button.unfollow-btn:hover {
+    text-shadow: 2px 2px 4px lightslategrey;
   }
 }
 
