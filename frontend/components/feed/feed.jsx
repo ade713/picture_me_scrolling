@@ -6,10 +6,18 @@ import PostBarContainer from '../posts/post_bar_container';
 class Feed extends React.Component {
   constructor(props) {
     super(props);
+    
+    this.state = {
+      looading: true
+    };
+    console.log('state', this.state);
   }
 
   componentDidMount() {
     this.props.requestAllPosts();
+    setTimeout(() => this.setState({
+      loading: false
+    }), 2000);
   }
 
   render() {
@@ -36,17 +44,29 @@ class Feed extends React.Component {
         unlikePost={ unlikePost } />
     );
 
-    return (
-      <div className="feed-posts">
-        <div className="new-post-container">
-          <PostBarContainer />
+    if (this.state.loading) {
+      return (
+        <div className="sk-folding-cube">
+          <div className="sk-cube1 sk-cube"></div>
+          <div className="sk-cube2 sk-cube"></div>
+          <div className="sk-cube4 sk-cube"></div>
+          <div className="sk-cube3 sk-cube"></div>
         </div>
-        <br />
-        <ul>
-          { feedItems }
-        </ul>
-      </div>
-    );
+      );
+    } else {
+      return (
+        <div className="feed-posts">
+          <div className="new-post-container">
+            <PostBarContainer />
+          </div>
+          <br />
+          <ul>
+            { feedItems }
+          </ul>
+        </div>
+      );
+    }
+
   }
 }
 
