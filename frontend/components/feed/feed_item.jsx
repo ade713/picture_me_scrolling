@@ -14,25 +14,23 @@ class FeedItem extends React.Component {
 
     this.switchLike = this.switchLike.bind(this);
     this.switchFollow = this.switchFollow.bind(this);
-
-    this.post = this.props.post;
   }
 
   switchFollow() {
-    if (this.post.followed) {
-      return () => this.props.unfollowUser(this.post.author_id);
+    if (this.props.post.followed) {
+      return () => this.props.unfollowUser(this.props.post.author_id);
     } else {
-      return () => this.props.followUser(this.post.author_id);
+      return () => this.props.followUser(this.props.post.author_id);
     }
   }
 
   renderFollow() {
-    if (this.post.author_id !== this.props.currentUser.id) {
-      if (this.post.followed) {
+    if (this.props.post.author_id !== this.props.currentUser.id) {
+      if (this.props.post.followed) {
         return (
           <button
             className="unfollow-btn"
-            onClick={ this.switchFollow() }>
+            onClick={this.switchFollow()}>
             Unfollow
           </button>
         );
@@ -40,33 +38,33 @@ class FeedItem extends React.Component {
         return (
           <button
             className="follow-btn"
-            onClick={ this.switchFollow() }>
+            onClick={this.switchFollow()}>
             Follow
           </button>
         );
       }
     }
   }
-  
+
   switchLike() {
-    if (this.post.liked) {
-      return () => this.props.unlikePost(this.post.id);
+    if (this.props.post.liked) {
+      return () => this.props.unlikePost(this.props.post.id);
     } else {
-      return () => this.props.likePost(this.post.id);
+      return () => this.props.likePost(this.props.post.id);
     }
   }
 
   likeButton() {
-    if (this.post.author_id !== this.props.currentUser.id) {
-      if (this.post.liked) {
+    if (this.props.post.author_id !== this.props.currentUser.id) {
+      if (this.props.post.liked) {
         return (
-          <button className="like-btn-on" onClick={ this.switchLike() }>
+          <button className="like-btn-on" onClick={this.switchLike()}>
             <i className="fa fa-heart fa-2x" aria-hidden="true"></i>
           </button>
         );
       } else {
         return (
-          <button className="like-btn-off" onClick={ this.switchLike() }>
+          <button className="like-btn-off" onClick={this.switchLike()}>
             <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i>
           </button>
         );
@@ -77,16 +75,22 @@ class FeedItem extends React.Component {
   likeCounter() {
     return (
       <div className="post-likes">
-        Likes: { this.post.likes }
+        Likes: {this.props.post.likes}
       </div>
     );
   }
 
-  renderDeleteButtons() {
-    if (this.post.author_id === this.props.currentUser.id) {
+  renderEditDeleteButtons() {
+    if (this.props.post.author_id === this.props.currentUser.id) {
       return (
+        <button className="edit-post-btn">
+          <i
+            className="fa fa-pencil-square-o fa-2x"
+            id="edit-btn-icon"
+            aria-hidden="true"></i>
+        </button> ,
         <button className="delete-post-btn"
-          onClick={() => this.props.deletePost(this.post)} >
+          onClick={() => this.props.deletePost(this.props.post)} >
           <i className="fa fa-trash fa-2x" aria-hidden="true"></i>
         </button>
       );
@@ -96,38 +100,38 @@ class FeedItem extends React.Component {
   audio() {
     return (
       <div className="feed-post">
-        <img className="author-avatar" src={ this.post.author_avatar } />
+        <img className="author-avatar" src={this.props.post.author_avatar} />
         <li className="feed-item">
 
           <div className="post-audio">
 
             <div className="post-header">
               <div className="post-user">
-                { this.post.author }
+                {this.props.post.author}
               </div>
               <div className="follow-hdr">
-                { this.renderFollow() }
+                {this.renderFollow()}
               </div>
             </div>
 
             <div className="post-upload-audio">
               <video width="540" height="120" controls>
-                <source src={ this.post.image_url } />
+                <source src={this.props.post.image_url} />
               </video>
             </div>
 
             <div className="post-caption">
-              { this.post.title }
+              {this.props.post.title}
             </div>
 
             <div className="post-footer">
-              { this.likeCounter() }
+              {this.likeCounter()}
               <div className="post-options">
                 <div className="like-post-btn">
-                  { this.likeButton() }
+                  {this.likeButton()}
                 </div>
                 <div className="post-btns">
-                  { this.renderDeleteButtons() }
+                  {this.renderEditDeleteButtons()}
                 </div>
               </div>
             </div>
@@ -141,34 +145,34 @@ class FeedItem extends React.Component {
   link() {
     return (
       <div className="feed-post">
-        <img className="author-avatar" src={ this.post.author_avatar } />
+        <img className="author-avatar" src={this.props.post.author_avatar} />
         <li className="feed-item">
 
           <div className="post-link">
 
             <div className="post-header">
               <div className="post-user">
-                { this.post.author }
+                {this.props.post.author}
               </div>
               <div className="follow-hdr">
-                { this.renderFollow() }
+                {this.renderFollow()}
               </div>
             </div>
 
             <div className="post-link-main">
-              <a className="posted-link" href={ this.post.url } target="_blank">
-                { this.post.title }
+              <a className="posted-link" href={this.props.post.url} target="_blank">
+                {this.props.post.title}
               </a>
             </div>
 
             <div className="post-footer">
-              { this.likeCounter() }
+              {this.likeCounter()}
               <div className="post-options">
                 <div className="like-post-btn">
-                  { this.likeButton() }
+                  {this.likeButton()}
                 </div>
                 <div className="post-btns">
-                  { this.renderDeleteButtons() }
+                  {this.renderEditDeleteButtons()}
                 </div>
               </div>
             </div>
@@ -182,36 +186,36 @@ class FeedItem extends React.Component {
   photo() {
     return (
       <div className="feed-post">
-        <img className="author-avatar" src={ this.post.author_avatar } />
+        <img className="author-avatar" src={this.props.post.author_avatar} />
         <li className="feed-item">
 
           <div className="post-photo">
 
             <div className="post-header">
               <div className="post-user">
-                { this.post.author }
+                {this.props.post.author}
               </div>
               <div className="follow-hdr">
-                { this.renderFollow() }
+                {this.renderFollow()}
               </div>
             </div>
 
             <div className="post-upload-photo">
-              <img src={ this.post.image_url } />
+              <img src={this.props.post.image_url} />
             </div>
 
             <div className="post-caption">
-              { this.post.title }
+              {this.props.post.title}
             </div>
 
             <div className="post-footer">
-              { this.likeCounter() }
+              {this.likeCounter()}
               <div className="post-options">
                 <div className="like-post-btn">
-                  { this.likeButton() }
+                  {this.likeButton()}
                 </div>
                 <div className="post-btns">
-                  { this.renderDeleteButtons() }
+                  {this.renderEditDeleteButtons()}
                 </div>
               </div>
             </div>
@@ -225,37 +229,37 @@ class FeedItem extends React.Component {
   quote() {
     return (
       <div className="feed-post">
-        <img className="author-avatar" src={ this.post.author_avatar } />
+        <img className="author-avatar" src={this.props.post.author_avatar} />
         <li className="feed-item">
 
           <div className="post-quote">
 
             <div className="post-header">
               <div className="post-user">
-                { this.post.author }
+                {this.props.post.author}
               </div>
               <div className="follow-hdr">
-                { this.renderFollow() }
+                {this.renderFollow()}
               </div>
             </div>
 
             <div className="post-content">
               <div className="quote">
-                { this.post.title }
+                {this.props.post.title}
               </div>
               <div className="source">
-                { this.post.body }
+                {this.props.post.body}
               </div>
             </div>
 
             <div className="post-footer">
-              { this.likeCounter() }
+              {this.likeCounter()}
               <div className="post-options">
                 <div className="like-post-btn">
-                  { this.likeButton() }
+                  {this.likeButton()}
                 </div>
                 <div className="post-btns">
-                  { this.renderDeleteButtons() }
+                  {this.renderEditDeleteButtons()}
                 </div>
               </div>
             </div>
@@ -269,37 +273,37 @@ class FeedItem extends React.Component {
   text() {
     return (
       <div className="feed-post">
-        <img className="author-avatar" src={ this.post.author_avatar } />
+        <img className="author-avatar" src={this.props.post.author_avatar} />
         <li className="feed-item">
 
           <div className="post-text">
 
             <div className="post-header">
               <div className="post-user">
-                { this.post.author }
+                {this.props.post.author}
               </div>
               <div className="follow-hdr">
-                { this.renderFollow() }
+                {this.renderFollow()}
               </div>
             </div>
 
             <div className="post-content">
               <div className="post-title">
-                { this.post.title }
+                {this.props.post.title}
               </div>
               <div className="post-body">
-                { this.post.body }
+                {this.props.post.body}
               </div>
             </div>
 
             <div className="post-footer">
-              { this.likeCounter() }
+              {this.likeCounter()}
               <div className="post-options">
                 <div className="like-post-btn">
-                  { this.likeButton() }
+                  {this.likeButton()}
                 </div>
                 <div className="post-btns">
-                  { this.renderDeleteButtons() }
+                  {this.renderEditDeleteButtons()}
                 </div>
               </div>
             </div>
@@ -314,38 +318,38 @@ class FeedItem extends React.Component {
   video() {
     return (
       <div className="feed-post">
-        <img className="author-avatar" src={ this.post.author_avatar } />
+        <img className="author-avatar" src={this.props.post.author_avatar} />
         <li className="feed-item">
 
           <div className="post-video">
 
             <div className="post-header">
               <div className="post-user">
-                { this.post.author }
+                {this.props.post.author}
               </div>
               <div className="follow-hdr">
-                { this.renderFollow() }
+                {this.renderFollow()}
               </div>
             </div>
 
             <div className="post-upload-video">
               <video width="540" height="440" controls>
-                <source src={ this.post.image_url } />
+                <source src={this.props.post.image_url} />
               </video>
             </div>
 
             <div className="post-caption">
-              { this.post.title }
+              {this.props.post.title}
             </div>
 
             <div className="post-footer">
-              { this.likeCounter() }
+              {this.likeCounter()}
               <div className="post-options">
                 <div className="like-post-btn">
-                  { this.likeButton() }
+                  {this.likeButton()}
                 </div>
                 <div className="post-btns">
-                  { this.renderDeleteButtons() }
+                  {this.renderEditDeleteButtons()}
                 </div>
               </div>
             </div>
@@ -357,7 +361,7 @@ class FeedItem extends React.Component {
   }
 
   render() {
-    switch (this.post.post_type) {
+    switch (this.props.post.post_type) {
       case 'audio':
         return this.audio();
       case 'link':
