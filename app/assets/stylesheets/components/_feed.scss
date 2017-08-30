@@ -17,9 +17,17 @@ div.post-header {
   }
 }
 
-.follow-hdr {
-  color: blue;
-  text-decoration: underline;
+div.follow-hdr {
+  color: black;
+
+  button.follow-btn {
+    color: blue;
+  }
+
+  button.follow-btn:hover {
+    text-shadow: 2px 2px 4px lightblue;
+    font-size: 20px;
+  }
 }
 
 div.feed-post {
@@ -86,7 +94,7 @@ div.post-btns {
   flex-direction: row;
 }
 
-#edit-btn-icon {
-  margin-left: 13px;
-  margin-right: 13px;
-}
+// #edit-btn-icon {
+//   margin-left: 13px;
+//   margin-right: 13px;
+// }
