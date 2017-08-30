@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 
 import Feed from './feed';
 import { selectAllPosts } from '../../reducers/selectors';
-import { selectUsers } from '../../reducers/selectors';
 import { requestAllPosts,
          likePost,
          unlikePost,
@@ -10,7 +9,7 @@ import { requestAllPosts,
          deletePost } from '../../actions/posts_actions';
 import { followUser,
          unfollowUser } from '../../actions/users_actions';
-// import { requestUsers } from '../../actions/users_actions';
+
 
 const mapStateToProps = state => ({
   posts: selectAllPosts(state),
