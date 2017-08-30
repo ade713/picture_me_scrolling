@@ -2,8 +2,7 @@ import { connect } from 'react-redux';
 
 import FeedItem from './feed_item';
 import { selectAllPosts } from '../../reducers/selectors';
-import { requestAllPosts,
-         likePost,
+import { likePost,
          unlikePost,
          updatePost,
          deletePost } from '../../actions/posts_actions';

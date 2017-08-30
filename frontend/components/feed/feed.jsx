@@ -18,8 +18,7 @@ class Feed extends React.Component {
     const feedItems = posts.map(post =>
       <FeedItemContainer 
         key={ post.id }
-        post={ post }
-        />
+        post={ post } />
     );
     
     return (
