@@ -1,6 +1,5 @@
 import React from 'react';
 
-import FeedItem from './feed_item';
 import FeedItemContainer from './feed_item_container';
 import PostBarContainer from '../posts/post_bar_container';
 
@@ -14,16 +13,7 @@ class Feed extends React.Component {
   }
 
   render() {
-    const {
-        posts, 
-        deletePost, 
-        likePost, 
-        unlikePost, 
-        currentUser,
-        followUser,
-        unfollowUser, 
-        users
-      } = this.props;
+    const { posts } = this.props;
 
     const feedItems = posts.map(post =>
       <FeedItemContainer 
@@ -47,10 +37,3 @@ class Feed extends React.Component {
 }
 
 export default Feed;
-
-// deletePost={ deletePost }
-// currentUser={ currentUser }
-// followUser={ followUser }
-// unfollowUser={ unfollowUser }
-// likePost={ likePost }
-// unlikePost={ unlikePost } 
