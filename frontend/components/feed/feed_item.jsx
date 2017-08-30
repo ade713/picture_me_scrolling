@@ -83,12 +83,6 @@ class FeedItem extends React.Component {
   renderDeleteButtons() {
     if (this.post.author_id === this.props.currentUser.id) {
       return (
-        <button className="edit-post-btn">
-          <i
-            className="fa fa-pencil-square-o fa-2x"
-            id="edit-btn-icon"
-            aria-hidden="true"></i>
-        </button> ,
         <button className="delete-post-btn"
           onClick={() => this.props.deletePost(this.post)} >
           <i className="fa fa-trash fa-2x" aria-hidden="true"></i>
