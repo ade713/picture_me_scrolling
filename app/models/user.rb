@@ -43,6 +43,14 @@ class User < ApplicationRecord
     foreign_key: :follower_id,
     class_name: "Follow"
 
+  has_many :followee_users,
+    through: :followees,
+    source: :followees
+
+  has_many :followee_posts,
+    through: :followee_users,
+    source: :posts
+
   has_attached_file :avatar,
                     styles: { thumb: "64x64>" },
                     default_url: "https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/b-a-w_happy_avatar-icon.png"
