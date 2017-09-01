@@ -51,6 +51,10 @@ class User < ApplicationRecord
     through: :followee_users,
     source: :posts
 
+  def recommended_follows
+    
+  end
+
   has_attached_file :avatar,
                     styles: { thumb: "64x64>" },
                     default_url: "https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/b-a-w_happy_avatar-icon.png"
