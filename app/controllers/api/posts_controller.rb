@@ -12,8 +12,7 @@ class Api::PostsController < ApplicationController
 
   def index
     # @posts = Post.all
-
-    @posts = Post.find_by_sql([
+    @followed_posts = Post.find_by_sql([
                 'SELECT posts.*
                 FROM posts
                 LEFT JOIN users ON posts.author_id = users.id
@@ -21,6 +20,8 @@ class Api::PostsController < ApplicationController
                 WHERE posts.author_id = follows.followee_id AND follows.follower_id = ?',
                 current_user
               ])
+
+    @posts = current_user.posts + @followed_posts
   end
 
   def show
