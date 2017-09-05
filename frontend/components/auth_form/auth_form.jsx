@@ -79,15 +79,15 @@ class AuthForm extends React.Component {
         <div className="auth-main">
           <header className="auth-navbar">
             <div className='auth-header'>
-              PicMeS
+              Picture Me Scrolling
             </div>
             <div className="login-signup">
               { this.navLink() }
             </div>
           </header>
           <div className="auth-body">
-            <section className="auth-body-title">
-              <h1 className="auth-title-top">Picture</h1>
+            <section className="auth-page-description">
+              <h1 className="auth-title-top">"All for One and One for All"</h1>
               <h1 className="auth-title-mid">Me</h1>
               <h1 className="auth-title-btm">Scrolling</h1>
             </section>
@@ -150,3 +150,9 @@ class AuthForm extends React.Component {
 }
 
 export default AuthForm;
+
+{/* <section className="auth-body-title">
+  <h1 className="auth-title-top">Picture</h1>
+  <h1 className="auth-title-mid">Me</h1>
+  <h1 className="auth-title-btm">Scrolling</h1>
+</section> */}
