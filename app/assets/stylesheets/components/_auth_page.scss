@@ -144,6 +144,8 @@ input.auth-login-input::placeholder {
   font-family: 'Yanone Kaffeesatz', sans-serif;
   color: black;
   padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
   text-align: center;
   align-self: center;
   border: 2px solid black;
@@ -159,6 +161,8 @@ input.auth-login-input::placeholder {
 .guest-login {
   display: flex;
   padding: 5px;
+  padding-left: 15px;
+  padding-right: 15px;
   border: 2px solid black;
   text-align: center;
   align-self: center;
