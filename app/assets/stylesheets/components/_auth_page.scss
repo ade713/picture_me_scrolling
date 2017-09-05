@@ -73,10 +73,11 @@ div.auth-page {
 div.auth-body {
   display: flex;
   flex: 14;
+  flex-direction: column;
   flex-wrap: wrap;
   justify-content: space-between;
   margin-top: 50px;
-  padding-top: 17%;
+  padding-top: 3%;
   padding-left: 3%;
   padding-right: 4%;
   background-image: url(https://s3.us-east-2.amazonaws.com/picmes-dev/assets/mac_table.png);
@@ -84,25 +85,39 @@ div.auth-body {
   background-repeat: no-repeat;
 }
 
-section.auth-body-title {
+// section.auth-body-title {
+//   display: flex;
+//   flex-direction: column;
+//   font-family: 'Yanone Kaffeesatz', sans-serif;
+//   font-size: 55px;
+// }
+
+section.auth-page-description {
   display: flex;
   flex-direction: column;
-  font-family: 'Yanone Kaffeesatz', sans-serif;
-  font-size: 55px;
+  font-family: 'Yanone Kaffeesatz',
+  sans-serif;
+  font-size: 30px;
 }
 
-h1.auth-title-top {
+h1.auth-desc-top {
   color: black;
   margin-top: 8%;
 }
 
-h1.auth-title-mid {
+h1.auth-desc-mid1 {
   color: black;
   margin-left: 20%;
   margin-top: 15%;
 }
 
-h1.auth-title-btm {
+h1.auth-desc-mid2 {
+  color: black;
+  margin-left: 20%;
+  margin-top: 15%;
+}
+
+h1.auth-desc-btm {
   color: black;
   margin-left: 5%;
   margin-top: 15%;

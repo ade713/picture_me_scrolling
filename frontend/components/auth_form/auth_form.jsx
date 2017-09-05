@@ -87,9 +87,10 @@ class AuthForm extends React.Component {
           </header>
           <div className="auth-body">
             <section className="auth-page-description">
-              <h1 className="auth-title-top">"All for One and One for All"</h1>
-              <h1 className="auth-title-mid">Me</h1>
-              <h1 className="auth-title-btm">Scrolling</h1>
+              <h1 className="auth-desc-top">"All for One and One for All"</h1>
+              <h1 className="auth-desc-mid1">View the world of others in one spot!</h1>
+              <h1 className="auth-desc-mid2">Share your world to all!</h1>
+              <h1 className="auth-desc-btm">Express yourself through words, photos, audio &amp; video.</h1>
             </section>
             <section className="auth-form-box">
               <h1 className="auth-form-header">
