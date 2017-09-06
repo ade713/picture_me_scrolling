@@ -2,7 +2,7 @@
 
 Picture Me Scrolling, a Tumblr inspired clone, is a blogging site (that creates an outlet for users to share their views through a variety of mediums including text, audio and visual. A single page application built with Ruby on Rails and React/Redux, along with PostgreSQL.  PicMeS also lets the user experience the world through the experiences of others.
 
-![homepage](./docs/picmes_home_page.jpeg)
+![homepage](./docs/home_page.png)
 
 ## Technology
 
@@ -56,7 +56,7 @@ An image preview is displayed with use of the imageURL.
 
 For image uploading, we append key/value pairs via the **append** method to a FormData object. This object is used to send data to the server using an AJAX request. this.state.imageFile holds the file of respective type. Also to note, the **post_type** info appending to the object is used to indicate the type of post being created. This info also aids with rendering posts on the feed since correct tags must be used to display each media type.
 
-![dashboard](./docs/dashboard_preview.jpeg)
+![dashboard](./docs/dashboard.png)
 + Posts are presented on a Feed which also includes a blogger's avatar.
 
 
