@@ -184,8 +184,10 @@ footer.auth-footer {
   display: flex;
   flex: 1;
   justify-content: center;
+  align-items: center;
   width: 100%;
   border-top: 1px solid black;
+  font-size: 24px;
 }
 
 footer i {
