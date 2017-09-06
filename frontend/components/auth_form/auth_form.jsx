@@ -151,9 +151,3 @@ class AuthForm extends React.Component {
 }
 
 export default AuthForm;
-
-{/* <section className="auth-body-title">
-  <h1 className="auth-title-top">Picture</h1>
-  <h1 className="auth-title-mid">Me</h1>
-  <h1 className="auth-title-btm">Scrolling</h1>
-</section> */}
