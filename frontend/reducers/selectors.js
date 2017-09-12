@@ -6,3 +6,5 @@ export const selectPost = ({ posts }, postId) => {
 };
 
 export const selectAllPosts = ({ posts }) => values(posts);
+
+export const selectUsers = ({ users }) => values(users);

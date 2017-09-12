@@ -1,3 +1,7 @@
 import { connect } from 'react-redux';
 
-import RecUsers from './recommended_users';
+import RecommendedUsers from './recommended_users';
+import { requestUsers,
+         followUser } from '../../actions/users_actions';
+
+
