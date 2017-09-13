@@ -25,19 +25,17 @@ class Feed extends React.Component {
         post={ post } />
     );
     
-      return (
-        <div className="feed-posts">
-          <div className="new-post-container">
-            <PostBarContainer />
-          </div>
-          <br />
-          <ul>
-            { feedItems }
-          </ul>
+    return (
+      <div className="feed-posts">
+        <div className="new-post-container">
+          <PostBarContainer />
         </div>
-      );
-    
-
+        <br />
+        <ul>
+          { feedItems }
+        </ul>
+      </div>
+    );
   }
 }
 

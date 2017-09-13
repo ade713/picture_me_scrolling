@@ -8,11 +8,29 @@ class RecommendedUsers extends React.Component {
   }
 
   componentDidMount() {
-
+    this.props.requestUsers();
   }
 
   render() {
+    const { users } = this.props;
+    console.log('REC', users);
 
+    const userItems = users.map(user => 
+      <RecommendedUsersContainer 
+        key={user.id}
+        user={ user } />
+    );
+
+    return (
+      <div className="recm-users">
+        <h2 className="rec-users-title">
+          RecommendedUsers
+        </h2>
+        <ul>
+          { userItems }
+        </ul>
+      </div>
+    );
   }
 }
 
