@@ -32,7 +32,7 @@ class Dashboard extends React.Component {
             <FeedContainer />
           </div>
           <div className="dash-right-column">
-
+            <RecommendedUsersContainer />
           </div>
         </div>
       </div>
