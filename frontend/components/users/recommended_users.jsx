@@ -25,11 +25,11 @@ class RecommendedUsers extends React.Component {
     );
 
     return (
-      <div className="recm-users">
+      <div className="rec-users">
         <h2 className="rec-users-title">
           RecommendedUsers
         </h2>
-        <ul>
+        <ul className="rec-users-list">
           { recUsers }
         </ul>
       </div>
