@@ -1,11 +1,13 @@
 import React from 'react';
 
 import RecommendedUsersContainer from './recommended_users_container';
+import RecUserItem from './rec_user_item';
+
 
 class RecommendedUsers extends React.Component {
   constructor(props) {
     super(props);
-    console.log('props', this.props);
+    console.log('P', this.props);
   }
 
   componentDidMount() {
@@ -13,13 +15,13 @@ class RecommendedUsers extends React.Component {
   }
 
   render() {
-    const { users } = this.props;
-    console.log('REC', users);
+    const { users, followUser } = this.props;
 
-    const userItems = users.map(user => 
-      <RecommendedUsersContainer 
+    const recUsers = users.map(user => 
+      <RecUserItem 
         key={user.id}
-        user={ user } />
+        user={ user }
+        followUser={ followUser } />
     );
 
     return (
@@ -28,7 +30,7 @@ class RecommendedUsers extends React.Component {
           RecommendedUsers
         </h2>
         <ul>
-          { userItems }
+          { recUsers }
         </ul>
       </div>
     );
