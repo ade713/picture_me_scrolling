@@ -5,6 +5,7 @@ import RecommendedUsersContainer from './recommended_users_container';
 class RecommendedUsers extends React.Component {
   constructor(props) {
     super(props);
+    console.log('props', this.props);
   }
 
   componentDidMount() {

@@ -11,8 +11,9 @@ class Api::UsersController < ApplicationController
   end
 
   def index
+
     # @users = User.joins(:posts).uniq
-    @users = User.all - user.followee_users
+    @users = User.all - current_user.followee_users - current_user
   end
 
   private
