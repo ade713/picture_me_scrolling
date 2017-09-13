@@ -19,4 +19,4 @@ const RecommendedUsersContainer = connect(
   mapStateToProps, mapDispatchToProps
 )(RecommendedUsers);
 
-export default RecommendedUsers;
+export default RecommendedUsersContainer;
