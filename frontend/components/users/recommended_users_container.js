@@ -11,7 +11,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  requestUsers: () => dispatch(requestUsers())
+  requestUsers: () => dispatch(requestUsers()),
+  followUser: id => dispatch(followUser(id)) 
 });
 
 const RecommendedUsersContainer = connect(
