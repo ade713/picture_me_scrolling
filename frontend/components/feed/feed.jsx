@@ -31,7 +31,7 @@ class Feed extends React.Component {
           <PostBarContainer />
         </div>
         <br />
-        <ul>
+        <ul className="feed-list">
           { feedItems }
         </ul>
       </div>
