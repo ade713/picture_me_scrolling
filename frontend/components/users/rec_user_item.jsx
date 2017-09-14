@@ -12,9 +12,9 @@ class RecUserItem extends React.Component {
           <img 
             className="rec-user-avatar" 
             src={ this.props.user.avatar_url } />
-          <h3 className="rec-username">
+          <span className="rec-username">
             { this.props.user.username }
-          </h3>
+          </span>
         </div>
         <button 
           className="follow-user"
