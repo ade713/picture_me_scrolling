@@ -48,15 +48,17 @@ button.dash-logout:hover {
 }
 
 div.dash-feed {
-  display: flex;
-  flex: 3;
+  // display: flex;
+  // flex: 3;
   border-right: 1px solid black;
-
   overflow-y: scroll;
+  min-width: 76.5%;
 }
 
 div.dash-right-column {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
+  // display: flex;
+  // flex: 1;
+  // flex-direction: column;
+  padding: 30px
+;  width: 20%;
 }
