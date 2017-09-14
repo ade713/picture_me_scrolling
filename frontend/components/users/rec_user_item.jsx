@@ -3,7 +3,6 @@ import React from 'react';
 class RecUserItem extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
   }
 
   render() {
@@ -17,7 +16,7 @@ class RecUserItem extends React.Component {
         <img 
           className="user-avatar" 
           src={ this.props.user.avatar_url } />
-        <h3 >
+        <h3 className="rec-username">
           { this.props.user.username }
         </h3>
       </div>

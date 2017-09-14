@@ -7,7 +7,6 @@ import RecUserItem from './rec_user_item';
 class RecommendedUsers extends React.Component {
   constructor(props) {
     super(props);
-    console.log('P', this.props);
   }
 
   componentDidMount() {
