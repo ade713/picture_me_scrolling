@@ -17,11 +17,24 @@ ul.rec-users-list {
   flex-direction: column;
 }
 
-i.fa-plus-square:before {
-  font-size: 30px;
-}
+li.rec-user-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 15px;
 
-img.rec-user-avatar {
-  height: 40px;
-  width: 40px;
+  div.rec-user-block {
+    display: flex;
+    flex-direction: row;
+  }
+
+  i.fa-plus-square:before {
+    font-size: 30px;
+    margin-right: 10px;
+  }
+  
+  img.rec-user-avatar {
+    height: 40px;
+    width: 40px;
+  }
 }
