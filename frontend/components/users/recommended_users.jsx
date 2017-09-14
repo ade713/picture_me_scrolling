@@ -26,7 +26,7 @@ class RecommendedUsers extends React.Component {
     return (
       <div className="rec-users">
         <h2 className="rec-users-title">
-          RecommendedUsers
+          Recommended Users
         </h2>
         <ul className="rec-users-list">
           { recUsers }

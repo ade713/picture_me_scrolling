@@ -1,5 +1,18 @@
 div.rec-users {
   display: flex;
   flex-direction: column;
+  margin-top: 30px;
+  align-items: center;
 }
 
+div.rec-users-title {
+  font-family: 'Yanone Kaffeesatz',
+  sans-serif;
+  font-size: 30px;
+  margin-bottom: 15px;
+}
+
+ul.rec-users-list {
+  display: flex;
+  flex-direction: column;
+}
