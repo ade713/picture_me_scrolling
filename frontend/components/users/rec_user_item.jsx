@@ -10,7 +10,9 @@ class RecUserItem extends React.Component {
     return (
       <div className="rec-user-item">
         <i className="fa fa-plus-square" aria-hidden="true"></i>
-        
+        <img 
+          className="user-avatar" 
+          src={ this.props.user.avatar_url } />
         <h3>rec_user_name</h3>
       </div>
     );
