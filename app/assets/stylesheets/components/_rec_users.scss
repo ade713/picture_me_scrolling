@@ -9,32 +9,47 @@ h2.rec-users-title {
   font-family: 'Yanone Kaffeesatz',
   sans-serif;
   font-size: 33px;
-  margin-bottom: 15px;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  width: 80%;
+  border-bottom: black solid 2px;
+  text-align: center;
 }
 
 ul.rec-users-list {
   display: flex;
   flex-direction: column;
+  width: 78%;
 }
 
 li.rec-user-item {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  margin-bottom: 15px;
+  align-items: center;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  // height: 150px;
+  border-bottom: black solid 1px;
+  
 
   div.rec-user-block {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    margin-left: 7px;
   }
 
   i.fa-plus-square:before {
     font-size: 30px;
-    margin-right: 10px;
+    margin-right: 7px;
   }
   
   img.rec-user-avatar {
     height: 40px;
     width: 40px;
+    margin-right: 10px;
+    border-radius: 2px;
+    border: black solid 1px;
   }
 }
