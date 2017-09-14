@@ -26,20 +26,17 @@ li.rec-user-item {
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 12px 7px;
   border-bottom: black solid 1px;
   
   div.rec-user-block {
     display: flex;
     flex-direction: row;
     align-items: center;
-    margin-left: 7px;
   }
 
   i.fa-plus-square:before {
     font-size: 30px;
-    margin-right: 7px;
   }
   
   img.rec-user-avatar {
