@@ -7,19 +7,19 @@ class RecUserItem extends React.Component {
 
   render() {
     return (
-      <div className="rec-user-item">
+      <li className="rec-user-item">
         <button 
           className="follow-user"
           onClick={ () => this.props.followUser(this.props.user.id) }>
           <i className="fa fa-plus-square" aria-hidden="true"></i>
         </button>
         <img 
-          className="user-avatar" 
+          className="rec-user-avatar" 
           src={ this.props.user.avatar_url } />
         <h3 className="rec-username">
           { this.props.user.username }
         </h3>
-      </div>
+      </li>
     );
   }
 }

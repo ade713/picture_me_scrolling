@@ -16,3 +16,12 @@ ul.rec-users-list {
   display: flex;
   flex-direction: column;
 }
+
+i.fa-plus-square:before {
+  font-size: 30px;
+}
+
+img.rec-user-avatar {
+  height: 40px;
+  width: 40px;
+}
