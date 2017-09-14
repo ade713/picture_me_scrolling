@@ -18,26 +18,24 @@ class Feed extends React.Component {
 
   render() {
     const { posts } = this.props;
-
+    console.log('all', posts);
     const feedItems = posts.map(post =>
       <FeedItemContainer
         key={ post.id }
         post={ post } />
     );
     
-      return (
-        <div className="feed-posts">
-          <div className="new-post-container">
-            <PostBarContainer />
-          </div>
-          <br />
-          <ul>
-            { feedItems }
-          </ul>
+    return (
+      <div className="feed-posts">
+        <div className="new-post-container">
+          <PostBarContainer />
         </div>
-      );
-    
-
+        <br />
+        <ul>
+          { feedItems }
+        </ul>
+      </div>
+    );
   }
 }
 

@@ -3,8 +3,7 @@ class Api::FollowsController < ApplicationController
     @follow = Follow.new
     @follow.follower_id = current_user.id
     @follow.followee_id = params[:user_id]
-    @author = User.find_by(id: @follow.followee_id)
-    @posts = @author.posts
+    @posts = current_user.posts + current_user.followed_posts
 
     @follow.save!
     render 'api/posts/index'
@@ -12,8 +11,7 @@ class Api::FollowsController < ApplicationController
 
   def destroy
     @follow = current_user.followees.find_by(followee_id: params[:user_id])
-    @author = User.find_by(id: @follow.followee_id)
-    @posts = @author.posts
+    @posts = current_user.posts + current_user.followed_posts
 
     @follow.destroy
     render 'api/posts/index'

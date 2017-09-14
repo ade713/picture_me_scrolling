@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import FeedContainer from '../feed/feed_container';
+import RecommendedUsersContainer from '../users/recommended_users_container';
+
 
 class Dashboard extends React.Component {
   constructor(props) {
@@ -30,7 +32,7 @@ class Dashboard extends React.Component {
             <FeedContainer />
           </div>
           <div className="dash-right-column">
-
+            <RecommendedUsersContainer />
           </div>
         </div>
       </div>
