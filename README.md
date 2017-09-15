@@ -77,3 +77,6 @@ Users will be able to follow specific users whose posts will appear on their fee
 
 ### Tags
 One word descriptions of the post that will allow users to view all posts that have the same tag.
+
+#### Credit
+Television graphic by <a href="https://thenounproject.com/daniela.baptista">tnp_daniela_baptista</a> from <a href="https://thenounproject.com/">TheNounProject</a> is licensed under <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0">CC BY 3.0</a>. Check out the new logo that I created on <a href="http://logomakr.com" title="Logo Maker">LogoMaker.com</a> https://logomakr.com/3S4yfl3S4yflÂ
