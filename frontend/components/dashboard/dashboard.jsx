@@ -33,6 +33,22 @@ class Dashboard extends React.Component {
           </div>
           <div className="dash-right-column">
             <RecommendedUsersContainer />
+            <footer className="dash-right-footer">
+              <a 
+                href="https://github.com/ade713"
+                target="_blank">
+                <i 
+                  className="fa fa-github" 
+                  aria-hidden="true"></i>
+              </a>
+              <a 
+                href="https://www.linkedin.com/in/ade-farquhar-2a66a233" 
+                target="_blank">
+                <i 
+                  className="fa fa-linkedin-square"
+                  aria-hidden="true"></i>
+              </a>
+            </footer>
           </div>
         </div>
       </div>
