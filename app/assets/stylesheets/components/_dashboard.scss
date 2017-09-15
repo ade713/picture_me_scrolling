@@ -60,3 +60,12 @@ div.dash-right-column {
   padding: 30px;  
   width: 20%;
 }
+
+footer.dash-right-footer {
+  display: flex;
+  justify-content: center;
+
+  i {
+    font-size: 40px;
+  }
+}

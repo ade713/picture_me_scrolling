@@ -18,7 +18,7 @@ class Feed extends React.Component {
 
   render() {
     const { posts } = this.props;
-    console.log('all', posts);
+    
     const feedItems = posts.map(post =>
       <FeedItemContainer
         key={ post.id }
