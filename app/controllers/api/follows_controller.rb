@@ -7,6 +7,7 @@ class Api::FollowsController < ApplicationController
 
     @follow.save!
     render 'api/posts/index'
+    render 'api/users/index'
   end
 
   def destroy
@@ -15,6 +16,7 @@ class Api::FollowsController < ApplicationController
 
     @follow.destroy
     render 'api/posts/index'
+    render 'api/users/index'
   end
 
   private
