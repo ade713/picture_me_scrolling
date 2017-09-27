@@ -7,6 +7,7 @@ import RecUserItem from './rec_user_item';
 class RecommendedUsers extends React.Component {
   constructor(props) {
     super(props);
+    console.log('RU', this.props);
   }
 
   componentDidMount() {
@@ -22,6 +23,8 @@ class RecommendedUsers extends React.Component {
         user={ user }
         followUser={ followUser } />
     );
+
+    console.log('RU render', this.props.users);
 
     return (
       <div className="rec-users">
