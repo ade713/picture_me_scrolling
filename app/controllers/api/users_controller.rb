@@ -12,7 +12,7 @@ class Api::UsersController < ApplicationController
 
   def index
     rec_users = User.all - current_user.followee_users - [current_user]
-    @users = rec_users.take(6)
+    @users = rec_users.sample(6)
   end
 
   private
