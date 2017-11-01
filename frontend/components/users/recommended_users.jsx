@@ -14,6 +14,14 @@ class RecommendedUsers extends React.Component {
     this.props.requestUsers();
   }
 
+  shouldComponentUpdate(nextProps) {
+    console.log('scu current', this.props.users);
+    console.log('scu next', nextProps.users);
+    if (this.props.users !== nextProps.users) {
+      this.props.requestUsers();
+    }
+  }
+
   render() {
     const { users, followUser } = this.props;
 
@@ -23,8 +31,6 @@ class RecommendedUsers extends React.Component {
         user={ user }
         followUser={ followUser } />
     );
-
-    console.log('RU render', this.props.users);
 
     return (
       <div className="rec-users">
