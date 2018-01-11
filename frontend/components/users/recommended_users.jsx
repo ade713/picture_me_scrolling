@@ -14,6 +14,19 @@ class RecommendedUsers extends React.Component {
     this.props.requestUsers();
   }
 
+  // shouldComponentUpdate(nextProps) {
+  //   console.log(this.props.currentUser.followees_count !== nextProps.currentUser.followees_count);
+  //   return (
+  //     this.props.currentUser.followees_count !== nextProps.currentUser.followees_count
+  //   );
+  // }
+  componentWillReceiveProps(nextProps) {
+    console.log('fcount', nextProps.currentUser.followees_count);
+    if (this.props.currentUser.followees_count !== nextProps.currentUser.followees_count) {
+      this.props.requestUsers();
+    }
+  }
+
   render() {
     const { users, followUser } = this.props;
 
