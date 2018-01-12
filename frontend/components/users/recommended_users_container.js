@@ -10,10 +10,6 @@ const mapStateToProps = state => ({
   users: selectUsers(state),
   currentUser: state.session.currentUser
 });
-// const mapStateToProps = state => {
-//   console.log('test', state);
-//   return {users: selectUsers(state)};
-// };
 
 const mapDispatchToProps = dispatch => ({
   requestUsers: () => dispatch(requestUsers()),

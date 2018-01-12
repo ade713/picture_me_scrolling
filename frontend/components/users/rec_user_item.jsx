@@ -3,6 +3,12 @@ import React from 'react';
 class RecUserItem extends React.Component {
   constructor(props) {
     super(props);
+    console.log(this.props);
+  }
+
+  followUser() {
+    this.props.followUser(this.props.user.id);
+    this.props.requestUsers();
   }
 
   render() {
@@ -18,7 +24,7 @@ class RecUserItem extends React.Component {
         </div>
         <button 
           className="follow-user"
-          onClick={ () => this.props.followUser(this.props.user.id) }>
+          onClick={ () => this.followUser() }>
           <i className="fa fa-plus-square" aria-hidden="true"></i>
         </button>
       </li>

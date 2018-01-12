@@ -15,10 +15,14 @@ export const requestUsers = () => dispatch => {
 
 export const followUser = id => dispatch => {
   return APIUtil.createFollow(id)
-    .then(posts => dispatch(receiveAllPosts(posts)));
+    .then((posts) => {
+      dispatch(receiveAllPosts(posts));
+    });
 };
 
 export const unfollowUser = id => dispatch => {
   return APIUtil.deleteFollow(id)
-    .then(posts => dispatch(receiveAllPosts(posts)));
+    .then((posts) => {
+      dispatch(receiveAllPosts(posts));
+    });
 };

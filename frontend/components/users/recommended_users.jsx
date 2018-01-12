@@ -20,21 +20,22 @@ class RecommendedUsers extends React.Component {
   //     this.props.currentUser.followees_count !== nextProps.currentUser.followees_count
   //   );
   // }
-  componentWillReceiveProps(nextProps) {
-    console.log('fcount', nextProps.currentUser.followees_count);
-    if (this.props.currentUser.followees_count !== nextProps.currentUser.followees_count) {
-      this.props.requestUsers();
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   console.log('fcount', nextProps.currentUser.followees_count);
+  //   if (this.props.currentUser.followees_count !== nextProps.currentUser.followees_count) {
+  //     this.props.requestUsers();
+  //   }
+  // }
 
   render() {
-    const { users, followUser } = this.props;
-
-    const recUsers = users.map(user => 
-      <RecUserItem 
-        key={user.id}
+    const { users, followUser, requestUsers } = this.props;
+    
+    const recUsers = users.map((user) => 
+    <RecUserItem 
+        key={ user.id }
         user={ user }
-        followUser={ followUser } />
+        followUser={ followUser }
+        requestUsers={ requestUsers } />
     );
 
     return (
