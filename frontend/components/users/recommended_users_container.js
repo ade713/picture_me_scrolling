@@ -4,6 +4,7 @@ import RecommendedUsers from './recommended_users';
 import { requestUsers,
          followUser } from '../../actions/users_actions';
 import { selectUsers } from '../../reducers/selectors';
+import { requestAllPosts } from '../../actions/posts_actions';
 
 
 const mapStateToProps = state => ({
@@ -12,6 +13,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  requestPosts: () => dispatch(requestAllPosts()), 
   requestUsers: () => dispatch(requestUsers()),
   followUser: id => dispatch(followUser(id)) 
 });

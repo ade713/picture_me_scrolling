@@ -30,7 +30,7 @@ class FeedItem extends React.Component {
         return (
           <button
             className="unfollow-btn"
-            onClick={this.switchFollow()}>
+            onClick={ this.switchFollow() }>
             Unfollow
           </button>
         );
@@ -38,7 +38,7 @@ class FeedItem extends React.Component {
         return (
           <button
             className="follow-btn"
-            onClick={this.switchFollow()}>
+            onClick={ this.switchFollow() }>
             Follow
           </button>
         );

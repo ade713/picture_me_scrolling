@@ -10,7 +10,6 @@ class Feed extends React.Component {
     this.state = {
       loading: true
     };
-    console.log('hit me');
   }
 
   componentDidMount() {
@@ -19,7 +18,7 @@ class Feed extends React.Component {
 
   render() {
     const { posts } = this.props;
-    // console.log('FP', this.props);
+    console.log('FP', this.props);
 
     const feedItems = posts.map(post =>
       <FeedItemContainer

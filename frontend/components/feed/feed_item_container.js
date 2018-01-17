@@ -5,6 +5,7 @@ import { selectAllPosts } from '../../reducers/selectors';
 import { likePost,
          unlikePost,
          updatePost,
+         requestAllPosts,
          deletePost } from '../../actions/posts_actions';
 import { followUser,
          unfollowUser } from '../../actions/users_actions';
@@ -18,6 +19,7 @@ const mapDispatchToProps = dispatch => ({
   deletePost: post => dispatch(deletePost(post)),
   followUser: id => dispatch(followUser(id)),
   unfollowUser: id => dispatch(unfollowUser(id)),
+  requestPosts: () => dispatch(requestAllPosts()),
   likePost: id => dispatch(likePost(id)),
   unlikePost: id => dispatch(unlikePost(id)),
 });

@@ -7,35 +7,25 @@ import RecUserItem from './rec_user_item';
 class RecommendedUsers extends React.Component {
   constructor(props) {
     super(props);
-    console.log('RU', this.props);
   }
 
   componentDidMount() {
     this.props.requestUsers();
   }
 
-  // shouldComponentUpdate(nextProps) {
-  //   console.log(this.props.currentUser.followees_count !== nextProps.currentUser.followees_count);
-  //   return (
-  //     this.props.currentUser.followees_count !== nextProps.currentUser.followees_count
-  //   );
-  // }
-  // componentWillReceiveProps(nextProps) {
-  //   console.log('fcount', nextProps.currentUser.followees_count);
-  //   if (this.props.currentUser.followees_count !== nextProps.currentUser.followees_count) {
-  //     this.props.requestUsers();
-  //   }
-  // }
-
   render() {
-    const { users, followUser, requestUsers } = this.props;
+    
+    const { users, followUser, requestPosts, requestUsers } = this.props;
+
+    console.log(users);
     
     const recUsers = users.map((user) => 
-    <RecUserItem 
+      <RecUserItem 
         key={ user.id }
         user={ user }
         followUser={ followUser }
-        requestUsers={ requestUsers } />
+        requestUsers={ requestUsers }
+        requestPosts={ requestPosts } />
     );
 
     return (

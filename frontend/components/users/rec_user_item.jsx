@@ -3,12 +3,17 @@ import React from 'react';
 class RecUserItem extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props);
   }
 
   followUser() {
-    this.props.followUser(this.props.user.id);
-    this.props.requestUsers();
+    // this.props.followUser(this.props.user.id);
+    // this.props.requestPosts();
+    // this.props.requestUsers();
+    this.props.followUser(this.props.user.id)
+      .then(
+        this.props.requestPosts(),
+        this.props.requestUsers()
+      );
   }
 
   render() {
