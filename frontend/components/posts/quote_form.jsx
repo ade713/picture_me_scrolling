@@ -22,7 +22,6 @@ class QuoteForm extends React.Component {
   }
 
   update(property) {
-    // console.log("HI");
     return e => this.setState({
       [property]: e.currentTarget.value
     });

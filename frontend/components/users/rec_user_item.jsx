@@ -6,9 +6,6 @@ class RecUserItem extends React.Component {
   }
 
   followUser() {
-    // this.props.followUser(this.props.user.id);
-    // this.props.requestPosts();
-    // this.props.requestUsers();
     this.props.followUser(this.props.user.id)
       .then(
         this.props.requestPosts(),
