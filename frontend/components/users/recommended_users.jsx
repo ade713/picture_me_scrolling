@@ -17,7 +17,7 @@ class RecommendedUsers extends React.Component {
     
     const { users, followUser, requestPosts, requestUsers } = this.props;
 
-    console.log(users);
+    console.log('RecU', users);
     
     const recUsers = users.map((user) => 
       <RecUserItem 
