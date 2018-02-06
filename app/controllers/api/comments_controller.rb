@@ -13,12 +13,29 @@ class Api::CommentsController < ApplicationController
   end
 
   def index
+    
   end
 
   def update
+    @comment = current_user.comments.find_by(id: params[:id])
+    @post = @comment.post
+
+    if @comment && comment.update(comment_params)
+      render 'api/posts/show'
+    else
+      render json: ['Comment must belong to user to edit'], status: 422
+    end
   end
 
   def destroy
+    @comment = current_user.comments.find_by(id: params[:id])
+    @post = @comment.post
+
+    if @comment.delete
+      render 'api/posts/show'
+    else
+      render json: ['Unable to delete comment']
+    end
   end
 
   private
