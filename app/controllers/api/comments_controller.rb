@@ -28,7 +28,8 @@ class Api::CommentsController < ApplicationController
   end
 
   def destroy
-    @comment = current_user.comments.find_by(id: params[:id])
+    # @comment = current_user.comments.find_by(id: params[:id])
+    @comment = current_user.comments.find_by_id(params[:id])
     @post = @comment.post
 
     if @comment.delete
@@ -41,6 +42,6 @@ class Api::CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:post).permit(:body)
+    params.require(:post).permit(:body, :post_id)
   end
 end
