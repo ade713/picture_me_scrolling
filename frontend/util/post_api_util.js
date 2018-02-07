@@ -58,3 +58,10 @@ export const deleteLike = id => {
     url: `api/posts/${id}/like`
   });
 };
+
+// export const createComment = id => {
+//   return $.ajax({
+//     method: 'POST',
+//     url: `api/posts`
+//   });
+// };
