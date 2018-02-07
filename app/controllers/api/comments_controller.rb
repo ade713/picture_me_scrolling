@@ -12,10 +12,6 @@ class Api::CommentsController < ApplicationController
     end
   end
 
-  def index
-    
-  end
-
   def update
     @comment = current_user.comments.find_by(id: params[:id])
     @post = @comment.post
@@ -28,7 +24,6 @@ class Api::CommentsController < ApplicationController
   end
 
   def destroy
-    # @comment = current_user.comments.find_by(id: params[:id])
     @comment = current_user.comments.find_by_id(params[:id])
     @post = @comment.post
 
