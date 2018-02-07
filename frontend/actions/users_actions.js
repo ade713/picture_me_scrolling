@@ -1,5 +1,6 @@
 import * as APIUtil from '../util/user_api_util';
-import { receivePost, receiveAllPosts } from './posts_actions';
+import { receivePost, 
+         receiveAllPosts } from './posts_actions';
 
 export const RECEIVE_USERS = 'RECEIVE_USERS';
 

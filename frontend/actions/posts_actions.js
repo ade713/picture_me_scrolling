@@ -29,7 +29,6 @@ export const editPost = post => ({
 });
 
 
-
 export const requestAllPosts = () => dispatch => {
   return APIUtil.fetchAllPosts()
     .then(posts => dispatch(receiveAllPosts(posts)));
@@ -45,7 +44,6 @@ export const createPost = post => dispatch => {
     .then(newPost => {
       dispatch(receivePost(newPost));
       dispatch(Errors.clearErrors());
-      // return newPost;
     }, errors => (
       dispatch(Errors.receiveErrors(errors.responseJSON))
     )
@@ -57,7 +55,6 @@ export const createMediaPost = post => dispatch => {
     .then(newPost => {
       dispatch(receivePost(newPost));
       dispatch(Errors.clearErrors());
-      // return newPost;
     }, errors => (
       dispatch(Errors.receiveErrors(errors.responseJSON))
     )
