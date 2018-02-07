@@ -11,8 +11,7 @@
 #
 
 class Comment < ApplicationRecord
-  validates :body, presence: true
-  validates :author_id, :post_id, presence: true, uniqueness: true
+  validates :body, :author_id, :post_id, presence: true
 
   belongs_to :author,
     primary_key: :id,
