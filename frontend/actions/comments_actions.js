@@ -2,6 +2,7 @@ import * as APIUtil from '../util/comments_api_util';
 import * as Errors from './errors_actions';
 
 export const RECEIVE_COMMENT = 'RECEIVE_COMMENT';
+export const EDIT_COMMENT = 'EDIT_POST';
 export const REMOVE_COMMENT = 'REMOVE_COMMENT';
 
 export const receiveComment = comment => ({
@@ -19,10 +20,20 @@ export const createComment = comment => dispatch => {
     .then(newComment => {
       dispatch(receiveComment(newComment));
       dispatch(Errors.clearErrors());
-    }, errors => (
-      dispatch(Errors.receiveErrors(errors.responsseJSON))
-    )
+    }, errors => {
+      dispatch(Errors.receiveErrors(errors.responsseJSON));
+    }
   );
+};
+
+export const editComment = comment => dispatch => {
+  return APIUtil.editComment(comment)
+  .then(updatedComment => {
+    dispatch(editComment(updatedComment));
+    dispatch(Errors.clearErrors()); 
+  }, errors => {
+    dispatch(Errors.receiveErrors(errors.responseJSON));
+  });
 };
 
 export const deleteComment = comment => dispatch => {
