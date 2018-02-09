@@ -11,7 +11,7 @@ export const receiveComment = comment => ({
 });
 
 export const editComment = comment => ({
-  type: RECEIVE_COMMENT,
+  type: EDIT_COMMENT,
   comment
 });
 

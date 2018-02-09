@@ -9,7 +9,7 @@ const PostsReducer = (state = {}, action) => {
   Object.freeze(state);
 
   const nextState = merge({}, state);
-  let post = action.post;
+  const post = action.post;
   const like = action.like;
 
   switch (action.type) {
