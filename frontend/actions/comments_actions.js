@@ -10,6 +10,11 @@ export const receiveComment = comment => ({
   comment
 });
 
+export const editComment = comment => ({
+  type: RECEIVE_COMMENT,
+  comment
+});
+
 export const removeComment = comment => ({
   type: REMOVE_COMMENT,
   comment
@@ -26,7 +31,7 @@ export const createComment = comment => dispatch => {
   );
 };
 
-export const editComment = comment => dispatch => {
+export const updateComment = comment => dispatch => {
   return APIUtil.editComment(comment)
   .then(updatedComment => {
     dispatch(editComment(updatedComment));
