@@ -8,6 +8,9 @@ import { likePost,
          deletePost } from '../../actions/posts_actions';
 import { followUser,
          unfollowUser } from '../../actions/users_actions';
+import { createComment,
+         editComment,
+         deleteComment } from '../../actions/comments_actions';
          
 
 const mapStateToProps = state => ({
@@ -20,6 +23,9 @@ const mapDispatchToProps = dispatch => ({
   unfollowUser: id => dispatch(unfollowUser(id)),
   likePost: id => dispatch(likePost(id)),
   unlikePost: id => dispatch(unlikePost(id)),
+  createComment: comment => dispatch(createComment(comment)),
+  editComment: comment => dispatch(editComment(comment)),
+  deleteComment: comment => dispatch(deleteComment(comment))
 });
 
 const FeedItemContainer = connect(
