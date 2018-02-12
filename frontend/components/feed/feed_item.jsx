@@ -221,6 +221,7 @@ class FeedItem extends React.Component {
             </div>
 
           </div>
+          
         </li>
       </div>
     );

@@ -24,6 +24,8 @@ class Feed extends React.Component {
         key={ post.id }
         post={ post } />
     );
+
+    console.log('PO', posts);
     
     return (
       <div className="feed-posts">
