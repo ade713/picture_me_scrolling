@@ -5,6 +5,11 @@ import { createComment,
          editComment, 
          deleteComment } from '../../actions/comments_actions';
 
+const mapStateToProps = ({ session, errors }) => ({
+  currentUser: session.currentUser,
+  errors: errors
+});
+
 const mapDispatchToProps = dispatch => ({
   createComment: comment => dispatch(createComment(comment)),
   editComment: comment => dispatch(editComment(comment)),
@@ -12,7 +17,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const CommentsContainer = connect(
-  null, mapDispatchToProps
+  mapStateToProps, mapDispatchToProps
 )(Comments);
 
 export default CommentsContainer;

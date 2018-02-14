@@ -22,10 +22,7 @@ const mapDispatchToProps = dispatch => ({
   followUser: id => dispatch(followUser(id)),
   unfollowUser: id => dispatch(unfollowUser(id)),
   likePost: id => dispatch(likePost(id)),
-  unlikePost: id => dispatch(unlikePost(id)),
-  createComment: comment => dispatch(createComment(comment)),
-  editComment: comment => dispatch(editComment(comment)),
-  deleteComment: comment => dispatch(deleteComment(comment))
+  unlikePost: id => dispatch(unlikePost(id))
 });
 
 const FeedItemContainer = connect(
