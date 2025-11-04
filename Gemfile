@@ -34,7 +34,7 @@ gem 'annotate'
 gem 'font-awesome-sass'
 
 gem 'paperclip', '~> 5.0.0.beta1'
-gem 'aws-sdk', '~> 2.3.0'
+gem 'aws-sdk-s3', '~> 1.202'
 
 gem 'figaro'
 # Use Capistrano for deployment
@@ -48,7 +48,7 @@ end
 group :development do
   # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
   gem 'web-console', '>= 3.3.0'
-  gem 'listen', '~> 3.0.5'
+  gem 'listen', '~> 3.5'
   gem 'pry-rails'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
