@@ -1,4 +1,4 @@
-class RemoveLikesColumn < ActiveRecord::Migration[5.0]
+class RemoveLikesColumn < ActiveRecord::Migration[7.1]
   def change
     remove_column :posts, :likes_count
   end

@@ -1,4 +1,4 @@
-class RemoveAttachmentColumns < ActiveRecord::Migration[5.0]
+class RemoveAttachmentColumns < ActiveRecord::Migration[7.1]
   def change
     remove_column :users, :avatar_file_name
     remove_column :users, :avatar_file_size

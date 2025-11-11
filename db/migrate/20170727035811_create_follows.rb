@@ -1,4 +1,4 @@
-class CreateFollows < ActiveRecord::Migration[5.0]
+class CreateFollows < ActiveRecord::Migration[7.1]
   def change
     create_table :follows do |t|
       t.integer :followee_id, null: false
