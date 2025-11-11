@@ -35,7 +35,7 @@ gem 'annotate'
 
 gem 'font-awesome-sass'
 
-gem 'paperclip', '~> 5.0.0.beta1'
+gem 'paperclip', '~> 6.1'
 gem 'aws-sdk-s3', '~> 1.202'
 
 gem 'figaro'
