@@ -35,6 +35,8 @@ gem 'annotate'
 
 gem 'font-awesome-sass'
 
+gem 'activestorage'
+
 gem 'paperclip', '~> 6.1'
 gem 'aws-sdk-s3', '~> 1.202'
 
