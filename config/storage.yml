@@ -1,0 +1,10 @@
+local:
+  service: Disk
+  root: <%= Rails.root.join("storage") %>
+# Amazon S3 storage for production or staging environments
+# amazon:
+#   service: S3
+#   access_key_id: <%= Rails.application.credentials.dig(:aws, :access_key_id) %>
+#   secret_access_key: <%= Rails.application.credentials.dig(:aws, :secret_access_key) %>
+#   bucket: your_own_bucket-<%= Rails.env %> # Example: your_own_bucket-production
+#   region: "us-east-1" # Specify your AWS region

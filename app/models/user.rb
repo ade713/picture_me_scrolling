@@ -52,12 +52,10 @@ class User < ApplicationRecord
     source: :posts
 
   def recommended_follows
-    
+
   end
 
-  has_attached_file :avatar,
-                    styles: { thumb: "64x64>" },
-                    default_url: "https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/b-a-w_happy_avatar-icon.png"
+  has_one_attached: :file
   validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
   validates_attachment_size :avatar, in: 0..2.megabyte
 
