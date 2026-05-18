@@ -51,8 +51,8 @@ class Post < ApplicationRecord
     follower_ids
   end
 
-  has_one_attached :file
-  validates_attachment_content_type :image,
-    content_type: [/\Aimage\/.*\z/, 'audio/mp3', 'audio/mpeg', 'audio/wav', 'video/avi', 'video/mp4']
-  validates_attachment_size :image, in: 0..10.megabyte
+  has_one_attached :image
+  # validates_attachment_content_type :image,
+  #   content_type: [/\Aimage\/.*\z/, 'audio/mp3', 'audio/mpeg', 'audio/wav', 'video/avi', 'video/mp4']
+  # validates_attachment_size :image, in: 0..10.megabyte
 end
