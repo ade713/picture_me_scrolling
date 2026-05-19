@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
     !!current_user
   end
 
-  def require_log_in?
-
+  def require_logged_in
+    render json: ['You must be logged in'], status: :unauthorized unless logged_in?
   end
 end
