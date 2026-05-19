@@ -10,12 +10,6 @@ class Dashboard extends React.Component {
     super(props);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (!nextProps.loggedIn) {
-      this.props.history.push("/");
-    }
-  }
-
   render () {
     const { currentUser, logout } = this.props;
 
