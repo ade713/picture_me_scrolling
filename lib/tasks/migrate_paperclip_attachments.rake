@@ -84,7 +84,7 @@ def migrate_attachment(attachment, model, errs, err_ids)
     # Copy the original Paperclip attachment to its new ActiveStorage location
     # For debugging/testing purposes, comment out this section and print the URL to log to verify the correctness
     begin
-      instance.send(attachment.to_sym).attach(
+      instance.public_send(attachment).attach(
         io: URI.open(url),
         filename: filename,
         content_type: content_type
