@@ -16,6 +16,14 @@ export const fetchUsers = () => {
   });
 };
 
+export const fetchUser = id => {
+  return $.ajax({
+    method: 'GET',
+    url: `/api/users/${id}`,
+    dataType: 'json'
+  });
+};
+
 export const createFollow = id => {
   return $.ajax({
     method: 'POST',
