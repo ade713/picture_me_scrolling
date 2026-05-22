@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import FeedContainer from '../feed/feed_container';
 import RecommendedUsersContainer from '../users/recommended_users_container';
@@ -11,7 +10,7 @@ class Dashboard extends React.Component {
   }
 
   render () {
-    const { currentUser, logout } = this.props;
+    const { logout } = this.props;
 
     return (
       <div className="dash-page">
@@ -30,14 +29,16 @@ class Dashboard extends React.Component {
             <footer className="dash-right-footer">
               <a 
                 href="https://github.com/ade713"
-                target="_blank">
+                target="_blank"
+                rel="noopener noreferrer">
                 <i 
                   className="fa fa-github" 
                   aria-hidden="true"></i>
               </a>
               <a 
                 href="https://www.linkedin.com/in/ade-farquhar-2a66a233" 
-                target="_blank">
+                target="_blank"
+                rel="noopener noreferrer">
                 <i 
                   className="fa fa-linkedin-square"
                   aria-hidden="true"></i>

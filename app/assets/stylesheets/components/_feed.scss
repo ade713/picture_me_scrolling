@@ -30,7 +30,7 @@ div.follow-hdr {
   }
 }
 
-div.feed-post {
+.feed-post {
   display: flex;
   flex-direction: row;
   width: 621px;
@@ -46,7 +46,7 @@ img.author-avatar {
   border: 1px solid black;
 }
 
-li.feed-item {
+.feed-item {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -97,4 +97,3 @@ div.post-btns {
 ul.feed-list:last-child {
   margin-bottom: 30px;
 }
-
