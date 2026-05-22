@@ -14,7 +14,8 @@ class VideoForm extends React.Component {
       body: '',
       url: '',
       post_type: 'video',
-      image: ''
+      imageFile: null,
+      imageUrl: null
     };
 
     this.openModal = this.openModal.bind(this);
@@ -63,6 +64,9 @@ class VideoForm extends React.Component {
   }
 
   handleSubmit(e) {
+    e.preventDefault();
+    if (!this.state.imageFile) return;
+
     let formData = new FormData();
     formData.append('post[url]', this.state.url);
     formData.append('post[title]', this.state.title);
