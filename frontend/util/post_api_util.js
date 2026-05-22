@@ -1,12 +1,4 @@
-const csrfToken = () => {
-  const csrfMeta = document.querySelector('meta[name="csrf-token"]');
-  return csrfMeta && csrfMeta.content;
-};
-
-const csrfHeaders = () => {
-  const token = csrfToken();
-  return token ? { 'X-CSRF-Token': token } : {};
-};
+import { csrfHeaders } from './csrf_api_util';
 
 export const fetchAllPosts = () => {
   return $.ajax({
