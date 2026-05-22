@@ -1,4 +1,6 @@
 class Api::PostsController < ApplicationController
+  before_action :require_logged_in
+
   def create
     @post = Post.new(post_params)
     @post.author_id = current_user.id
@@ -33,7 +35,7 @@ class Api::PostsController < ApplicationController
   def destroy
     @post = current_user.posts.find_by(id: params[:id])
 
-    if @post.delete
+    if @post&.delete
       render "api/posts/show"
     else
       render json: ['Post must belong to user to delete'], status: 422

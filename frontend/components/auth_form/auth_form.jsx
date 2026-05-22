@@ -13,8 +13,8 @@ class AuthForm extends React.Component {
     this.logInAsGuest = this.logInAsGuest.bind(this);
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.loggedIn) {
+  componentDidUpdate(prevProps) {
+    if (!prevProps.loggedIn && this.props.loggedIn) {
       this.props.history.push("/dashboard");
     }
   }
@@ -102,7 +102,6 @@ class AuthForm extends React.Component {
                 <input 
                   type="text"
                   value={this.state.username}
-                  ref="username"
                   placeholder="Your Username"
                   onChange={this.update('username')}
                   className="auth-login-input" />
@@ -112,7 +111,6 @@ class AuthForm extends React.Component {
                 <input 
                 type="password"
                   value={this.state.password}
-                  ref="password"
                   placeholder="Your Password"
                   onChange={this.update('password')}
                   className="auth-login-input" />
