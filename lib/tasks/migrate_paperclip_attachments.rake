@@ -15,6 +15,11 @@ namespace :migrate_paperclip do
     models.each do |model|
       puts 'Checking Model [' + model.to_s + '] for Paperclip attachment columns ...'
 
+      unless model.table_exists?
+        puts '  Skipping: table does not exist.'
+        next
+      end
+
       errs = []
       err_ids = []
 
@@ -54,6 +59,13 @@ private
 
 def migrate_attachment(attachment, model, errs, err_ids)
   model.where.not("#{attachment}_file_name": nil).find_each do |instance|
+    if instance.public_send(attachment).attached?
+      puts '  [' + model.name + ' (ID: ' +
+           instance.id.to_s + ')] ' \
+           'Skipping: ' + attachment + ' already attached.'
+      next
+    end
+
     # Set the S3 Bucket based on environment
     bucket = Rails.env.production? ? ENV['S3_BUCKET_NAME'] : ENV['S3_BUCKET_NAME_DEV']
     region = ENV['S3_REGION']
