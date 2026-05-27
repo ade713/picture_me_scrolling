@@ -4,10 +4,30 @@ This plan covers the production rollout for migrating media from Paperclip to
 Active Storage. The code can be merged and deployed before the data migration is
 run, but the production data migration should be a deliberate manual step.
 
+## Current Production Status
+
+The original Heroku production app and custom domain are no longer active, and
+there is no known production Postgres backup or export.
+
+The production and development S3 buckets still exist. Because the production
+database is not available, the existing production S3 bucket can support media
+recovery, but it cannot support a complete app data migration by itself.
+
+The Paperclip-to-Active Storage rake task requires database rows with Paperclip
+columns such as `avatar_file_name` and `image_file_name`. If a production
+database backup is found later, this task can still be used. Without that
+database, production recovery needs a separate S3 inventory/import plan.
+
+This does not block merging the Active Storage migration PR. It only blocks
+running the production Paperclip data migration.
+
 ## Goals
 
 - Deploy the Active Storage-compatible app code safely.
-- Copy existing Paperclip media into Active Storage records.
+- Copy existing Paperclip media into Active Storage records if a Paperclip-backed
+  database is available.
+- Preserve and inventory production S3 media for possible recovery if no
+  production database is available.
 - Verify production media works before removing any Paperclip fallback data.
 - Keep rollback options open by leaving the old Paperclip columns in place.
 
@@ -38,7 +58,8 @@ have the uppercase values.
 
 ## Backup
 
-Take a production database backup before running the migration.
+Take a production database backup before running the migration if a production
+database exists.
 
 If the app is deployed on Heroku:
 
@@ -48,6 +69,9 @@ heroku pg:backups:capture --app picmes
 
 Confirm the backup completed and that the restore process is understood before
 continuing.
+
+If no production database exists, skip the migration task and move to the
+S3-only recovery path below.
 
 ## Deploy
 
@@ -79,7 +103,13 @@ Capture production counts before running the migration:
 
 Save the output in the rollout notes.
 
+If these queries cannot run because there is no production database, do not run
+the Paperclip migration task.
+
 ## Run Migration
+
+Only run this task against an environment that has the old Paperclip-backed
+database rows.
 
 Preferred command:
 
@@ -98,6 +128,45 @@ bundle exec rake migrate_paperclip:move_data
 
 The migration task is safe to rerun for records that already have Active Storage
 attachments because it skips already-attached records.
+
+## S3-Only Recovery Path
+
+Use this path if no production database can be restored, but the old production
+S3 bucket still exists.
+
+The goal is to preserve and inventory media, then decide whether to rebuild demo
+or production-like records from the files.
+
+Recommended recovery steps:
+
+1. Inventory the production S3 bucket.
+2. Confirm the Paperclip key structure, such as:
+
+   ```text
+   users/avatars/000/000/001/original/avatar.png
+   posts/images/000/000/123/original/photo.jpg
+   ```
+
+3. Export a manifest with:
+
+   - S3 bucket
+   - S3 key
+   - inferred model, such as `users` or `posts`
+   - inferred old record ID
+   - attachment name, such as `avatar` or `image`
+   - filename
+   - content type
+   - size
+
+4. Decide the recovery strategy:
+
+   - preserve the media files only
+   - rebuild seed/demo records with recovered media
+   - create placeholder users/posts from inferred S3 paths
+
+The S3-only path cannot recover usernames, passwords, post captions, follows,
+likes, timestamps, or author relationships unless that data exists somewhere
+outside the lost production database.
 
 ## Post-Migration Verification
 
