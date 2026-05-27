@@ -14,7 +14,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "postinstall": "webpack",
-    "webpack": "webpack --watch"
+    "webpack": "webpack --watch",
+    "build": "webpack"
   },
   "repository": {
     "type": "git",
@@ -36,7 +37,8 @@
     "react-dom": "^19.2.0",
     "react-modal": "^3.16.3",
     "react-redux": "^9.2.0",
-    "react-router-dom": "^7.9.5",
+    "react-router": "^5.3.4",
+    "react-router-dom": "^5.3.4",
     "redux": "^5.0.1",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^3.1.0",

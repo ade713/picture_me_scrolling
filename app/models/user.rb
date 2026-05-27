@@ -52,12 +52,11 @@ class User < ApplicationRecord
     source: :posts
 
   def recommended_follows
-
   end
 
-  has_one_attached: :file
-  validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
-  validates_attachment_size :avatar, in: 0..2.megabyte
+  has_one_attached :avatar
+  # validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
+  # validates_attachment_size :avatar, in: 0..2.megabyte
 
 
 

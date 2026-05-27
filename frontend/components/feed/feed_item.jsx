@@ -1,5 +1,4 @@
 import React from 'react';
-import { withRouter } from 'react-router';
 
 class FeedItem extends React.Component {
   constructor(props) {
@@ -83,26 +82,35 @@ class FeedItem extends React.Component {
   renderEditDeleteButtons() {
     if (this.props.post.author_id === this.props.currentUser.id) {
       return (
-        <button className="edit-post-btn">
-          <i
-            className="fa fa-pencil-square-o fa-2x"
-            id="edit-btn-icon"
-            aria-hidden="true"></i>
-        </button> ,
-        <button className="delete-post-btn"
-          onClick={() => this.props.deletePost(this.props.post)} >
-          <i className="fa fa-trash fa-2x" aria-hidden="true"></i>
-        </button>
+        <React.Fragment>
+          <button className="edit-post-btn">
+            <i
+              className="fa fa-pencil-square-o fa-2x"
+              id="edit-btn-icon"
+              aria-hidden="true"></i>
+          </button>
+          <button className="delete-post-btn"
+            onClick={() => this.props.deletePost(this.props.post)} >
+            <i className="fa fa-trash fa-2x" aria-hidden="true"></i>
+          </button>
+        </React.Fragment>
       );
     }
   }
 
-  audio() {
+  renderPost(content) {
     return (
-      <div className="feed-post">
+      <li className="feed-post">
         <img className="author-avatar" src={this.props.post.author_avatar} />
-        <li className="feed-item">
+        <div className="feed-item">
+          {content}
+        </div>
+      </li>
+    );
+  }
 
+  audio() {
+    return this.renderPost(
           <div className="post-audio">
 
             <div className="post-header">
@@ -137,17 +145,11 @@ class FeedItem extends React.Component {
             </div>
 
           </div>
-        </li>
-      </div>
     );
   }
 
   link() {
-    return (
-      <div className="feed-post">
-        <img className="author-avatar" src={this.props.post.author_avatar} />
-        <li className="feed-item">
-
+    return this.renderPost(
           <div className="post-link">
 
             <div className="post-header">
@@ -160,7 +162,11 @@ class FeedItem extends React.Component {
             </div>
 
             <div className="post-link-main">
-              <a className="posted-link" href={this.props.post.url} target="_blank">
+              <a
+                className="posted-link"
+                href={this.props.post.url}
+                target="_blank"
+                rel="noopener noreferrer">
                 {this.props.post.title}
               </a>
             </div>
@@ -178,17 +184,11 @@ class FeedItem extends React.Component {
             </div>
 
           </div>
-        </li>
-      </div>
     );
   }
 
   photo() {
-    return (
-      <div className="feed-post">
-        <img className="author-avatar" src={this.props.post.author_avatar} />
-        <li className="feed-item">
-
+    return this.renderPost(
           <div className="post-photo">
 
             <div className="post-header">
@@ -221,17 +221,11 @@ class FeedItem extends React.Component {
             </div>
 
           </div>
-        </li>
-      </div>
     );
   }
 
   quote() {
-    return (
-      <div className="feed-post">
-        <img className="author-avatar" src={this.props.post.author_avatar} />
-        <li className="feed-item">
-
+    return this.renderPost(
           <div className="post-quote">
 
             <div className="post-header">
@@ -265,17 +259,11 @@ class FeedItem extends React.Component {
             </div>
 
           </div>
-        </li>
-      </div>
     );
   }
 
   text() {
-    return (
-      <div className="feed-post">
-        <img className="author-avatar" src={this.props.post.author_avatar} />
-        <li className="feed-item">
-
+    return this.renderPost(
           <div className="post-text">
 
             <div className="post-header">
@@ -309,18 +297,11 @@ class FeedItem extends React.Component {
             </div>
 
           </div>
-        </li>
-
-      </div>
     );
   }
 
   video() {
-    return (
-      <div className="feed-post">
-        <img className="author-avatar" src={this.props.post.author_avatar} />
-        <li className="feed-item">
-
+    return this.renderPost(
           <div className="post-video">
 
             <div className="post-header">
@@ -355,8 +336,6 @@ class FeedItem extends React.Component {
             </div>
 
           </div>
-        </li>
-      </div>
     );
   }
 

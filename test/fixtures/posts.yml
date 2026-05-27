@@ -22,12 +22,10 @@ one:
   title: MyString
   url: MyText
   body: MyText
-  likes_count: 1
   author_id: 1
 
 two:
   title: MyString
   url: MyText
   body: MyText
-  likes_count: 1
   author_id: 1
