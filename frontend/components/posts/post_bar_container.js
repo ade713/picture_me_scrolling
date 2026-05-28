@@ -1,13 +1,17 @@
-import { connect } from 'react-redux';
+import React from 'react';
 
+import { useCurrentUser } from '../../query/session_hooks';
 import PostBar from './post_bar';
 
-const mapStateToProps = ({ session }) => ({
-  currentUser: session.currentUser
-});
+const PostBarContainer = props => {
+  const currentUser = useCurrentUser();
 
-const PostBarContainer = connect(
-  mapStateToProps
-)(PostBar);
+  return (
+    <PostBar
+      {...props}
+      currentUser={ currentUser.data }
+    />
+  );
+};
 
 export default PostBarContainer;
