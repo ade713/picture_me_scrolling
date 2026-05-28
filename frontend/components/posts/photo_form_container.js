@@ -1,21 +1,14 @@
-import { connect} from 'react-redux';
+import React from 'react';
 
-import { createMediaPost } from '../../actions/posts_actions';
-import { clearErrors } from '../../actions/errors_actions';
+import { useCreateMediaPost } from '../../query/post_hooks';
+import { usePostFormProps } from './post_form_hooks';
 import PhotoForm from './photo_form';
 
-const mapStateToProps = ({ session, errors }) => ({
-  currentUser: session.currentUser,
-  errors: errors
-});
+const PhotoFormContainer = props => {
+  const createMediaPost = useCreateMediaPost();
+  const formProps = usePostFormProps(createMediaPost);
 
-const mapDispatchToProps = dispatch => ({
-  createMediaPost: post => dispatch(createMediaPost(post)),
-  clearErrors: () => dispatch(clearErrors())
-});
-
-const PhotoFormContainer = connect(
-  mapStateToProps, mapDispatchToProps
-)(PhotoForm);
+  return <PhotoForm {...props} {...formProps} />;
+};
 
 export default PhotoFormContainer;

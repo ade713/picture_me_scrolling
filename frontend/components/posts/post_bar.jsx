@@ -46,6 +46,3 @@ class PostBar extends React.Component {
 }
 
 export default PostBar;
-
-
-//inside bar : createPost={this.props.createPost}

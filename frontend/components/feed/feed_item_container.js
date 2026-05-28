@@ -1,12 +1,13 @@
-import { connect } from 'react-redux';
+import React from 'react';
+import { connect, useDispatch } from 'react-redux';
 
 import FeedItem from './feed_item';
 import { likePost,
          unlikePost,
-         updatePost,
-         deletePost } from '../../actions/posts_actions';
+         removePost } from '../../actions/posts_actions';
 import { followUser,
          unfollowUser } from '../../actions/users_actions';
+import { useDeletePost } from '../../query/post_hooks';
          
 
 const mapStateToProps = state => ({
@@ -14,15 +15,32 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  deletePost: post => dispatch(deletePost(post)),
   followUser: id => dispatch(followUser(id)),
   unfollowUser: id => dispatch(unfollowUser(id)),
   likePost: id => dispatch(likePost(id)),
   unlikePost: id => dispatch(unlikePost(id)),
 });
 
-const FeedItemContainer = connect(
+const ConnectedFeedItem = connect(
   mapStateToProps, mapDispatchToProps
 )(FeedItem);
+
+const FeedItemContainer = props => {
+  const dispatch = useDispatch();
+  const deletePost = useDeletePost();
+
+  const handleDeletePost = post => (
+    deletePost.mutate(post, {
+      onSuccess: deletedPost => dispatch(removePost(deletedPost))
+    })
+  );
+
+  return (
+    <ConnectedFeedItem
+      {...props}
+      deletePost={ handleDeletePost }
+    />
+  );
+};
 
 export default FeedItemContainer;

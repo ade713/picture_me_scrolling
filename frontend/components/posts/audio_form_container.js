@@ -1,22 +1,14 @@
-import { connect} from 'react-redux';
+import React from 'react';
 
-import { createPost,
-         createMediaPost } from '../../actions/posts_actions';
-import { clearErrors } from '../../actions/errors_actions';
+import { useCreateMediaPost } from '../../query/post_hooks';
+import { usePostFormProps } from './post_form_hooks';
 import AudioForm from './audio_form';
 
-const mapStateToProps = ({ session, errors }) => ({
-  currentUser: session.currentUser,
-  errors: errors
-});
+const AudioFormContainer = props => {
+  const createMediaPost = useCreateMediaPost();
+  const formProps = usePostFormProps(createMediaPost);
 
-const mapDispatchToProps = dispatch => ({
-  createMediaPost: post => dispatch(createMediaPost(post)),
-  clearErrors: () => dispatch(clearErrors())
-});
-
-const AudioFormContainer = connect(
-  mapStateToProps, mapDispatchToProps
-)(AudioForm);
+  return <AudioForm {...props} {...formProps} />;
+};
 
 export default AudioFormContainer;
