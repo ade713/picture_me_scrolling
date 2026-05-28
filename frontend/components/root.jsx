@@ -1,11 +1,14 @@
 import React from 'react';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
-import { HashRouter } from 'react-router-dom';
 import App from './App';
+import queryClient from '../query/query_client';
 
 const Root = ({ store }) => (
   <Provider store={ store }>
-    <App />
+    <QueryClientProvider client={ queryClient }>
+      <App />
+    </QueryClientProvider>
   </Provider>
 );
 
