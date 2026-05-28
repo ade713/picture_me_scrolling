@@ -1,19 +1,27 @@
-import { connect } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { logout } from '../../actions/session_actions';
+import { receiveCurrentUser } from '../../actions/session_actions';
+import { useLogout } from '../../query/session_hooks';
 import Dashboard from './dashboard';
 
-const mapStateToProps = ({ session }) => ({
-  currentUser: session.currentUser
-});
+const DashboardContainer = props => {
+  const dispatch = useDispatch();
+  const logout = useLogout();
 
-const mapDispatchToProps = dispatch => ({
-  logout: () => dispatch(logout())
-});
+  const handleLogout = () => {
+    logout.mutate(undefined, {
+      onSuccess: () => dispatch(receiveCurrentUser(null))
+    });
+  };
 
-const DashboardContainer = connect(
-  mapStateToProps, mapDispatchToProps
-)(Dashboard);
+  return (
+    <Dashboard
+      {...props}
+      logout={ handleLogout }
+    />
+  );
+};
 
 export default withRouter(DashboardContainer);
