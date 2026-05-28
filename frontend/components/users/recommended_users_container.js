@@ -1,22 +1,25 @@
-import { connect } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 
 import RecommendedUsers from './recommended_users';
-import { requestUsers,
-         followUser } from '../../actions/users_actions';
-import { selectUsers } from '../../reducers/selectors';
+import { followUser } from '../../actions/users_actions';
+import { useUsers } from '../../query/user_hooks';
 
+const RecommendedUsersContainer = props => {
+  const dispatch = useDispatch();
+  const users = useUsers();
 
-const mapStateToProps = state => ({
-  users: selectUsers(state)
-});
+  const handleFollowUser = id => (
+    dispatch(followUser(id))
+  );
 
-const mapDispatchToProps = dispatch => ({
-  requestUsers: () => dispatch(requestUsers()),
-  followUser: id => dispatch(followUser(id)) 
-});
-
-const RecommendedUsersContainer = connect(
-  mapStateToProps, mapDispatchToProps
-)(RecommendedUsers);
+  return (
+    <RecommendedUsers
+      {...props}
+      followUser={ handleFollowUser }
+      users={ users.data || [] }
+    />
+  );
+};
 
 export default RecommendedUsersContainer;
