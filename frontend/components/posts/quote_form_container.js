@@ -1,21 +1,14 @@
-import { connect} from 'react-redux';
+import React from 'react';
 
-import { createPost } from '../../actions/posts_actions';
-import { clearErrors } from '../../actions/errors_actions';
+import { useCreatePost } from '../../query/post_hooks';
+import { usePostFormProps } from './post_form_hooks';
 import QuoteForm from './quote_form';
 
-const mapStateToProps = ({ session, errors }) => ({
-  currentUser: session.currentUser,
-  errors: errors
-});
+const QuoteFormContainer = props => {
+  const createPost = useCreatePost();
+  const formProps = usePostFormProps(createPost);
 
-const mapDispatchToProps = dispatch => ({
-  createPost: post => dispatch(createPost(post)),
-  clearErrors: () => dispatch(clearErrors())
-});
-
-const QuoteFormContainer = connect(
-  mapStateToProps, mapDispatchToProps
-)(QuoteForm);
+  return <QuoteForm {...props} {...formProps} />;
+};
 
 export default QuoteFormContainer;

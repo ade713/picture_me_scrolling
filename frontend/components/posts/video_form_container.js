@@ -1,21 +1,14 @@
-import { connect} from 'react-redux';
+import React from 'react';
 
-import { createMediaPost } from '../../actions/posts_actions';
-import { clearErrors } from '../../actions/errors_actions';
+import { useCreateMediaPost } from '../../query/post_hooks';
+import { usePostFormProps } from './post_form_hooks';
 import VideoForm from './video_form';
 
-const mapStateToProps = ({ session, errors }) => ({
-  currentUser: session.currentUser,
-  errors: errors
-});
+const VideoFormContainer = props => {
+  const createMediaPost = useCreateMediaPost();
+  const formProps = usePostFormProps(createMediaPost);
 
-const mapDispatchToProps = dispatch => ({
-  createMediaPost: post => dispatch(createMediaPost(post)),
-  clearErrors: () => dispatch(clearErrors())
-});
-
-const VideoFormContainer = connect(
-  mapStateToProps, mapDispatchToProps
-)(VideoForm);
+  return <VideoForm {...props} {...formProps} />;
+};
 
 export default VideoFormContainer;
