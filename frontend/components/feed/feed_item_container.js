@@ -2,32 +2,31 @@ import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 
 import FeedItem from './feed_item';
-import { likePost,
-         unlikePost,
+import { receiveAllPosts,
+         receivePost,
          removePost } from '../../actions/posts_actions';
-import { followUser,
-         unfollowUser } from '../../actions/users_actions';
-import { useDeletePost } from '../../query/post_hooks';
-         
+import { useDeletePost,
+         useLikePost,
+         useUnlikePost } from '../../query/post_hooks';
+import { useFollowUser,
+         useUnfollowUser } from '../../query/user_hooks';
+
 
 const mapStateToProps = state => ({
-    currentUser: state.session.currentUser
-});
-
-const mapDispatchToProps = dispatch => ({
-  followUser: id => dispatch(followUser(id)),
-  unfollowUser: id => dispatch(unfollowUser(id)),
-  likePost: id => dispatch(likePost(id)),
-  unlikePost: id => dispatch(unlikePost(id)),
+  currentUser: state.session.currentUser
 });
 
 const ConnectedFeedItem = connect(
-  mapStateToProps, mapDispatchToProps
+  mapStateToProps
 )(FeedItem);
 
 const FeedItemContainer = props => {
   const dispatch = useDispatch();
   const deletePost = useDeletePost();
+  const followUser = useFollowUser();
+  const likePost = useLikePost();
+  const unfollowUser = useUnfollowUser();
+  const unlikePost = useUnlikePost();
 
   const handleDeletePost = post => (
     deletePost.mutate(post, {
@@ -35,10 +34,38 @@ const FeedItemContainer = props => {
     })
   );
 
+  const handleFollowUser = id => (
+    followUser.mutate(id, {
+      onSuccess: posts => dispatch(receiveAllPosts(posts))
+    })
+  );
+
+  const handleUnfollowUser = id => (
+    unfollowUser.mutate(id, {
+      onSuccess: posts => dispatch(receiveAllPosts(posts))
+    })
+  );
+
+  const handleLikePost = id => (
+    likePost.mutate(id, {
+      onSuccess: post => dispatch(receivePost(post))
+    })
+  );
+
+  const handleUnlikePost = id => (
+    unlikePost.mutate(id, {
+      onSuccess: post => dispatch(receivePost(post))
+    })
+  );
+
   return (
     <ConnectedFeedItem
       {...props}
       deletePost={ handleDeletePost }
+      followUser={ handleFollowUser }
+      likePost={ handleLikePost }
+      unfollowUser={ handleUnfollowUser }
+      unlikePost={ handleUnlikePost }
     />
   );
 };

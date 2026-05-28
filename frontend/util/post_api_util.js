@@ -1,4 +1,5 @@
 import { csrfHeaders } from './csrf_api_util';
+import { destroy, post } from './api_client';
 
 export const fetchAllPosts = () => {
   return $.ajax({
@@ -57,20 +58,10 @@ export const deletePost = post => {
   });
 };
 
-export const createLike = id => {
-  return $.ajax({
-    method: 'POST',
-    url: `/api/posts/${id}/like`,
-    dataType: 'json',
-    headers: csrfHeaders()
-  });
-};
+export const createLike = id => (
+  post(`/api/posts/${id}/like`)
+);
 
-export const deleteLike = id => {
-  return $.ajax({
-    method: 'DELETE',
-    url: `/api/posts/${id}/like`,
-    dataType: 'json',
-    headers: csrfHeaders()
-  });
-};
+export const deleteLike = id => (
+  destroy(`/api/posts/${id}/like`)
+);
