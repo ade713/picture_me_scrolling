@@ -1,12 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { values } from 'lodash';
 
+import { createLike, deleteLike } from '../util/post_api_util';
 import { destroy, get, post } from '../util/api_client';
 import { queryKeys } from './query_keys';
 
 const addPostToCache = (posts, newPost) => ({
   ...(posts || {}),
   [newPost.id]: newPost
+});
+
+const updatePostInCache = (posts, updatedPost) => ({
+  ...(posts || {}),
+  [updatedPost.id]: updatedPost
 });
 
 const removePostFromCache = (posts, deletedPost) => {
@@ -58,6 +64,34 @@ export const useDeletePost = () => {
       queryClient.setQueryData(queryKeys.posts, posts => (
         removePostFromCache(posts, deletedPost)
       ));
+    }
+  });
+};
+
+export const useLikePost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: id => createLike(id),
+    onSuccess: updatedPost => {
+      queryClient.setQueryData(queryKeys.posts, posts => (
+        updatePostInCache(posts, updatedPost)
+      ));
+      queryClient.setQueryData(queryKeys.post(updatedPost.id), updatedPost);
+    }
+  });
+};
+
+export const useUnlikePost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: id => deleteLike(id),
+    onSuccess: updatedPost => {
+      queryClient.setQueryData(queryKeys.posts, posts => (
+        updatePostInCache(posts, updatedPost)
+      ));
+      queryClient.setQueryData(queryKeys.post(updatedPost.id), updatedPost);
     }
   });
 };
