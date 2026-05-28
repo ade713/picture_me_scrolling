@@ -1,20 +1,19 @@
-import { connect } from 'react-redux';
+import React from 'react';
 
 import Feed from './feed';
-import { selectAllPosts } from '../../reducers/selectors';
-import { requestAllPosts } from '../../actions/posts_actions';
+import { usePosts } from '../../query/post_hooks';
 
+const FeedContainer = props => {
+  const posts = usePosts();
 
-const mapStateToProps = state => ({
-  posts: selectAllPosts(state)
-});
-
-const mapDispatchToProps = dispatch => ({
-  requestAllPosts: () => dispatch(requestAllPosts())
-});
-
-const FeedContainer = connect(
-  mapStateToProps, mapDispatchToProps
-)(Feed);
+  return (
+    <Feed
+      {...props}
+      posts={ posts.data || [] }
+      postsError={ posts.error }
+      postsLoading={ posts.isLoading }
+    />
+  );
+};
 
 export default FeedContainer;
