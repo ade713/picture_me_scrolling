@@ -1,20 +1,13 @@
 import { csrfHeaders } from './csrf_api_util';
+import { get } from './api_client';
 
-export const fetchUsers = () => {
-  return $.ajax({
-    method: 'GET',
-    url: '/api/users',
-    dataType: 'json'
-  });
-};
+export const fetchUsers = () => (
+  get('/api/users')
+);
 
-export const fetchUser = id => {
-  return $.ajax({
-    method: 'GET',
-    url: `/api/users/${id}`,
-    dataType: 'json'
-  });
-};
+export const fetchUser = id => (
+  get(`/api/users/${id}`)
+);
 
 export const createFollow = id => {
   return $.ajax({
