@@ -15,17 +15,6 @@ const isFormData = body => (
   typeof FormData !== 'undefined' && body instanceof FormData
 );
 
-const buildUrl = (url, params) => {
-  if (!params) return url;
-
-  const query = new URLSearchParams(params);
-  const queryString = query.toString();
-
-  if (!queryString) return url;
-
-  return `${url}${url.includes('?') ? '&' : '?'}${queryString}`;
-};
-
 const parseResponse = async response => {
   if (response.status === 204) return null;
 
@@ -52,7 +41,6 @@ export const request = async (url, options = {}) => {
     body,
     headers = {},
     method = 'GET',
-    params,
     ...fetchOptions
   } = options;
 
@@ -70,7 +58,7 @@ export const request = async (url, options = {}) => {
     requestBody = JSON.stringify(body);
   }
 
-  const response = await fetch(buildUrl(url, params), {
+  const response = await fetch(url, {
     method,
     credentials: 'same-origin',
     headers: requestHeaders,
