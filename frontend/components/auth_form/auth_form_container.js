@@ -1,8 +1,6 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { receiveCurrentUser } from '../../actions/session_actions';
 import { useCurrentUser, useLogin, useSignup } from '../../query/session_hooks';
 import AuthForm from './auth_form';
 
@@ -16,7 +14,6 @@ const authErrors = (...mutations) => (
 
 const AuthFormContainer = props => {
   const { location } = props;
-  const dispatch = useDispatch();
   const currentUser = useCurrentUser();
   const login = useLogin();
   const signup = useSignup();
@@ -24,15 +21,11 @@ const AuthFormContainer = props => {
   const formMutation = formAction === 'signup' ? signup : login;
 
   const processForm = user => {
-    formMutation.mutate(user, {
-      onSuccess: userData => dispatch(receiveCurrentUser(userData))
-    });
+    formMutation.mutate(user);
   };
 
   const loginGuest = user => {
-    login.mutate(user, {
-      onSuccess: userData => dispatch(receiveCurrentUser(userData))
-    });
+    login.mutate(user);
   };
 
   return (
