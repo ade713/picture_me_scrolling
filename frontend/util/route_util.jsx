@@ -1,8 +1,8 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import { Route,
          Redirect,
          withRouter } from 'react-router-dom';
+import { useCurrentUser } from '../query/session_hooks';
 
 const Auth = ({ component: Component, path, loggedIn }) => (
   <Route path={ path } render={ (props) => (
@@ -24,14 +24,25 @@ const Protected = ({ component: Component, path, loggedIn }) => (
     )} />
 );
 
-const mapStateToProps = state => {
-  return { loggedIn: Boolean(state.session.currentUser)};
+const withCurrentUser = RouteComponent => {
+  const CurrentUserRoute = props => {
+    const currentUser = useCurrentUser();
+
+    return (
+      <RouteComponent
+        {...props}
+        loggedIn={ Boolean(currentUser.data) }
+      />
+    );
+  };
+
+  return CurrentUserRoute;
 };
 
 export const AuthRoute = withRouter(
-  connect(mapStateToProps, null)(Auth)
+  withCurrentUser(Auth)
 );
 
 export const ProtectedRoute = withRouter(
-  connect(mapStateToProps, null)(Protected)
+  withCurrentUser(Protected)
 );

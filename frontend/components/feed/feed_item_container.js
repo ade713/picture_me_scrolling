@@ -1,27 +1,15 @@
 import React from 'react';
-import { connect, useDispatch } from 'react-redux';
 
 import FeedItem from './feed_item';
-import { receiveAllPosts,
-         receivePost,
-         removePost } from '../../actions/posts_actions';
+import { useCurrentUser } from '../../query/session_hooks';
 import { useDeletePost,
          useLikePost,
          useUnlikePost } from '../../query/post_hooks';
 import { useFollowUser,
          useUnfollowUser } from '../../query/user_hooks';
 
-
-const mapStateToProps = state => ({
-  currentUser: state.session.currentUser
-});
-
-const ConnectedFeedItem = connect(
-  mapStateToProps
-)(FeedItem);
-
 const FeedItemContainer = props => {
-  const dispatch = useDispatch();
+  const currentUser = useCurrentUser();
   const deletePost = useDeletePost();
   const followUser = useFollowUser();
   const likePost = useLikePost();
@@ -29,38 +17,29 @@ const FeedItemContainer = props => {
   const unlikePost = useUnlikePost();
 
   const handleDeletePost = post => (
-    deletePost.mutate(post, {
-      onSuccess: deletedPost => dispatch(removePost(deletedPost))
-    })
+    deletePost.mutate(post)
   );
 
   const handleFollowUser = id => (
-    followUser.mutate(id, {
-      onSuccess: posts => dispatch(receiveAllPosts(posts))
-    })
+    followUser.mutate(id)
   );
 
   const handleUnfollowUser = id => (
-    unfollowUser.mutate(id, {
-      onSuccess: posts => dispatch(receiveAllPosts(posts))
-    })
+    unfollowUser.mutate(id)
   );
 
   const handleLikePost = id => (
-    likePost.mutate(id, {
-      onSuccess: post => dispatch(receivePost(post))
-    })
+    likePost.mutate(id)
   );
 
   const handleUnlikePost = id => (
-    unlikePost.mutate(id, {
-      onSuccess: post => dispatch(receivePost(post))
-    })
+    unlikePost.mutate(id)
   );
 
   return (
-    <ConnectedFeedItem
+    <FeedItem
       {...props}
+      currentUser={ currentUser.data }
       deletePost={ handleDeletePost }
       followUser={ handleFollowUser }
       likePost={ handleLikePost }
