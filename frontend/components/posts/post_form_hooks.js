@@ -8,12 +8,7 @@ export const usePostFormProps = mutation => {
     mutation.reset();
   };
 
-  const submitPost = post => (
-    mutation.mutateAsync(post)
-      .then(newPost => {
-        return newPost;
-      })
-  );
+  const submitPost = post => mutation.mutateAsync(post);
 
   return {
     clearErrors: clearFormErrors,
