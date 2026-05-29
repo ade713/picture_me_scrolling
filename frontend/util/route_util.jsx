@@ -4,45 +4,32 @@ import { Route,
          withRouter } from 'react-router-dom';
 import { useCurrentUser } from '../query/session_hooks';
 
-const Auth = ({ component: Component, path, loggedIn }) => (
-  <Route path={ path } render={ (props) => (
+export const AuthRoute = withRouter(({ component: Component, ...routeProps }) => {
+  const currentUser = useCurrentUser();
+  const loggedIn = Boolean(currentUser.data);
+
+  return (
+    <Route {...routeProps} render={ props => (
       !loggedIn ? (
         <Component {...props} />
       ) : (
         <Redirect to="/dashboard" />
       )
-  )} />
-);
+    )} />
+  );
+});
 
-const Protected = ({ component: Component, path, loggedIn }) => (
-  <Route path={ path } render={ (props) => (
+export const ProtectedRoute = withRouter(({ component: Component, ...routeProps }) => {
+  const currentUser = useCurrentUser();
+  const loggedIn = Boolean(currentUser.data);
+
+  return (
+    <Route {...routeProps} render={ props => (
       loggedIn ? (
         <Component {...props} />
       ) : (
         <Redirect to="/" />
       )
     )} />
-);
-
-const withCurrentUser = RouteComponent => {
-  const CurrentUserRoute = props => {
-    const currentUser = useCurrentUser();
-
-    return (
-      <RouteComponent
-        {...props}
-        loggedIn={ Boolean(currentUser.data) }
-      />
-    );
-  };
-
-  return CurrentUserRoute;
-};
-
-export const AuthRoute = withRouter(
-  withCurrentUser(Auth)
-);
-
-export const ProtectedRoute = withRouter(
-  withCurrentUser(Protected)
-);
+  );
+});
