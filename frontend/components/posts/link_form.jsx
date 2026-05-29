@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
+import { useCreatePost } from '../../query/post_hooks';
 import formStyles from './modal_style';
+import { usePostFormProps } from './post_form_hooks';
 
-const LinkForm = ({ clearErrors, createPost, currentUser, errors }) => {
+const LinkForm = () => {
+  const createPostMutation = useCreatePost();
+  const { clearErrors, createPost, currentUser, errors } = usePostFormProps(createPostMutation);
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');

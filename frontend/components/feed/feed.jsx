@@ -1,14 +1,14 @@
 import React from 'react';
 
 import FeedItemContainer from './feed_item_container';
-import PostBarContainer from '../posts/post_bar_container';
+import PostBar from '../posts/post_bar';
 
 const Feed = ({ posts, postsError, postsLoading }) => {
   if (postsLoading) {
     return (
       <div className="feed-posts">
         <div className="new-post-container">
-          <PostBarContainer />
+          <PostBar />
         </div>
         <br />
         <ul className="feed-list"></ul>
@@ -20,7 +20,7 @@ const Feed = ({ posts, postsError, postsLoading }) => {
     return (
       <div className="feed-posts">
         <div className="new-post-container">
-          <PostBarContainer />
+          <PostBar />
         </div>
         <br />
         <ul className="feed-list">
@@ -41,7 +41,7 @@ const Feed = ({ posts, postsError, postsLoading }) => {
   return (
     <div className="feed-posts">
       <div className="new-post-container">
-        <PostBarContainer />
+        <PostBar />
       </div>
       <br />
       <ul className="feed-list">

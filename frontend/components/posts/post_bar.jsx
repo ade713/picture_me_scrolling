@@ -1,42 +1,41 @@
 import React from 'react';
 
-import TextFormContainer from './text_form_container';
-import PhotoFormContainer from './photo_form_container';
-import QuoteFormContainer from './quote_form_container';
-import LinkFormContainer from './link_form_container';
-import AudioFormContainer from './audio_form_container';
-import VideoFormContainer from './video_form_container';
+import { useCurrentUser } from '../../query/session_hooks';
+import AudioForm from './audio_form';
+import LinkForm from './link_form';
+import PhotoForm from './photo_form';
+import QuoteForm from './quote_form';
+import TextForm from './text_form';
+import VideoForm from './video_form';
 
+const PostBar = () => {
+  const currentUser = useCurrentUser();
 
-
-class PostBar extends React.Component {
-  render() {
-    return (
-      <div className="post-bar">
-        <img className="user-avatar" src={ this.props.currentUser.avatar_url } />
-        <div className="post-form-links">
-          <div className="bar-form-button">
-            <TextFormContainer />
-          </div>
-          <div className="bar-form-button">
-            <QuoteFormContainer />
-          </div>
-          <div className="bar-form-button">
-            <PhotoFormContainer />
-          </div>
-          <div className="bar-form-button">
-            <LinkFormContainer />
-          </div>
-          <div className="bar-form-button">
-            <AudioFormContainer />
-          </div>
-          <div className="bar-form-button">
-            <VideoFormContainer />
-          </div>
+  return (
+    <div className="post-bar">
+      <img className="user-avatar" src={ currentUser.data.avatar_url } />
+      <div className="post-form-links">
+        <div className="bar-form-button">
+          <TextForm />
+        </div>
+        <div className="bar-form-button">
+          <QuoteForm />
+        </div>
+        <div className="bar-form-button">
+          <PhotoForm />
+        </div>
+        <div className="bar-form-button">
+          <LinkForm />
+        </div>
+        <div className="bar-form-button">
+          <AudioForm />
+        </div>
+        <div className="bar-form-button">
+          <VideoForm />
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default PostBar;
