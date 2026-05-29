@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
+import { useCreateMediaPost } from '../../query/post_hooks';
 import formStyles from './modal_style';
+import { usePostFormProps } from './post_form_hooks';
 
-const VideoForm = ({ clearErrors, createMediaPost, currentUser, errors }) => {
+const VideoForm = () => {
+  const createMediaPostMutation = useCreateMediaPost();
+  const { clearErrors, createMediaPost, currentUser, errors } = usePostFormProps(createMediaPostMutation);
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
