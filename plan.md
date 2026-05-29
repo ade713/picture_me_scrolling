@@ -162,6 +162,8 @@ Recommended PR chunks:
    - keep genuinely useful shared hooks
 8. React warning cleanup and final smoke pass:
    - fix invalid DOM attributes, missing keys, and deprecated patterns
+   - refactor repeated `FeedItem` rendering into smaller shared pieces such as
+     post header, post footer, and post-type body components
    - run the full Phase 2 smoke checklist
 
 Current component inventory:
