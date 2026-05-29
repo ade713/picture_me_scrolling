@@ -1,161 +1,130 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
 
 import formStyles from './modal_style';
 
+const PhotoForm = ({ clearErrors, createMediaPost, currentUser, errors }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [title, setTitle] = useState('');
+  const [body, setBody] = useState('');
+  const [url, setUrl] = useState('');
+  const [imageFile, setImageFile] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
 
-class PhotoForm extends React.Component {
-  constructor(props) {
-    super(props);
+  const openModal = () => {
+    setShowModal(true);
+  };
 
-    this.state = {
-      showModal: false,
-      title: '',
-      body: '',
-      url: '',
-      post_type: 'photo',
-      imageFile: null,
-      imageUrl: null
+  const closeModal = () => {
+    setShowModal(false);
+    setTitle('');
+    setBody('');
+    setUrl('');
+    setImageFile(null);
+    setImageUrl(null);
+    clearErrors();
+  };
+
+  const handleMedia = e => {
+    const reader = new FileReader();
+    const file = e.currentTarget.files[0];
+
+    reader.onloadend = () => {
+      setImageUrl(reader.result);
+      setImageFile(file);
     };
-
-    this.openModal = this.openModal.bind(this);
-    this.closeModal = this.closeModal.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleMedia = this.handleMedia.bind(this);
-  }
-
-  update(property) {
-    return e => this.setState({
-      [property]: e.currentTarget.value
-    });
-  }
-
-  openModal() {
-    this.setState({
-      showModal: true
-    });
-  }
-
-  closeModal() {
-    this.setState({
-      showModal: false,
-      title: '',
-      body: '',
-      url: '',
-      imageFile: null,
-      imageUrl: null
-    });
-    this.props.clearErrors();
-  }
-
-  handleMedia(e) {
-    let reader = new FileReader();
-    let file = e.currentTarget.files[0];
-    reader.onloadend = function() {
-      this.setState({
-        imageUrl: reader.result,
-        imageFile: file
-      });
-    }.bind(this);
 
     if (file) {
       reader.readAsDataURL(file);
     }
-  }
+  };
 
-  handleSubmit(e) {
+  const handleSubmit = e => {
     e.preventDefault();
-    if (!this.state.imageFile) return;
+    if (!imageFile) return;
 
-    let formData = new FormData();
-    formData.append('post[url]', this.state.url);
-    formData.append('post[title]', this.state.title);
+    const formData = new FormData();
+    formData.append('post[url]', url);
+    formData.append('post[title]', title);
     formData.append('post[post_type]', 'photo');
-    formData.append('post[body]', this.state.body);
-    formData.append('post[image]', this.state.imageFile);
-    this.props.createMediaPost(formData)
-      .then(this.closeModal);
-  }
+    formData.append('post[body]', body);
+    formData.append('post[image]', imageFile);
 
-  renderErrors() {
-    return (
-      <ul>
-        {this.props.errors.map((error, index) => (
-          <li key={`error-${index}`}>
-            {error}
-          </li>
-        ))
-        }
-      </ul>
-    );
-  }
+    createMediaPost(formData).then(closeModal);
+  };
 
-  render() {
-    return (
-      <div className="post-bar-content">
-        <button className="post-bar-button" onClick={ this.openModal }>
-          <label className="bar-button">
-            <div className="button-icon">
-              <i className="fa fa-camera fa-3x" aria-hidden="true"></i>
-            </div>
-            <span className="new-post-label">
-              Photo
-            </span>
-          </label>
-        </button>
+  const renderErrors = () => (
+    <ul>
+      { errors.map((error, index) => (
+        <li key={ `error-${index}` }>
+          { error }
+        </li>
+      )) }
+    </ul>
+  );
 
-        <Modal isOpen={ this.state.showModal }
-               contentLabel="Example Modal"
-               style={ formStyles }
-               shouldCloseOnOverlayClick={ false }
-               onRequestClose={ this.closeModal } >
-               <div className="photo-post-form">
-                 <div className="post-form">
-                    <span className="post-author">
-                      {this.props.currentUser.username}
-                    </span>
-                   <div className="media-field">
-                     <input className="media-input"
-                            type="file"
-                            accept="image/*"
-                            onChange={ this.handleMedia } />
-                     <img src={this.state.imageUrl} />
+  return (
+    <div className="post-bar-content">
+      <button className="post-bar-button" onClick={ openModal }>
+        <label className="bar-button">
+          <div className="button-icon">
+            <i className="fa fa-camera fa-3x" aria-hidden="true"></i>
+          </div>
+          <span className="new-post-label">
+            Photo
+          </span>
+        </label>
+      </button>
+
+      <Modal isOpen={ showModal }
+             contentLabel="Example Modal"
+             style={ formStyles }
+             shouldCloseOnOverlayClick={ false }
+             onRequestClose={ closeModal } >
+             <div className="photo-post-form">
+               <div className="post-form">
+                  <span className="post-author">
+                    { currentUser.username }
+                  </span>
+                 <div className="media-field">
+                   <input className="media-input"
+                          type="file"
+                          accept="image/*"
+                          onChange={ handleMedia } />
+                   <img src={ imageUrl } />
+                 </div>
+
+                 <div className="title-field">
+                   <textarea className="title-input"
+                             type="text"
+                             placeholder="Upload Photo above&#10;Add Photo caption here"
+                             value={ title }
+                             onChange={ e => setTitle(e.currentTarget.value) } />
+                 </div>
+
+                 <div className="submit-form">
+                   <div className="form-errors">
+                     <strong>{ renderErrors() }</strong>
                    </div>
-              
-                   <div className="title-field">
-                     <textarea className="title-input"
-                               type="text"
-                               placeholder="Upload Photo above&#10;Add Photo caption here"
-                               value={ this.state.title }
-                               onChange={ this.update('title') } />
-                   </div>
 
-                   
+                   <div className="modal-button">
+                     <button className="form-button"
+                             onClick={ closeModal }>
+                             Close
+                     </button>
 
-                   <div className="submit-form">
-                     <div className="form-errors">
-                       <strong>{ this.renderErrors() }</strong>
-                     </div>
-
-                     <div className="modal-button">
-                       <button className="form-button"
-                               onClick={ this.closeModal }>
-                               Close
-                       </button>
-
-                       <button className="post-submit-button"
-                               onClick={ this.handleSubmit }
-                               disabled={ !this.state.imageFile } >
-                         Post
-                       </button>
-                     </div>
+                     <button className="post-submit-button"
+                             onClick={ handleSubmit }
+                             disabled={ !imageFile } >
+                       Post
+                     </button>
                    </div>
                  </div>
                </div>
-        </Modal>
-      </div>
-    );
-  }
-}
+             </div>
+      </Modal>
+    </div>
+  );
+};
 
 export default PhotoForm;
