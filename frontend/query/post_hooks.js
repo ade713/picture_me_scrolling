@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { values } from 'lodash';
 
-import { createLike, deleteLike } from '../util/post_api_util';
 import { destroy, get, post } from '../util/api_client';
 import { queryKeys } from './query_keys';
 
@@ -72,7 +71,7 @@ export const useLikePost = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: id => createLike(id),
+    mutationFn: id => post(`/api/posts/${id}/like`),
     onSuccess: updatedPost => {
       queryClient.setQueryData(queryKeys.posts, posts => (
         updatePostInCache(posts, updatedPost)
@@ -86,7 +85,7 @@ export const useUnlikePost = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: id => deleteLike(id),
+    mutationFn: id => destroy(`/api/posts/${id}/like`),
     onSuccess: updatedPost => {
       queryClient.setQueryData(queryKeys.posts, posts => (
         updatePostInCache(posts, updatedPost)
