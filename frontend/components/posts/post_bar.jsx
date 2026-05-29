@@ -10,10 +10,6 @@ import VideoFormContainer from './video_form_container';
 
 
 class PostBar extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div className="post-bar">

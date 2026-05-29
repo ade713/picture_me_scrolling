@@ -122,6 +122,66 @@ Planned work:
    - preserve the Rails parameter shape for media uploads
 6. Clean up remaining React warnings.
 
+Recommended PR chunks:
+
+1. Component inventory and low-risk cleanup:
+   - document remaining class components
+   - classify conversion risk
+   - remove dead files and no-op constructors
+   - avoid behavior rewrites
+2. Shell and route components:
+   - `App`
+   - `Root`
+   - route wrappers in `route_util.jsx`
+   - `Dashboard`
+   - `Feed`
+   - `RecommendedUsers`
+   - `RecUserItem`
+3. Feed item component:
+   - convert `FeedItem`
+   - preserve post type rendering
+   - preserve delete, like/unlike, and follow/unfollow behavior
+4. Auth form component:
+   - convert `AuthForm`
+   - replace local form state with hooks
+   - replace redirect lifecycle behavior with `useEffect`
+   - preserve guest login behavior
+5. Basic post forms:
+   - `TextForm`
+   - `QuoteForm`
+   - `LinkForm`
+   - normalize shared modal/input/error patterns where safe
+6. Media post forms:
+   - `PhotoForm`
+   - `AudioForm`
+   - `VideoForm`
+   - preserve `FileReader`, `FormData`, and Rails upload parameter shape
+7. Post bar and form container cleanup:
+   - remove containers that no longer add value after forms are functional
+   - move direct hook usage into components where appropriate
+   - keep genuinely useful shared hooks
+8. React warning cleanup and final smoke pass:
+   - fix invalid DOM attributes, missing keys, and deprecated patterns
+   - run the full Phase 2 smoke checklist
+
+Current component inventory:
+
+| Component | Current shape | State/lifecycle | Phase 2 PR |
+| --- | --- | --- | --- |
+| `Dashboard` | class | render-only | PR 2 |
+| `Feed` | class | render-only | PR 2 |
+| `RecommendedUsers` | function | none | already modern enough |
+| `RecUserItem` | class | render-only | PR 2 |
+| `PostBar` | class | render-only | PR 7 |
+| `FeedItem` | class | render helpers only | PR 3 |
+| `AuthForm` | class | local credentials, `componentDidUpdate` redirect | PR 4 |
+| `TextForm` | class | modal/input state | PR 5 |
+| `QuoteForm` | class | modal/input state | PR 5 |
+| `LinkForm` | class | modal/input state | PR 5 |
+| `PhotoForm` | class | modal/input/file preview state | PR 6 |
+| `AudioForm` | class | modal/input/file preview state | PR 6 |
+| `VideoForm` | class | modal/input/file preview state | PR 6 |
+
 Manual smoke checks:
 
 - logged-out root renders

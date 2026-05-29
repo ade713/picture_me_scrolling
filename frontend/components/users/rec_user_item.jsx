@@ -1,10 +1,6 @@
 import React from 'react';
 
 class RecUserItem extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <li className="rec-user-item">

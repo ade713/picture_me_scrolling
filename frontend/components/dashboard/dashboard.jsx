@@ -5,10 +5,6 @@ import RecommendedUsersContainer from '../users/recommended_users_container';
 
 
 class Dashboard extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render () {
     const { logout } = this.props;
 
