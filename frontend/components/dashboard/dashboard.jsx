@@ -1,7 +1,7 @@
 import React from 'react';
 
 import FeedContainer from '../feed/feed_container';
-import RecommendedUsersContainer from '../users/recommended_users_container';
+import RecommendedUsers from '../users/recommended_users';
 
 const Dashboard = ({ logout }) => (
   <div className="dash-page">
@@ -16,7 +16,7 @@ const Dashboard = ({ logout }) => (
         <FeedContainer />
       </div>
       <div className="dash-right-column">
-        <RecommendedUsersContainer />
+        <RecommendedUsers />
         <footer className="dash-right-footer">
           <a
             href="https://github.com/ade713"
