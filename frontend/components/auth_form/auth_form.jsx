@@ -1,22 +1,34 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
+
+import { useCurrentUser, useLogin, useSignup } from '../../query/session_hooks';
 
 const GUEST_USER = {
   username: 'PicMeS Guest',
   password: '1Welcome2To3PicMeS'
 };
 
-const AuthForm = ({
-  errors,
-  formAction,
-  history,
-  loggedIn,
-  login,
-  processForm
-}) => {
+const mutationErrors = mutation => (
+  mutation.error ? mutation.error.errors : []
+);
+
+const authErrors = (...mutations) => (
+  mutations.flatMap(mutationErrors)
+);
+
+const AuthForm = () => {
+  const currentUser = useCurrentUser();
+  const history = useHistory();
+  const location = useLocation();
+  const login = useLogin();
+  const signup = useSignup();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const guestLoginTimers = useRef([]);
+  const formAction = location.pathname.slice(1);
+  const formMutation = formAction === 'signup' ? signup : login;
+  const errors = authErrors(formMutation, login);
+  const loggedIn = Boolean(currentUser.data);
 
   useEffect(() => {
     if (loggedIn) {
@@ -42,7 +54,7 @@ const AuthForm = ({
 
   const handleSubmit = e => {
     e.preventDefault();
-    processForm({ username, password });
+    formMutation.mutate({ username, password });
   };
 
   const logInAsGuest = e => {
@@ -63,7 +75,7 @@ const AuthForm = ({
       );
     }
 
-    queueGuestLoginTimer(() => login(GUEST_USER), 1700);
+    queueGuestLoginTimer(() => login.mutate(GUEST_USER), 1700);
   };
 
   const navLink = () => (
