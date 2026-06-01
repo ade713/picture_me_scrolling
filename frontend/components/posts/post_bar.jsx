@@ -13,7 +13,10 @@ const PostBar = () => {
 
   return (
     <div className="post-bar">
-      <img className="user-avatar" src={ currentUser.data.avatar_url } />
+      <img
+        alt={ `${currentUser.data.username} avatar` }
+        className="user-avatar"
+        src={ currentUser.data.avatar_url } />
       <div className="post-form-links">
         <div className="bar-form-button">
           <TextForm />

@@ -61,7 +61,7 @@ const QuoteForm = () => {
       </button>
 
       <Modal isOpen={ showModal }
-             contentLabel="Example Modal"
+             contentLabel="Quote post form"
              style={ formStyles }
              shouldCloseOnOverlayClick={ false }
              onRequestClose={ closeModal } >

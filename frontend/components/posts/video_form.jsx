@@ -84,7 +84,7 @@ const VideoForm = () => {
 
       <Modal
         isOpen={ showModal }
-        contentLabel="Example Modal"
+        contentLabel="Video post form"
         style={ formStyles }
         shouldCloseOnOverlayClick={ false }
         onRequestClose={ closeModal } >
