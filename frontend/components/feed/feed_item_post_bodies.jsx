@@ -1,0 +1,92 @@
+import React from 'react';
+
+export const AudioPost = ({ footer, header, post }) => (
+  <div className="post-audio">
+    { header }
+    <div className="post-upload-audio">
+      <video width="540" height="120" controls>
+        <source src={ post.image_url } />
+      </video>
+    </div>
+    <div className="post-caption">
+      { post.title }
+    </div>
+    { footer }
+  </div>
+);
+
+export const LinkPost = ({ footer, header, post }) => (
+  <div className="post-link">
+    { header }
+    <div className="post-link-main">
+      <a
+        className="posted-link"
+        href={ post.url }
+        target="_blank"
+        rel="noopener noreferrer">
+        { post.title }
+      </a>
+    </div>
+    { footer }
+  </div>
+);
+
+export const PhotoPost = ({ footer, header, post }) => (
+  <div className="post-photo">
+    { header }
+    <div className="post-upload-photo">
+      <img
+        alt={ post.title || 'Uploaded post' }
+        src={ post.image_url } />
+    </div>
+    <div className="post-caption">
+      { post.title }
+    </div>
+    { footer }
+  </div>
+);
+
+export const QuotePost = ({ footer, header, post }) => (
+  <div className="post-quote">
+    { header }
+    <div className="post-content">
+      <div className="quote">
+        { post.title }
+      </div>
+      <div className="source">
+        { post.body }
+      </div>
+    </div>
+    { footer }
+  </div>
+);
+
+export const TextPost = ({ footer, header, post }) => (
+  <div className="post-text">
+    { header }
+    <div className="post-content">
+      <div className="post-title">
+        { post.title }
+      </div>
+      <div className="post-body">
+        { post.body }
+      </div>
+    </div>
+    { footer }
+  </div>
+);
+
+export const VideoPost = ({ footer, header, post }) => (
+  <div className="post-video">
+    { header }
+    <div className="post-upload-video">
+      <video width="540" height="440" controls>
+        <source src={ post.image_url } />
+      </video>
+    </div>
+    <div className="post-caption">
+      { post.title }
+    </div>
+    { footer }
+  </div>
+);
