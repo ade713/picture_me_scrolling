@@ -1,14 +1,21 @@
 import React from 'react';
 
 import RecUserItem from './rec_user_item';
+import { useFollowUser, useUsers } from '../../query/user_hooks';
 
+const RecommendedUsers = () => {
+  const followUser = useFollowUser();
+  const users = useUsers();
 
-const RecommendedUsers = ({ followUser, users }) => {
-  const recUsers = users.map(user =>
+  const handleFollowUser = id => (
+    followUser.mutate(id)
+  );
+
+  const recUsers = (users.data || []).map(user =>
     <RecUserItem
       key={ user.id }
       user={ user }
-      followUser={ followUser } />
+      followUser={ handleFollowUser } />
   );
 
   return (
