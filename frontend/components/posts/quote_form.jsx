@@ -3,6 +3,7 @@ import Modal from 'react-modal';
 
 import { useCreatePost } from '../../query/post_hooks';
 import formStyles from './modal_style';
+import { FormErrors, ModalButtonFooter } from './post_form_controls';
 import { usePostFormProps } from './post_form_hooks';
 
 const QuoteForm = () => {
@@ -36,16 +37,6 @@ const QuoteForm = () => {
 
     createPost(post).then(closeModal);
   };
-
-  const renderErrors = () => (
-    <ul>
-      { errors.map((error, index) => (
-        <li key={ `error-${index}` }>
-          { error }
-        </li>
-      )) }
-    </ul>
-  );
 
   return (
     <div className="post-bar-content">
@@ -86,21 +77,12 @@ const QuoteForm = () => {
                      onChange={ e => setBody(e.currentTarget.value) } />
                  </div>
                  <div className="submit-form">
-                   <div className="form-errors">
-                     <strong>{ renderErrors() }</strong>
-                   </div>
-
-                   <div className="modal-button">
-                     <button className="form-button"
-                             onClick={ closeModal }>
-                             Close
-                     </button>
-                     <button className="post-submit-button"
-                             onClick={ handleSubmit }
-                             disabled={ !title } >
-                       Post
-                     </button>
-                   </div>
+                   <FormErrors errors={ errors } />
+                   <ModalButtonFooter
+                     disabled={ !title }
+                     onClose={ closeModal }
+                     onSubmit={ handleSubmit }
+                   />
                  </div>
                </div>
              </div>
