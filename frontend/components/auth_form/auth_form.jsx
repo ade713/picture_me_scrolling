@@ -146,10 +146,16 @@ const AuthForm = ({
         </div>
       </div>
       <footer className="auth-footer">
-        <a href="https://github.com/ade713" target="_blank">
+        <a
+          href="https://github.com/ade713"
+          target="_blank"
+          rel="noopener noreferrer">
           <i className="fa fa-github fa-2x" aria-hidden="true"></i>
         </a>
-        <a href="https://www.linkedin.com/in/ade-farquhar-2a66a233" target="_blank">
+        <a
+          href="https://www.linkedin.com/in/ade-farquhar-2a66a233"
+          target="_blank"
+          rel="noopener noreferrer">
           <i className="fa fa-linkedin-square fa-2x" aria-hidden="true"></i>
         </a>
       </footer>

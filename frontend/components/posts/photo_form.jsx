@@ -81,7 +81,7 @@ const PhotoForm = () => {
       </button>
 
       <Modal isOpen={ showModal }
-             contentLabel="Example Modal"
+             contentLabel="Photo post form"
              style={ formStyles }
              shouldCloseOnOverlayClick={ false }
              onRequestClose={ closeModal } >
@@ -95,7 +95,9 @@ const PhotoForm = () => {
                           type="file"
                           accept="image/*"
                           onChange={ handleMedia } />
-                   <img src={ imageUrl } />
+                   <img
+                     alt="Selected upload preview"
+                     src={ imageUrl } />
                  </div>
 
                  <div className="title-field">

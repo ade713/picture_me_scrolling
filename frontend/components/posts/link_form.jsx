@@ -61,7 +61,7 @@ const LinkForm = () => {
       </button>
 
       <Modal isOpen={ showModal }
-             contentLabel="Example Modal"
+             contentLabel="Link post form"
              style={ formStyles }
              shouldCloseOnOverlayClick={ false }
              onRequestClose={ closeModal } >

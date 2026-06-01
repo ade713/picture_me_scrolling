@@ -1,5 +1,6 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import Modal from "react-modal";
 
 import Root from "./components/root";
 import queryClient from "./query/query_client";
@@ -14,5 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const root = document.getElementById("root");
+  Modal.setAppElement(root);
   createRoot(root).render(<Root />);
 });

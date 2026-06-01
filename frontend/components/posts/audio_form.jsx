@@ -81,7 +81,7 @@ const AudioForm = () => {
       </button>
 
       <Modal isOpen={ showModal }
-             contentLabel="Example Modal"
+             contentLabel="Audio post form"
              style={ formStyles }
              shouldCloseOnOverlayClick={ false }
              onRequestClose={ closeModal } >
