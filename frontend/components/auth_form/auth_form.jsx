@@ -1,12 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 
 import { useCurrentUser, useLogin, useSignup } from '../../query/session_hooks';
-
-const GUEST_USER = {
-  username: 'PicMeS Guest',
-  password: '1Welcome2To3PicMeS'
-};
+import useGuestLogin from './use_guest_login';
 
 const mutationErrors = mutation => (
   mutation.error ? mutation.error.errors : []
@@ -24,7 +20,7 @@ const AuthForm = () => {
   const signup = useSignup();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const guestLoginTimers = useRef([]);
+  const logInAsGuest = useGuestLogin({ login, setUsername, setPassword });
   const formAction = location.pathname.slice(1);
   const formMutation = formAction === 'signup' ? signup : login;
   const errors = authErrors(formMutation, login);
@@ -36,46 +32,9 @@ const AuthForm = () => {
     }
   }, [history, loggedIn]);
 
-  useEffect(() => (
-    () => {
-      guestLoginTimers.current.forEach(clearTimeout);
-    }
-  ), []);
-
-  const clearGuestLoginTimers = () => {
-    guestLoginTimers.current.forEach(clearTimeout);
-    guestLoginTimers.current = [];
-  };
-
-  const queueGuestLoginTimer = (callback, delay) => {
-    const timerId = setTimeout(callback, delay);
-    guestLoginTimers.current.push(timerId);
-  };
-
   const handleSubmit = e => {
     e.preventDefault();
     formMutation.mutate({ username, password });
-  };
-
-  const logInAsGuest = e => {
-    e.preventDefault();
-    clearGuestLoginTimers();
-
-    for (let i = 0; i < GUEST_USER.username.length; i++) {
-      queueGuestLoginTimer(
-        () => setUsername(GUEST_USER.username.slice(0, i + 1)),
-        i * 75
-      );
-    }
-
-    for (let i = 0; i < GUEST_USER.password.length; i++) {
-      queueGuestLoginTimer(
-        () => setPassword(GUEST_USER.password.slice(0, i + 1)),
-        (i + GUEST_USER.username.length) * 75
-      );
-    }
-
-    queueGuestLoginTimer(() => login.mutate(GUEST_USER), 1700);
   };
 
   const navLink = () => (
