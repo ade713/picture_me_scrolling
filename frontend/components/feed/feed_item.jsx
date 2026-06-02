@@ -1,5 +1,11 @@
 import React from 'react';
 
+import { useCurrentUser } from '../../query/session_hooks';
+import { useDeletePost,
+         useLikePost,
+         useUnlikePost } from '../../query/post_hooks';
+import { useFollowUser,
+         useUnfollowUser } from '../../query/user_hooks';
 import { AudioPost,
          LinkPost,
          PhotoPost,
@@ -19,22 +25,20 @@ const POST_BODY_COMPONENTS = {
   video: VideoPost
 };
 
-const FeedItem = ({
-  currentUser,
-  deletePost,
-  followUser,
-  likePost,
-  post,
-  unfollowUser,
-  unlikePost
-}) => {
-  const isAuthor = post.author_id === currentUser.id;
+const FeedItem = ({ post }) => {
+  const currentUser = useCurrentUser();
+  const deletePost = useDeletePost();
+  const followUser = useFollowUser();
+  const likePost = useLikePost();
+  const unfollowUser = useUnfollowUser();
+  const unlikePost = useUnlikePost();
+  const isAuthor = Boolean(currentUser.data) && post.author_id === currentUser.data.id;
 
   const postHeader = (
     <PostHeader
       isAuthor={ isAuthor }
-      onFollow={ followUser }
-      onUnfollow={ unfollowUser }
+      onFollow={ id => followUser.mutate(id) }
+      onUnfollow={ id => unfollowUser.mutate(id) }
       post={ post }
     />
   );
@@ -42,9 +46,9 @@ const FeedItem = ({
   const postFooter = (
     <PostFooter
       isAuthor={ isAuthor }
-      onDelete={ deletePost }
-      onLike={ likePost }
-      onUnlike={ unlikePost }
+      onDelete={ deletedPost => deletePost.mutate(deletedPost) }
+      onLike={ id => likePost.mutate(id) }
+      onUnlike={ id => unlikePost.mutate(id) }
       post={ post }
     />
   );
