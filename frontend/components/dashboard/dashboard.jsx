@@ -1,43 +1,52 @@
 import React from 'react';
 
-import FeedContainer from '../feed/feed_container';
+import { useLogout } from '../../query/session_hooks';
+import Feed from '../feed/feed';
 import RecommendedUsers from '../users/recommended_users';
 
-const Dashboard = ({ logout }) => (
-  <div className="dash-page">
-    <header className="dash-nav">
-      <h1 className="dash-title">
-        PicMeS
-      </h1>
-      <button className="dash-logout" onClick={ logout }>Log Out</button>
-    </header>
-    <div className="dash-main">
-      <div className="dash-feed">
-        <FeedContainer />
-      </div>
-      <div className="dash-right-column">
-        <RecommendedUsers />
-        <footer className="dash-right-footer">
-          <a
-            href="https://github.com/ade713"
-            target="_blank"
-            rel="noopener noreferrer">
-            <i
-              className="fa fa-github"
-              aria-hidden="true"></i>
-          </a>
-          <a
-            href="https://www.linkedin.com/in/ade-farquhar-2a66a233"
-            target="_blank"
-            rel="noopener noreferrer">
-            <i
-              className="fa fa-linkedin-square"
-              aria-hidden="true"></i>
-          </a>
-        </footer>
+const Dashboard = () => {
+  const logout = useLogout();
+
+  const handleLogout = () => {
+    logout.mutate();
+  };
+
+  return (
+    <div className="dash-page">
+      <header className="dash-nav">
+        <h1 className="dash-title">
+          PicMeS
+        </h1>
+        <button className="dash-logout" onClick={ handleLogout }>Log Out</button>
+      </header>
+      <div className="dash-main">
+        <div className="dash-feed">
+          <Feed />
+        </div>
+        <div className="dash-right-column">
+          <RecommendedUsers />
+          <footer className="dash-right-footer">
+            <a
+              href="https://github.com/ade713"
+              target="_blank"
+              rel="noopener noreferrer">
+              <i
+                className="fa fa-github"
+                aria-hidden="true"></i>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/ade-farquhar-2a66a233"
+              target="_blank"
+              rel="noopener noreferrer">
+              <i
+                className="fa fa-linkedin-square"
+                aria-hidden="true"></i>
+            </a>
+          </footer>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default Dashboard;
