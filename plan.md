@@ -241,6 +241,52 @@ Starting context:
 - The next branch should start from `main` after the final Phase 2 cleanup PRs
   are merged.
 
+Recommended PR chunks:
+
+1. Router inventory and prep:
+   - audit current React Router v5 usage
+   - document routes, redirects, protected-route behavior, and auth-route
+     behavior
+   - confirm logged-in and logged-out navigation behavior
+   - avoid behavior changes unless a tiny cleanup is needed
+2. Upgrade React Router dependency:
+   - upgrade `react-router-dom` to the current version
+   - update `package-lock.json`
+   - make only the minimum code changes needed to compile if possible
+3. Replace route wrappers:
+   - replace `AuthRoute` and `ProtectedRoute` v5 patterns
+   - remove `withRouter`
+   - use modern router APIs for redirects/navigation
+   - preserve logged-in/logged-out access rules
+4. Modernize app shell routing:
+   - update `App.jsx` to the modern router structure
+   - replace `Switch` and old `component={...}` route patterns
+   - confirm dashboard and auth routes still mount correctly
+5. Navigation and redirect cleanup:
+   - replace old `useHistory` usage with modern navigation hooks
+   - update auth redirect behavior in `AuthForm`
+   - update any remaining route-driven navigation patterns
+6. Webpack/Babel tooling inventory:
+   - audit the current Webpack/Babel setup
+   - document what the Rails app expects from frontend build output
+   - decide whether to keep Webpack or migrate to Vite
+   - avoid major build changes in this chunk
+7. Vite migration or Webpack modernization:
+   - if moving to Vite, add Vite config, update frontend entry/build output,
+     update scripts, and preserve Rails-served asset behavior
+   - if staying on Webpack, clean stale Babel/Webpack config and update scripts
+     and dependencies where useful
+8. Remove obsolete compatibility code:
+   - remove router/tooling compatibility leftovers
+   - remove unused packages
+   - clean unused imports and files revealed by Phase 3
+   - run the full smoke checklist
+9. Documentation and Phase 3 closeout:
+   - update this plan
+   - update README/frontend setup notes if needed
+   - document current dev/build commands
+   - mark Phase 3 complete
+
 ## Guardrails
 
 - Keep the app working after each chunk.
