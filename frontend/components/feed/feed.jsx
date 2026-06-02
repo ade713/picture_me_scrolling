@@ -1,10 +1,13 @@
 import React from 'react';
 
-import FeedItemContainer from './feed_item_container';
+import { usePosts } from '../../query/post_hooks';
+import FeedItem from './feed_item';
 import PostBar from '../posts/post_bar';
 
-const Feed = ({ posts, postsError, postsLoading }) => {
-  if (postsLoading) {
+const Feed = () => {
+  const posts = usePosts();
+
+  if (posts.isLoading) {
     return (
       <div className="feed-posts">
         <div className="new-post-container">
@@ -16,7 +19,7 @@ const Feed = ({ posts, postsError, postsLoading }) => {
     );
   }
 
-  if (postsError) {
+  if (posts.error) {
     return (
       <div className="feed-posts">
         <div className="new-post-container">
@@ -32,8 +35,8 @@ const Feed = ({ posts, postsError, postsLoading }) => {
     );
   }
 
-  const feedItems = posts.map(post =>
-    <FeedItemContainer
+  const feedItems = (posts.data || []).map(post =>
+    <FeedItem
       key={ post.id }
       post={ post } />
   );
