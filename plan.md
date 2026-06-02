@@ -50,6 +50,8 @@ should live in TanStack Query.
 
 ## Phase 1: State and API Modernization
 
+Status: complete.
+
 Goal: replace the Redux/action/reducer/API-util pattern with hooks, TanStack
 Query, Zustand, and fetch.
 
@@ -100,6 +102,8 @@ Add TanStack Query, Zustand, and a fetch API client without removing Redux yet.
 
 ## Phase 2: Component Modernization
 
+Status: complete.
+
 Goal: convert the component layer to React hooks and remove legacy React
 patterns.
 
@@ -122,7 +126,7 @@ Planned work:
    - preserve the Rails parameter shape for media uploads
 6. Clean up remaining React warnings.
 
-Recommended PR chunks:
+Completed PR chunks:
 
 1. Component inventory and low-risk cleanup:
    - document remaining class components
@@ -132,7 +136,6 @@ Recommended PR chunks:
 2. Shell and route components:
    - `App`
    - `Root`
-   - route wrappers in `route_util.jsx`
    - `Dashboard`
    - `Feed`
    - `RecommendedUsers`
@@ -165,24 +168,42 @@ Recommended PR chunks:
    - refactor repeated `FeedItem` rendering into smaller shared pieces such as
      post header, post footer, and post-type body components
    - run the full Phase 2 smoke checklist
+9. Local component refactors:
+   - extract shared post form controls
+   - extract feed item post body and frame/header/footer pieces
+   - keep refactors local and behavior-preserving
+10. Container cleanup:
+   - remove auth and recommended-users pass-through containers
+   - remove dashboard, feed, and feed-item pass-through containers
+   - move direct hook usage into the components that consume the data
 
 Current component inventory:
 
-| Component | Current shape | State/lifecycle | Phase 2 PR |
+| Component | Current shape | State/lifecycle | Phase 2 status |
 | --- | --- | --- | --- |
-| `Dashboard` | class | render-only | PR 2 |
-| `Feed` | class | render-only | PR 2 |
-| `RecommendedUsers` | function | none | already modern enough |
-| `RecUserItem` | class | render-only | PR 2 |
-| `PostBar` | class | render-only | PR 7 |
-| `FeedItem` | class | render helpers only | PR 3 |
-| `AuthForm` | class | local credentials, `componentDidUpdate` redirect | PR 4 |
-| `TextForm` | class | modal/input state | PR 5 |
-| `QuoteForm` | class | modal/input state | PR 5 |
-| `LinkForm` | class | modal/input state | PR 5 |
-| `PhotoForm` | class | modal/input/file preview state | PR 6 |
-| `AudioForm` | class | modal/input/file preview state | PR 6 |
-| `VideoForm` | class | modal/input/file preview state | PR 6 |
+| `Dashboard` | function | logout mutation hook | complete |
+| `Feed` | function | posts query hook | complete |
+| `RecommendedUsers` | function | users query and follow mutation hook | complete |
+| `RecUserItem` | function | render-only | complete |
+| `PostBar` | function | render-only | complete |
+| `FeedItem` | function | current-user, post mutation, and follow mutation hooks | complete |
+| `AuthForm` | function | local credentials, auth hooks, redirect effect | complete |
+| `TextForm` | function | modal/input state hooks | complete |
+| `QuoteForm` | function | modal/input state hooks | complete |
+| `LinkForm` | function | modal/input state hooks | complete |
+| `PhotoForm` | function | modal/input/file preview state hooks | complete |
+| `AudioForm` | function | modal/input/file preview state hooks | complete |
+| `VideoForm` | function | modal/input/file preview state hooks | complete |
+
+Remaining Phase 2 notes:
+
+- Active frontend code no longer has React class components.
+- Old React-Redux-style container files have been removed.
+- Hook ownership now lives in the components that consume the relevant data.
+- `route_util.jsx` still uses React Router v5 `withRouter`; this is intentional
+  and should be handled in Phase 3 with the router upgrade.
+- CSS class names that include `container`, such as `new-post-container`, are
+  styling vocabulary and can wait for the later CSS/design cleanup pass.
 
 Manual smoke checks:
 
@@ -211,6 +232,14 @@ Planned work:
 5. Update build and deploy scripts if the tooling changes.
 6. Remove obsolete compatibility code.
 7. Update frontend documentation.
+
+Starting context:
+
+- Phase 1 and Phase 2 are complete.
+- The remaining known frontend compatibility pattern is React Router v5 usage in
+  `route_util.jsx`.
+- The next branch should start from `main` after the final Phase 2 cleanup PRs
+  are merged.
 
 ## Guardrails
 
