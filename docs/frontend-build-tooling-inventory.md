@@ -105,7 +105,7 @@ Scope:
 
 - Keep the current Rails/Sprockets integration.
 - Move Babel config out of the inline Webpack loader if useful.
-- Remove unused dependencies such as `babel-core` after verification.
+- Remove unused dependencies such as `babel-core`.
 - Remove empty CoffeeScript placeholders.
 - Keep `coffee-rails` until Sprockets is upgraded or replaced.
 - Make script names clearer, such as `build` and `build:watch`.
