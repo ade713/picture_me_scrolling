@@ -1,6 +1,10 @@
 # Picture Me Scrolling (PicMeS)
 
-Picture Me Scrolling, a Tumblr inspired clone, is a blogging site (that creates an outlet for users to share their views through a variety of mediums including text, audio and visual. A single page application built with Ruby on Rails and React/Redux, along with PostgreSQL.  PicMeS also lets the user experience the world through the experiences of others.
+Picture Me Scrolling, a Tumblr inspired clone, is a blogging site that creates
+an outlet for users to share their views through text, audio, images, and video.
+It is a single page application built with Ruby on Rails, React, PostgreSQL,
+TanStack Query, and Active Storage-compatible media handling. PicMeS also lets
+users experience the world through the experiences of others.
 
 ![homepage](./docs/home_page.png)
 
@@ -8,11 +12,12 @@ Picture Me Scrolling, a Tumblr inspired clone, is a blogging site (that creates 
 
 In addition to the aforementioned tech, this site was also developed using:
 
-+ **Heroku** - for website hosting.
-+ **Npm** - to install varying modules for front-end development.
-+ **Paperclip** - file attachments to posts.
-+ **Amazon Web Services** - to store uploaded data from users.
-+ **Figaro** - used to secure API keys provided as security access to AWS
++ **React** - frontend UI.
++ **TanStack Query** - server/API state and mutation handling.
++ **Webpack/Babel** - current JavaScript build pipeline.
++ **Active Storage** - media attachment support.
++ **Amazon S3** - media storage.
++ **Figaro** - application configuration.
 
 ## Features
 
@@ -21,20 +26,19 @@ In addition to the aforementioned tech, this site was also developed using:
   + a preview of video and images are displayed for the users
 
 ```js
-  handleMedia(e) {
-    let reader = new FileReader();
-    let file = e.currentTarget.files[0];
-    reader.onloadend = function() {
-      this.setState({
-        imageUrl: reader.result,
-        imageFile: file
-      });
-    }.bind(this);
+const handleMedia = e => {
+  const file = e.currentTarget.files[0];
+  const reader = new FileReader();
 
-    if (file) {
-      reader.readAsDataURL(file);
-    }
+  reader.onloadend = () => {
+    setImageUrl(reader.result);
+    setImageFile(file);
+  };
+
+  if (file) {
+    reader.readAsDataURL(file);
   }
+};
 ```
 
 The handleMedia function allows for this preview feature via **FileReader**. A new FileReader object is instantiated, a success function is set for when it loads and followed by a reading the file with **FileReader#readAsDataURL(file)**
@@ -42,19 +46,23 @@ An image preview is displayed with use of the imageURL.
 
 
 ```js
-  handleSubmit(e) {
-    let formData = new FormData();
-    formData.append('post[url]', this.state.url);
-    formData.append('post[title]', this.state.title);
-    formData.append('post[post_type]', 'photo');
-    formData.append('post[body]', this.state.body);
-    formData.append('post[image]', this.state.imageFile);
-    this.props.createMediaPost(formData)
-      .then(this.closeModal());
-  }
-  ```
+const handleSubmit = e => {
+  e.preventDefault();
 
-For image uploading, we append key/value pairs via the **append** method to a FormData object. This object is used to send data to the server using an AJAX request. this.state.imageFile holds the file of respective type. Also to note, the **post_type** info appending to the object is used to indicate the type of post being created. This info also aids with rendering posts on the feed since correct tags must be used to display each media type.
+  const formData = new FormData();
+  formData.append('post[url]', url);
+  formData.append('post[title]', title);
+  formData.append('post[post_type]', 'photo');
+  formData.append('post[body]', body);
+  formData.append('post[image]', imageFile);
+
+  createMediaPost.mutate(formData);
+};
+```
+
+For image uploading, key/value pairs are appended to a **FormData** object and
+sent through the shared fetch API client. The `post_type` field identifies the
+type of post being created and helps the feed render the right media component.
 
 ![dashboard](./docs/dashboard.png)
 + Posts are presented on a Feed which also includes a blogger's avatar.
