@@ -200,8 +200,6 @@ Remaining Phase 2 notes:
 - Active frontend code no longer has React class components.
 - Old React-Redux-style container files have been removed.
 - Hook ownership now lives in the components that consume the relevant data.
-- `route_util.jsx` still uses React Router v5 `withRouter`; this is intentional
-  and should be handled in Phase 3 with the router upgrade.
 - CSS class names that include `container`, such as `new-post-container`, are
   styling vocabulary and can wait for the later CSS/design cleanup pass.
 
@@ -236,10 +234,10 @@ Planned work:
 Starting context:
 
 - Phase 1 and Phase 2 are complete.
-- The remaining known frontend compatibility pattern is React Router v5 usage in
-  `route_util.jsx`.
-- The next branch should start from `main` after the final Phase 2 cleanup PRs
-  are merged.
+- React Router has been upgraded to v7, and the app shell now uses modern route,
+  redirect, and navigation APIs.
+- The next Phase 3 work should focus on app shell polish, route behavior smoke
+  testing, and the Webpack/Babel vs Vite tooling decision.
 
 Recommended PR chunks:
 
@@ -254,19 +252,23 @@ Recommended PR chunks:
    - upgrade `react-router-dom` to the current version
    - update `package-lock.json`
    - make only the minimum code changes needed to compile if possible
+   - status: complete
 3. Replace route wrappers:
    - replace `AuthRoute` and `ProtectedRoute` v5 patterns
    - remove `withRouter`
    - use modern router APIs for redirects/navigation
    - preserve logged-in/logged-out access rules
+   - status: complete
 4. Modernize app shell routing:
    - update `App.jsx` to the modern router structure
    - replace `Switch` and old `component={...}` route patterns
    - confirm dashboard and auth routes still mount correctly
+   - status: complete
 5. Navigation and redirect cleanup:
    - replace old `useHistory` usage with modern navigation hooks
    - update auth redirect behavior in `AuthForm`
    - update any remaining route-driven navigation patterns
+   - status: complete
 6. Webpack/Babel tooling inventory:
    - audit the current Webpack/Babel setup
    - document what the Rails app expects from frontend build output
