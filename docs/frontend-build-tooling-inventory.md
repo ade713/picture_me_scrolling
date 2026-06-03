@@ -20,16 +20,16 @@ JavaScript build:
 - Output file: `bundle.js`
 - Source map: `bundle.js.map`
 - Build command: `npm run build`
-- Watch command: `npm run webpack`
+- Watch command: `npm run build:watch`
+- Compatibility watch alias: `npm run webpack`
 - Install hook: `postinstall` runs `webpack`
 
 Babel:
 
-- Babel is configured inline in `webpack.config.js`.
+- Babel is configured in `babel.config.json`.
 - Active presets:
   - `@babel/preset-env`
   - `@babel/preset-react`
-- There is no root `.babelrc` or `babel.config.js`.
 
 Rails assets:
 
@@ -62,16 +62,18 @@ Babel-related packages:
 - `@babel/preset-env`
 - `@babel/preset-react`
 
-Legacy dependency to review:
+Removed legacy dependency:
 
-- `babel-core` is still listed in `dependencies`, but the active Webpack loader
-  uses `@babel/core`. This is likely removable after build verification.
+- `babel-core` was removed from `dependencies`; the active Webpack loader uses
+  `@babel/core`.
 
-Rails asset dependencies to review:
+Rails asset dependency notes:
 
 - `coffee-rails` is still present.
-- The only `.coffee` files under `app/assets/javascripts/api` are empty
-  generated placeholders.
+- Empty `.coffee` generated placeholders under `app/assets/javascripts/api`
+  were removed.
+- `coffee-rails` is still required because Sprockets 3 loads its CoffeeScript
+  processor while resolving assets, even when the app has no CoffeeScript files.
 - `sass-rails` and Sprockets still actively support the stylesheet pipeline.
 
 ## Current Build Flow
@@ -104,8 +106,8 @@ Scope:
 - Keep the current Rails/Sprockets integration.
 - Move Babel config out of the inline Webpack loader if useful.
 - Remove unused dependencies such as `babel-core` after verification.
-- Remove empty CoffeeScript placeholders and `coffee-rails` if Rails still
-  boots and assets compile without it.
+- Remove empty CoffeeScript placeholders.
+- Keep `coffee-rails` until Sprockets is upgraded or replaced.
 - Make script names clearer, such as `build` and `build:watch`.
 
 Pros:
@@ -178,8 +180,9 @@ Vite migration harder.
 
 Suggested next PR:
 
-- remove or confirm `babel-core`
-- remove empty CoffeeScript asset placeholders if safe
-- evaluate removing `coffee-rails`
-- rename `webpack` script to a clearer watch script if desired
+- continue reducing the Sprockets/Webpack coupling
+- keep `coffee-rails` until Sprockets no longer requires its CoffeeScript
+  processor
+- evaluate whether generated Webpack output should stay under
+  `app/assets/javascripts` or move to a cleaner intermediate build directory
 - keep generated bundle output and Rails layout behavior unchanged
