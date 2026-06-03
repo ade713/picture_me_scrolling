@@ -237,8 +237,12 @@ Starting context:
 - React Router has been upgraded to v7, and the app shell now uses modern route,
   redirect, and navigation APIs.
 - Route behavior smoke notes live in `docs/frontend-router-smoke.md`.
-- The next Phase 3 work should focus on the Webpack/Babel vs Vite tooling
-  decision.
+- The Webpack/Babel vs Vite tooling decision is documented in
+  `docs/frontend-build-tooling-inventory.md`.
+- The next Phase 3 work should modernize the current Webpack setup first, then
+  revisit Vite as a dedicated asset integration project if needed.
+- The long-term build tooling intention is to move JavaScript builds to Vite
+  once the Rails asset boundary is cleaner.
 
 Recommended PR chunks:
 
@@ -280,6 +284,12 @@ Recommended PR chunks:
    - document what the Rails app expects from frontend build output
    - decide whether to keep Webpack or migrate to Vite
    - avoid major build changes in this chunk
+   - build tooling inventory lives in `docs/frontend-build-tooling-inventory.md`
+   - recommendation: modernize the current Webpack setup first, then revisit
+     Vite as a dedicated asset integration project if needed
+   - long-term intention: move JavaScript builds to Vite once the Rails asset
+     boundary is cleaner
+   - status: complete
 8. Vite migration or Webpack modernization:
    - if moving to Vite, add Vite config, update frontend entry/build output,
      update scripts, and preserve Rails-served asset behavior
