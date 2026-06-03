@@ -19,6 +19,26 @@ In addition to the aforementioned tech, this site was also developed using:
 + **Amazon S3** - media storage.
 + **Figaro** - application configuration.
 
+## Frontend Development
+
+The frontend build is currently handled by Webpack and Babel. Use the Node
+version in `.nvmrc` before installing packages or running build commands.
+
+```sh
+nvm use
+npm install
+npm run build
+```
+
+For active frontend work, run the watcher:
+
+```sh
+npm run build:watch
+```
+
+The Rails app serves the compiled JavaScript bundle from
+`app/assets/javascripts/bundle.js`.
+
 ## Features
 
 + Secured website use via front-end and back-end authentication.

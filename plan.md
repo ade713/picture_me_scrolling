@@ -218,6 +218,8 @@ Manual smoke checks:
 
 ## Phase 3: App Shell and Tooling Modernization
 
+Status: complete.
+
 Goal: modernize routing and build tooling after the state/API and component
 migrations are stable.
 
@@ -239,10 +241,11 @@ Starting context:
 - Route behavior smoke notes live in `docs/frontend-router-smoke.md`.
 - The Webpack/Babel vs Vite tooling decision is documented in
   `docs/frontend-build-tooling-inventory.md`.
-- The next Phase 3 work should modernize the current Webpack setup first, then
-  revisit Vite as a dedicated asset integration project if needed.
+- The current Webpack/Babel setup has been modernized while preserving the
+  Rails-served bundle path.
 - The long-term build tooling intention is to move JavaScript builds to Vite
   once the Rails asset boundary is cleaner.
+- Frontend setup/build commands are now documented in `README.md`.
 
 Recommended PR chunks:
 
@@ -307,6 +310,20 @@ Recommended PR chunks:
    - update README/frontend setup notes if needed
    - document current dev/build commands
    - mark Phase 3 complete
+   - status: complete
+
+Current frontend dev/build commands:
+
+```text
+nvm use
+npm install
+npm run build
+npm run build:watch
+```
+
+`npm run build` emits the Rails-served bundle at
+`app/assets/javascripts/bundle.js`. `npm run build:watch` keeps the bundle
+updated during active frontend development.
 
 ## Guardrails
 
