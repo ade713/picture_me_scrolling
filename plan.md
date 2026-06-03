@@ -350,6 +350,8 @@ Recommended PR chunks:
    - document the expected follow/unfollow feed behavior
    - inspect frontend query keys and invalidation paths
    - inspect the Rails feed endpoint behavior
+   - audit notes live in `docs/follow-feed-behavior-audit.md`
+   - status: complete
 2. Follow/feed fix:
    - fix incorrect or missing query invalidation
    - update related TanStack Query hooks as needed
