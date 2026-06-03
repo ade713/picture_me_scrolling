@@ -301,6 +301,7 @@ Recommended PR chunks:
    - remove unused packages
    - clean unused imports and files revealed by Phase 3
    - run the full smoke checklist
+   - status: complete
 10. Documentation and Phase 3 closeout:
    - update this plan
    - update README/frontend setup notes if needed

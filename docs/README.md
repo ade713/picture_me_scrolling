@@ -8,7 +8,11 @@
 
 ## Minimum Viable Products (MVP)
 
-Picture Me Scrolling is a single page application developed to provide users with single location to sit back and experience the expression of others through words, sounds and visions. Tumblr served as the inspiration for this application that is supported a Ruby on Rails and React/Redux.
+Picture Me Scrolling is a single page application developed to provide users
+with a single location to sit back and experience the expression of others
+through words, sounds, images, and video. Tumblr served as the inspiration for
+this application, which is supported by Ruby on Rails, React, PostgreSQL,
+TanStack Query, and Active Storage-compatible media handling.
 
 1. User Authentication
     + Account creation
@@ -57,7 +61,7 @@ NB: All feature MVPs will have the following:
 ## Implementation Timeline
 
 ### Phase 1: Backend Setup and Front End User Authentication (2 Days)
-**Target:** Functional Rails back-end with React/Redux front-end authentication.
+**Target:** Functional Rails back-end with React front-end authentication.
             User can sign up, login and logout.
             Guest user will be created to provide demo of the site's features.
 
