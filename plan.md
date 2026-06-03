@@ -236,8 +236,9 @@ Starting context:
 - Phase 1 and Phase 2 are complete.
 - React Router has been upgraded to v7, and the app shell now uses modern route,
   redirect, and navigation APIs.
-- The next Phase 3 work should focus on app shell polish, route behavior smoke
-  testing, and the Webpack/Babel vs Vite tooling decision.
+- Route behavior smoke notes live in `docs/frontend-router-smoke.md`.
+- The next Phase 3 work should focus on the Webpack/Babel vs Vite tooling
+  decision.
 
 Recommended PR chunks:
 
@@ -269,22 +270,27 @@ Recommended PR chunks:
    - update auth redirect behavior in `AuthForm`
    - update any remaining route-driven navigation patterns
    - status: complete
-6. Webpack/Babel tooling inventory:
+6. Route behavior smoke:
+   - scan for removed React Router v5 APIs
+   - verify `npm run build` passes with React Router v7
+   - document logged-in/logged-out route smoke checks
+   - status: complete
+7. Webpack/Babel tooling inventory:
    - audit the current Webpack/Babel setup
    - document what the Rails app expects from frontend build output
    - decide whether to keep Webpack or migrate to Vite
    - avoid major build changes in this chunk
-7. Vite migration or Webpack modernization:
+8. Vite migration or Webpack modernization:
    - if moving to Vite, add Vite config, update frontend entry/build output,
      update scripts, and preserve Rails-served asset behavior
    - if staying on Webpack, clean stale Babel/Webpack config and update scripts
      and dependencies where useful
-8. Remove obsolete compatibility code:
+9. Remove obsolete compatibility code:
    - remove router/tooling compatibility leftovers
    - remove unused packages
    - clean unused imports and files revealed by Phase 3
    - run the full smoke checklist
-9. Documentation and Phase 3 closeout:
+10. Documentation and Phase 3 closeout:
    - update this plan
    - update README/frontend setup notes if needed
    - document current dev/build commands

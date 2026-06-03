@@ -115,6 +115,8 @@ Before the Phase 3 router upgrade, the app used:
 
 ## Smoke Checklist
 
+Detailed smoke notes live in `docs/frontend-router-smoke.md`.
+
 - logged-out root renders
 - logged-out signup route renders
 - logged-out dashboard route redirects to auth
