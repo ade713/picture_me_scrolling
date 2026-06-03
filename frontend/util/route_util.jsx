@@ -1,35 +1,25 @@
 import React from 'react';
-import { Route,
-         Redirect,
-         withRouter } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { useCurrentUser } from '../query/session_hooks';
 
-export const AuthRoute = withRouter(({ component: Component, ...routeProps }) => {
+export const AuthRoute = ({ children }) => {
   const currentUser = useCurrentUser();
   const loggedIn = Boolean(currentUser.data);
 
-  return (
-    <Route {...routeProps} render={ props => (
-      !loggedIn ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/dashboard" />
-      )
-    )} />
+  return !loggedIn ? (
+    children
+  ) : (
+    <Navigate to="/dashboard" replace />
   );
-});
+};
 
-export const ProtectedRoute = withRouter(({ component: Component, ...routeProps }) => {
+export const ProtectedRoute = ({ children }) => {
   const currentUser = useCurrentUser();
   const loggedIn = Boolean(currentUser.data);
 
-  return (
-    <Route {...routeProps} render={ props => (
-      loggedIn ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to="/" />
-      )
-    )} />
+  return loggedIn ? (
+    children
+  ) : (
+    <Navigate to="/" replace />
   );
-});
+};

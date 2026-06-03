@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { useCurrentUser, useLogin, useSignup } from "../../query/session_hooks";
 import useGuestLogin from "./use_guest_login";
@@ -10,8 +10,8 @@ const authErrors = (...mutations) => mutations.flatMap(mutationErrors);
 
 const AuthForm = () => {
   const currentUser = useCurrentUser();
-  const history = useHistory();
   const location = useLocation();
+  const navigate = useNavigate();
   const login = useLogin();
   const signup = useSignup();
   const [username, setUsername] = useState("");
@@ -28,9 +28,9 @@ const AuthForm = () => {
 
   useEffect(() => {
     if (loggedIn) {
-      history.push("/dashboard");
+      navigate("/dashboard");
     }
-  }, [history, loggedIn]);
+  }, [loggedIn, navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

@@ -1,12 +1,12 @@
 # Frontend Router Inventory
 
-This inventory captures the current React Router v5 behavior before Phase 3
-router modernization work begins.
+This inventory captures the router behavior that Phase 3 must preserve and the
+current React Router v7 app shell after the dependency upgrade.
 
 ## Current Dependencies
 
-- `react-router`: `^5.3.4`
-- `react-router-dom`: `^5.3.4`
+- `react-router`: `^7.16.0`
+- `react-router-dom`: `^7.16.0`
 
 ## Current Router Structure
 
@@ -28,25 +28,25 @@ router owns the hash routes after the root page loads.
 Router entry:
 
 - `frontend/components/App.jsx`
-  - imports `HashRouter` and `Switch`
+  - imports `HashRouter`, `Route`, and `Routes`
   - renders `AuthRoute` and `ProtectedRoute`
-  - uses the v5 `component={...}` route prop style
+  - uses the modern `element={...}` route prop style
 
 Route guards:
 
 - `frontend/util/route_util.jsx`
-  - imports `Route`, `Redirect`, and `withRouter`
+  - imports `Navigate`
   - `AuthRoute` checks `useCurrentUser()`
   - `ProtectedRoute` checks `useCurrentUser()`
-  - redirects with v5 `<Redirect />`
-  - wraps both route guard components with `withRouter`
+  - redirects with `<Navigate />`
+  - renders guarded route children directly
 
 Route-aware auth UI:
 
 - `frontend/components/auth_form/auth_form.jsx`
-  - imports `Link`, `useHistory`, and `useLocation`
+  - imports `Link`, `useLocation`, and `useNavigate`
   - uses `useLocation()` to choose login vs signup mode
-  - uses `useHistory()` to push logged-in users to `/dashboard`
+  - uses `useNavigate()` to send logged-in users to `/dashboard`
   - uses `<Link />` for auth-page navigation and submit-style actions
 
 ## Behavior To Preserve
@@ -73,9 +73,9 @@ Auth form behavior:
 - guest login fills credentials with the current animation and logs in
 - auth errors still render under the form
 
-## Known Phase 3 Migration Targets
+## Completed Phase 3 Router Changes
 
-React Router v5 APIs to replace:
+React Router v5 APIs replaced:
 
 - `Switch`
 - `Redirect`
@@ -84,7 +84,7 @@ React Router v5 APIs to replace:
 - `Route` with `render={...}`
 - `useHistory`
 
-Likely React Router v6+ replacements:
+Current React Router v7 APIs:
 
 - `Routes`
 - `Navigate`
@@ -92,11 +92,23 @@ Likely React Router v6+ replacements:
 - `Route` with `element={...}`
 - guard components that render children or an outlet-style element
 
-## Suggested Migration Notes
+## Historical V5 Baseline
 
-- Keep `HashRouter` for the first router upgrade unless there is a specific
-  reason to move to `BrowserRouter`.
-- Replace route guards before changing unrelated navigation behavior.
+Before the Phase 3 router upgrade, the app used:
+
+- `react-router`: `^5.3.4`
+- `react-router-dom`: `^5.3.4`
+- `Switch`
+- `Redirect`
+- `withRouter`
+- `Route` with `component={...}`
+- `Route` with `render={...}`
+- `useHistory`
+
+## Suggested Follow-Up Notes
+
+- Keep `HashRouter` unless there is a specific reason to move to
+  `BrowserRouter`.
 - Preserve current auth redirect behavior before improving the UI semantics of
   submit links.
 - Avoid mixing router modernization with Webpack/Vite changes.
