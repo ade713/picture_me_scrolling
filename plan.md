@@ -325,6 +325,140 @@ npm run build:watch
 `app/assets/javascripts/bundle.js`. `npm run build:watch` keeps the bundle
 updated during active frontend development.
 
+## Phase 4: Behavior Hardening and Test Data
+
+Status: planned.
+
+Goal: make sure the modernized app behavior is correct, repeatable, and easier
+to verify before continuing with deeper cleanup.
+
+Focus areas:
+
+- Fix stale UI behavior caused by missing or incorrect query invalidation.
+- Verify follow/unfollow updates the dashboard feed without requiring a second
+  action or full refresh.
+- Confirm like/unlike, post create/delete, login/logout, and media rendering
+  still update the UI predictably.
+- Improve seed data so follow/feed scenarios are obvious and repeatable.
+- Add focused smoke notes or tests for the behavior that was hard to verify
+  manually during modernization.
+
+Recommended PR chunks:
+
+1. Follow/feed behavior audit:
+   - reproduce the stale feed behavior
+   - document the expected follow/unfollow feed behavior
+   - inspect frontend query keys and invalidation paths
+   - inspect the Rails feed endpoint behavior
+2. Follow/feed fix:
+   - fix incorrect or missing query invalidation
+   - update related TanStack Query hooks as needed
+   - preserve current API response shapes unless a backend fix is necessary
+3. Seed data hardening:
+   - add or adjust development seeds for users, follows, and posts
+   - make feed behavior easy to verify with predictable accounts
+   - avoid production data assumptions
+4. Behavior smoke/test coverage:
+   - document or automate the key behavior checks
+   - cover follow, unfollow, feed update, post create/delete, like/unlike, and
+     media rendering
+   - keep tests focused on modernization regression risk
+
+Definition of done:
+
+- Follow/unfollow changes are reflected in the feed without a full page refresh.
+- Seed data supports repeatable local verification.
+- The main dashboard/feed behavior can be verified from a clean local setup.
+- `npm run build` passes.
+
+## Phase 5: Dependency and Dead Code Cleanup
+
+Status: planned.
+
+Goal: remove or justify dependencies and files that are no longer needed after
+the frontend modernization work.
+
+Focus areas:
+
+- Decide whether to keep or remove `zustand` based on actual client-only UI
+  state needs.
+- Scan for unused frontend files, imports, packages, and docs references.
+- Review package vulnerabilities and dependency freshness.
+- Confirm old compatibility dependencies are either removed or documented.
+- Keep `coffee-rails` only while Sprockets still requires it.
+
+## Phase 6: Backend Modernization
+
+Status: planned.
+
+Goal: continue modernization on the Rails/API side now that the frontend state,
+component, router, and build layers are stable.
+
+Focus areas:
+
+- Review Rails 7 controller, routing, and rendering conventions.
+- Verify the Active Storage migration path and production rollout assumptions.
+- Review old Paperclip columns and cleanup timing.
+- Normalize API error handling and response shapes where useful.
+- Check production-readiness configuration.
+
+## Phase 7: Test Coverage
+
+Status: planned.
+
+Goal: add focused automated coverage around the behavior most likely to regress
+as the app continues to modernize.
+
+Focus areas:
+
+- API/request specs for sessions, users, posts, likes, and follows.
+- Upload behavior coverage for Active Storage-backed media.
+- Regression tests for login, dashboard feed loading, and post creation.
+- Consider lightweight frontend smoke coverage if it adds confidence without
+  adding too much test infrastructure.
+
+## Phase 8: CSS and UI Cleanup
+
+Status: planned.
+
+Goal: clean styling and UI structure after the app behavior and architecture are
+stable.
+
+Focus areas:
+
+- Review CSS class names that no longer match the component structure.
+- Remove unused CSS.
+- Normalize feed, modal, form, and dashboard styling.
+- Improve responsive behavior.
+- Keep visual cleanup separate from behavior fixes.
+
+## Phase 9: Performance and UX Optimization
+
+Status: planned.
+
+Goal: make performance improvements intentionally, with measurement where useful,
+instead of mixing them into every modernization PR.
+
+Focus areas:
+
+- Bundle size audit.
+- Media loading optimization.
+- Feed pagination or infinite scroll if needed.
+- React render profiling.
+- TanStack Query stale time/cache tuning.
+- Production asset compression and caching review.
+
+## Future Build Tooling: Vite
+
+Status: planned.
+
+Goal: revisit Vite as a dedicated asset integration project once the Rails asset
+boundary is cleaner.
+
+Vite is still the preferred long-term direction for a small modern React app,
+but the current Webpack/Babel setup is now documented and stable enough to keep
+using while higher-priority behavior and backend work continues.
+
 ## Guardrails
 
 - Keep the app working after each chunk.
