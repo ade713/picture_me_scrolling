@@ -249,6 +249,7 @@ Recommended PR chunks:
      behavior
    - confirm logged-in and logged-out navigation behavior
    - avoid behavior changes unless a tiny cleanup is needed
+   - router inventory lives in `docs/frontend-router-inventory.md`
 2. Upgrade React Router dependency:
    - upgrade `react-router-dom` to the current version
    - update `package-lock.json`
