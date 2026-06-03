@@ -295,6 +295,7 @@ Recommended PR chunks:
      update scripts, and preserve Rails-served asset behavior
    - if staying on Webpack, clean stale Babel/Webpack config and update scripts
      and dependencies where useful
+   - status: complete
 9. Remove obsolete compatibility code:
    - remove router/tooling compatibility leftovers
    - remove unused packages
