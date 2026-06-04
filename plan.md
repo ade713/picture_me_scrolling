@@ -379,7 +379,7 @@ Definition of done:
 
 ## Phase 5: Dependency and Dead Code Cleanup
 
-Status: planned.
+Status: complete.
 
 Goal: remove or justify dependencies and files that are no longer needed after
 the frontend modernization work.
@@ -419,11 +419,14 @@ Recommended PR chunks:
      references found by the inventory
    - keep behavior changes out of this cleanup unless required by removal
    - update setup notes if dependency or command changes affect local dev
+   - status: complete
 5. Phase 5 verification and closeout:
    - run `npm run build`
    - run focused Rails checks affected by removed dependencies
    - confirm no obsolete dependency references remain
    - mark Phase 5 complete
+   - closeout notes live in `docs/phase5-verification-closeout.md`
+   - status: complete
 
 ## Phase 6: Backend Modernization
 

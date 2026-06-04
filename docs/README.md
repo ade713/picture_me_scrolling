@@ -1,8 +1,5 @@
 # Picture Me Scrolling (PicMeS)
 
-* [Heroku][heroku]
-[heroku]: https://picmes.herokuapp.com/#/
-
 * [Trello][trello]
 [trello]: https://trello.com/b/cNgJigmJ/picture-me-scrolling
 
@@ -19,7 +16,7 @@ TanStack Query, and Active Storage-compatible media handling.
     + Login/Logout
     + Guest/demo login/logout
 2. Production README
-3. Hosting on Heroku
+3. Deployment-ready configuration
 4. Posts form for various post types
     + Types include:
       + pics (static, gifs)

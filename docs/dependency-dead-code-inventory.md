@@ -136,9 +136,9 @@ Docs references that are intentional and should stay for now:
 - Heroku references in `docs/active-storage-production-rollout.md`
 - `coffee-rails` references in `docs/frontend-build-tooling-inventory.md`
 
-Docs references that are stale candidates for Phase 5-4:
+Docs references cleaned in Phase 5-5:
 
-- `docs/README.md` still references the old Heroku app and MVP hosting plan.
+- Removed the old Heroku app link and MVP hosting wording from `docs/README.md`.
 
 ## Recommended Next PRs
 
@@ -165,7 +165,14 @@ Phase 5-3 completed:
 - Remove the redundant `font-awesome-sass` gem and SCSS import.
 - Keep `coffee-rails` documented until Sprockets no longer needs it.
 
-Phase 5-4:
+Phase 5-4 completed:
 
 - Clean stale `docs/README.md` Heroku/MVP references.
 - Remove any obsolete docs/files confirmed by earlier Phase 5 chunks.
+
+Phase 5-5 completed:
+
+- Run `npm run build`.
+- Run Rails asset/Active Storage checks affected by removed dependencies.
+- Confirm removed dependency references are gone.
+- Document closeout in `docs/phase5-verification-closeout.md`.
