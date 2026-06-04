@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { values } from 'lodash';
 
 import { destroy, get, post } from '../util/api_client';
 import { queryKeys } from './query_keys';
@@ -24,7 +23,7 @@ export const usePosts = () => (
   useQuery({
     queryKey: queryKeys.posts,
     queryFn: () => get('/api/posts'),
-    select: posts => values(posts)
+    select: posts => Object.values(posts)
   })
 );
 
