@@ -400,6 +400,8 @@ Recommended PR chunks:
    - identify unused frontend files, packages, and stale docs references
    - document which findings are safe to remove and which need more context
    - avoid deleting code in this chunk unless the cleanup is tiny and obvious
+   - inventory lives in `docs/dependency-dead-code-inventory.md`
+   - status: complete
 2. Frontend dependency cleanup:
    - decide whether `zustand` should stay installed or be removed for now
    - remove unused frontend packages found by the inventory
