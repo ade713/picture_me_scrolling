@@ -107,9 +107,8 @@ Dependencies that appear active or intentionally retained:
 
 - `jbuilder` is used for API JSON views.
 - `sass-rails` supports the current SCSS pipeline.
-- `font-awesome-sass` is imported from `application.scss`, though the layout
-  also loads Font Awesome from a CDN. This duplication should be checked before
-  removal.
+- Font Awesome classes are provided by the CDN stylesheet loaded from the Rails
+  layout.
 - `uglifier` is referenced by `config.assets.js_compressor` in production.
 - `aws-sdk-s3` is required from `config/application.rb`.
 - `figaro` is still part of application configuration.
@@ -121,9 +120,10 @@ Dependencies that appear active or intentionally retained:
 
 Rails cleanup candidates that need proof in Phase 5-3 or Phase 6:
 
-- `activestorage` gem may be redundant with Rails 7. Verify before removal.
-- `font-awesome-sass` may be redundant with the CDN stylesheet. Verify rendered
-  icons and SCSS imports before removal.
+- The direct `activestorage` Gemfile entry was redundant because Rails 7 already
+  includes Active Storage.
+- The `font-awesome-sass` gem and SCSS import were redundant because the layout
+  already loads Font Awesome from a CDN.
 - development-only tools such as `annotate`, `byebug`, `pry-rails`,
   `better_errors`, `binding_of_caller`, `web-console`, and `spring` should be
   reviewed separately from runtime dependencies.
@@ -158,11 +158,12 @@ The post-cleanup `npm audit --omit=dev` count dropped from 6 vulnerabilities to
 advisories are tied to build-tool dependencies and should be handled by a
 targeted dependency refresh.
 
-Phase 5-3:
+Phase 5-3 completed:
 
 - Re-check `coffee-rails` with Rails asset boot/build checks.
-- Verify whether the standalone `activestorage` gem is still needed.
-- Review Font Awesome duplication between `font-awesome-sass` and CDN usage.
+- Remove the redundant direct `activestorage` Gemfile entry.
+- Remove the redundant `font-awesome-sass` gem and SCSS import.
+- Keep `coffee-rails` documented until Sprockets no longer needs it.
 
 Phase 5-4:
 

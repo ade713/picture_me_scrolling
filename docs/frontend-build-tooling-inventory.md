@@ -45,7 +45,8 @@ Stylesheets:
 - CSS/SCSS is still owned by Sprockets.
 - Rails layout includes `stylesheet_link_tag 'application'`.
 - `app/assets/stylesheets/application.scss` imports reset, colors, component
-  styles, and `font-awesome`.
+  styles.
+- Font Awesome is loaded from the CDN stylesheet in the Rails layout.
 
 ## Current Dependency Notes
 
