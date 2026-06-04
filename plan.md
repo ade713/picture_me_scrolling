@@ -393,6 +393,34 @@ Focus areas:
 - Confirm old compatibility dependencies are either removed or documented.
 - Keep `coffee-rails` only while Sprockets still requires it.
 
+Recommended PR chunks:
+
+1. Dependency and dead-code inventory:
+   - scan active imports and package usage
+   - identify unused frontend files, packages, and stale docs references
+   - document which findings are safe to remove and which need more context
+   - avoid deleting code in this chunk unless the cleanup is tiny and obvious
+2. Frontend dependency cleanup:
+   - decide whether `zustand` should stay installed or be removed for now
+   - remove unused frontend packages found by the inventory
+   - update `package.json` and `package-lock.json`
+   - run `npm run build`
+3. Rails asset dependency cleanup:
+   - re-check whether `coffee-rails` is still required by Sprockets
+   - review Rails asset pipeline dependencies that remain from older versions
+   - remove only dependencies proven unused by boot/build checks
+   - document any dependency intentionally kept for Rails asset compatibility
+4. Dead file and stale docs cleanup:
+   - remove unused frontend files, legacy generated files, and obsolete docs
+     references found by the inventory
+   - keep behavior changes out of this cleanup unless required by removal
+   - update setup notes if dependency or command changes affect local dev
+5. Phase 5 verification and closeout:
+   - run `npm run build`
+   - run focused Rails checks affected by removed dependencies
+   - confirm no obsolete dependency references remain
+   - mark Phase 5 complete
+
 ## Phase 6: Backend Modernization
 
 Status: planned.
