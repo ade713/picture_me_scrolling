@@ -356,6 +356,7 @@ Recommended PR chunks:
    - fix incorrect or missing query invalidation
    - update related TanStack Query hooks as needed
    - preserve current API response shapes unless a backend fix is necessary
+   - status: complete
 3. Seed data hardening:
    - add or adjust development seeds for users, follows, and posts
    - make feed behavior easy to verify with predictable accounts

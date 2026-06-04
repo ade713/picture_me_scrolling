@@ -2,26 +2,31 @@ class Api::FollowsController < ApplicationController
   before_action :require_logged_in
 
   def create
-    @follow = Follow.new
-    @follow.follower_id = current_user.id
-    @follow.followee_id = params[:user_id]
-    @posts = current_user.posts + current_user.followed_posts
+    @follow = current_user.followees.build(followee_id: params[:user_id])
 
-    @follow.save!
-    render 'api/posts/index'
+    if @follow.save
+      render_feed
+    else
+      render json: @follow.errors.full_messages, status: :unprocessable_entity
+    end
   end
 
   def destroy
     @follow = current_user.followees.find_by(followee_id: params[:user_id])
-    @posts = current_user.posts + current_user.followed_posts
 
-    @follow.destroy
-    render 'api/posts/index'
+    if @follow&.destroy
+      render_feed
+    else
+      render json: ['Follow relationship not found'], status: :not_found
+    end
   end
 
   private
 
-  def follow_params
-    params.require(:follow).permit(:followee_id, :follower_id)
+  def render_feed
+    current_user.reload
+    @posts = current_user.posts + current_user.followed_posts
+
+    render 'api/posts/index'
   end
 end
