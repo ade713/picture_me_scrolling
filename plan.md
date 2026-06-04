@@ -407,6 +407,7 @@ Recommended PR chunks:
    - remove unused frontend packages found by the inventory
    - update `package.json` and `package-lock.json`
    - run `npm run build`
+   - status: complete
 3. Rails asset dependency cleanup:
    - re-check whether `coffee-rails` is still required by Sprockets
    - review Rails asset pipeline dependencies that remain from older versions

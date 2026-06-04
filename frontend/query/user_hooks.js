@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { values } from 'lodash';
 
 import { createFollow, deleteFollow, fetchUser, fetchUsers } from '../util/user_api_util';
 import { queryKeys } from './query_keys';
@@ -13,7 +12,7 @@ export const useUsers = () => (
   useQuery({
     queryKey: queryKeys.users,
     queryFn: fetchUsers,
-    select: users => values(users)
+    select: users => Object.values(users)
   })
 );
 
