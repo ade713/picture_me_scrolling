@@ -30,8 +30,9 @@ if the follow API returns the correct post collection.
 
 ## Current Backend Flow
 
-`Api::FollowsController#create` currently builds `@posts` before saving the
-new follow:
+Phase 4-2 fixed the backend flow so the follow endpoint renders the feed after
+the relationship changes. Before that fix, `Api::FollowsController#create`
+built `@posts` before saving the new follow:
 
 ```ruby
 @posts = current_user.posts + current_user.followed_posts
@@ -39,8 +40,8 @@ new follow:
 render 'api/posts/index'
 ```
 
-`Api::FollowsController#destroy` currently builds `@posts` before destroying
-the follow:
+Before that fix, `Api::FollowsController#destroy` built `@posts` before
+destroying the follow:
 
 ```ruby
 @posts = current_user.posts + current_user.followed_posts
@@ -48,38 +49,41 @@ the follow:
 render 'api/posts/index'
 ```
 
-Because the rendered response is based on `@posts`, the API can return the
-pre-mutation feed instead of the post-mutation feed. That matches the observed
-behavior where the UI may not look correct until a second action or refresh
-causes the posts query to load current data.
+Because the rendered response was based on `@posts`, the API could return the
+pre-mutation feed instead of the post-mutation feed. That matched the observed
+behavior where the UI did not always look correct until a second action or
+refresh caused the posts query to load current data.
 
 ## Seed/Test Data Notes
 
-The development seed file currently creates users and posts, but it does not
-create explicit follow relationships. That makes it harder to verify feed
-behavior from a clean local setup because every user starts with only their own
-posts and a broad set of recommended users.
+Phase 4-3 added explicit follow relationships to the development seed file.
+Before that, seeds created users and posts without a predictable follow graph.
+That made it harder to verify feed behavior from a clean local setup because
+every user started with only their own posts and a broad set of recommended
+users.
 
-The Phase 4 seed-data chunk should add predictable follow scenarios, such as:
+The Phase 4-3 seed-data chunk added predictable follow scenarios, including:
 
 - a guest user
 - at least one user the guest already follows
 - at least one recommended user with posts
 - at least one recommended user without posts
 
-That setup would make it easier to verify that follow and unfollow change the
-feed in the expected direction.
+That setup makes it easier to verify that follow and unfollow change the feed in
+the expected direction.
 
-## Recommended Phase 4-2 Fix
+The Phase 4 smoke checklist lives in `docs/behavior-smoke-checks.md`.
 
-- Move the follow API feed collection until after the follow has been saved or
+## Phase 4-2 Fix Applied
+
+- Moved the follow API feed collection until after the follow has been saved or
   destroyed.
-- Handle failed follow/unfollow mutations with an appropriate JSON error instead
+- Handled failed follow/unfollow mutations with an appropriate JSON error instead
   of relying on bang methods or nil destroys.
-- Keep the frontend query keys unchanged unless the backend response shape
-  changes.
-- After the backend fix, verify that the existing `setQueryData(queryKeys.posts,
-  posts)` path receives the post-mutation feed.
+- Kept the frontend query keys unchanged because the backend response shape did
+  not change.
+- Added focused follow controller tests to verify that the existing
+  `setQueryData(queryKeys.posts, posts)` path receives the post-mutation feed.
 
 ## Recommended Smoke Checks
 

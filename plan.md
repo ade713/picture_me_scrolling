@@ -327,7 +327,7 @@ updated during active frontend development.
 
 ## Phase 4: Behavior Hardening and Test Data
 
-Status: planned.
+Status: complete.
 
 Goal: make sure the modernized app behavior is correct, repeatable, and easier
 to verify before continuing with deeper cleanup.
@@ -367,6 +367,8 @@ Recommended PR chunks:
    - cover follow, unfollow, feed update, post create/delete, like/unlike, and
      media rendering
    - keep tests focused on modernization regression risk
+   - smoke checklist lives in `docs/behavior-smoke-checks.md`
+   - status: complete
 
 Definition of done:
 
