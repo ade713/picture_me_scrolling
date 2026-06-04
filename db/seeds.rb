@@ -7,6 +7,8 @@ require 'open-uri'
 #
 #   movies = Movie.create!([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create!(name: 'Luke', movie: movies.first)
+Like.destroy_all
+Follow.destroy_all
 Post.destroy_all
 User.destroy_all
 
@@ -37,6 +39,13 @@ def create_post!(attributes)
   post
 end
 
+def create_follow!(follower:, followee:)
+  Follow.create!(
+    follower_id: follower.id,
+    followee_id: followee.id
+  )
+end
+
 guest_user1 = create_user!(username: 'PicMeS Guest', password: '1Welcome2To3PicMeS', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/orange_happy.png')
 
 akuma = create_user!(username: 'DarkHadouMaster', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/akuma-sf3.jpg')
@@ -55,6 +64,7 @@ fozzie = create_user!(username: 'FozzieBear', password: 'pass123', avatar: 'http
 miles = create_user!(username: 'CoffeeSpidey', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/miles_morales.jpg')
 silky = create_user!(username: 'SilkyJ02', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/silky_johnson1_avatar.jpg')
 dbz = create_user!(username: 'SonGohan', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/gohan_ssj2.jpg')
+create_post!(author_id: guest_user1.id, title: "Welcome to PicMeS", body: "Use the recommended users list to test follow and feed updates.", post_type: 'text')
 create_post!(author_id: starwars.id, title: "That moment when he tells you he's your daddy", post_type: "photo", image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/Darth+Vader+Father.jpg')
 create_post!(author_id: miles.id, title: "With great power, comes great responsibilities", body: "Ben Parker", post_type: 'quote')
 create_post!(author_id: silky.id, title: "I will be the player hater of the year again!", body: "No one can beat me!!!", post_type: 'text')
@@ -68,3 +78,10 @@ create_post!(author_id: jerome.id, title: "Steppin in mah phresh kix (watch yo m
 create_post!(author_id: kermit.id, title: "I'm interested in this phone", url: 'https://www.youtube.com/watch?v=l5nv86zjPro&t=19s', post_type: 'link')
 create_post!(author_id: starks.id, title: "The cavalry is here... #Drogon", post_type: "photo", image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/drogon.gif')
 create_post!(author_id: fozzie.id, title: "Picmes is AWESOME! =D #WakaWaka", post_type: 'text')
+
+# Follow relationships keep local feed behavior predictable:
+# - the guest starts with followed posts in the feed
+# - recommended users still include users with posts, like DarkHadouMaster
+# - recommended users still include users without posts, like Ryu
+create_follow!(follower: guest_user1, followee: starwars)
+create_follow!(follower: guest_user1, followee: starks)

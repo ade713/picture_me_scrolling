@@ -361,6 +361,7 @@ Recommended PR chunks:
    - add or adjust development seeds for users, follows, and posts
    - make feed behavior easy to verify with predictable accounts
    - avoid production data assumptions
+   - status: complete
 4. Behavior smoke/test coverage:
    - document or automate the key behavior checks
    - cover follow, unfollow, feed update, post create/delete, like/unlike, and
