@@ -413,6 +413,7 @@ Recommended PR chunks:
    - review Rails asset pipeline dependencies that remain from older versions
    - remove only dependencies proven unused by boot/build checks
    - document any dependency intentionally kept for Rails asset compatibility
+   - status: complete
 4. Dead file and stale docs cleanup:
    - remove unused frontend files, legacy generated files, and obsolete docs
      references found by the inventory
