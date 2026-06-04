@@ -18,7 +18,7 @@ registry access was blocked. The commands were rerun with network access.
 
 ## Frontend Package Findings
 
-Safe cleanup candidates for Phase 5-2:
+Cleanup candidates identified for Phase 5-2:
 
 - `zustand` is installed but has no active imports.
   - It was part of the chosen modernization direction for client-only UI state.
@@ -142,14 +142,21 @@ Docs references that are stale candidates for Phase 5-4:
 
 ## Recommended Next PRs
 
-Phase 5-2:
+Phase 5-2 completed:
 
 - Replace `lodash` `values` usage with `Object.values`.
 - Remove `lodash`.
 - Remove unused `zustand`.
-- Test whether direct `react-router` can be removed while keeping
-  `react-router-dom`.
+- Remove the direct `react-router` dependency while keeping `react-router-dom`.
 - Run `npm run build`.
+
+After Phase 5-2, `react-router` remains installed transitively through
+`react-router-dom`, but it is no longer a direct dependency.
+
+The post-cleanup `npm audit --omit=dev` count dropped from 6 vulnerabilities to
+5 because removing `lodash` removed its high-severity advisory. The remaining
+advisories are tied to build-tool dependencies and should be handled by a
+targeted dependency refresh.
 
 Phase 5-3:
 
