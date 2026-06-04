@@ -443,6 +443,41 @@ Focus areas:
 - Normalize API error handling and response shapes where useful.
 - Check production-readiness configuration.
 
+Recommended PR chunks:
+
+1. Backend modernization inventory:
+   - audit Rails routes, controllers, Jbuilder views, models, initializers, and
+     production/development config
+   - identify Rails 7 convention gaps and compatibility code that may still be
+     needed
+   - document backend cleanup candidates before changing behavior
+2. Controller response and error handling cleanup:
+   - normalize JSON error responses across sessions, users, posts, likes, and
+     follows
+   - replace unsafe bang/nil paths where user-facing API errors should be
+     returned
+   - preserve existing frontend response shapes unless the change is explicitly
+     coordinated
+3. Rails routing and API convention cleanup:
+   - review singleton routes for sessions, likes, and follows
+   - remove obsolete route/controller comments
+   - keep route names stable for the current frontend API client
+4. Active Storage and Paperclip cleanup plan:
+   - verify current Active Storage attachment usage
+   - confirm which Paperclip columns, configs, initializers, and rake wrappers
+     must stay until production/data migration is complete
+   - document the exact criteria for removing Paperclip compatibility code
+5. Environment and production readiness cleanup:
+   - review production asset settings, credentials/secrets usage, S3 config, and
+     logging/cache deprecations
+   - document or fix low-risk Rails 7.2 deprecation warnings
+   - avoid deployment-provider-specific assumptions unless production hosting is
+     chosen
+6. Phase 6 verification and closeout:
+   - run focused Rails tests affected by backend changes
+   - run Rails boot/asset checks
+   - update backend modernization docs and mark Phase 6 complete
+
 ## Phase 7: Test Coverage
 
 Status: planned.
