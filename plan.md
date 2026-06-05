@@ -430,7 +430,7 @@ Recommended PR chunks:
 
 ## Phase 6: Backend Modernization
 
-Status: planned.
+Status: in progress.
 
 Goal: continue modernization on the Rails/API side now that the frontend state,
 component, router, and build layers are stable.
@@ -445,7 +445,7 @@ Focus areas:
 
 Recommended PR chunks:
 
-1. Backend modernization inventory:
+1. Backend modernization inventory: done.
    - audit Rails routes, controllers, Jbuilder views, models, initializers, and
      production/development config
    - identify Rails 7 convention gaps and compatibility code that may still be
