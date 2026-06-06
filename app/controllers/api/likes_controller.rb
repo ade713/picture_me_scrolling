@@ -2,19 +2,25 @@ class Api::LikesController < ApplicationController
   before_action :require_logged_in
 
   def create
-    @like = Like.new
-    @like.user_id = current_user.id
-    @like.post_id = params[:post_id]
-    @post = @like.post
+    @post = Post.find_by(id: params[:post_id])
+    return render json: ['Post not found'], status: :not_found unless @post
 
-    @like.save!
-    render 'api/posts/show'
+    @like = current_user.likes.build(post: @post)
+
+    if @like.save
+      render 'api/posts/show'
+    else
+      render json: @like.errors.full_messages, status: :unprocessable_entity
+    end
   end
 
   def destroy
     @like = current_user.likes.find_by(post_id: params[:post_id])
+    return render json: ['Like not found'], status: :not_found unless @like
+
     @post = @like.post
-    @like.destroy
+    @like.destroy!
+
     render 'api/posts/show'
   end
 end
