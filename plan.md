@@ -451,7 +451,7 @@ Recommended PR chunks:
    - identify Rails 7 convention gaps and compatibility code that may still be
      needed
    - document backend cleanup candidates before changing behavior
-2. Controller response and error handling cleanup:
+2. Controller response and error handling cleanup: done.
    - normalize JSON error responses across sessions, users, posts, likes, and
      follows
    - replace unsafe bang/nil paths where user-facing API errors should be
