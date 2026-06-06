@@ -8,7 +8,7 @@ class Api::PostsController < ApplicationController
     if @post.save
       render "api/posts/show"
     else
-      render json: ['Unable to create post, check title/caption input'], status: 422
+      render json: ['Unable to create post, check title/caption input'], status: :unprocessable_entity
     end
   end
 
@@ -28,7 +28,7 @@ class Api::PostsController < ApplicationController
     if @post && @post.update(post_params)
       render "api/posts/show"
     else
-      render json: ['Post must belong to user to edit'], status: 422
+      render json: ['Post must belong to user to edit'], status: :unprocessable_entity
     end
   end
 
@@ -38,7 +38,7 @@ class Api::PostsController < ApplicationController
     if @post&.delete
       render "api/posts/show"
     else
-      render json: ['Post must belong to user to delete'], status: 422
+      render json: ['Post must belong to user to delete'], status: :unprocessable_entity
     end
   end
 
