@@ -30,8 +30,8 @@ class Api::LikesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    assert_equal @post.id, JSON.parse(response.body)['id']
-    assert_equal true, JSON.parse(response.body)['liked']
+    assert_equal @post.id, response_json['id']
+    assert_equal true, response_json['liked']
   end
 
   test 'create returns validation errors for a duplicate like' do
@@ -42,7 +42,7 @@ class Api::LikesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :unprocessable_entity
-    assert_kind_of Array, JSON.parse(response.body)
+    assert_kind_of Array, response_json
   end
 
   test 'create returns not found for a missing post' do
@@ -51,7 +51,7 @@ class Api::LikesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :not_found
-    assert_equal ['Post not found'], JSON.parse(response.body)
+    assert_equal ['Post not found'], response_json
   end
 
   test 'destroy unlikes a post and returns the post payload' do
@@ -62,8 +62,8 @@ class Api::LikesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :success
-    assert_equal @post.id, JSON.parse(response.body)['id']
-    assert_equal false, JSON.parse(response.body)['liked']
+    assert_equal @post.id, response_json['id']
+    assert_equal false, response_json['liked']
   end
 
   test 'destroy returns not found when the like does not exist' do
@@ -72,7 +72,7 @@ class Api::LikesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :not_found
-    assert_equal ['Like not found'], JSON.parse(response.body)
+    assert_equal ['Like not found'], response_json
   end
 
   test 'create requires login' do
@@ -83,7 +83,7 @@ class Api::LikesControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :unauthorized
-    assert_equal ['You must be logged in'], JSON.parse(response.body)
+    assert_equal ['You must be logged in'], response_json
   end
 
   private
@@ -95,5 +95,9 @@ class Api::LikesControllerTest < ActionDispatch::IntegrationTest
         password: 'password'
       }
     }
+  end
+
+  def response_json
+    JSON.parse(response.body)
   end
 end

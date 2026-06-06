@@ -19,8 +19,11 @@ class Api::LikesController < ApplicationController
     return render json: ['Like not found'], status: :not_found unless @like
 
     @post = @like.post
-    @like.destroy!
 
-    render 'api/posts/show'
+    if @like.destroy
+      render 'api/posts/show'
+    else
+      render json: @like.errors.full_messages, status: :unprocessable_entity
+    end
   end
 end
