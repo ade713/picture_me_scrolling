@@ -185,3 +185,6 @@ requirements plus Rails 7.2 follow-up warnings.
    - run focused Rails tests
    - run boot/asset checks
    - update docs and plan status
+
+Status: completed in Phase 6-6. Verification results and remaining follow-ups
+are documented in `docs/phase6-verification-closeout.md`.
