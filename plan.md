@@ -458,7 +458,7 @@ Recommended PR chunks:
      returned
    - preserve existing frontend response shapes unless the change is explicitly
      coordinated
-3. Rails routing and API convention cleanup:
+3. Rails routing and API convention cleanup: done.
    - review singleton routes for sessions, likes, and follows
    - remove obsolete route/controller comments
    - keep route names stable for the current frontend API client
