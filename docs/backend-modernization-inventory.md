@@ -143,14 +143,13 @@ The likely cleanup order is:
 
 Production currently uses:
 
-- `config.active_storage.service = :amazon`
+- `config.active_storage.service = ENV.fetch("ACTIVE_STORAGE_SERVICE", "amazon").to_sym`
 - S3 settings from environment variables in `config/storage.yml`
 - `config.assets.js_compressor = :uglifier`
 - Rails 7-era compatibility settings such as `config.cache_classes`
 
-Follow-up config work should focus on low-risk Rails 7.2 warnings and
-production-readiness settings. Avoid deployment-provider-specific assumptions
-until production hosting is chosen.
+Follow-up config work should focus on Rails 7.2 warnings and production-readiness
+settings that depend on the selected hosting target.
 
 ## Recommended Phase 6 Follow-Up PRs
 
@@ -177,6 +176,11 @@ archive/manual recovery media, not an active app migration dependency.
    - review Rails deprecations
    - review S3/credentials assumptions
    - document hosting-neutral production requirements
+
+Status: completed in Phase 6-5. Production Active Storage service selection is
+environment-configurable with the existing `amazon` default, and
+`docs/backend-production-readiness.md` records hosting-neutral production
+requirements plus Rails 7.2 follow-up warnings.
 5. Phase 6 verification and closeout:
    - run focused Rails tests
    - run boot/asset checks

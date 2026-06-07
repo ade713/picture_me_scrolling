@@ -467,7 +467,7 @@ Recommended PR chunks:
    - confirm which Paperclip columns, configs, initializers, and rake wrappers
      must stay until production/data migration is complete
    - document the exact criteria for removing Paperclip compatibility code
-5. Environment and production readiness cleanup:
+5. Environment and production readiness cleanup: done.
    - review production asset settings, credentials/secrets usage, S3 config, and
      logging/cache deprecations
    - document or fix low-risk Rails 7.2 deprecation warnings
