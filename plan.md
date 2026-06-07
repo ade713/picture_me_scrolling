@@ -462,7 +462,7 @@ Recommended PR chunks:
    - review singleton routes for sessions, likes, and follows
    - remove obsolete route/controller comments
    - keep route names stable for the current frontend API client
-4. Active Storage and Paperclip cleanup plan:
+4. Active Storage and Paperclip cleanup plan: done.
    - verify current Active Storage attachment usage
    - confirm which Paperclip columns, configs, initializers, and rake wrappers
      must stay until production/data migration is complete
