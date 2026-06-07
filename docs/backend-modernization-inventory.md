@@ -158,6 +158,10 @@ until production hosting is chosen.
    - verify singleton route conventions
    - remove stale comments
    - preserve frontend API paths
+
+Status: completed in Phase 6-3. The singleton `session`, nested singleton
+`follow`, and nested singleton `like` routes were kept stable for the current
+frontend API client.
 3. Active Storage and Paperclip cleanup plan:
    - document exact removal criteria
    - keep compatibility code until production/data recovery is settled

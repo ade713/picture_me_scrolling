@@ -5,7 +5,8 @@
 
 ### Users
 - `POST /api/users`
-- `PATCH /api/users`
+- `GET /api/users`
+- `GET /api/users/:id`
 
 ### Session
 - `POST /api/session`
@@ -16,14 +17,13 @@
 - `POST /api/posts`
 - `GET /api/posts/:id`
 - `PATCH /api/posts/:id`
+- `PUT /api/posts/:id`
 - `DELETE /api/posts/:id`
 
 ### Follows
-- `GET /api/follows`
-- `POST /api/follows`
-- `DELETE /api/follows/:follow_id`
+- `POST /api/users/:user_id/follow`
+- `DELETE /api/users/:user_id/follow`
 
-### Tags
-- `GET /api/tags`
-- `POST /api/tags`
-- `DELETE /api/tags/:tag_id`
+### Likes
+- `POST /api/posts/:post_id/like`
+- `DELETE /api/posts/:post_id/like`
