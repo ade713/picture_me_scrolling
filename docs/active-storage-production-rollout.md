@@ -14,22 +14,26 @@ database is not available, the existing production S3 bucket can support media
 recovery, but it cannot support a complete app data migration by itself.
 
 The Paperclip-to-Active Storage rake task requires database rows with Paperclip
-columns such as `avatar_file_name` and `image_file_name`. If a production
-database backup is found later, this task can still be used. Without that
-database, production recovery needs a separate S3 inventory/import plan.
+columns such as `avatar_file_name` and `image_file_name`. Because there is no
+known production database backup, the old production S3 bucket should be treated
+as an archive/manual recovery source instead of a reason to keep Paperclip in
+the app long term.
 
-This does not block merging the Active Storage migration PR. It only blocks
-running the production Paperclip data migration.
+This does not block merging the Active Storage migration PR. It only means the
+production Paperclip data migration is not expected to run unless a production
+database backup appears later.
 
 ## Goals
 
 - Deploy the Active Storage-compatible app code safely.
 - Copy existing Paperclip media into Active Storage records if a Paperclip-backed
   database is available.
-- Preserve and inventory production S3 media for possible recovery if no
-  production database is available.
-- Verify production media works before removing any Paperclip fallback data.
-- Keep rollback options open by leaving the old Paperclip columns in place.
+- Preserve production S3 media for possible manual recovery or replacement if
+  old media is needed later.
+- Verify current Active Storage-backed media works before removing Paperclip
+  compatibility code.
+- Remove Paperclip compatibility in a focused follow-up PR once this archive
+  posture is accepted.
 
 ## Pre-Merge Checklist
 
@@ -201,10 +205,36 @@ production has been verified and stable.
 
 ## Later Cleanup
 
-After production has been stable:
+Paperclip compatibility should be removed in a focused follow-up PR once every
+criterion below is true:
 
-- Remove old Paperclip gems and configuration.
-- Remove Paperclip columns.
-- Remove `migrate_paperclip:move_data` compatibility wrapper.
-- Remove the migration task if it is no longer needed.
-- Update documentation so Active Storage is the canonical media path.
+- Production hosting has been chosen or explicitly deferred.
+- The previous production database is treated as unrecoverable unless a backup
+  appears later.
+- The old production S3 bucket is treated as archive/manual recovery media, not
+  an active app migration dependency.
+- Current user avatars and post media have been verified through Active Storage
+  URLs.
+- No active runbook, deployment task, or recovery plan depends on Paperclip.
+- Rollback no longer requires the old Paperclip columns or migration tasks.
+
+Until that follow-up PR is ready, keep:
+
+- `paperclip` in the Gemfile.
+- `config.paperclip_defaults` in `config/application.rb`.
+- `config/initializers/paperclip_attachment_patch.rb`.
+- `config/initializers/paperclip_validators_patch.rb`.
+- `lib/tasks/migrate_paperclip_attachments.rake`.
+- `lib/tasks/migrate_paperclip_data.rake`.
+- old Paperclip columns such as `avatar_file_name` and `image_file_name`.
+
+In the follow-up removal PR:
+
+1. Remove old Paperclip gems and configuration.
+2. Remove Paperclip compatibility initializers.
+3. Remove `migrate_paperclip:move_data` compatibility wrapper.
+4. Remove the migration task if it is no longer needed.
+5. Remove Paperclip columns in a dedicated database migration.
+6. Remove stale Paperclip schema comments or commented validation lines from the
+   models.
+7. Update documentation so Active Storage is the only canonical media path.
