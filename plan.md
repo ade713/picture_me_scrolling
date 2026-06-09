@@ -430,7 +430,7 @@ Recommended PR chunks:
 
 ## Phase 6: Backend Modernization
 
-Status: in progress.
+Status: complete.
 
 Goal: continue modernization on the Rails/API side now that the frontend state,
 component, router, and build layers are stable.
@@ -473,7 +473,7 @@ Recommended PR chunks:
    - document or fix low-risk Rails 7.2 deprecation warnings
    - avoid deployment-provider-specific assumptions unless production hosting is
      chosen
-6. Phase 6 verification and closeout:
+6. Phase 6 verification and closeout: done.
    - run focused Rails tests affected by backend changes
    - run Rails boot/asset checks
    - update backend modernization docs and mark Phase 6 complete
