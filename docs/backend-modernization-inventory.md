@@ -20,8 +20,8 @@ The app has a compact Rails JSON API:
 - Models are `User`, `Post`, `Like`, and `Follow`.
 - Active Storage is the canonical runtime media path for `User#avatar` and
   `Post#image`.
-- Paperclip remains installed for migration compatibility until production/data
-  recovery decisions are complete.
+- Paperclip compatibility has been removed; old production S3 media is archive
+  or manual recovery material only.
 
 ## Routes
 
@@ -105,9 +105,8 @@ same PR.
 - `has_one_attached :avatar`
 - `has_one_attached :image`
 
-Paperclip schema comments and commented validation lines still exist in the
-models. They are not runtime behavior, but they are visual noise. Remove them
-only after the Paperclip cleanup criteria are satisfied.
+Stale Paperclip schema comments and commented validation lines were removed
+from the models with the Paperclip compatibility cleanup.
 
 `Post#likers_ids` and `Post#followers_ids` manually build arrays. These can be
 simplified later with Rails collection helpers or query plucks, but this is not
@@ -116,28 +115,21 @@ necessary before controller hardening.
 `User#recommended_follows` is empty and appears unused. Confirm with a usage scan
 before removing it.
 
-## Active Storage and Paperclip Findings
+## Active Storage and Legacy Media Findings
 
 Active Storage is the current runtime media path. The old production S3 bucket
 is treated as archive/manual recovery media, not an active app migration
 dependency.
 
-Keep the following only until a focused Paperclip removal PR:
+Paperclip compatibility has been removed:
 
-- `paperclip` gem
-- Paperclip compatibility initializers
-- Paperclip migration rake tasks
-- old Paperclip columns in the database
-- docs that explain production media recovery
+- `paperclip` was removed from the Gemfile.
+- Paperclip compatibility initializers were removed.
+- Paperclip migration rake tasks were removed.
+- old Paperclip columns were removed from `users` and `posts`.
+- model and test schema comments were cleaned.
 
 Related document: `docs/active-storage-production-rollout.md`.
-
-The likely cleanup order is:
-
-1. Confirm the old production S3 bucket is archive/manual recovery media.
-2. Confirm no environment needs Paperclip migration compatibility.
-3. Remove Paperclip wrappers/config.
-4. Remove old columns in a dedicated migration.
 
 ## Environment and Config Findings
 
@@ -167,11 +159,11 @@ Status: completed in Phase 6-3. The singleton `session`, nested singleton
 frontend API client.
 3. Active Storage and Paperclip cleanup plan:
    - document exact removal criteria
-   - keep compatibility code only until the focused removal PR
+   - remove compatibility code after old S3 is accepted as archive/manual
+     recovery media
 
-Status: completed in Phase 6-4. Paperclip compatibility remains in place only
-until a focused follow-up removal PR. The old production S3 bucket is treated as
-archive/manual recovery media, not an active app migration dependency.
+Status: completed. Paperclip compatibility has been removed, and the old
+production S3 bucket is treated as archive/manual recovery media.
 4. Environment and production readiness cleanup:
    - review Rails deprecations
    - review S3/credentials assumptions

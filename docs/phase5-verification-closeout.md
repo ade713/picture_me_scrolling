@@ -40,6 +40,6 @@ Results:
   with a targeted dependency refresh. Current count: 5 vulnerabilities
   reported through `ajv`, `fast-uri`, `serialize-javascript`,
   `terser-webpack-plugin`, and `webpack`.
-- Paperclip references remain intentionally documented until the Active Storage
-  production/data cleanup is complete.
+- Paperclip compatibility was removed after the Active Storage production/data
+  cleanup decision.
 - `coffee-rails` should be revisited when Sprockets is upgraded or replaced.
