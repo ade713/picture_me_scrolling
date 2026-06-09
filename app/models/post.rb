@@ -9,10 +9,6 @@
 #  author_id          :integer          not null
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null
-#  image_file_name    :string
-#  image_content_type :string
-#  image_file_size    :integer
-#  image_updated_at   :datetime
 #  post_type          :string
 #
 
@@ -52,7 +48,4 @@ class Post < ApplicationRecord
   end
 
   has_one_attached :image
-  # validates_attachment_content_type :image,
-  #   content_type: [/\Aimage\/.*\z/, 'audio/mp3', 'audio/mpeg', 'audio/wav', 'video/avi', 'video/mp4']
-  # validates_attachment_size :image, in: 0..10.megabyte
 end
