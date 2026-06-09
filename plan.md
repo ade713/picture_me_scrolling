@@ -495,7 +495,7 @@ Focus areas:
 
 Recommended PR chunks:
 
-1. Test coverage inventory:
+1. Test coverage inventory: done.
    - audit current Rails tests, fixtures, helper setup, and frontend smoke
      coverage
    - identify high-risk behavior gaps around auth, feed behavior, post
