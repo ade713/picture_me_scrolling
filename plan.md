@@ -501,7 +501,7 @@ Recommended PR chunks:
    - identify high-risk behavior gaps around auth, feed behavior, post
      creation, likes, follows, and Active Storage uploads
    - document the proposed test strategy before adding broader coverage
-2. Auth and session API tests:
+2. Auth and session API tests: done.
    - cover login, logout, signup, invalid credentials, and current-user
      behavior
    - confirm JSON response shapes and status codes used by the frontend
