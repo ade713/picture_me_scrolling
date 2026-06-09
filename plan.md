@@ -493,6 +493,50 @@ Focus areas:
 - Consider lightweight frontend smoke coverage if it adds confidence without
   adding too much test infrastructure.
 
+Recommended PR chunks:
+
+1. Test coverage inventory:
+   - audit current Rails tests, fixtures, helper setup, and frontend smoke
+     coverage
+   - identify high-risk behavior gaps around auth, feed behavior, post
+     creation, likes, follows, and Active Storage uploads
+   - document the proposed test strategy before adding broader coverage
+2. Auth and session API tests:
+   - cover login, logout, signup, invalid credentials, and current-user
+     behavior
+   - confirm JSON response shapes and status codes used by the frontend
+3. User and follow behavior tests:
+   - cover users index/show behavior
+   - cover follow/unfollow behavior, duplicate follow prevention, and missing
+     follow handling
+   - add focused fixture or seed-like test data where needed to protect feed
+     update behavior
+4. Posts feed and CRUD API tests:
+   - cover posts index/show/create/delete behavior
+   - confirm dashboard feed responses include the expected followed-user posts
+   - preserve current API response shapes used by TanStack Query hooks
+5. Likes API tests:
+   - cover like/unlike behavior
+   - cover duplicate likes, unliking missing likes, and response shapes used by
+     optimistic cache updates
+6. Active Storage upload tests:
+   - cover image/avatar attachment behavior through the API paths that support
+     uploads
+   - confirm returned JSON includes Active Storage media URLs
+   - confirm runtime behavior does not depend on legacy Paperclip columns
+7. Frontend smoke test harness:
+   - add a lightweight repeatable smoke script or documented browser smoke
+     checklist
+   - cover login, dashboard load, media rendering, follow/unfollow,
+     like/unlike, and post creation
+   - avoid heavy frontend test infrastructure unless it proves useful
+8. Phase 7 verification and closeout:
+   - run the relevant Rails test suite
+   - run the frontend build
+   - update docs and the plan with covered behavior and remaining intentional
+     manual checks
+   - mark Phase 7 complete
+
 ## Phase 8: CSS and UI Cleanup
 
 Status: planned.
