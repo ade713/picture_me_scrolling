@@ -54,9 +54,31 @@ should be handled in focused follow-up work.
 
 ## Remaining Follow-Up
 
-- Remove Paperclip compatibility in a dedicated PR.
 - Choose a future production hosting target.
 - Decide the production secrets strategy before replacing `config/secrets.yml`.
 - Revisit Rails cache format after production cache storage is known.
 - Revisit Uglifier/Sprockets when the frontend asset boundary moves closer to
   Vite.
+
+## Post-Closeout Paperclip Removal
+
+Paperclip compatibility was removed after the Phase 6 closeout once old
+production S3 media was accepted as archive/manual recovery material.
+
+Verification commands run:
+
+```sh
+bundle check
+bin/rails db:migrate
+bin/rails test test/controllers/api/likes_controller_test.rb test/controllers/api/follows_controller_test.rb
+bin/rails runner 'puts defined?(Paperclip).inspect'
+npm run build
+```
+
+Results:
+
+- Bundler reported that Gemfile dependencies are satisfied.
+- The Paperclip column removal migration ran successfully.
+- Focused controller tests passed: 8 runs, 36 assertions, 0 failures.
+- Rails runner returned `nil` for `defined?(Paperclip)`.
+- Webpack compiled successfully.

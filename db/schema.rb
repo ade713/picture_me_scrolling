@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_11_13_104229) do
+ActiveRecord::Schema[7.1].define(version: 2026_06_08_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -67,10 +67,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_13_104229) do
     t.integer "author_id", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.string "image_file_name"
-    t.string "image_content_type"
-    t.integer "image_file_size"
-    t.datetime "image_updated_at"
     t.string "post_type"
     t.index ["author_id"], name: "index_posts_on_author_id"
   end
@@ -81,10 +77,6 @@ ActiveRecord::Schema[7.1].define(version: 2025_11_13_104229) do
     t.string "session_token", null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.string "avatar_file_name"
-    t.string "avatar_content_type"
-    t.integer "avatar_file_size"
-    t.datetime "avatar_updated_at"
     t.index ["session_token"], name: "index_users_on_session_token", unique: true
     t.index ["username"], name: "index_users_on_username", unique: true
   end

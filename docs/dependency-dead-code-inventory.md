@@ -112,9 +112,8 @@ Dependencies that appear active or intentionally retained:
 - `uglifier` is referenced by `config.assets.js_compressor` in production.
 - `aws-sdk-s3` is required from `config/application.rb`.
 - `figaro` is still part of application configuration.
-- `paperclip` is still tied to migration compatibility, old columns, and
-  production rollout notes. Do not remove until Active Storage production data
-  cleanup is complete.
+- `paperclip` was removed after the Active Storage cleanup decision. Old S3
+  media is archive/manual recovery material only.
 - `coffee-rails` is documented as intentionally kept because Sprockets 3 loads
   its CoffeeScript processor while resolving assets.
 
@@ -130,9 +129,9 @@ Rails cleanup candidates that need proof in Phase 5-3 or Phase 6:
 
 ## Stale Documentation Findings
 
-Docs references that are intentional and should stay for now:
+Docs references that are intentional and should stay:
 
-- Paperclip references in `docs/active-storage-production-rollout.md`
+- Legacy media references in `docs/active-storage-production-rollout.md`
 - Heroku references in `docs/active-storage-production-rollout.md`
 - `coffee-rails` references in `docs/frontend-build-tooling-inventory.md`
 

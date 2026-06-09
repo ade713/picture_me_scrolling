@@ -8,10 +8,6 @@
 #  session_token       :string           not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
-#  avatar_file_name    :string
-#  avatar_content_type :string
-#  avatar_file_size    :integer
-#  avatar_updated_at   :datetime
 #
 
 class User < ApplicationRecord
@@ -55,10 +51,6 @@ class User < ApplicationRecord
   end
 
   has_one_attached :avatar
-  # validates_attachment_content_type :avatar, content_type: /\Aimage\/.*\z/
-  # validates_attachment_size :avatar, in: 0..2.megabyte
-
-
 
   attr_reader :password
 

@@ -10,7 +10,7 @@ future hosting provider.
 - The previous Heroku app/account is gone.
 - Active Storage is the runtime media path.
 - The old production S3 bucket is archive/manual recovery media.
-- Paperclip removal is planned as a focused follow-up PR.
+- Paperclip compatibility has been removed.
 
 ## Environment Variables
 
@@ -61,7 +61,6 @@ These are not fixed in Phase 6-5 because both deserve focused follow-up:
 
 ## Follow-Up Candidates
 
-- Remove Paperclip compatibility in its own PR.
 - Decide whether production secrets should use Rails credentials, platform env
   vars, or another provider-specific secret store.
 - Decide whether to keep Uglifier until Vite migration or replace it with a more

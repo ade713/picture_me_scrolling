@@ -439,7 +439,7 @@ Focus areas:
 
 - Review Rails 7 controller, routing, and rendering conventions.
 - Verify the Active Storage migration path and production rollout assumptions.
-- Review old Paperclip columns and cleanup timing.
+- Confirm old Paperclip columns and compatibility code have been removed.
 - Normalize API error handling and response shapes where useful.
 - Check production-readiness configuration.
 
@@ -464,9 +464,9 @@ Recommended PR chunks:
    - keep route names stable for the current frontend API client
 4. Active Storage and Paperclip cleanup plan: done.
    - verify current Active Storage attachment usage
-   - confirm which Paperclip columns, configs, initializers, and rake wrappers
-     must stay until production/data migration is complete
-   - document the exact criteria for removing Paperclip compatibility code
+   - confirm old Paperclip columns, configs, initializers, and rake wrappers
+     were removed after the legacy S3 archive decision
+   - document the legacy media recovery posture
 5. Environment and production readiness cleanup: done.
    - review production asset settings, credentials/secrets usage, S3 config, and
      logging/cache deprecations
