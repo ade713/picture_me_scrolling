@@ -537,6 +537,42 @@ Recommended PR chunks:
      manual checks
    - mark Phase 7 complete
 
+## Phase 7.5: Frontend Component Behavior Tests
+
+Status: planned.
+
+Goal: add a small component-focused frontend test layer to protect important
+React behavior before more UI, CSS, and component cleanup work continues.
+
+Focus areas:
+
+- Keep tests component-focused rather than full app or browser automation.
+- Test behavior that should carry through future refactors and modernization.
+- Mock hooks/API boundaries where useful instead of testing TanStack Query
+  internals.
+- Keep the first pass small enough to avoid turning frontend testing into a
+  large infrastructure project.
+
+Initial scope:
+
+1. Minimal frontend test setup:
+   - add the smallest useful setup for component tests, likely Vitest, React
+     Testing Library, user-event, and jsdom
+   - add one npm test script for frontend component tests
+2. AuthForm behavior tests:
+   - render login versus signup mode correctly
+   - submit username/password
+   - display errors
+   - preserve guest login behavior
+3. Post form behavior tests:
+   - cover text/link/photo form state and submit payloads
+   - confirm errors render and successful submits close the modal
+4. FeedItem and RecommendedUsers behavior tests:
+   - render expected post-type body variants
+   - show delete controls only for the current user's posts
+   - call like/unlike, follow/unfollow, and delete handlers with expected ids
+   - handle empty recommended-user lists gracefully
+
 ## Phase 8: CSS and UI Cleanup
 
 Status: planned.
