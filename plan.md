@@ -553,25 +553,37 @@ Focus areas:
 - Keep the first pass small enough to avoid turning frontend testing into a
   large infrastructure project.
 
-Initial scope:
+Recommended PR chunks:
 
-1. Minimal frontend test setup:
+1. Frontend component test setup:
    - add the smallest useful setup for component tests, likely Vitest, React
      Testing Library, user-event, and jsdom
-   - add one npm test script for frontend component tests
-2. AuthForm behavior tests:
+   - add one npm script for frontend component tests
+   - add a minimal test setup file for DOM helpers and shared mocks
+   - include one tiny smoke test for a pure component such as `FormErrors` or
+     `ModalButtonFooter`
+2. Auth form behavior tests:
    - render login versus signup mode correctly
-   - submit username/password
-   - display errors
-   - preserve guest login behavior
-3. Post form behavior tests:
-   - cover text/link/photo form state and submit payloads
-   - confirm errors render and successful submits close the modal
-4. FeedItem and RecommendedUsers behavior tests:
+   - submit username/password through the mocked auth mutation
+   - display auth errors
+   - preserve guest login behavior with fake timers
+3. Post form controls and text/link form tests:
+   - cover shared `FormErrors` and `ModalButtonFooter` behavior
+   - cover text form open/close behavior, required submit behavior, and payload
+     shape
+   - cover link form payload shape
+4. Media post form tests:
+   - cover photo, audio, and video modal open/close behavior
+   - mock `FileReader` for upload preview behavior
+   - confirm media submit is blocked without a file and submitted with a file
+5. Feed item behavior tests:
    - render expected post-type body variants
    - show delete controls only for the current user's posts
    - call like/unlike, follow/unfollow, and delete handlers with expected ids
+6. Recommended users behavior tests:
    - handle empty recommended-user lists gracefully
+   - render recommended users with avatars and usernames
+   - call follow mutation with the selected user id
 
 ## Phase 8: CSS and UI Cleanup
 
