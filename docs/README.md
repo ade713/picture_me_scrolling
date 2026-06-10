@@ -51,12 +51,14 @@ NB: All feature MVPs will have the following:
 * [Database Schema][db-schema]
 * [Behavior Smoke Checks][behavior-smoke-checks]
 * [Frontend Smoke Checklist][frontend-smoke-checklist]
+* [Phase 7 Verification Closeout][phase7-verification-closeout]
 
 [api-endpoints]: ./api-endpoints.md
 [behavior-smoke-checks]: ./behavior-smoke-checks.md
 [component-hierarchy]: ./component-hierarchy.md
 [db-schema]: ./db-schema.md
 [frontend-smoke-checklist]: ./frontend-smoke-checklist.md
+[phase7-verification-closeout]: ./phase7-verification-closeout.md
 [sample-state]: ./sample-state.md
 
 ## Implementation Timeline
