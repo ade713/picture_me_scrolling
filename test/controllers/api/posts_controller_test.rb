@@ -6,6 +6,8 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
     Follow.delete_all
     Post.delete_all
     User.delete_all
+    ActiveStorage::Attachment.delete_all
+    ActiveStorage::Blob.delete_all
 
     @viewer = create_user('viewer')
     @followed_author = create_user('followed_author')
@@ -111,6 +113,31 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_equal @viewer.username, response_json['author']
   end
 
+  test 'create attaches uploaded media and returns an image URL' do
+    assert_difference('Post.count', 1) do
+      assert_difference('ActiveStorage::Attachment.count', 1) do
+        assert_difference('ActiveStorage::Blob.count', 1) do
+          post api_posts_url, params: {
+            post: {
+              title: 'new photo post',
+              post_type: 'photo',
+              image: uploaded_image
+            }
+          }
+        end
+      end
+    end
+
+    created_post = Post.order(:created_at).last
+
+    assert_response :success
+    assert created_post.image.attached?
+    assert_equal created_post.id, response_json['id']
+    assert_equal 'new photo post', response_json['title']
+    assert_equal 'photo', response_json['post_type']
+    assert response_json['image_url'].present?
+  end
+
   test 'create returns validation errors for invalid params' do
     assert_no_difference('Post.count') do
       post api_posts_url, params: {
@@ -137,6 +164,26 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal 'updated title', response_json['title']
     assert_equal 'updated body', response_json['body']
+  end
+
+  test 'update attaches uploaded media to a current user post' do
+    assert_difference('ActiveStorage::Attachment.count', 1) do
+      assert_difference('ActiveStorage::Blob.count', 1) do
+        patch api_post_url(@viewer_post), params: {
+          post: {
+            title: 'updated photo title',
+            post_type: 'photo',
+            image: uploaded_image
+          }
+        }
+      end
+    end
+
+    assert_response :success
+    assert @viewer_post.reload.image.attached?
+    assert_equal 'updated photo title', response_json['title']
+    assert_equal 'photo', response_json['post_type']
+    assert response_json['image_url'].present?
   end
 
   test 'update rejects posts owned by another user' do
@@ -170,6 +217,13 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_equal ['Post must belong to user to delete'], response_json
   end
 
+  test 'post attachments do not depend on legacy Paperclip columns' do
+    refute_includes Post.column_names, 'image_file_name'
+    refute_includes Post.column_names, 'image_content_type'
+    refute_includes Post.column_names, 'image_file_size'
+    refute_includes Post.column_names, 'image_updated_at'
+  end
+
   private
 
   def create_user(username)
@@ -199,5 +253,12 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
 
   def response_json
     JSON.parse(response.body)
+  end
+
+  def uploaded_image
+    Rack::Test::UploadedFile.new(
+      Rails.root.join('test/fixtures/files/test-image.svg'),
+      'image/svg+xml'
+    )
   end
 end

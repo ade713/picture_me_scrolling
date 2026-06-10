@@ -519,7 +519,7 @@ Recommended PR chunks:
    - cover like/unlike behavior
    - cover duplicate likes, unliking missing likes, and response shapes used by
      optimistic cache updates
-6. Active Storage upload tests:
+6. Active Storage upload tests: done.
    - cover image/avatar attachment behavior through the API paths that support
      uploads
    - confirm returned JSON includes Active Storage media URLs
