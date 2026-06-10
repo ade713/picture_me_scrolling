@@ -511,7 +511,7 @@ Recommended PR chunks:
      follow handling
    - add focused fixture or seed-like test data where needed to protect feed
      update behavior
-4. Posts feed and CRUD API tests:
+4. Posts feed and CRUD API tests: done.
    - cover posts index/show/create/delete behavior
    - confirm dashboard feed responses include the expected followed-user posts
    - preserve current API response shapes used by TanStack Query hooks
