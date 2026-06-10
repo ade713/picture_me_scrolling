@@ -524,7 +524,7 @@ Recommended PR chunks:
      uploads
    - confirm returned JSON includes Active Storage media URLs
    - confirm runtime behavior does not depend on legacy Paperclip columns
-7. Frontend smoke test harness:
+7. Frontend smoke test harness: done.
    - add a lightweight repeatable smoke script or documented browser smoke
      checklist
    - cover login, dashboard load, media rendering, follow/unfollow,

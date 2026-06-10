@@ -1,7 +1,7 @@
 # Behavior Smoke Checks
 
-Phase 4 smoke checklist for verifying behavior that was most likely to regress
-during the frontend modernization and follow/feed hardening work.
+Use this page as the short behavior-smoke entry point. The detailed frontend
+browser checklist lives in `docs/frontend-smoke-checklist.md`.
 
 ## Automated Checks
 
@@ -9,19 +9,28 @@ Run these from the project root:
 
 ```sh
 export PATH="$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH"
-DISABLE_SPRING=1 bin/rails test test/controllers/api/follows_controller_test.rb
+DISABLE_SPRING=1 bin/rails test \
+  test/controllers/api/session_controller_test.rb \
+  test/controllers/api/users_controller_test.rb \
+  test/controllers/api/follows_controller_test.rb \
+  test/controllers/api/posts_controller_test.rb \
+  test/controllers/api/likes_controller_test.rb
 npm run build
 ```
 
 Expected results:
 
-- Follow controller tests pass.
+- Focused API behavior tests pass.
 - Webpack compiles successfully.
 
-The focused follow controller tests cover:
+The focused API tests cover:
 
-- following a user returns a feed that includes that user's posts
-- unfollowing a user returns a feed that removes that user's posts
+- auth/session behavior
+- user recommendations and user show payloads
+- follow/unfollow feed behavior
+- posts feed and CRUD behavior
+- Active Storage-backed post uploads
+- like/unlike behavior
 
 ## Local Seed Setup
 
@@ -44,8 +53,8 @@ The seed data intentionally includes:
 
 ## Manual Dashboard Checks
 
-Run these after starting the Rails app locally and visiting the React app in the
-browser.
+Run the detailed browser checklist in `docs/frontend-smoke-checklist.md` after
+starting the Rails app locally.
 
 Authentication:
 
@@ -103,5 +112,6 @@ Media rendering:
 
 - The follow/feed API fix lives in Phase 4-2.
 - The repeatable seed scenarios live in Phase 4-3.
-- Broader automated coverage belongs in Phase 7, but the follow/feed regression
-  test is kept here because it directly protects the Phase 4 behavior fix.
+- Broader automated API coverage was added in Phase 7.
+- Frontend browser smoke checks stay manual until the app has enough repeated
+  smoke-test burden to justify heavier browser automation.
