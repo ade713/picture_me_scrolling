@@ -480,7 +480,7 @@ Recommended PR chunks:
 
 ## Phase 7: Test Coverage
 
-Status: planned.
+Status: complete.
 
 Goal: add focused automated coverage around the behavior most likely to regress
 as the app continues to modernize.
@@ -530,7 +530,7 @@ Recommended PR chunks:
    - cover login, dashboard load, media rendering, follow/unfollow,
      like/unlike, and post creation
    - avoid heavy frontend test infrastructure unless it proves useful
-8. Phase 7 verification and closeout:
+8. Phase 7 verification and closeout: done.
    - run the relevant Rails test suite
    - run the frontend build
    - update docs and the plan with covered behavior and remaining intentional
