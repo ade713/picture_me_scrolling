@@ -505,7 +505,7 @@ Recommended PR chunks:
    - cover login, logout, signup, invalid credentials, and current-user
      behavior
    - confirm JSON response shapes and status codes used by the frontend
-3. User and follow behavior tests:
+3. User and follow behavior tests: done.
    - cover users index/show behavior
    - cover follow/unfollow behavior, duplicate follow prevention, and missing
      follow handling
