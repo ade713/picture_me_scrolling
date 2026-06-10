@@ -515,7 +515,7 @@ Recommended PR chunks:
    - cover posts index/show/create/delete behavior
    - confirm dashboard feed responses include the expected followed-user posts
    - preserve current API response shapes used by TanStack Query hooks
-5. Likes API tests:
+5. Likes API tests: done.
    - cover like/unlike behavior
    - cover duplicate likes, unliking missing likes, and response shapes used by
      optimistic cache updates
