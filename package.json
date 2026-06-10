@@ -13,6 +13,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "test:frontend": "vitest run --configLoader runner",
     "postinstall": "webpack",
     "build:watch": "webpack --watch",
     "webpack": "npm run build:watch",
@@ -42,7 +43,12 @@
     "@babel/core": "^7.28.5",
     "@babel/preset-env": "^7.28.5",
     "@babel/preset-react": "^7.28.5",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "jsdom": "^29.1.1",
     "terser-webpack-plugin": "^5.3.14",
+    "vitest": "^4.1.8",
     "webpack-cli": "^6.0.1"
   }
 }
