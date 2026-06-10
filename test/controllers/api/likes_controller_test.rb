@@ -15,6 +15,10 @@ class Api::LikesControllerTest < ActionDispatch::IntegrationTest
       username: 'author',
       password: 'password'
     )
+    @other_user = User.create!(
+      username: 'other_user',
+      password: 'password'
+    )
     @post = Post.create!(
       author_id: @author.id,
       title: 'post to like',
@@ -32,6 +36,8 @@ class Api::LikesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal @post.id, response_json['id']
     assert_equal true, response_json['liked']
+    assert_equal 1, response_json['likes']
+    assert_post_payload_fields
   end
 
   test 'create returns validation errors for a duplicate like' do
@@ -64,6 +70,8 @@ class Api::LikesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal @post.id, response_json['id']
     assert_equal false, response_json['liked']
+    assert_equal 0, response_json['likes']
+    assert_post_payload_fields
   end
 
   test 'destroy returns not found when the like does not exist' do
@@ -75,11 +83,35 @@ class Api::LikesControllerTest < ActionDispatch::IntegrationTest
     assert_equal ['Like not found'], response_json
   end
 
+  test "destroy does not remove another user's like" do
+    Like.create!(user: @other_user, post: @post)
+
+    assert_no_difference('Like.count') do
+      delete api_post_like_url(@post)
+    end
+
+    assert_response :not_found
+    assert_equal ['Like not found'], response_json
+    assert @post.likers.exists?(@other_user.id)
+  end
+
   test 'create requires login' do
     delete api_session_url
 
     assert_no_difference('Like.count') do
       post api_post_like_url(@post)
+    end
+
+    assert_response :unauthorized
+    assert_equal ['You must be logged in'], response_json
+  end
+
+  test 'destroy requires login' do
+    Like.create!(user: @viewer, post: @post)
+    delete api_session_url
+
+    assert_no_difference('Like.count') do
+      delete api_post_like_url(@post)
     end
 
     assert_response :unauthorized
@@ -99,5 +131,17 @@ class Api::LikesControllerTest < ActionDispatch::IntegrationTest
 
   def response_json
     JSON.parse(response.body)
+  end
+
+  def assert_post_payload_fields
+    assert_equal @post.title, response_json['title']
+    assert_equal @post.author_id, response_json['author_id']
+    assert_equal @author.username, response_json['author']
+    assert_equal false, response_json['followed']
+    assert response_json.key?('body')
+    assert response_json.key?('post_type')
+    assert response_json.key?('url')
+    assert response_json.key?('image_url')
+    assert response_json.key?('author_avatar')
   end
 end
