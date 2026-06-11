@@ -1,10 +1,11 @@
 import React from 'react';
-import Modal from 'react-modal';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { useCreatePost } from '../../query/post_hooks';
 import { useCurrentUser } from '../../query/session_hooks';
+import { currentUser } from '../../test/fixtures';
+import { setupModalAppElement } from '../../test/modal_helpers';
 import LinkForm from './link_form';
 import QuoteForm from './quote_form';
 import TextForm from './text_form';
@@ -16,11 +17,6 @@ vi.mock('../../query/post_hooks', () => ({
 vi.mock('../../query/session_hooks', () => ({
   useCurrentUser: vi.fn()
 }));
-
-const currentUser = {
-  id: 1,
-  username: 'PicMeS Guest'
-};
 
 const nonMediaFormCases = [
   {
@@ -86,14 +82,11 @@ const nonMediaFormCases = [
 ];
 
 describe('non-media post forms', () => {
-  let appElement;
+  let cleanupModalAppElement;
   let createPostMutation;
 
   beforeEach(() => {
-    appElement = document.createElement('div');
-    appElement.id = 'react-modal-app-root';
-    document.body.appendChild(appElement);
-    Modal.setAppElement(appElement);
+    cleanupModalAppElement = setupModalAppElement();
 
     createPostMutation = {
       error: null,
@@ -106,9 +99,7 @@ describe('non-media post forms', () => {
   });
 
   afterEach(() => {
-    if (appElement) {
-      appElement.remove();
-    }
+    cleanupModalAppElement();
     vi.clearAllMocks();
   });
 
@@ -154,5 +145,4 @@ describe('non-media post forms', () => {
 
     expect(screen.getByPlaceholderText('Title')).toHaveValue('');
   });
-
 });
