@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 import { useDeletePost, useLikePost, useUnlikePost } from '../../query/post_hooks';
 import { useCurrentUser } from '../../query/session_hooks';
+import { currentUser } from '../../test/fixtures';
 import { useFollowUser, useUnfollowUser } from '../../query/user_hooks';
 import FeedItem from './feed_item';
 
@@ -21,11 +22,6 @@ vi.mock('../../query/user_hooks', () => ({
   useFollowUser: vi.fn(),
   useUnfollowUser: vi.fn()
 }));
-
-const currentUser = {
-  id: 1,
-  username: 'PicMeS Guest'
-};
 
 const basePost = {
   id: 10,

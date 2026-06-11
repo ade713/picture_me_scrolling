@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 
 import { useCreatePost } from '../../query/post_hooks';
 import { useCurrentUser } from '../../query/session_hooks';
+import { currentUser } from '../../test/fixtures';
 import { setupModalAppElement } from '../../test/modal_helpers';
 import LinkForm from './link_form';
 import QuoteForm from './quote_form';
@@ -16,11 +17,6 @@ vi.mock('../../query/post_hooks', () => ({
 vi.mock('../../query/session_hooks', () => ({
   useCurrentUser: vi.fn()
 }));
-
-const currentUser = {
-  id: 1,
-  username: 'PicMeS Guest'
-};
 
 const nonMediaFormCases = [
   {
