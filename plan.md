@@ -599,6 +599,8 @@ Focus areas:
 - Review CSS class names that no longer match the component structure.
 - Remove unused CSS.
 - Normalize feed, modal, form, and dashboard styling.
+- Add accessible labels to feed item icon-only controls so like/delete tests can
+  use role-based queries instead of CSS selectors.
 - Improve responsive behavior.
 - Keep visual cleanup separate from behavior fixes.
 
