@@ -6,6 +6,7 @@ import userEvent from '@testing-library/user-event';
 import { useCreatePost } from '../../query/post_hooks';
 import { useCurrentUser } from '../../query/session_hooks';
 import LinkForm from './link_form';
+import QuoteForm from './quote_form';
 import TextForm from './text_form';
 
 vi.mock('../../query/post_hooks', () => ({
@@ -21,7 +22,7 @@ const currentUser = {
   username: 'PicMeS Guest'
 };
 
-describe('text and link post forms', () => {
+describe('non-media post forms', () => {
   let appElement;
   let createPostMutation;
 
@@ -113,6 +114,26 @@ describe('text and link post forms', () => {
       body: '',
       url: 'https://example.com/notes',
       post_type: 'link'
+    });
+  });
+
+  it('submits a quote post payload with quote formatting', async () => {
+    const user = userEvent.setup();
+    render(<QuoteForm />);
+
+    await user.click(screen.getByRole('button', { name: 'Quote' }));
+
+    expect(screen.getByRole('button', { name: 'Post' })).toBeDisabled();
+
+    await user.type(screen.getByPlaceholderText('"Quote"'), 'One for all');
+    await user.type(screen.getByPlaceholderText('- Source'), 'The Musketeers');
+    await user.click(screen.getByRole('button', { name: 'Post' }));
+
+    expect(createPostMutation.mutateAsync).toHaveBeenCalledWith({
+      title: '"One for all"',
+      body: '- The Musketeers',
+      url: '',
+      post_type: 'quote'
     });
   });
 });
