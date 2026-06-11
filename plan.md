@@ -587,22 +587,66 @@ Recommended PR chunks:
    - render recommended users with avatars and usernames
    - call follow mutation with the selected user id
 
-## Phase 8: CSS and UI Cleanup
+## Phase 8: UI Structure, CSS Cleanup, and Accessibility
 
 Status: planned.
 
-Goal: clean styling and UI structure after the app behavior and architecture are
-stable.
+Goal: clean styling, UI structure, and accessibility after the app behavior and
+architecture are stable.
 
 Focus areas:
 
+- Inventory accessibility, CSS, and UI issues before making broad changes.
 - Review CSS class names that no longer match the component structure.
 - Remove unused CSS.
 - Normalize feed, modal, form, and dashboard styling.
 - Add accessible labels to feed item icon-only controls so like/delete tests can
   use role-based queries instead of CSS selectors.
 - Improve responsive behavior.
+- Check hover, focus, disabled, loading, error, empty, and destructive-action
+  states.
 - Keep visual cleanup separate from behavior fixes.
+
+Recommended PR chunks:
+
+1. UI, CSS, and accessibility inventory:
+   - scan active frontend components and CSS files
+   - document stale class names, unused CSS candidates, accessibility gaps,
+     responsive weak spots, and high-noise style areas
+   - treat accessibility as an inventory in this PR, not a full fix pass
+   - sort follow-up fixes into later Phase 8 PRs
+2. Feed icon accessibility:
+   - add accessible labels/names to icon-only feed controls such as like,
+     unlike, and delete
+   - update feed item action tests to use role-based queries instead of CSS
+     selectors where possible
+   - keep visual styling unchanged
+3. Feed styling cleanup:
+   - clean feed and feed item CSS class naming where it no longer matches the
+     current component structure
+   - remove obvious unused feed-related styles
+   - normalize feed spacing, post frame/header/footer/body styling, and media
+     sizing
+4. Form and modal styling cleanup:
+   - normalize post form modal layout, buttons, error display, and file upload
+     presentation
+   - clean stale form CSS
+   - preserve existing form behavior, payloads, and tests
+5. Auth and dashboard styling cleanup:
+   - clean auth page, dashboard shell, post bar, and recommended users styles
+   - remove stale class names left over from old container/component patterns
+   - improve visual consistency without redesigning the app
+6. Responsive pass:
+   - check logged-out auth, dashboard/feed, post forms, media posts, and
+     recommended users at mobile, tablet, and desktop widths
+   - fix layout overflow, awkward spacing, modal sizing, feed width, and media
+     sizing issues
+   - add focused responsive smoke notes
+7. CSS and UI closeout:
+   - run final unused CSS scan
+   - run frontend tests and build
+   - do a final manual/browser smoke pass if useful
+   - document any remaining design debt or larger redesign ideas for future work
 
 ## Phase 9: Performance and UX Optimization
 
