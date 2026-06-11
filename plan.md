@@ -572,6 +572,8 @@ Recommended PR chunks:
    - cover text form open/close behavior, required submit behavior, and payload
      shape
    - cover link form payload shape
+   - follow up with quote form coverage in the same test area because it uses
+     the same base non-media form pattern
 4. Media post form tests:
    - cover photo, audio, and video modal open/close behavior
    - mock `FileReader` for upload preview behavior
