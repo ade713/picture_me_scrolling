@@ -1,10 +1,10 @@
 import React from 'react';
-import Modal from 'react-modal';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { useCreateMediaPost } from '../../query/post_hooks';
 import { useCurrentUser } from '../../query/session_hooks';
+import { setupModalAppElement } from '../../test/modal_helpers';
 import AudioForm from './audio_form';
 import PhotoForm from './photo_form';
 import VideoForm from './video_form';
@@ -51,15 +51,12 @@ const getOpenModalFileInput = () => (
 );
 
 describe('media post forms', () => {
-  let appElement;
+  let cleanupModalAppElement;
   let createMediaPostMutation;
   let originalFileReader;
 
   beforeEach(() => {
-    appElement = document.createElement('div');
-    appElement.id = 'react-modal-app-root';
-    document.body.appendChild(appElement);
-    Modal.setAppElement(appElement);
+    cleanupModalAppElement = setupModalAppElement();
 
     createMediaPostMutation = {
       error: null,
@@ -84,11 +81,7 @@ describe('media post forms', () => {
 
   afterEach(() => {
     window.FileReader = originalFileReader;
-
-    if (appElement) {
-      appElement.remove();
-    }
-
+    cleanupModalAppElement();
     vi.clearAllMocks();
   });
 
