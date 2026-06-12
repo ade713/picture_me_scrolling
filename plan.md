@@ -615,6 +615,7 @@ Recommended PR chunks:
      responsive weak spots, and high-noise style areas
    - treat accessibility as an inventory in this PR, not a full fix pass
    - sort follow-up fixes into later Phase 8 PRs
+   - inventory lives in `docs/phase8-ui-css-accessibility-inventory.md`
 2. Feed icon accessibility:
    - add accessible labels/names to icon-only feed controls such as like,
      unlike, and delete
