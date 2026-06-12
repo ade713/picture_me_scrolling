@@ -94,7 +94,6 @@ const VideoForm = () => {
 
                  <div className="title-field">
                    <textarea className="title-input"
-                             type="text"
                              placeholder="Upload Video above&#10;Add Video caption here"
                              value={ title }
                              onChange={ e => setTitle(e.currentTarget.value) } />

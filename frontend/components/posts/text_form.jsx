@@ -64,7 +64,6 @@ const TextForm = () => {
                  <div className="title-field">
                    <textarea
                      className="title-input"
-                     type="text"
                      placeholder="Title"
                      value={ title }
                      onChange={ e => setTitle(e.currentTarget.value) } />
@@ -73,7 +72,6 @@ const TextForm = () => {
                  <div className="post-body">
                    <textarea
                      className="body-input"
-                     type="text"
                      placeholder="Your text here"
                      value={ body }
                      onChange={ e => setBody(e.currentTarget.value) } />

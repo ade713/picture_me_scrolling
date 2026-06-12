@@ -93,7 +93,6 @@ const PhotoForm = () => {
 
                  <div className="title-field">
                    <textarea className="title-input"
-                             type="text"
                              placeholder="Upload Photo above&#10;Add Photo caption here"
                              value={ title }
                              onChange={ e => setTitle(e.currentTarget.value) } />
