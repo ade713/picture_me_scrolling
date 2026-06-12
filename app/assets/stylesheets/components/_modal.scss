@@ -1,10 +1,12 @@
+body.ReactModal__Body--open {
+  overflow: hidden;
+}
+
 div.modal-button {
   display: flex;
   justify-content: space-between;
   padding-top: 10px;
-  border-top: lightgrey;
-  border-top-width: 1px;
-  border-top-style: solid;
+  border-top: 1px solid lightgrey;
 
   button {
     border-radius: 3px;
@@ -32,28 +34,38 @@ input.media-input {
   margin-bottom: 10px;
 }
 
-.audio-post-form, .photo-post-form, .video-post-form {
+.new-post-form,
+.post-form,
+.audio-post-form,
+.photo-post-form,
+.video-post-form,
+.text-post-form,
+.quote-post-form,
+.link-post-form {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.audio-post-form,
+.photo-post-form,
+.video-post-form {
   display: flex;
   flex-direction: column;
   height: 100%;
   justify-content: space-between;
-  
-  textarea {
-    resize: none;
-    border-bottom: none;
-    width: 494px;
+
+  .title-input {
     min-height: 100px;
-    margin-bottom: 11px;
   }
 }
 
 .text-post-form, .quote-post-form {
-  textarea.title-input {
+  .title-input {
     font-size: 36px;
   }
 }
 
-div.post-body textarea{
+div.post-body .body-input {
   min-height: 150px;
 }
 
@@ -62,11 +74,25 @@ div.media-field {
   flex-direction: column;
 }
 
-textarea {
+.title-input,
+.body-input {
+  box-sizing: border-box;
   resize: none;
-  width: 500px;
+  width: 100%;
   height: 50px;
   font-size: 18px;
+}
+
+.media-field img,
+.post-form audio,
+.post-form video {
+  display: block;
+  max-width: 100%;
+  width: 100%;
+}
+
+.post-form video {
+  max-height: 160px;
 }
 
 div.form-errors {

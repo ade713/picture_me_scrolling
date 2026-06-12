@@ -41,14 +41,14 @@ const TextForm = () => {
   return (
     <div className="post-bar-content">
       <button className="post-bar-button" onClick={ openModal }>
-        <label className="bar-button">
+        <div className="bar-button">
           <div className="button-icon">
             <i className="fa fa-font fa-3x" aria-hidden="true"></i>
           </div>
           <span className="new-post-label">
             Text
           </span>
-        </label>
+        </div>
       </button>
 
       <Modal isOpen={ showModal }
@@ -64,7 +64,6 @@ const TextForm = () => {
                  <div className="title-field">
                    <textarea
                      className="title-input"
-                     type="text"
                      placeholder="Title"
                      value={ title }
                      onChange={ e => setTitle(e.currentTarget.value) } />
@@ -73,7 +72,6 @@ const TextForm = () => {
                  <div className="post-body">
                    <textarea
                      className="body-input"
-                     type="text"
                      placeholder="Your text here"
                      value={ body }
                      onChange={ e => setBody(e.currentTarget.value) } />

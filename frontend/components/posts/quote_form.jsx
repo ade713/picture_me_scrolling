@@ -41,14 +41,14 @@ const QuoteForm = () => {
   return (
     <div className="post-bar-content">
       <button className="post-bar-button" onClick={ openModal }>
-        <label className="bar-button">
+        <div className="bar-button">
           <div className="button-icon">
             <i className="fa fa-quote-left fa-3x" aria-hidden="true"></i>
           </div>
           <span className="new-post-label">
             Quote
           </span>
-        </label>
+        </div>
       </button>
 
       <Modal isOpen={ showModal }
@@ -63,7 +63,6 @@ const QuoteForm = () => {
                <div className="quote-post-form">
                  <div className="title-field">
                    <textarea className="title-input"
-                             type="text"
                              placeholder="&quot;Quote&quot;"
                              value={ title }
                              onChange={ e => setTitle(e.currentTarget.value) } />
@@ -71,7 +70,6 @@ const QuoteForm = () => {
                  </div>
                  <div className="post-body">
                    <textarea className="body-input"
-                     type="text"
                      placeholder="- Source"
                      value={ body }
                      onChange={ e => setBody(e.currentTarget.value) } />

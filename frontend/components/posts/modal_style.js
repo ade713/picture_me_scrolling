@@ -1,24 +1,27 @@
 const formStyles = {
   overlay : {
-    position        : 'absolute',
+    position        : 'fixed',
     top             : 0,
     left            : 0,
     right           : 0,
     bottom          : 0,
     backgroundColor : 'rgba(211, 211, 211, 0.75)',
     zIndex          : 10,
-    overflow       : 'scroll',
+    overflowY       : 'auto',
   },
 
   content : {
     position: 'absolute',
     width           : '500px',
+    maxWidth        : 'calc(100vw - 40px)',
     top             : '20%',
-    left            : '22.3%',
+    left            : '50%',
+    right           : 'auto',
     padding         : '20px',
-    bottom          : 'clear',
+    bottom          : 'auto',
     border          : '1px solid #C0C0C0',
     borderRadius    : '4px',
+    transform       : 'translateX(-50%)',
     zIndex          : 11,
     fontFamily      : 'Muli',
   }

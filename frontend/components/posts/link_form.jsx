@@ -41,14 +41,14 @@ const LinkForm = () => {
   return (
     <div className="post-bar-content">
       <button className="post-bar-button" onClick={ openModal }>
-        <label className="bar-button">
+        <div className="bar-button">
           <div className="button-icon">
             <i className="fa fa-link fa-3x" aria-hidden="true"></i>
           </div>
           <span className="new-post-label">
             Link
           </span>
-        </label>
+        </div>
       </button>
 
       <Modal isOpen={ showModal }
@@ -63,7 +63,6 @@ const LinkForm = () => {
                <div className="post-form">
                  <div className="title-field">
                    <textarea className="title-input"
-                     type="text"
                      placeholder="Name/describe link here"
                      value={ title }
                      onChange={ e => setTitle(e.currentTarget.value) } />
@@ -73,7 +72,6 @@ const LinkForm = () => {
                  <div className="post-body">
                    <textarea
                      className="body-input"
-                     type="text"
                      placeholder="Type or paste Link URL here"
                      value={ url }
                      onChange={ e => setUrl(e.currentTarget.value) } />
