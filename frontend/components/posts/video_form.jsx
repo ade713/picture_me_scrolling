@@ -63,14 +63,14 @@ const VideoForm = () => {
       <button
         className="post-bar-button"
         onClick={ openModal }>
-        <label className="bar-button">
+        <div className="bar-button">
           <div className="button-icon">
             <i className="fa fa-video-camera fa-3x" aria-hidden="true"></i>
           </div>
           <span className="new-post-label">
             Video
           </span>
-        </label>
+        </div>
       </button>
 
       <Modal
@@ -100,7 +100,7 @@ const VideoForm = () => {
                              onChange={ e => setTitle(e.currentTarget.value) } />
                  </div>
 
-                 <video width="500" height="160" controls>
+                 <video controls>
                    <source src={ imageUrl } type="video/*" />
                  </video>
 

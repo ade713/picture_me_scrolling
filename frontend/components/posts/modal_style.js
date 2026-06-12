@@ -13,12 +13,15 @@ const formStyles = {
   content : {
     position: 'absolute',
     width           : '500px',
+    maxWidth        : 'calc(100vw - 40px)',
     top             : '20%',
-    left            : '22.3%',
+    left            : '50%',
+    right           : 'auto',
     padding         : '20px',
-    bottom          : 'clear',
+    bottom          : 'auto',
     border          : '1px solid #C0C0C0',
     borderRadius    : '4px',
+    transform       : 'translateX(-50%)',
     zIndex          : 11,
     fontFamily      : 'Muli',
   }

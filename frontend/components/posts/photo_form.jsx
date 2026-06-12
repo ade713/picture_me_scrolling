@@ -61,14 +61,14 @@ const PhotoForm = () => {
   return (
     <div className="post-bar-content">
       <button className="post-bar-button" onClick={ openModal }>
-        <label className="bar-button">
+        <div className="bar-button">
           <div className="button-icon">
             <i className="fa fa-camera fa-3x" aria-hidden="true"></i>
           </div>
           <span className="new-post-label">
             Photo
           </span>
-        </label>
+        </div>
       </button>
 
       <Modal isOpen={ showModal }
