@@ -1,3 +1,7 @@
+body.ReactModal__Body--open {
+  overflow: hidden;
+}
+
 div.modal-button {
   display: flex;
   justify-content: space-between;
