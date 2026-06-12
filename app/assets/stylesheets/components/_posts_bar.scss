@@ -26,11 +26,6 @@ div.post-form-links {
   min-width: 0;
 }
 
-div.post-form-links:last-child {
-  border-right: 0;
-}
-
-
 button.post-bar-button {
   display: flex;
   justify-content: center;
@@ -42,6 +37,10 @@ div.bar-form-button {
   justify-content: center;
   align-content: center;
   border-right: 1px solid black;
+}
+
+div.bar-form-button:last-child {
+  border-right: 0;
 }
 
 div.post-bar-content {
