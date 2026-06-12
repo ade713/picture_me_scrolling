@@ -4,7 +4,7 @@ export const AudioPost = ({ footer, header, post }) => (
   <div className="post-audio">
     { header }
     <div className="post-upload-audio">
-      <video width="540" height="120" controls>
+      <video controls>
         <source src={ post.image_url } />
       </video>
     </div>
@@ -80,7 +80,7 @@ export const VideoPost = ({ footer, header, post }) => (
   <div className="post-video">
     { header }
     <div className="post-upload-video">
-      <video width="540" height="440" controls>
+      <video controls>
         <source src={ post.image_url } />
       </video>
     </div>

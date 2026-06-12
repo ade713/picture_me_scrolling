@@ -1,8 +1,19 @@
+div.feed-posts {
+  width: 100%;
+  max-width: 621px;
+}
+
+div.new-post-container,
+ul.feed-list {
+  width: 100%;
+}
+
 div.post-header {
   display: flex;
   flex-direction: row;
-  width: 500px;
-  height: 30px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 30px;
   padding-left: 20px;
   padding-right: 20px;
   margin-bottom: 15px;
@@ -33,15 +44,17 @@ div.follow-hdr {
 .feed-post {
   display: flex;
   flex-direction: row;
-  width: 621px;
+  width: 100%;
   border-radius: 3px;
 }
 
 img.author-avatar {
   display: flex;
+  flex: 0 0 64px;
   margin-right: 16px;
   width: 64px;
   height: 64px;
+  object-fit: cover;
   border-radius: 3px;
   border: 1px solid black;
 }
@@ -54,14 +67,18 @@ img.author-avatar {
   min-height: 140px;
   border: 1px solid black;
   border-radius: 3px;
-  width: 540px;
+  box-sizing: border-box;
+  flex: 1;
+  max-width: 540px;
+  min-width: 0;
   background-color: white;
 }
 
 div.post-footer {
   display: flex;
-  width: 500px;
-  height: 45px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 45px;
   justify-content: space-between;
   margin-right: 0px;
   padding-left: 20px;

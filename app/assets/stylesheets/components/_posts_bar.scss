@@ -2,23 +2,28 @@ div.post-bar {
   display: flex;
   flex-direction: row;
   border-radius: 3px;
-  width: 620px;
+  width: 100%;
+  max-width: 620px;
   height: 100px;
   font-family: 'Muli', sans-serif;
 }
 
 img.user-avatar {
   display: flex;
+  flex: 0 0 64px;
   margin-right: 16px;
   width: 64px;
   height: 64px;
+  object-fit: cover;
   border-radius: 3px;
   border: 1px solid black;
 }
 
 div.post-form-links {
   display: flex;
-  flex-direction: row
+  flex: 1;
+  flex-direction: row;
+  min-width: 0;
 }
 
 div.post-form-links:last-child {
@@ -42,7 +47,8 @@ div.bar-form-button {
 div.post-bar-content {
   display: flex;
   justify-content: center;
-  width: 90px;
+  width: 100%;
+  min-width: 90px;
 }
 
 div.post-bar-content:hover {
