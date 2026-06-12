@@ -8,6 +8,10 @@ ul.feed-list {
   width: 100%;
 }
 
+div.new-post-container {
+  margin-bottom: 16px;
+}
+
 div.post-header {
   display: flex;
   flex-direction: row;
@@ -80,7 +84,6 @@ div.post-footer {
   width: 100%;
   min-height: 45px;
   justify-content: space-between;
-  margin-right: 0px;
   padding-left: 20px;
   padding-right: 20px;
 }
@@ -93,7 +96,6 @@ div.post-likes {
 div.post-options {
   display: flex;
   justify-content: space-around;
-  margin-right: 0px;
   margin-left: 15px;
 }
 

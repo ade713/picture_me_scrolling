@@ -13,7 +13,6 @@ const Feed = () => {
         <div className="new-post-container">
           <PostBar />
         </div>
-        <br />
         <ul className="feed-list"></ul>
       </div>
     );
@@ -25,7 +24,6 @@ const Feed = () => {
         <div className="new-post-container">
           <PostBar />
         </div>
-        <br />
         <ul className="feed-list">
           <li className="feed-post">
             Unable to load posts.
@@ -46,7 +44,6 @@ const Feed = () => {
       <div className="new-post-container">
         <PostBar />
       </div>
-      <br />
       <ul className="feed-list">
         { feedItems }
       </ul>
