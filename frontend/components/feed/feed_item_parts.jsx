@@ -1,5 +1,7 @@
 import React from 'react';
 
+const postActionLabel = post => post.title || `post by ${post.author}`;
+
 export const FollowButton = ({ isAuthor, onFollow, onUnfollow, post }) => {
   if (isAuthor) {
     return null;
@@ -31,14 +33,20 @@ export const LikeButton = ({ isAuthor, onLike, onUnlike, post }) => {
 
   if (post.liked) {
     return (
-      <button className="like-btn-on" onClick={ () => onUnlike(post.id) }>
+      <button
+        aria-label={ `Unlike ${postActionLabel(post)}` }
+        className="like-btn-on"
+        onClick={ () => onUnlike(post.id) }>
         <i className="fa fa-heart fa-2x" aria-hidden="true"></i>
       </button>
     );
   }
 
   return (
-    <button className="like-btn-off" onClick={ () => onLike(post.id) }>
+    <button
+      aria-label={ `Like ${postActionLabel(post)}` }
+      className="like-btn-off"
+      onClick={ () => onLike(post.id) }>
       <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i>
     </button>
   );
@@ -67,13 +75,17 @@ export const AuthorControls = ({ isAuthor, onDelete, post }) => {
 
   return (
     <>
-      <button className="edit-post-btn">
+      <button
+        aria-label={ `Edit ${postActionLabel(post)}` }
+        className="edit-post-btn">
         <i
           className="fa fa-pencil-square-o fa-2x"
           id="edit-btn-icon"
           aria-hidden="true"></i>
       </button>
-      <button className="delete-post-btn"
+      <button
+        aria-label={ `Delete ${postActionLabel(post)}` }
+        className="delete-post-btn"
         onClick={ () => onDelete(post) } >
         <i className="fa fa-trash fa-2x" aria-hidden="true"></i>
       </button>
