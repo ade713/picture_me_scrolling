@@ -97,3 +97,31 @@ div.post-upload-photo img,
 div.post-upload-video video {
   height: auto;
 }
+
+@media (max-width: 640px) {
+  div.post-audio,
+  div.post-photo,
+  div.post-video,
+  div.post-quote,
+  div.post-text {
+    min-height: 0;
+  }
+
+  div.post-caption,
+  div.post-quote .post-content,
+  div.post-text .post-content,
+  div.post-link-main {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  div.post-quote .quote,
+  div.post-text .post-title {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  div.post-link-main a.posted-link:hover {
+    font-size: inherit;
+  }
+}

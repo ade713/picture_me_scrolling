@@ -116,3 +116,42 @@ div.post-btns {
 ul.feed-list:last-child {
   margin-bottom: 30px;
 }
+
+@media (max-width: 640px) {
+  div.post-header,
+  div.post-footer {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .feed-post {
+    align-items: flex-start;
+  }
+
+  img.author-avatar {
+    flex-basis: 48px;
+    width: 48px;
+    height: 48px;
+    margin-right: 10px;
+  }
+
+  div.post-footer {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .feed-post {
+    flex-direction: column;
+  }
+
+  img.author-avatar {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+
+  .feed-item {
+    width: 100%;
+  }
+}
