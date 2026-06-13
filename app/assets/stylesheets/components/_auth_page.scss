@@ -79,7 +79,7 @@ div.auth-body {
   margin-top: 50px;
   padding-left: 3%;
   padding-right: 4%;
-  background-image: url(https://s3.us-east-2.amazonaws.com/picmes-dev/assets/mac_table.png);
+  background-image: image-url("mac_table.png");
   background-size: cover, auto;
   background-repeat: no-repeat;
 }
@@ -163,7 +163,6 @@ input.auth-login-input::placeholder {
   padding: 5px;
   padding-left: 15px;
   padding-right: 15px;
-  border: 2px solid black;
   text-align: center;
   align-self: center;
   border: 2px solid black;
@@ -195,20 +194,4 @@ footer i {
   justify-content: flex-end;
   padding: 5px;
   margin-top: 12%;
-}
-
-.dash-nav {
-  display: flex;
-  justify-content: space-between;
-  background-color: #FFFFFF;
-  height: 40px;
-  opacity: .8;
-  font-family: 'Yanone Kaffeesatz', sans-serif;
-  color: black;
-}
-
-.dash-title {
-  display: flex;
-  font-family: 'Yanone Kaffeesatz', sans-serif;
-  font-size: 25px;
 }

@@ -60,10 +60,9 @@ describe('RecommendedUsers', () => {
 
   it('calls follow mutation with the selected user id', async () => {
     const user = userEvent.setup();
-    const { container } = render(<RecommendedUsers />);
-    const followButtons = container.querySelectorAll('.follow-user');
+    render(<RecommendedUsers />);
 
-    await user.click(followButtons[1]);
+    await user.click(screen.getByRole('button', { name: `Follow ${recommendedUsers[1].username}` }));
 
     expect(followUser.mutate).toHaveBeenCalledWith(recommendedUsers[1].id);
   });
