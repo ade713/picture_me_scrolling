@@ -12,6 +12,7 @@ const RecUserItem = ({ followUser, user }) => (
       </span>
     </div>
     <button
+      aria-label={ `Follow ${user.username}` }
       className="follow-user"
       onClick={ () => followUser(user.id) }>
       <i className="fa fa-plus-square" aria-hidden="true"></i>
