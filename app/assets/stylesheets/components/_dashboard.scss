@@ -54,6 +54,7 @@ div.dash-feed {
   border-right: 1px solid black;
   overflow-y: scroll;
   min-width: 70.5%;
+  min-height: 0;
 }
 
 div.dash-right-column {
@@ -67,5 +68,47 @@ footer.dash-right-footer {
 
   i {
     font-size: 40px;
+  }
+}
+
+@media (max-width: 900px) {
+  div.dash-main {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+
+  div.dash-feed {
+    flex: none;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    padding: 24px 20px 0;
+    border-right: 0;
+    border-bottom: 1px solid black;
+    overflow-y: visible;
+  }
+
+  div.dash-right-column {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 24px 20px;
+  }
+}
+
+@media (max-width: 640px) {
+  button.dash-logout {
+    width: auto;
+    padding-right: 16px;
+    font-size: 20px;
+  }
+
+  .dash-title {
+    padding-left: 16px;
+  }
+
+  div.dash-feed,
+  div.dash-right-column {
+    padding-left: 12px;
+    padding-right: 12px;
   }
 }

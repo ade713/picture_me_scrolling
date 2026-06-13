@@ -65,3 +65,63 @@ div.button-icon {
   display: flex;
   justify-content: center;
 }
+
+@media (max-width: 640px) {
+  div.post-bar {
+    height: auto;
+  }
+
+  img.user-avatar {
+    flex-basis: 48px;
+    width: 48px;
+    height: 48px;
+    margin-right: 10px;
+  }
+
+  div.post-form-links {
+    flex-wrap: wrap;
+  }
+
+  div.bar-form-button {
+    box-sizing: border-box;
+    width: 33.333%;
+    min-height: 48px;
+    border-bottom: 1px solid black;
+  }
+
+  button.post-bar-button {
+    align-items: center;
+    width: 100%;
+  }
+
+  div.button-icon i {
+    font-size: 2em;
+  }
+
+  div.bar-form-button:nth-child(3n) {
+    border-right: 0;
+  }
+
+  div.bar-form-button:nth-last-child(-n + 3) {
+    border-bottom: 0;
+  }
+
+  div.post-bar-content,
+  span.new-post-label {
+    width: 100%;
+    min-width: 0;
+  }
+
+  span.new-post-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  div.post-bar-content:hover {
+    transform: none;
+  }
+}
