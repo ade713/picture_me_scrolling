@@ -89,6 +89,15 @@ div.button-icon {
     border-bottom: 1px solid black;
   }
 
+  button.post-bar-button {
+    align-items: center;
+    width: 100%;
+  }
+
+  div.button-icon i {
+    font-size: 2em;
+  }
+
   div.bar-form-button:nth-child(3n) {
     border-right: 0;
   }
@@ -101,6 +110,15 @@ div.button-icon {
   span.new-post-label {
     width: 100%;
     min-width: 0;
+  }
+
+  span.new-post-label {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
   }
 
   div.post-bar-content:hover {
