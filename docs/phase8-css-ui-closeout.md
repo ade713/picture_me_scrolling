@@ -29,10 +29,13 @@ responsive behavior after the frontend modernization work stabilized.
   modal styles present.
 - `git diff --check` passed.
 
+## Completed Follow-Up
+
+- React Modal styling moved from `frontend/components/posts/modal_style.js` into
+  SCSS with `className` and `overlayClassName`.
+
 ## Remaining Follow-Up
 
-- Move React Modal styling from `frontend/components/posts/modal_style.js` into
-  SCSS with `className` and `overlayClassName`.
 - Revisit whether SCSS should be converted to native CSS after modal styles are
   no longer JavaScript-owned.
 - Consider a broader visual redesign pass separately from modernization cleanup.
