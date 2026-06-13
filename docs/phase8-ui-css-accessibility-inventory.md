@@ -119,11 +119,11 @@ Files:
 Findings:
 
 - These files only contain generated comments.
-- They are included by `require_tree .` in `application.scss`.
+- They were included by `require_tree .` in `application.scss`.
 
-Recommended follow-up:
+Closeout result:
 
-- Remove them in a CSS cleanup PR if no Rails asset dependency needs them.
+- Removed in Phase 8-7.
 
 ### Broad Stylesheet Imports
 
@@ -133,14 +133,14 @@ File:
 
 Findings:
 
-- The stylesheet manifest uses both Sprockets `require_tree .` and explicit
+- The stylesheet manifest used both Sprockets `require_tree .` and explicit
   Sass imports.
 - This can make CSS ordering and unused style cleanup harder to reason about.
 
-Recommended follow-up:
+Closeout result:
 
-- During CSS closeout, decide whether to rely on explicit imports only.
-- Avoid changing this until component-specific cleanup has reduced uncertainty.
+- Phase 8-7 removed `require_tree .` from `application.scss`.
+- Base and component styles are now imported explicitly.
 
 ### Feed Fixed Widths
 
