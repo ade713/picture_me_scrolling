@@ -2,6 +2,34 @@ body.ReactModal__Body--open {
   overflow: hidden;
 }
 
+.post-form-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  overflow-y: auto;
+  background-color: rgba(211, 211, 211, .75);
+}
+
+.post-form-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  box-sizing: border-box;
+  width: 500px;
+  max-width: calc(100vw - 40px);
+  max-height: calc(100vh - 40px);
+  padding: 20px;
+  overflow-y: auto;
+  border: 1px solid #C0C0C0;
+  border-radius: 4px;
+  transform: translate(-50%, -50%);
+  z-index: 11;
+  font-family: 'Muli', sans-serif;
+  background-color: white;
+}
+
 div.modal-button {
   display: flex;
   justify-content: space-between;

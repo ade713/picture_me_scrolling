@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 
 import { useCreatePost } from '../../query/post_hooks';
-import formStyles from './modal_style';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
 import { usePostFormProps } from './post_form_hooks';
 
@@ -53,7 +52,8 @@ const LinkForm = () => {
 
       <Modal isOpen={ showModal }
              contentLabel="Link post form"
-             style={ formStyles }
+             className="post-form-modal"
+             overlayClassName="post-form-modal-overlay"
              shouldCloseOnOverlayClick={ false }
              onRequestClose={ closeModal } >
              <div className="link-post-form">

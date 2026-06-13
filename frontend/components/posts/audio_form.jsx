@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 
 import { useCreateMediaPost } from '../../query/post_hooks';
-import formStyles from './modal_style';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
 import { usePostFormProps } from './post_form_hooks';
 
@@ -73,7 +72,8 @@ const AudioForm = () => {
 
       <Modal isOpen={ showModal }
              contentLabel="Audio post form"
-             style={ formStyles }
+             className="post-form-modal"
+             overlayClassName="post-form-modal-overlay"
              shouldCloseOnOverlayClick={ false }
              onRequestClose={ closeModal } >
              <div className="audio-post-form">
