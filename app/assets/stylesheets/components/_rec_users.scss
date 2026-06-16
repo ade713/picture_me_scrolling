@@ -51,10 +51,8 @@ li.rec-user-item {
   }
 
   img.rec-user-avatar {
-    height: 40px;
-    width: 40px;
+    @include avatar-frame(40px, 2px);
+
     margin-right: 10px;
-    border-radius: 2px;
-    border: black solid 1px;
   }
 }
