@@ -117,7 +117,7 @@ ul.feed-list:last-child {
   margin-bottom: 30px;
 }
 
-@media (max-width: 640px) {
+@include mobile {
   div.post-header,
   div.post-footer {
     padding-left: 14px;
@@ -141,7 +141,7 @@ ul.feed-list:last-child {
   }
 }
 
-@media (max-width: 480px) {
+@include small-screen {
   .feed-post {
     flex-direction: column;
   }

@@ -84,7 +84,7 @@ div.post-upload-video video {
   height: auto;
 }
 
-@media (max-width: 640px) {
+@include mobile {
   div.post-audio,
   div.post-photo,
   div.post-video,
