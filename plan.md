@@ -589,7 +589,7 @@ Recommended PR chunks:
 
 ## Phase 8: UI Structure, CSS Cleanup, and Accessibility
 
-Status: planned.
+Status: complete.
 
 Goal: clean styling, UI structure, and accessibility after the app behavior and
 architecture are stable.
@@ -649,6 +649,16 @@ Recommended PR chunks:
    - do a final manual/browser smoke pass if useful
    - document any remaining design debt or larger redesign ideas for future work
 
+Completed follow-up PRs:
+
+- Moved React Modal styles from JavaScript inline style objects into SCSS.
+- Refactored repeated post content/caption/link styles.
+- Refactored duplicate auth submit and guest login button styles.
+- Added shared SCSS breakpoint variables and media-query mixins.
+- Added shared SCSS avatar sizing/frame mixins.
+- Phase 8 closeout notes live in `docs/phase8-css-ui-closeout.md`.
+- Responsive smoke notes live in `docs/phase8-responsive-smoke.md`.
+
 ## Phase 9: Performance and UX Optimization
 
 Status: planned.
@@ -659,11 +669,47 @@ instead of mixing them into every modernization PR.
 Focus areas:
 
 - Bundle size audit.
+- Realistic seed data for measuring feed and pagination behavior.
 - Media loading optimization.
 - Feed pagination or infinite scroll if needed.
 - React render profiling.
 - TanStack Query stale time/cache tuning.
 - Production asset compression and caching review.
+
+Recommended PR chunks:
+
+1. Performance baseline and inventory:
+   - record current bundle/build output
+   - capture baseline route/page load observations
+   - identify largest frontend/runtime performance risks
+   - avoid behavior changes in the baseline PR
+2. Seed data for performance scenarios:
+   - add enough local development seed data to make feed volume meaningful
+   - include a realistic mix of users, follows, likes, and post types
+   - keep seed media lightweight and compatible with Active Storage
+   - use the data to evaluate whether pagination or infinite scroll is needed
+   - make the app easier to demonstrate during job-search portfolio review
+3. Bundle size cleanup:
+   - review production bundle contents
+   - remove or defer obvious unused/heavy dependencies if any remain
+   - document any larger bundling work separately
+4. Media loading optimization:
+   - audit avatar, image, audio, and video rendering behavior
+   - add safe lazy-loading or sizing improvements where appropriate
+   - keep Active Storage URL behavior unchanged
+5. Feed loading strategy:
+   - evaluate whether current feed loading needs pagination or infinite scroll
+   - document the backend/frontend contract needed before implementation
+   - implement only if the app has enough data volume to justify it
+6. React render and query tuning:
+   - profile high-traffic components such as dashboard, feed, feed item, and
+     recommended users
+   - review TanStack Query stale time/cache behavior
+   - tune only measured or clearly noisy paths
+7. Production asset and caching review:
+   - review Rails/Webpack asset compression and cache headers
+   - document deploy-time or hosting-specific recommendations
+   - keep Vite migration separate unless explicitly starting that project
 
 ## Future Build Tooling: Vite
 
