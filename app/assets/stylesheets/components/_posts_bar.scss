@@ -11,12 +11,9 @@ div.post-bar {
 img.user-avatar {
   display: flex;
   flex: 0 0 64px;
+  @include avatar-frame(64px, $flex-basis: 64px);
+
   margin-right: 16px;
-  width: 64px;
-  height: 64px;
-  object-fit: cover;
-  border-radius: 3px;
-  border: 1px solid black;
 }
 
 div.post-form-links {
@@ -66,15 +63,14 @@ div.button-icon {
   justify-content: center;
 }
 
-@media (max-width: 640px) {
+@include mobile {
   div.post-bar {
     height: auto;
   }
 
   img.user-avatar {
-    flex-basis: 48px;
-    width: 48px;
-    height: 48px;
+    @include avatar-size(48px, 48px);
+
     margin-right: 10px;
   }
 

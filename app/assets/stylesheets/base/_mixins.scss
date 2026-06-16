@@ -1,0 +1,16 @@
+@mixin avatar-size($size, $flex-basis: null) {
+  @if $flex-basis != null {
+    flex-basis: $flex-basis;
+  }
+
+  width: $size;
+  height: $size;
+}
+
+@mixin avatar-frame($size, $radius: 3px, $flex-basis: null) {
+  @include avatar-size($size, $flex-basis);
+
+  object-fit: cover;
+  border-radius: $radius;
+  border: 1px solid black;
+}

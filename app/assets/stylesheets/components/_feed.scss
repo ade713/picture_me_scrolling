@@ -55,12 +55,9 @@ div.follow-hdr {
 img.author-avatar {
   display: flex;
   flex: 0 0 64px;
+  @include avatar-frame(64px, $flex-basis: 64px);
+
   margin-right: 16px;
-  width: 64px;
-  height: 64px;
-  object-fit: cover;
-  border-radius: 3px;
-  border: 1px solid black;
 }
 
 .feed-item {
@@ -117,7 +114,7 @@ ul.feed-list:last-child {
   margin-bottom: 30px;
 }
 
-@media (max-width: 640px) {
+@include mobile {
   div.post-header,
   div.post-footer {
     padding-left: 14px;
@@ -129,9 +126,8 @@ ul.feed-list:last-child {
   }
 
   img.author-avatar {
-    flex-basis: 48px;
-    width: 48px;
-    height: 48px;
+    @include avatar-size(48px, 48px);
+
     margin-right: 10px;
   }
 
@@ -141,7 +137,7 @@ ul.feed-list:last-child {
   }
 }
 
-@media (max-width: 480px) {
+@include small-screen {
   .feed-post {
     flex-direction: column;
   }

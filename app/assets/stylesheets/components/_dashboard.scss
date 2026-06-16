@@ -71,7 +71,7 @@ footer.dash-right-footer {
   }
 }
 
-@media (max-width: 900px) {
+@include tablet {
   div.dash-main {
     flex-direction: column;
     overflow-y: auto;
@@ -95,7 +95,7 @@ footer.dash-right-footer {
   }
 }
 
-@media (max-width: 640px) {
+@include mobile {
   button.dash-logout {
     width: auto;
     padding-right: 16px;

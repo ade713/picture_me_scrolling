@@ -14,6 +14,8 @@
  */
 
 //CSS Reset
+@import "base/breakpoints";
+@import "base/mixins";
 @import "base/reset.scss";
 @import "base/layout.scss";
 
