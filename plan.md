@@ -683,6 +683,7 @@ Recommended PR chunks:
    - capture baseline route/page load observations
    - identify largest frontend/runtime performance risks
    - avoid behavior changes in the baseline PR
+   - baseline notes live in `docs/phase9-performance-baseline.md`
 2. Seed data for performance scenarios:
    - add enough local development seed data to make feed volume meaningful
    - include a realistic mix of users, follows, likes, and post types
