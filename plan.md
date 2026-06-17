@@ -690,6 +690,7 @@ Recommended PR chunks:
    - keep seed media lightweight and compatible with Active Storage
    - use the data to evaluate whether pagination or infinite scroll is needed
    - make the app easier to demonstrate during job-search portfolio review
+   - seed data notes live in `docs/phase9-seed-data.md`
 3. Bundle size cleanup:
    - review production bundle contents
    - remove or defer obvious unused/heavy dependencies if any remain
