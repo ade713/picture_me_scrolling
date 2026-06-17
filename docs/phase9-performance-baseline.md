@@ -119,6 +119,8 @@ meaningful pagination or render-performance decision. Phase 9-2 should add a
 larger, realistic development seed set before implementing feed loading
 changes.
 
+Phase 9-2 seed data notes live in `docs/phase9-seed-data.md`.
+
 ## Initial Performance Risks
 
 - The app ships a single Rails-served Webpack bundle.

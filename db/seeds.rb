@@ -46,6 +46,13 @@ def create_follow!(follower:, followee:)
   )
 end
 
+def create_like!(user:, post:)
+  Like.create!(
+    user_id: user.id,
+    post_id: post.id
+  )
+end
+
 guest_user1 = create_user!(username: 'PicMeS Guest', password: '1Welcome2To3PicMeS', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/orange_happy.png')
 
 akuma = create_user!(username: 'DarkHadouMaster', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/akuma-sf3.jpg')
@@ -85,3 +92,92 @@ create_post!(author_id: fozzie.id, title: "Picmes is AWESOME! =D #WakaWaka", pos
 # - recommended users still include users without posts, like Ryu
 create_follow!(follower: guest_user1, followee: starwars)
 create_follow!(follower: guest_user1, followee: starks)
+
+# Performance scenario data:
+# These records create enough local feed volume to evaluate pagination,
+# rendering, and query behavior without repeatedly downloading large media.
+performance_avatar_urls = [
+  'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/orange_happy.png',
+  'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/storm_trooper_avatar.jpg',
+  'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/miles_morales.jpg',
+  'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/kermit_tea_avatar.jpg'
+]
+
+performance_users = 24.times.map do |index|
+  create_user!(
+    username: format('PerformanceUser%02d', index + 1),
+    password: 'pass123',
+    avatar: performance_avatar_urls[index % performance_avatar_urls.length]
+  )
+end
+
+performance_text_bodies = [
+  'Testing the feed with enough posts to make scrolling behavior obvious.',
+  'A realistic dashboard needs more than a handful of records.',
+  'This post exists so pagination decisions can be based on volume.',
+  'Performance work is easier when the seed data tells the truth.'
+]
+
+performance_quote_sources = [
+  'The Feed Lab',
+  'Dashboard Notes',
+  'Pagination Club',
+  'Seed Data Society'
+]
+
+performance_links = [
+  'https://guides.rubyonrails.org/',
+  'https://react.dev/',
+  'https://tanstack.com/query/latest',
+  'https://webpack.js.org/'
+]
+
+performance_posts = []
+
+performance_users.each_with_index do |user, user_index|
+  5.times do |post_index|
+    sequence = (user_index * 5) + post_index + 1
+
+    performance_posts << case post_index % 3
+    when 0
+      create_post!(
+        author_id: user.id,
+        title: "Performance text post #{sequence}",
+        body: performance_text_bodies[sequence % performance_text_bodies.length],
+        post_type: 'text'
+      )
+    when 1
+      create_post!(
+        author_id: user.id,
+        title: "Quote seed #{sequence}",
+        body: "- #{performance_quote_sources[sequence % performance_quote_sources.length]}",
+        post_type: 'quote'
+      )
+    else
+      create_post!(
+        author_id: user.id,
+        title: "Useful reference #{sequence}",
+        url: performance_links[sequence % performance_links.length],
+        post_type: 'link'
+      )
+    end
+  end
+end
+
+performance_users.each do |user|
+  create_follow!(follower: guest_user1, followee: user)
+end
+
+performance_users.each_slice(4) do |user_group|
+  user_group.combination(2) do |follower, followee|
+    create_follow!(follower: follower, followee: followee)
+  end
+end
+
+like_users = [guest_user1, akuma, ryu, bobsburger, rick, morty] + performance_users.first(8)
+
+performance_posts.each_with_index do |post, index|
+  like_users.each_with_index do |user, user_index|
+    create_like!(user: user, post: post) if (index + user_index).even?
+  end
+end
