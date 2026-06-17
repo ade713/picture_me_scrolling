@@ -695,6 +695,7 @@ Recommended PR chunks:
    - review production bundle contents
    - remove or defer obvious unused/heavy dependencies if any remain
    - document any larger bundling work separately
+   - bundle cleanup notes live in `docs/phase9-bundle-size-cleanup.md`
 4. Media loading optimization:
    - audit avatar, image, audio, and video rendering behavior
    - add safe lazy-loading or sizing improvements where appropriate

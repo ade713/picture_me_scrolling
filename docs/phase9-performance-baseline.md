@@ -55,6 +55,9 @@ Largest reported production bundle areas:
 - `react`: 18.2 KiB.
 - `scheduler`: 10.1 KiB.
 
+Phase 9-3 bundle cleanup notes live in
+`docs/phase9-bundle-size-cleanup.md`.
+
 ## Current Runtime Shape
 
 ### Route and Page Baseline
