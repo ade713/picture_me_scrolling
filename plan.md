@@ -705,6 +705,7 @@ Recommended PR chunks:
    - evaluate whether current feed loading needs pagination or infinite scroll
    - document the backend/frontend contract needed before implementation
    - implement only if the app has enough data volume to justify it
+   - feed loading notes live in `docs/phase9-feed-loading-strategy.md`
 6. React render and query tuning:
    - profile high-traffic components such as dashboard, feed, feed item, and
      recommended users
