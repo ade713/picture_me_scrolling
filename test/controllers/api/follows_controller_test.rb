@@ -40,6 +40,8 @@ class Api::FollowsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_includes response_post_ids, @viewer_post.id.to_s
     assert_includes response_post_ids, @followee_post.id.to_s
+    assert_equal 1, response_pagination['page']
+    assert_equal 2, response_pagination['total_count']
   end
 
   test 'create requires login' do
@@ -120,6 +122,10 @@ class Api::FollowsControllerTest < ActionDispatch::IntegrationTest
   end
 
   def response_post_ids
-    response_json.keys
+    response_json['post_ids'].map(&:to_s)
+  end
+
+  def response_pagination
+    response_json['pagination']
   end
 end
