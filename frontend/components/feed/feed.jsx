@@ -33,7 +33,7 @@ const Feed = () => {
     );
   }
 
-  const feedItems = (posts.data || []).map((post, index) =>
+  const feedItems = (posts.data?.posts || []).map((post, index) =>
     <FeedItem
       key={ post.id }
       post={ post }
@@ -48,6 +48,14 @@ const Feed = () => {
       <ul className="feed-list">
         { feedItems }
       </ul>
+      { posts.hasNextPage && (
+        <button
+          className="load-more-posts"
+          disabled={ posts.isFetchingNextPage }
+          onClick={ () => posts.fetchNextPage() }>
+          { posts.isFetchingNextPage ? 'Loading posts...' : 'Load more posts' }
+        </button>
+      ) }
     </div>
   );
 };

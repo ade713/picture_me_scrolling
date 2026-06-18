@@ -1,10 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { createFollow, deleteFollow, fetchUser, fetchUsers } from '../util/user_api_util';
+import { feedCacheFromPage } from './post_hooks';
 import { queryKeys } from './query_keys';
 
-const updatePostsAndRefreshUsers = queryClient => posts => {
-  queryClient.setQueryData(queryKeys.posts, posts);
+const updatePostsAndRefreshUsers = queryClient => firstPage => {
+  queryClient.setQueryData(queryKeys.posts, feedCacheFromPage(firstPage));
   queryClient.invalidateQueries({ queryKey: queryKeys.users });
 };
 
