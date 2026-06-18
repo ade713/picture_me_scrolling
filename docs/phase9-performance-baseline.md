@@ -108,6 +108,9 @@ Phase 9-3 bundle cleanup notes live in
 - Active Storage URLs are emitted by Rails Jbuilder as `image_url` and
   `avatar_url`.
 
+Phase 9-4 media loading notes live in
+`docs/phase9-media-loading-optimization.md`.
+
 ## Seed Data Baseline
 
 Current seeds provide:

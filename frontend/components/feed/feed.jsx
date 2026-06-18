@@ -33,10 +33,11 @@ const Feed = () => {
     );
   }
 
-  const feedItems = (posts.data || []).map(post =>
+  const feedItems = (posts.data || []).map((post, index) =>
     <FeedItem
       key={ post.id }
-      post={ post } />
+      post={ post }
+      priorityMedia={ index < 3 } />
   );
 
   return (
