@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { imageLoadingProps } from '../../util/media_loading_util';
+
 const postActionLabel = post => post.title || `post by ${post.author}`;
 
 export const FollowButton = ({ isAuthor, onFollow, onUnfollow, post }) => {
@@ -118,11 +120,12 @@ export const PostFooter = ({ isAuthor, onDelete, onLike, onUnlike, post }) => (
   </div>
 );
 
-export const PostFrame = ({ children, post }) => (
+export const PostFrame = ({ children, post, priorityMedia = false }) => (
   <li className="feed-post">
     <img
       alt={ `${post.author} avatar` }
       className="author-avatar"
+      { ...imageLoadingProps(priorityMedia) }
       src={ post.author_avatar } />
     <div className="feed-item">
       { children }

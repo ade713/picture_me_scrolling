@@ -25,7 +25,7 @@ const POST_BODY_COMPONENTS = {
   video: VideoPost
 };
 
-const FeedItem = ({ post }) => {
+const FeedItem = ({ post, priorityMedia = false }) => {
   const currentUser = useCurrentUser();
   const deletePost = useDeletePost();
   const followUser = useFollowUser();
@@ -55,11 +55,14 @@ const FeedItem = ({ post }) => {
   const PostBody = POST_BODY_COMPONENTS[post.post_type] || TextPost;
 
   return (
-    <PostFrame post={ post }>
+    <PostFrame
+      post={ post }
+      priorityMedia={ priorityMedia }>
       <PostBody
         footer={ postFooter }
         header={ postHeader }
         post={ post }
+        priorityMedia={ priorityMedia }
       />
     </PostFrame>
   );

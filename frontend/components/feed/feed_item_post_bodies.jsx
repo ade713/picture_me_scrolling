@@ -1,10 +1,12 @@
 import React from 'react';
 
+import { imageLoadingProps } from '../../util/media_loading_util';
+
 export const AudioPost = ({ footer, header, post }) => (
   <div className="post-audio">
     { header }
     <div className="post-upload-audio">
-      <video controls>
+      <video controls preload="metadata">
         <source src={ post.image_url } />
       </video>
     </div>
@@ -31,12 +33,13 @@ export const LinkPost = ({ footer, header, post }) => (
   </div>
 );
 
-export const PhotoPost = ({ footer, header, post }) => (
+export const PhotoPost = ({ footer, header, post, priorityMedia = false }) => (
   <div className="post-photo">
     { header }
     <div className="post-upload-photo">
       <img
         alt={ post.title || 'Uploaded post' }
+        { ...imageLoadingProps(priorityMedia) }
         src={ post.image_url } />
     </div>
     <div className="post-caption">
@@ -80,7 +83,7 @@ export const VideoPost = ({ footer, header, post }) => (
   <div className="post-video">
     { header }
     <div className="post-upload-video">
-      <video controls>
+      <video controls preload="metadata">
         <source src={ post.image_url } />
       </video>
     </div>
