@@ -700,6 +700,7 @@ Recommended PR chunks:
    - audit avatar, image, audio, and video rendering behavior
    - add safe lazy-loading or sizing improvements where appropriate
    - keep Active Storage URL behavior unchanged
+   - media loading notes live in `docs/phase9-media-loading-optimization.md`
 5. Feed loading strategy:
    - evaluate whether current feed loading needs pagination or infinite scroll
    - document the backend/frontend contract needed before implementation
