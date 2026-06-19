@@ -16,6 +16,10 @@ ul.feed-list {
   width: 100%;
 }
 
+ul.feed-list {
+  flex-direction: column;
+}
+
 div.new-post-container {
   margin-bottom: 16px;
 }

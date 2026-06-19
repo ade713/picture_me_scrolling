@@ -3,7 +3,7 @@ import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-q
 import { destroy, get, post } from '../util/api_client';
 import { queryKeys } from './query_keys';
 
-export const POSTS_PER_PAGE = 20;
+export const POSTS_PER_PAGE = 10;
 
 export const feedCacheFromPage = page => ({
   pageParams: [page.pagination?.page || 1],
