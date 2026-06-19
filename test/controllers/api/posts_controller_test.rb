@@ -64,6 +64,17 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
     )
   end
 
+  test 'index returns feed posts newest first' do
+    shared_timestamp = Time.zone.local(2026, 1, 1, 12, 0, 0)
+    @viewer_post.update!(created_at: shared_timestamp)
+    @followed_post.update!(created_at: shared_timestamp)
+
+    get api_posts_url
+
+    assert_response :success
+    assert_equal [@followed_post.id, @viewer_post.id], response_post_ids
+  end
+
   test 'index paginates feed posts' do
     get api_posts_url, params: { page: 1, per_page: 1 }
 

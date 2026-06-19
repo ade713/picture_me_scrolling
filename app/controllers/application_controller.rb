@@ -33,16 +33,16 @@ class ApplicationController < ActionController::Base
     pagination = feed_pagination(posts.count)
 
     [
-      posts.slice(pagination[:offset], pagination[:per_page]) || [],
+      posts.offset(pagination[:offset]).limit(pagination[:per_page]),
       pagination
     ]
   end
 
   def sorted_feed_posts_for(user)
-    (user.posts + user.followed_posts)
-      .uniq
-      .sort_by(&:created_at)
-      .reverse
+    author_ids = [user.id, *user.followees.pluck(:followee_id)]
+
+    Post.where(author_id: author_ids.uniq)
+        .order(created_at: :desc, id: :desc)
   end
 
   def feed_pagination(total_count)
