@@ -1,29 +1,99 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { destroy, get, post } from '../util/api_client';
 import { queryKeys } from './query_keys';
 
-const addPostToCache = (posts, newPost) => ({
-  ...(posts || {}),
-  [newPost.id]: newPost
+export const POSTS_PER_PAGE = 10;
+
+export const feedCacheFromPage = page => ({
+  pageParams: [page.pagination?.page || 1],
+  pages: [page]
 });
 
-const updatePostInCache = (posts, updatedPost) => ({
-  ...(posts || {}),
-  [updatedPost.id]: updatedPost
+const postsFromPage = page => (
+  (page.post_ids || []).map(id => page.posts[id])
+);
+
+const updatePagePosts = (page, updater) => ({
+  ...page,
+  posts: updater(page.posts || {})
 });
 
-const removePostFromCache = (posts, deletedPost) => {
-  const nextPosts = { ...(posts || {}) };
-  delete nextPosts[deletedPost.id];
-  return nextPosts;
+const addPostToCache = (feed, newPost) => {
+  if (!feed?.pages?.length) return feed;
+
+  return {
+    ...feed,
+    pages: feed.pages.map((page, index) => {
+      if (index !== 0) return page;
+
+      return {
+        ...updatePagePosts(page, posts => ({
+          [newPost.id]: newPost,
+          ...posts
+        })),
+        post_ids: [newPost.id, ...(page.post_ids || [])],
+        pagination: {
+          ...page.pagination,
+          total_count: page.pagination.total_count + 1
+        }
+      };
+    })
+  };
+};
+
+const updatePostInCache = (feed, updatedPost) => {
+  if (!feed?.pages?.length) return feed;
+
+  return {
+    ...feed,
+    pages: feed.pages.map(page => (
+      updatePagePosts(page, posts => (
+        posts[updatedPost.id] ? { ...posts, [updatedPost.id]: updatedPost } : posts
+      ))
+    ))
+  };
+};
+
+const removePostFromCache = (feed, deletedPost) => {
+  if (!feed?.pages?.length) return feed;
+
+  return {
+    ...feed,
+    pages: feed.pages.map(page => {
+      if (!page.posts?.[deletedPost.id]) return page;
+
+      return {
+        ...updatePagePosts(page, posts => {
+          const nextPosts = { ...posts };
+          delete nextPosts[deletedPost.id];
+          return nextPosts;
+        }),
+        post_ids: (page.post_ids || []).filter(id => id !== deletedPost.id),
+        pagination: {
+          ...page.pagination,
+          total_count: page.pagination.total_count - 1
+        }
+      };
+    })
+  };
 };
 
 export const usePosts = () => (
-  useQuery({
+  useInfiniteQuery({
     queryKey: queryKeys.posts,
-    queryFn: () => get('/api/posts'),
-    select: posts => Object.values(posts)
+    initialPageParam: 1,
+    queryFn: ({ pageParam }) => get(
+      `/api/posts?page=${pageParam}&per_page=${POSTS_PER_PAGE}`
+    ),
+    getNextPageParam: lastPage => (
+      lastPage.pagination.has_more ? lastPage.pagination.page + 1 : undefined
+    ),
+    select: data => ({
+      ...data,
+      pagination: data.pages[data.pages.length - 1]?.pagination,
+      posts: data.pages.flatMap(postsFromPage)
+    })
   })
 );
 
@@ -36,6 +106,7 @@ export const useCreatePost = () => {
       queryClient.setQueryData(queryKeys.posts, posts => (
         addPostToCache(posts, newPost)
       ));
+      queryClient.invalidateQueries({ queryKey: queryKeys.posts });
     }
   });
 };
@@ -49,6 +120,7 @@ export const useCreateMediaPost = () => {
       queryClient.setQueryData(queryKeys.posts, posts => (
         addPostToCache(posts, newPost)
       ));
+      queryClient.invalidateQueries({ queryKey: queryKeys.posts });
     }
   });
 };
@@ -62,6 +134,7 @@ export const useDeletePost = () => {
       queryClient.setQueryData(queryKeys.posts, posts => (
         removePostFromCache(posts, deletedPost)
       ));
+      queryClient.invalidateQueries({ queryKey: queryKeys.posts });
     }
   });
 };

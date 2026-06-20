@@ -1,6 +1,14 @@
 div.feed-posts {
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 621px;
+}
+
+div.feed-posts::after {
+  content: "";
+  display: block;
+  flex: 0 0 15px;
 }
 
 div.new-post-container,
@@ -112,6 +120,35 @@ div.post-btns {
 
 ul.feed-list:last-child {
   margin-bottom: 30px;
+}
+
+button.load-more-posts {
+  display: flex;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 40px;
+  padding-left: 18px;
+  padding-right: 18px;
+  margin: 0;
+  border: 1px solid black;
+  border-radius: 3px;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+}
+
+button.load-more-posts:hover {
+  background-color: black;
+  box-shadow: 2px 2px 4px lightslategrey;
+  font-size: 1.1em;
+}
+
+button.load-more-posts:disabled {
+  background-color: rgba(0, 0, 0, 0.55);
+  color: white;
+  cursor: wait;
 }
 
 @include mobile {

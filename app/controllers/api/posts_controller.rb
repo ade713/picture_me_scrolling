@@ -13,7 +13,7 @@ class Api::PostsController < ApplicationController
   end
 
   def index
-    @posts = current_user.posts + current_user.followed_posts
+    render_feed
   end
 
   def show
@@ -41,6 +41,10 @@ class Api::PostsController < ApplicationController
   end
 
   private
+
+  def render_feed
+    @posts, @pagination = paginated_feed_for(current_user)
+  end
 
   def post_params
     params.require(:post).permit(:title, :body, :url, :image, :post_type)

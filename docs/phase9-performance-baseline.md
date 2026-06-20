@@ -78,19 +78,19 @@ Phase 9-3 bundle cleanup notes live in
 ### Feed Loading
 
 - `usePosts` fetches `/api/posts` through TanStack Query.
-- The frontend converts the posts object into an array with
-  `Object.values(posts)`.
-- `Feed` maps the full array into `FeedItem` components.
-- There is no pagination, infinite scroll, virtualized list, or page-size
-  contract yet.
+- Phase 9-5 changes the feed to a paginated response with an id-keyed `posts`
+  object and `pagination` metadata.
+- `Feed` maps loaded pages into `FeedItem` components.
+- Phase 9-5 feed loading notes live in
+  `docs/phase9-feed-loading-strategy.md`.
 
 ### Rails Posts Endpoint
 
 - `Api::PostsController#index` returns:
   `current_user.posts + current_user.followed_posts`.
-- The endpoint renders every returned post through the posts index Jbuilder
-  view.
-- The response shape is an object keyed by post id.
+- Phase 9-5 paginates that feed and renders each page through the posts index
+  Jbuilder view.
+- The response shape wraps the id-keyed posts object with pagination metadata.
 
 ### Query Defaults
 

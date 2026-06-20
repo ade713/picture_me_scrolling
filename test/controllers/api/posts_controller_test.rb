@@ -50,17 +50,51 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
     get api_posts_url
 
     assert_response :success
-    assert_includes response_json.keys, @viewer_post.id.to_s
-    assert_includes response_json.keys, @followed_post.id.to_s
-    refute_includes response_json.keys, @unrelated_post.id.to_s
+    assert_includes response_posts.keys, @viewer_post.id.to_s
+    assert_includes response_posts.keys, @followed_post.id.to_s
+    refute_includes response_posts.keys, @unrelated_post.id.to_s
+    assert_equal response_posts.keys.sort, response_post_ids.map(&:to_s).sort
     assert_equal(
       @viewer_post.title,
-      response_json.dig(@viewer_post.id.to_s, 'title')
+      response_posts.dig(@viewer_post.id.to_s, 'title')
     )
     assert_equal(
       @followed_author.username,
-      response_json.dig(@followed_post.id.to_s, 'author')
+      response_posts.dig(@followed_post.id.to_s, 'author')
     )
+  end
+
+  test 'index returns feed posts newest first' do
+    shared_timestamp = Time.zone.local(2026, 1, 1, 12, 0, 0)
+    @viewer_post.update!(created_at: shared_timestamp)
+    @followed_post.update!(created_at: shared_timestamp)
+
+    get api_posts_url
+
+    assert_response :success
+    assert_equal [@followed_post.id, @viewer_post.id], response_post_ids
+  end
+
+  test 'index paginates feed posts' do
+    get api_posts_url, params: { page: 1, per_page: 1 }
+
+    assert_response :success
+    assert_equal 1, response_posts.length
+    assert_equal [response_post_ids.first], response_posts.keys.map(&:to_i)
+    assert_equal 1, response_pagination['page']
+    assert_equal 1, response_pagination['per_page']
+    assert_equal 2, response_pagination['total_count']
+    assert_equal 2, response_pagination['total_pages']
+    assert_equal true, response_pagination['has_more']
+    first_page_post_id = response_post_ids.first
+
+    get api_posts_url, params: { page: 2, per_page: 1 }
+
+    assert_response :success
+    assert_equal 1, response_posts.length
+    refute_equal first_page_post_id, response_post_ids.first
+    assert_equal 2, response_pagination['page']
+    assert_equal false, response_pagination['has_more']
   end
 
   test 'show returns the requested post payload' do
@@ -253,6 +287,18 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
 
   def response_json
     JSON.parse(response.body)
+  end
+
+  def response_posts
+    response_json['posts']
+  end
+
+  def response_post_ids
+    response_json['post_ids']
+  end
+
+  def response_pagination
+    response_json['pagination']
   end
 
   def uploaded_image

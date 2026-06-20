@@ -25,7 +25,7 @@ class Api::FollowsController < ApplicationController
 
   def render_feed
     current_user.reload
-    @posts = current_user.posts + current_user.followed_posts
+    @posts, @pagination = paginated_feed_for(current_user)
 
     render 'api/posts/index'
   end
