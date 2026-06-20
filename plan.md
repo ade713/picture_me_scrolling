@@ -717,6 +717,8 @@ Recommended PR chunks:
    - review Rails/Webpack asset compression and cache headers
    - document deploy-time or hosting-specific recommendations
    - keep Vite migration separate unless explicitly starting that project
+   - production asset/caching notes live in
+     `docs/phase9-production-asset-caching.md`
 
 ## Future Build Tooling: Vite
 
