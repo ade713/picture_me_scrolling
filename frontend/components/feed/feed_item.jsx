@@ -68,4 +68,4 @@ const FeedItem = ({ post, priorityMedia = false }) => {
   );
 };
 
-export default FeedItem;
+export default React.memo(FeedItem);

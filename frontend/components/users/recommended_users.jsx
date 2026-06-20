@@ -1,22 +1,25 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 
 import RecUserItem from './rec_user_item';
 import { useFollowUser, useUsers } from '../../query/user_hooks';
 
+const EMPTY_USERS = [];
+
 const RecommendedUsers = () => {
-  const followUser = useFollowUser();
+  const { mutate: followUser } = useFollowUser();
   const users = useUsers();
+  const recommendedUsers = users.data || EMPTY_USERS;
 
-  const handleFollowUser = id => (
-    followUser.mutate(id)
-  );
+  const handleFollowUser = useCallback(id => (
+    followUser(id)
+  ), [followUser]);
 
-  const recUsers = (users.data || []).map(user =>
+  const recUsers = useMemo(() => recommendedUsers.map(user =>
     <RecUserItem
       key={ user.id }
       user={ user }
       followUser={ handleFollowUser } />
-  );
+  ), [handleFollowUser, recommendedUsers]);
 
   return (
     <div className="rec-users">

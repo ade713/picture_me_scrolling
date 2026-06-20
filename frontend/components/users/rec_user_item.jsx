@@ -20,4 +20,4 @@ const RecUserItem = ({ followUser, user }) => (
   </li>
 );
 
-export default RecUserItem;
+export default React.memo(RecUserItem);

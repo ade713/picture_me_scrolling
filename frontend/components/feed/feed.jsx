@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { usePosts } from '../../query/post_hooks';
 import FeedItem from './feed_item';
@@ -6,6 +6,13 @@ import PostBar from '../posts/post_bar';
 
 const Feed = () => {
   const posts = usePosts();
+  const loadedPosts = posts.data?.posts;
+  const feedItems = useMemo(() => (loadedPosts || []).map((post, index) =>
+    <FeedItem
+      key={ post.id }
+      post={ post }
+      priorityMedia={ index < 3 } />
+  ), [loadedPosts]);
 
   if (posts.isLoading) {
     return (
@@ -32,13 +39,6 @@ const Feed = () => {
       </div>
     );
   }
-
-  const feedItems = (posts.data?.posts || []).map((post, index) =>
-    <FeedItem
-      key={ post.id }
-      post={ post }
-      priorityMedia={ index < 3 } />
-  );
 
   return (
     <div className="feed-posts">
