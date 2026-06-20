@@ -711,6 +711,8 @@ Recommended PR chunks:
      recommended users
    - review TanStack Query stale time/cache behavior
    - tune only measured or clearly noisy paths
+   - render/query tuning notes live in
+     `docs/phase9-render-query-tuning.md`
 7. Production asset and caching review:
    - review Rails/Webpack asset compression and cache headers
    - document deploy-time or hosting-specific recommendations
