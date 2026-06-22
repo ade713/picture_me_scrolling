@@ -720,6 +720,57 @@ Recommended PR chunks:
    - production asset/caching notes live in
      `docs/phase9-production-asset-caching.md`
 
+## Phase 10: UI Polish and Post Editing
+
+Status: planned.
+
+Goal: improve release-quality visual polish and add post editing before release,
+while keeping Vite/build-tooling work separate.
+
+Focus areas:
+
+- Dashboard, feed, post card, post action, and recommended-user visual polish.
+- Auth page polish.
+- Modal and form polish.
+- Edit post behavior for owned posts.
+- Focus states, button semantics, and responsive release smoke checks.
+
+Recommended PR chunks:
+
+1. UI polish inventory:
+   - audit auth, dashboard, feed, post bar, modals, recommended users, and
+     responsive states
+   - document edit-flow decisions before implementation
+   - avoid behavior changes in the inventory PR
+   - inventory notes live in `docs/phase10-ui-polish-inventory.md`
+2. Dashboard/feed polish:
+   - improve post card spacing, action controls, focus states, and feed rhythm
+   - polish the post bar by replacing divider lines with bordered post type
+     buttons
+   - keep changes CSS-focused and reviewable
+3. Modal/form polish:
+   - normalize modal spacing, form controls, previews, and button states
+   - preserve create behavior
+4. Auth page polish:
+   - improve layout, spacing, semantic controls, and responsive behavior
+5. Edit post API and query hook:
+   - add frontend update mutation support
+   - confirm backend edit contract with focused tests
+   - keep post type changes out of initial scope unless explicitly chosen
+6. Edit post frontend flow:
+   - wire the author edit button
+   - support text, quote, and link editing first unless media edit behavior is
+     already decided
+   - update the feed cache after successful edits
+7. Media edit support:
+   - add caption/title-only or replacement behavior based on the agreed media
+     edit decision
+   - add focused tests for the chosen media edit path
+8. Release polish smoke pass:
+   - run focused tests and build
+   - browser-smoke auth, dashboard, create, edit, delete, follow, like, and
+     responsive layouts
+
 ## Future Build Tooling: Vite
 
 Status: planned.
