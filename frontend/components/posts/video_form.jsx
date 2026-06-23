@@ -12,8 +12,8 @@ const VideoForm = () => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [url, setUrl] = useState('');
-  const [imageFile, setImageFile] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
+  const [videoFile, setVideoFile] = useState(null);
+  const [videoUrl, setVideoUrl] = useState(null);
 
   const openModal = () => {
     setShowModal(true);
@@ -24,8 +24,8 @@ const VideoForm = () => {
     setTitle('');
     setBody('');
     setUrl('');
-    setImageFile(null);
-    setImageUrl(null);
+    setVideoFile(null);
+    setVideoUrl(null);
     clearErrors();
   };
 
@@ -34,8 +34,8 @@ const VideoForm = () => {
     const file = e.currentTarget.files[0];
 
     reader.onloadend = () => {
-      setImageUrl(reader.result);
-      setImageFile(file);
+      setVideoUrl(reader.result);
+      setVideoFile(file);
     };
 
     if (file) {
@@ -45,14 +45,14 @@ const VideoForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (!imageFile) return;
+    if (!videoFile) return;
 
     const formData = new FormData();
     formData.append('post[url]', url);
     formData.append('post[title]', title);
     formData.append('post[post_type]', 'video');
     formData.append('post[body]', body);
-    formData.append('post[image]', imageFile);
+    formData.append('post[image]', videoFile);
 
     createMediaPost(formData).then(closeModal);
   };
@@ -99,14 +99,16 @@ const VideoForm = () => {
                              onChange={ e => setTitle(e.currentTarget.value) } />
                  </div>
 
-                 <video controls>
-                   <source src={ imageUrl } type="video/*" />
-                 </video>
+                 { videoUrl && (
+                   <video controls key={ videoUrl }>
+                     <source src={ videoUrl } type={ videoFile.type } />
+                   </video>
+                 ) }
 
                  <div className="submit-form">
                    <FormErrors errors={ errors } />
                    <ModalButtonFooter
-                     disabled={ !imageFile }
+                     disabled={ !videoFile }
                      onClose={ closeModal }
                      onSubmit={ handleSubmit }
                    />
