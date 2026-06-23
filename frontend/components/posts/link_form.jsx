@@ -5,6 +5,18 @@ import { useCreatePost } from '../../query/post_hooks';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
 import { usePostFormProps } from './post_form_hooks';
 
+export const INVALID_LINK_URL_ERROR = 'Link URL must be a valid http or https URL';
+
+export const validateLinkUrl = linkUrl => {
+  try {
+    const parsedUrl = new URL(linkUrl);
+
+    return ['http:', 'https:'].includes(parsedUrl.protocol);
+  } catch {
+    return false;
+  }
+};
+
 const LinkForm = () => {
   const createPostMutation = useCreatePost();
   const { clearErrors, createPost, currentUser, errors } = usePostFormProps(createPostMutation);
@@ -12,6 +24,7 @@ const LinkForm = () => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [url, setUrl] = useState('');
+  const [linkErrors, setLinkErrors] = useState([]);
 
   const openModal = () => {
     setShowModal(true);
@@ -22,15 +35,25 @@ const LinkForm = () => {
     setTitle('');
     setBody('');
     setUrl('');
+    setLinkErrors([]);
     clearErrors();
   };
 
   const handleSubmit = e => {
     e.preventDefault();
+    const normalizedUrl = url.trim();
+
+    if (!validateLinkUrl(normalizedUrl)) {
+      setLinkErrors([INVALID_LINK_URL_ERROR]);
+      return;
+    }
+
+    setLinkErrors([]);
+
     const post = {
       title,
       body,
-      url,
+      url: normalizedUrl,
       post_type: 'link'
     };
 
@@ -74,11 +97,14 @@ const LinkForm = () => {
                      className="body-input"
                      placeholder="Type or paste Link URL here"
                      value={ url }
-                     onChange={ e => setUrl(e.currentTarget.value) } />
+                     onChange={ e => {
+                       setUrl(e.currentTarget.value);
+                       setLinkErrors([]);
+                     } } />
                  </div>
 
                  <div className="submit-form">
-                   <FormErrors errors={ errors } />
+                   <FormErrors errors={ [...linkErrors, ...errors] } />
                    <ModalButtonFooter
                      disabled={ !url }
                      onClose={ closeModal }

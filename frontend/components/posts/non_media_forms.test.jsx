@@ -6,7 +6,7 @@ import { useCreatePost } from '../../query/post_hooks';
 import { useCurrentUser } from '../../query/session_hooks';
 import { currentUser } from '../../test/fixtures';
 import { setupModalAppElement } from '../../test/modal_helpers';
-import LinkForm from './link_form';
+import LinkForm, { INVALID_LINK_URL_ERROR } from './link_form';
 import QuoteForm from './quote_form';
 import TextForm from './text_form';
 
@@ -144,5 +144,35 @@ describe('non-media post forms', () => {
     await user.click(screen.getByRole('button', { name: 'Text' }));
 
     expect(screen.getByPlaceholderText('Title')).toHaveValue('');
+  });
+
+  it('shows a validation error for invalid link URLs', async () => {
+    const user = userEvent.setup();
+    render(<LinkForm />);
+
+    await user.click(screen.getByRole('button', { name: 'Link' }));
+    await user.type(screen.getByPlaceholderText('Name/describe link here'), 'Project notes');
+    await user.type(screen.getByPlaceholderText('Type or paste Link URL here'), 'example.com/notes');
+    await user.click(screen.getByRole('button', { name: 'Post' }));
+
+    expect(screen.getByText(INVALID_LINK_URL_ERROR)).toBeInTheDocument();
+    expect(createPostMutation.mutateAsync).not.toHaveBeenCalled();
+  });
+
+  it('trims valid link URLs before submit', async () => {
+    const user = userEvent.setup();
+    render(<LinkForm />);
+
+    await user.click(screen.getByRole('button', { name: 'Link' }));
+    await user.type(screen.getByPlaceholderText('Name/describe link here'), 'Project notes');
+    await user.type(screen.getByPlaceholderText('Type or paste Link URL here'), ' https://example.com/notes ');
+    await user.click(screen.getByRole('button', { name: 'Post' }));
+
+    expect(createPostMutation.mutateAsync).toHaveBeenCalledWith({
+      title: 'Project notes',
+      body: '',
+      url: 'https://example.com/notes',
+      post_type: 'link'
+    });
   });
 });
