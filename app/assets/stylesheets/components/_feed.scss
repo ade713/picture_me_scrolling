@@ -3,6 +3,7 @@ div.feed-posts {
   flex-direction: column;
   width: 100%;
   max-width: 621px;
+  gap: 16px;
 }
 
 div.feed-posts::after {
@@ -16,20 +17,25 @@ ul.feed-list {
   width: 100%;
 }
 
+ul.feed-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
 div.new-post-container {
-  margin-bottom: 16px;
+  margin-bottom: 4px;
 }
 
 div.post-header {
   display: flex;
   flex-direction: row;
+  align-items: center;
   box-sizing: border-box;
   width: 100%;
   min-height: 30px;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-bottom: 15px;
-  padding-top: 15px;
+  padding: 16px 20px 0;
+  margin-bottom: 12px;
 
   .post-user {
     margin-right: 15px;
@@ -39,6 +45,12 @@ div.post-header {
 
 div.follow-hdr {
   color: black;
+
+  button.follow-btn,
+  button.unfollow-btn {
+    border-radius: 3px;
+    padding: 4px 6px;
+  }
 
   button.follow-btn {
     color: blue;
@@ -72,7 +84,6 @@ img.author-avatar {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-bottom: 15px;
   min-height: 140px;
   border: 1px solid black;
   border-radius: 3px;
@@ -81,6 +92,7 @@ img.author-avatar {
   max-width: 540px;
   min-width: 0;
   background-color: white;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.08);
 }
 
 div.post-footer {
@@ -89,24 +101,26 @@ div.post-footer {
   width: 100%;
   min-height: 45px;
   justify-content: space-between;
-  padding-left: 20px;
-  padding-right: 20px;
+  align-items: center;
+  padding: 0 20px 16px;
 }
 
 div.post-likes {
   line-height: 2;
-  font-size: 22px;
+  font-size: 20px;
 }
 
 div.post-options {
   display: flex;
+  align-items: center;
   justify-content: space-around;
+  gap: 8px;
   margin-left: 15px;
 }
 
 div.like-post-btn {
   display: flex;
-  align-content: center;
+  align-items: center;
 }
 
 .fa-heart:before {
@@ -116,6 +130,28 @@ div.like-post-btn {
 div.post-btns {
   display: flex;
   flex-direction: row;
+  gap: 8px;
+}
+
+button.like-btn-on,
+button.like-btn-off,
+button.edit-post-btn,
+button.delete-post-btn,
+button.follow-btn,
+button.unfollow-btn {
+  min-width: 36px;
+  min-height: 36px;
+}
+
+button.like-btn-on:focus-visible,
+button.like-btn-off:focus-visible,
+button.edit-post-btn:focus-visible,
+button.delete-post-btn:focus-visible,
+button.follow-btn:focus-visible,
+button.unfollow-btn:focus-visible,
+button.load-more-posts:focus-visible {
+  outline: 2px solid black;
+  outline-offset: 2px;
 }
 
 ul.feed-list:last-child {
