@@ -20,32 +20,35 @@ body.ReactModal__Body--open {
   width: 500px;
   max-width: calc(100vw - 40px);
   max-height: calc(100vh - 40px);
-  padding: 20px;
+  padding: 24px;
   overflow-y: auto;
-  border: 1px solid #C0C0C0;
+  border: 1px solid black;
   border-radius: 4px;
   transform: translate(-50%, -50%);
   z-index: 11;
   font-family: 'Muli', sans-serif;
   background-color: white;
+  box-shadow: 4px 4px 12px rgba(0, 0, 0, .25);
 }
 
 div.modal-button {
   display: flex;
   justify-content: space-between;
-  padding-top: 10px;
+  gap: 12px;
+  padding-top: 16px;
   border-top: 1px solid lightgrey;
 
   button {
+    min-width: 76px;
     border-radius: 3px;
-    width: 60px;
-    height: 30px;
+    padding: 8px 14px;
     text-align: center;
     color: white;
+    font-weight: bold;
   }
 
   .form-button {
-    background-color: darkgrey;
+    background-color: lightslategrey;
   }
 
   .post-submit-button {
@@ -54,6 +57,18 @@ div.modal-button {
 
   .post-submit-button:disabled {
     background-color: lightslategrey;
+    cursor: not-allowed;
+  }
+
+  .form-button:hover,
+  .post-submit-button:not(:disabled):hover {
+    box-shadow: 2px 2px 4px lightslategrey;
+  }
+
+  .form-button:focus-visible,
+  .post-submit-button:focus-visible {
+    outline: 2px solid black;
+    outline-offset: 2px;
   }
 }
 
@@ -89,7 +104,9 @@ input.media-input {
 
 .text-post-form, .quote-post-form {
   .title-input {
+    height: 72px;
     font-size: 36px;
+    line-height: 50px;
   }
 }
 
@@ -100,6 +117,7 @@ div.post-body .body-input {
 div.media-field {
   display: flex;
   flex-direction: column;
+  gap: 10px;
 }
 
 .title-input,
@@ -108,7 +126,17 @@ div.media-field {
   resize: none;
   width: 100%;
   height: 50px;
+  padding: 10px;
+  border: 1px solid black;
+  border-radius: 3px;
   font-size: 18px;
+}
+
+.title-input:focus,
+.body-input:focus,
+input.media-input:focus {
+  outline: 2px solid black;
+  outline-offset: 2px;
 }
 
 .media-field img,
@@ -117,6 +145,7 @@ div.media-field {
   display: block;
   max-width: 100%;
   width: 100%;
+  border-radius: 3px;
 }
 
 .post-form video {
@@ -124,6 +153,26 @@ div.media-field {
 }
 
 div.form-errors {
+  min-height: 20px;
+  margin-bottom: 12px;
   color: red;
+  font-weight: bold;
+}
+
+.new-post-form,
+.post-form,
+.audio-post-form,
+.photo-post-form,
+.video-post-form,
+.text-post-form,
+.quote-post-form,
+.link-post-form,
+.submit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+span.post-author {
   font-weight: bold;
 }

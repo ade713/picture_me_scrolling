@@ -12,8 +12,8 @@ const AudioForm = () => {
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [url, setUrl] = useState('');
-  const [imageFile, setImageFile] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
+  const [audioFile, setAudioFile] = useState(null);
+  const [audioUrl, setAudioUrl] = useState(null);
 
   const openModal = () => {
     setShowModal(true);
@@ -24,8 +24,8 @@ const AudioForm = () => {
     setTitle('');
     setBody('');
     setUrl('');
-    setImageFile(null);
-    setImageUrl(null);
+    setAudioFile(null);
+    setAudioUrl(null);
     clearErrors();
   };
 
@@ -34,8 +34,8 @@ const AudioForm = () => {
     const file = e.currentTarget.files[0];
 
     reader.onloadend = () => {
-      setImageUrl(reader.result);
-      setImageFile(file);
+      setAudioUrl(reader.result);
+      setAudioFile(file);
     };
 
     if (file) {
@@ -45,14 +45,14 @@ const AudioForm = () => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (!imageFile) return;
+    if (!audioFile) return;
 
     const formData = new FormData();
     formData.append('post[url]', url);
     formData.append('post[title]', title);
     formData.append('post[post_type]', 'audio');
     formData.append('post[body]', body);
-    formData.append('post[image]', imageFile);
+    formData.append('post[image]', audioFile);
 
     createMediaPost(formData).then(closeModal);
   };
@@ -96,14 +96,16 @@ const AudioForm = () => {
                      onChange={ e => setTitle(e.currentTarget.value) } />
                  </div>
 
-                 <audio controls>
-                   <source src={ imageUrl } />
-                 </audio>
+                 { audioUrl && (
+                   <audio controls>
+                     <source src={ audioUrl } />
+                   </audio>
+                 ) }
 
                  <div className="submit-form">
                    <FormErrors errors={ errors } />
                    <ModalButtonFooter
-                     disabled={ !imageFile }
+                     disabled={ !audioFile }
                      onClose={ closeModal }
                      onSubmit={ handleSubmit }
                    />

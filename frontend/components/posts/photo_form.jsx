@@ -86,9 +86,11 @@ const PhotoForm = () => {
                           type="file"
                           accept="image/*"
                           onChange={ handleMedia } />
-                   <img
-                     alt="Selected upload preview"
-                     src={ imageUrl } />
+                   { imageUrl && (
+                     <img
+                       alt="Selected upload preview"
+                       src={ imageUrl } />
+                   ) }
                  </div>
 
                  <div className="title-field">
