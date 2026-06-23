@@ -4,7 +4,7 @@ div.post-bar {
   border-radius: 3px;
   width: 100%;
   max-width: 620px;
-  height: 100px;
+  height: 80px;
   font-family: 'Muli', sans-serif;
 }
 
@@ -20,7 +20,8 @@ div.post-form-links {
   display: flex;
   flex: 1;
   flex-direction: row;
-  gap: 8px;
+  gap: 12px;
+  max-width: 540px;
   min-width: 0;
 }
 
@@ -34,6 +35,20 @@ button.post-bar-button {
   padding: 8px;
   border: 1px solid black;
   border-radius: 3px;
+  background-color: black;
+  color: white;
+  transition:
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    color 150ms ease,
+    transform 150ms ease;
+}
+
+button.post-bar-button:hover {
+  background-color: white;
+  box-shadow: 2px 2px 4px lightslategrey;
+  color: black;
+  transform: scale(1.10);
 }
 
 div.bar-form-button {
@@ -47,23 +62,28 @@ div.post-bar-content {
   display: flex;
   justify-content: center;
   width: 100%;
-  min-width: 90px;
+  min-width: 0;
 }
 
 div.post-bar-content:hover {
   cursor: pointer;
-  transform: translateY(-7px);
 }
 
 span.new-post-label {
-  width: 90px;
+  width: 82px;
   display: flex;
   justify-content: center;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 div.button-icon {
   display: flex;
   justify-content: center;
+}
+
+div.button-icon i {
+  font-size: 1.75em;
 }
 
 @include mobile {
@@ -83,7 +103,7 @@ div.button-icon {
 
   div.bar-form-button {
     box-sizing: border-box;
-    flex: 0 0 calc((100% - 16px) / 3);
+    flex: 0 0 calc((100% - 24px) / 3);
     min-height: 48px;
   }
 
@@ -93,7 +113,7 @@ div.button-icon {
   }
 
   div.button-icon i {
-    font-size: 2em;
+    font-size: 1.6em;
   }
 
   div.post-bar-content,
@@ -109,9 +129,5 @@ div.button-icon {
     overflow: hidden;
     clip: rect(0 0 0 0);
     white-space: nowrap;
-  }
-
-  div.post-bar-content:hover {
-    transform: none;
   }
 }
