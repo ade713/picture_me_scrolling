@@ -14,6 +14,7 @@ div.dash-page {
 header.dash-nav {
   display: flex;
   flex: 1;
+  align-items: center;
   height: 50px;
   color: white;
   background-color: black;
@@ -30,7 +31,6 @@ div.dash-main {
 
 .dash-title {
   display: flex;
-  align-self: center;
   font-size: 25px;
   padding-left: 1%;
   width: auto;
@@ -47,19 +47,29 @@ button.dash-logout:hover {
   color: #DE0F01;
 }
 
+button.dash-logout:focus-visible,
+footer.dash-right-footer a:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
 div.dash-feed {
   display: flex;
+  flex: 0 0 70.5%;
   justify-content: center;
   padding-top: 30px;
+  padding-bottom: 30px;
   border-right: 1px solid black;
   overflow-y: scroll;
-  min-width: 70.5%;
+  min-width: 0;
   min-height: 0;
 }
 
 div.dash-right-column {
+  box-sizing: border-box;
+  flex: 1 1 0;
   padding: 30px;
-  width: 26%;
+  min-width: 0;
 }
 
 footer.dash-right-footer {
