@@ -54,14 +54,14 @@ describe('AuthForm', () => {
   it('renders login mode by default', () => {
     renderAuthForm();
 
-    expect(screen.getByRole('link', { name: 'Log In' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Log In' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Sign Up' })).toHaveAttribute('href', '/signup');
   });
 
   it('renders signup mode on the signup route', () => {
     renderAuthForm('/signup');
 
-    expect(screen.getByRole('link', { name: 'Sign Up' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Sign Up' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Log In' })).toHaveAttribute('href', '/');
   });
 
@@ -71,7 +71,7 @@ describe('AuthForm', () => {
 
     await user.type(screen.getByPlaceholderText('Your Username'), 'demo-user');
     await user.type(screen.getByPlaceholderText('Your Password'), 'password123');
-    await user.click(screen.getByRole('link', { name: 'Log In' }));
+    await user.click(screen.getByRole('button', { name: 'Log In' }));
 
     expect(loginMutation.mutate).toHaveBeenCalledWith({
       username: 'demo-user',
@@ -86,7 +86,7 @@ describe('AuthForm', () => {
 
     await user.type(screen.getByPlaceholderText('Your Username'), 'new-user');
     await user.type(screen.getByPlaceholderText('Your Password'), 'password123');
-    await user.click(screen.getByRole('link', { name: 'Sign Up' }));
+    await user.click(screen.getByRole('button', { name: 'Sign Up' }));
 
     expect(signupMutation.mutate).toHaveBeenCalledWith({
       username: 'new-user',
@@ -124,7 +124,7 @@ describe('AuthForm', () => {
     vi.useFakeTimers();
     renderAuthForm();
 
-    fireEvent.click(screen.getByRole('link', { name: 'Guest Log In' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Guest Log In' }));
 
     act(() => {
       vi.advanceTimersByTime(1700);

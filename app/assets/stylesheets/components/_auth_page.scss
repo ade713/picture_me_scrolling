@@ -9,21 +9,20 @@ div.auth-page {
   width: 100%;
   height: 100%;
 
-  input[type=text], textarea {
-    -webkit-transition: all 0.30s ease-in-out;
-    -moz-transition: all 0.30s ease-in-out;
-    -ms-transition: all 0.30s ease-in-out;
-    -o-transition: all 0.30s ease-in-out;
+  input[type=text],
+  input[type=password],
+  textarea {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
     outline: none;
-    padding: 5px 3px 3px 3px;
-    margin: 5px 1px 3px 0px;
+    padding: 5px 3px 3px;
+    margin: 5px 1px 3px 0;
     border-bottom: 2px solid black;
   }
 
-  input[type=text]:focus, input[type=password]:focus, textarea:focus {
+  input[type=text]:focus,
+  input[type=password]:focus,
+  textarea:focus {
     box-shadow: 0 0 5px rgb(18, 30, 51);
-    padding: 5px 3px 3px 3px;
-    margin: 5px 1px 3px 0px;
     border: 1px solid rgb(18, 30, 51);
   }
 }
@@ -35,19 +34,29 @@ div.auth-page {
 }
 
 .auth-navbar {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
   flex: 1;
-  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+  position: static;
+  width: 100%;
+  height: auto;
   background-color: #FFFFFF;
   border-bottom: 1px solid black;
+  min-height: 52px;
+  padding: 0 1%;
 }
 
 .auth-header {
-  display: flex;
+  display: block;
+  min-width: 0;
   font-family: 'Yanone Kaffeesatz', sans-serif;
   font-size: 30px;
-  margin-left: 1%;
-  padding-top: 7px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .login-signup {
@@ -56,18 +65,20 @@ div.auth-page {
   font-family: 'Yanone Kaffeesatz', sans-serif;
   font-size: 28px;
   color: black;
-  margin-right: 1%;
-  padding-top: 7px;
 }
 
-.login-signup a:link {
+.login-signup a {
+  display: block;
   text-decoration: none;
   color: black;
+  white-space: nowrap;
 }
 
-.login-signup a:hover {
+.login-signup a:hover,
+.login-signup a:focus-visible {
   text-decoration: none;
   color: #CE0063;
+  outline: none;
 }
 
 div.auth-body {
@@ -75,13 +86,14 @@ div.auth-body {
   flex: 14;
   flex-direction: column;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: 50px;
   padding-left: 3%;
   padding-right: 4%;
   background-image: image-url("mac_table.png");
   background-size: cover, auto;
   background-repeat: no-repeat;
+  gap: 24px;
 }
 
 section.auth-page-description {
@@ -90,6 +102,11 @@ section.auth-page-description {
   font-family: 'Yanone Kaffeesatz',
   sans-serif;
   font-size: 30px;
+  width: fit-content;
+  padding: 18px 24px;
+  border: 2px solid black;
+  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.85);
 }
 
 h1.auth-desc-top {
@@ -118,14 +135,29 @@ h1.auth-desc-btm {
 
 .auth-form-box {
   display: flex;
-  flex: 1;
-  padding-top: 6%;
+  flex: 0 0 auto;
   flex-direction: column;
+  gap: 15px;
   align-self: flex-end;
   font-family: 'Yanone Kaffeesatz', sans-serif;
-  width: 250px;
+  width: min(100%, 280px);
+  padding: 32px 24px;
+  border: 2px solid black;
+  border-radius: 3px;
+  background-color: rgba(255, 255, 255, 0.85);
   text-align: center;
   font-size: 30px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.auth-field {
+  width: 100%;
 }
 
 input.auth-login-input {
@@ -136,44 +168,47 @@ input.auth-login-input {
 
 input.auth-login-input::placeholder {
   font-style: italic;
-  color: lightgrey;
+  color: #8a8a8a;
 }
 
 .auth-submit,
 .guest-login {
-  display: flex;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   color: black;
-  padding: 5px;
-  padding-left: 15px;
-  padding-right: 15px;
+  background-color: #FFFFFF;
+  padding: 5px 15px;
   text-align: center;
   align-self: center;
   border: 2px solid black;
-}
-
-.auth-submit {
+  border-radius: 3px;
   font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-size: 30px;
+  line-height: 1;
+  cursor: pointer;
+  text-decoration: none;
+  transition: box-shadow 0.2s ease, color 0.2s ease;
 }
 
-.auth-submit:hover {
+.auth-submit:hover,
+.auth-submit:focus-visible,
+.guest-login:hover,
+.guest-login:focus-visible {
   text-shadow: 3px grey;
   text-align: center;
-  border-bottom: 2px solid black;
   box-shadow: 0 0 6px black;
+  outline: none;
 }
 
-.guest-login {
-  margin-top: 15px;
-}
-
-.guest-login:hover {
-  text-shadow: 5px grey;
-  border-bottom: 2px solid black;
-  box-shadow: 0 0 6px black;
-}
-
-strong.auth-errors {
+.auth-errors {
+  display: block;
   color: red;
+  font-size: 24px;
+}
+
+.auth-errors:has(li) {
+  min-height: 24px;
 }
 
 footer.auth-footer {
@@ -191,4 +226,74 @@ footer i {
   justify-content: flex-end;
   padding: 5px;
   margin-top: 12%;
+}
+
+@include tablet {
+  div.auth-body {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    margin-top: 0;
+    padding: 32px 5%;
+  }
+
+  section.auth-page-description {
+    align-self: center;
+    font-size: 22px;
+    line-height: 1.1;
+    text-align: center;
+  }
+
+  h1.auth-desc-top,
+  h1.auth-desc-mid1,
+  h1.auth-desc-mid2,
+  h1.auth-desc-btm {
+    margin-left: 0;
+  }
+
+  .auth-form-box {
+    flex: 0 0 auto;
+    align-self: center;
+    padding: 24px;
+  }
+}
+
+@include mobile {
+  .auth-navbar {
+    min-height: 46px;
+    gap: 8px;
+    padding: 0 8px;
+  }
+
+  .auth-header {
+    font-size: 22px;
+  }
+
+  .login-signup {
+    font-size: 22px;
+  }
+
+  div.auth-body {
+    align-items: center;
+    justify-content: center;
+    padding: 24px 6%;
+  }
+
+  section.auth-page-description {
+    display: none;
+  }
+}
+
+@include small-screen {
+  .auth-navbar {
+    gap: 6px;
+    padding: 0 6px;
+  }
+
+  .auth-header {
+    font-size: 18px;
+  }
+
+  .login-signup {
+    font-size: 20px;
+  }
 }
