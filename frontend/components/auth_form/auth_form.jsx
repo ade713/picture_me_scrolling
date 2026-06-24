@@ -63,36 +63,33 @@ const AuthForm = () => {
           </section>
           <section className='auth-form-box'>
             <h1 className='auth-form-header'>Let's Begin</h1>
-            <br />
-            <br />
-            <label className='auth-username'>
-              <input
-                type='text'
-                value={username}
-                placeholder='Your Username'
-                onChange={(e) => setUsername(e.currentTarget.value)}
-                className='auth-login-input'
-              />
-            </label>
-            <br />
-            <label className='auth-password'>
-              <input
-                type='password'
-                value={password}
-                placeholder='Your Password'
-                onChange={(e) => setPassword(e.currentTarget.value)}
-                className='auth-login-input'
-              />
-            </label>
-            <br />
-            <Link to='/dashboard' className='auth-submit' onClick={handleSubmit}>
-              {submitText}
-            </Link>
-            <Link to='/dashboard' className='guest-login' onClick={logInAsGuest}>
+            <form className='auth-form' onSubmit={handleSubmit}>
+              <label className='auth-field'>
+                <input
+                  type='text'
+                  value={username}
+                  placeholder='Your Username'
+                  onChange={(e) => setUsername(e.currentTarget.value)}
+                  className='auth-login-input'
+                />
+              </label>
+              <label className='auth-field'>
+                <input
+                  type='password'
+                  value={password}
+                  placeholder='Your Password'
+                  onChange={(e) => setPassword(e.currentTarget.value)}
+                  className='auth-login-input'
+                />
+              </label>
+              <button type='submit' className='auth-submit'>
+                {submitText}
+              </button>
+            </form>
+            <button type='button' className='guest-login' onClick={logInAsGuest}>
               Guest Log In
-            </Link>
-            <br />
-            <strong className='auth-errors'>{renderErrors()}</strong>
+            </button>
+            <div className='auth-errors' aria-live='polite'>{renderErrors()}</div>
           </section>
         </div>
       </div>
