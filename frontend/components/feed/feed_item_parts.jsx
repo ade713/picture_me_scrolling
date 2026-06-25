@@ -70,24 +70,22 @@ export const PostHeader = ({ isAuthor, onFollow, onUnfollow, post }) => (
   </div>
 );
 
-export const AuthorControls = ({ canEdit, isAuthor, onDelete, onEdit, post }) => {
+export const AuthorControls = ({ isAuthor, onDelete, onEdit, post }) => {
   if (!isAuthor) {
     return null;
   }
 
   return (
     <>
-      { canEdit && (
-        <button
-          aria-label={ `Edit ${postActionLabel(post)}` }
-          className="edit-post-btn"
-          onClick={ () => onEdit(post) }>
-          <i
-            className="fa fa-pencil-square-o fa-2x"
-            id="edit-btn-icon"
-            aria-hidden="true"></i>
-        </button>
-      ) }
+      <button
+        aria-label={ `Edit ${postActionLabel(post)}` }
+        className="edit-post-btn"
+        onClick={ () => onEdit(post) }>
+        <i
+          className="fa fa-pencil-square-o fa-2x"
+          id="edit-btn-icon"
+          aria-hidden="true"></i>
+      </button>
       <button
         aria-label={ `Delete ${postActionLabel(post)}` }
         className="delete-post-btn"
@@ -98,7 +96,7 @@ export const AuthorControls = ({ canEdit, isAuthor, onDelete, onEdit, post }) =>
   );
 };
 
-export const PostFooter = ({ canEdit, isAuthor, onDelete, onEdit, onLike, onUnlike, post }) => (
+export const PostFooter = ({ isAuthor, onDelete, onEdit, onLike, onUnlike, post }) => (
   <div className="post-footer">
     <div className="post-likes">
       Likes: { post.likes }
@@ -114,7 +112,6 @@ export const PostFooter = ({ canEdit, isAuthor, onDelete, onEdit, onLike, onUnli
       </div>
       <div className="post-btns">
         <AuthorControls
-          canEdit={ canEdit }
           isAuthor={ isAuthor }
           onDelete={ onDelete }
           onEdit={ onEdit }

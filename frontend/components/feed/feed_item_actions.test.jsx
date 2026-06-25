@@ -144,7 +144,8 @@ describe('FeedItem actions', () => {
     });
   });
 
-  it('does not show edit controls for media posts yet', () => {
+  it('opens the edit modal and submits updated media post captions', async () => {
+    const user = userEvent.setup();
     const authoredMediaPost = {
       ...basePost,
       author_id: currentUser.id,
@@ -153,7 +154,25 @@ describe('FeedItem actions', () => {
 
     renderFeedItem(authoredMediaPost);
 
-    expect(screen.queryByRole('button', { name: editPostButtonName })).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: editPostButtonName }));
+
+    expect(screen.getByRole('dialog', { name: editPostButtonName })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: deletePostButtonName })).toBeInTheDocument();
+
+    const titleInput = screen.getByPlaceholderText('Title');
+
+    await user.clear(titleInput);
+    await user.type(titleInput, 'Updated photo caption');
+    await user.click(screen.getByRole('button', { name: 'Save' }));
+
+    expect(updatePost.mutateAsync).toHaveBeenCalledWith({
+      id: authoredMediaPost.id,
+      post: {
+        title: 'Updated photo caption',
+        body: authoredMediaPost.body,
+        url: authoredMediaPost.url,
+        post_type: 'photo'
+      }
+    });
   });
 });
