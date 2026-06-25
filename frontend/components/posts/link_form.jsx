@@ -2,20 +2,9 @@ import React, { useState } from 'react';
 import Modal from 'react-modal';
 
 import { useCreatePost } from '../../query/post_hooks';
+import { INVALID_LINK_URL_ERROR, validateLinkUrl } from '../../util/link_url_validation';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
 import { usePostFormProps } from './post_form_hooks';
-
-export const INVALID_LINK_URL_ERROR = 'Link URL must be a valid http or https URL';
-
-export const validateLinkUrl = linkUrl => {
-  try {
-    const parsedUrl = new URL(linkUrl);
-
-    return ['http:', 'https:'].includes(parsedUrl.protocol);
-  } catch {
-    return false;
-  }
-};
 
 const LinkForm = () => {
   const createPostMutation = useCreatePost();

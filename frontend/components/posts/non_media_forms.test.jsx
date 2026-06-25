@@ -6,7 +6,8 @@ import { useCreatePost } from '../../query/post_hooks';
 import { useCurrentUser } from '../../query/session_hooks';
 import { currentUser } from '../../test/fixtures';
 import { setupModalAppElement } from '../../test/modal_helpers';
-import LinkForm, { INVALID_LINK_URL_ERROR } from './link_form';
+import { INVALID_LINK_URL_ERROR } from '../../util/link_url_validation';
+import LinkForm from './link_form';
 import QuoteForm from './quote_form';
 import TextForm from './text_form';
 
