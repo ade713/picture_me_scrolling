@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useCurrentUser } from '../../query/session_hooks';
 import { useDeletePost,
@@ -15,6 +15,7 @@ import { AudioPost,
 import { PostFooter,
          PostFrame,
          PostHeader } from './feed_item_parts';
+import EditPostForm, { EDITABLE_POST_TYPES } from '../posts/edit_post_form';
 
 const POST_BODY_COMPONENTS = {
   audio: AudioPost,
@@ -32,7 +33,9 @@ const FeedItem = ({ post, priorityMedia = false }) => {
   const likePost = useLikePost();
   const unfollowUser = useUnfollowUser();
   const unlikePost = useUnlikePost();
+  const [editingPost, setEditingPost] = useState(null);
   const isAuthor = Boolean(currentUser.data) && post.author_id === currentUser.data.id;
+  const canEdit = EDITABLE_POST_TYPES.includes(post.post_type);
 
   const postHeader = (
     <PostHeader
@@ -45,8 +48,10 @@ const FeedItem = ({ post, priorityMedia = false }) => {
 
   const postFooter = (
     <PostFooter
+      canEdit={ canEdit }
       isAuthor={ isAuthor }
       onDelete={ deletedPost => deletePost.mutate(deletedPost) }
+      onEdit={ editedPost => setEditingPost(editedPost) }
       onLike={ id => likePost.mutate(id) }
       onUnlike={ id => unlikePost.mutate(id) }
       post={ post }
@@ -64,6 +69,13 @@ const FeedItem = ({ post, priorityMedia = false }) => {
         post={ post }
         priorityMedia={ priorityMedia }
       />
+      { editingPost && (
+        <EditPostForm
+          isOpen={ Boolean(editingPost) }
+          onClose={ () => setEditingPost(null) }
+          post={ editingPost }
+        />
+      ) }
     </PostFrame>
   );
 };

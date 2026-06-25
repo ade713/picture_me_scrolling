@@ -23,7 +23,12 @@ export const createFeedItemMutations = () => ({
   followUser: { mutate: vi.fn() },
   likePost: { mutate: vi.fn() },
   unfollowUser: { mutate: vi.fn() },
-  unlikePost: { mutate: vi.fn() }
+  unlikePost: { mutate: vi.fn() },
+  updatePost: {
+    error: null,
+    mutateAsync: vi.fn().mockResolvedValue({ ...basePost, title: 'Updated title' }),
+    reset: vi.fn()
+  }
 });
 
 export const feedItemElement = post => (
