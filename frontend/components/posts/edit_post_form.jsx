@@ -5,13 +5,16 @@ import { useUpdatePost } from '../../query/post_hooks';
 import { INVALID_LINK_URL_ERROR, validateLinkUrl } from '../../util/link_url_validation';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
 
-export const EDITABLE_POST_TYPES = ['link', 'quote', 'text'];
+const MEDIA_POST_TYPES = ['audio', 'photo', 'video'];
 
 const quoteText = title => (title || '').replace(/^"|"$/g, '');
 const quoteSource = body => (body || '').replace(/^-\s?/, '');
+const isLinkPost = post => post.post_type === 'link';
+const isMediaPost = post => MEDIA_POST_TYPES.includes(post.post_type);
+const isQuotePost = post => post.post_type === 'quote';
 
 const initialFields = post => {
-  if (post.post_type === 'quote') {
+  if (isQuotePost(post)) {
     return {
       body: quoteSource(post.body),
       title: quoteText(post.title),
@@ -27,7 +30,7 @@ const initialFields = post => {
 };
 
 const buildPostPayload = ({ body, post, title, url }) => {
-  if (post.post_type === 'quote') {
+  if (isQuotePost(post)) {
     return {
       title: `"${title}"`,
       body: `- ${body}`,
@@ -45,6 +48,15 @@ const buildPostPayload = ({ body, post, title, url }) => {
 };
 
 const editContentLabel = post => `Edit ${post.title || 'post'}`;
+const titlePlaceholder = post => (
+  isLinkPost(post) ? 'Name/describe link here' : 'Title'
+);
+const bodyPlaceholder = post => (
+  isQuotePost(post) ? '- Source' : 'Your text here'
+);
+const disableSubmit = ({ post, title, url }) => (
+  isLinkPost(post) ? !url : !title
+);
 
 const EditPostForm = ({ isOpen, onClose, post }) => {
   const updatePost = useUpdatePost();
@@ -67,7 +79,7 @@ const EditPostForm = ({ isOpen, onClose, post }) => {
     e.preventDefault();
     const normalizedUrl = url.trim();
 
-    if (post.post_type === 'link' && !validateLinkUrl(normalizedUrl)) {
+    if (isLinkPost(post) && !validateLinkUrl(normalizedUrl)) {
       setLinkErrors([INVALID_LINK_URL_ERROR]);
       return;
     }
@@ -100,11 +112,11 @@ const EditPostForm = ({ isOpen, onClose, post }) => {
         <div className="title-field">
           <textarea
             className="title-input"
-            placeholder={ post.post_type === 'link' ? 'Name/describe link here' : 'Title' }
+            placeholder={ titlePlaceholder(post) }
             value={ title }
             onChange={ e => setTitle(e.currentTarget.value) } />
         </div>
-        { post.post_type === 'link' ? (
+        { isLinkPost(post) && (
           <div className="post-body">
             <textarea
               className="body-input"
@@ -115,11 +127,12 @@ const EditPostForm = ({ isOpen, onClose, post }) => {
                 setLinkErrors([]);
               } } />
           </div>
-        ) : (
+        ) }
+        { !isLinkPost(post) && !isMediaPost(post) && (
           <div className="post-body">
             <textarea
               className="body-input"
-              placeholder={ post.post_type === 'quote' ? '- Source' : 'Your text here' }
+              placeholder={ bodyPlaceholder(post) }
               value={ body }
               onChange={ e => setBody(e.currentTarget.value) } />
           </div>
@@ -127,7 +140,7 @@ const EditPostForm = ({ isOpen, onClose, post }) => {
         <div className="submit-form">
           <FormErrors errors={ [...linkErrors, ...mutationErrors] } />
           <ModalButtonFooter
-            disabled={ post.post_type === 'link' ? !url : !title }
+            disabled={ disableSubmit({ post, title, url }) }
             onClose={ closeModal }
             onSubmit={ handleSubmit }
             submitLabel="Save"
