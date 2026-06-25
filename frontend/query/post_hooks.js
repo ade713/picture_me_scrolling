@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { destroy, get, post } from '../util/api_client';
+import { destroy, get, patch, post } from '../util/api_client';
 import { queryKeys } from './query_keys';
 
 export const POSTS_PER_PAGE = 10;
@@ -54,6 +54,12 @@ const updatePostInCache = (feed, updatedPost) => {
     ))
   };
 };
+
+const postRequestBody = updatedPost => (
+  typeof FormData !== 'undefined' && updatedPost instanceof FormData
+    ? updatedPost
+    : { post: updatedPost }
+);
 
 const removePostFromCache = (feed, deletedPost) => {
   if (!feed?.pages?.length) return feed;
@@ -134,6 +140,23 @@ export const useDeletePost = () => {
       queryClient.setQueryData(queryKeys.posts, posts => (
         removePostFromCache(posts, deletedPost)
       ));
+      queryClient.invalidateQueries({ queryKey: queryKeys.posts });
+    }
+  });
+};
+
+export const useUpdatePost = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, post: updatedPost }) => (
+      patch(`/api/posts/${id}`, postRequestBody(updatedPost))
+    ),
+    onSuccess: updatedPost => {
+      queryClient.setQueryData(queryKeys.posts, posts => (
+        updatePostInCache(posts, updatedPost)
+      ));
+      queryClient.setQueryData(queryKeys.post(updatedPost.id), updatedPost);
       queryClient.invalidateQueries({ queryKey: queryKeys.posts });
     }
   });

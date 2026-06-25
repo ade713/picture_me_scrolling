@@ -23,10 +23,15 @@ class Api::PostsController < ApplicationController
   def update
     @post = current_user.posts.find_by(id: params[:id])
 
-    if @post && @post.update(post_params)
+    unless @post
+      render json: ['Post must belong to user to edit'], status: :unprocessable_entity
+      return
+    end
+
+    if @post.update(post_params)
       render "api/posts/show"
     else
-      render json: ['Post must belong to user to edit'], status: :unprocessable_entity
+      render json: @post.errors.full_messages, status: :unprocessable_entity
     end
   end
 

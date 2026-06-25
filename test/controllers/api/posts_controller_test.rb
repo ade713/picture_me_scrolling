@@ -220,6 +220,18 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
     assert response_json['image_url'].present?
   end
 
+  test 'update returns validation errors for invalid owned posts' do
+    patch api_post_url(@viewer_post), params: {
+      post: {
+        title: ''
+      }
+    }
+
+    assert_response :unprocessable_entity
+    assert_equal ["Title can't be blank"], response_json
+    assert_equal 'viewer post', @viewer_post.reload.title
+  end
+
   test 'update rejects posts owned by another user' do
     patch api_post_url(@followed_post), params: {
       post: {
