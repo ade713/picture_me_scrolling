@@ -55,7 +55,7 @@ const updatePostInCache = (feed, updatedPost) => {
   };
 };
 
-const postPayload = updatedPost => (
+const postRequestBody = updatedPost => (
   typeof FormData !== 'undefined' && updatedPost instanceof FormData
     ? updatedPost
     : { post: updatedPost }
@@ -150,7 +150,7 @@ export const useUpdatePost = () => {
 
   return useMutation({
     mutationFn: ({ id, post: updatedPost }) => (
-      patch(`/api/posts/${id}`, postPayload(updatedPost))
+      patch(`/api/posts/${id}`, postRequestBody(updatedPost))
     ),
     onSuccess: updatedPost => {
       queryClient.setQueryData(queryKeys.posts, posts => (
