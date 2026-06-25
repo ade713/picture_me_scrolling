@@ -1,13 +1,14 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { useDeletePost, useLikePost, useUnlikePost } from '../../query/post_hooks';
+import { useDeletePost, useLikePost, useUnlikePost, useUpdatePost } from '../../query/post_hooks';
 import { useCurrentUser } from '../../query/session_hooks';
 import { basePost,
          createFeedItemMutations,
          feedItemElement,
          renderFeedItem } from '../../test/feed_item_helpers';
 import { currentUser } from '../../test/fixtures';
+import { setupModalAppElement } from '../../test/modal_helpers';
 import { useFollowUser, useUnfollowUser } from '../../query/user_hooks';
 
 vi.mock('../../query/session_hooks', () => ({
@@ -17,7 +18,8 @@ vi.mock('../../query/session_hooks', () => ({
 vi.mock('../../query/post_hooks', () => ({
   useDeletePost: vi.fn(),
   useLikePost: vi.fn(),
-  useUnlikePost: vi.fn()
+  useUnlikePost: vi.fn(),
+  useUpdatePost: vi.fn()
 }));
 
 vi.mock('../../query/user_hooks', () => ({
@@ -34,11 +36,14 @@ describe('FeedItem actions', () => {
   let deletePost;
   let followUser;
   let likePost;
+  let cleanupModalAppElement;
   let unfollowUser;
   let unlikePost;
+  let updatePost;
 
   beforeEach(() => {
-    ({ deletePost, followUser, likePost, unfollowUser, unlikePost } = createFeedItemMutations());
+    cleanupModalAppElement = setupModalAppElement();
+    ({ deletePost, followUser, likePost, unfollowUser, unlikePost, updatePost } = createFeedItemMutations());
 
     useCurrentUser.mockReturnValue({ data: currentUser });
     useDeletePost.mockReturnValue(deletePost);
@@ -46,9 +51,11 @@ describe('FeedItem actions', () => {
     useLikePost.mockReturnValue(likePost);
     useUnfollowUser.mockReturnValue(unfollowUser);
     useUnlikePost.mockReturnValue(unlikePost);
+    useUpdatePost.mockReturnValue(updatePost);
   });
 
   afterEach(() => {
+    cleanupModalAppElement();
     vi.clearAllMocks();
   });
 
@@ -102,5 +109,51 @@ describe('FeedItem actions', () => {
     rerender(feedItemElement(basePost));
 
     expect(screen.queryByRole('button', { name: deletePostButtonName })).not.toBeInTheDocument();
+  });
+
+  it('opens the edit modal and submits updated text post fields', async () => {
+    const user = userEvent.setup();
+    const authoredPost = {
+      ...basePost,
+      author_id: currentUser.id
+    };
+
+    renderFeedItem(authoredPost);
+
+    await user.click(screen.getByRole('button', { name: editPostButtonName }));
+
+    expect(screen.getByRole('dialog', { name: editPostButtonName })).toBeInTheDocument();
+
+    const titleInput = screen.getByPlaceholderText('Title');
+    const bodyInput = screen.getByPlaceholderText('Your text here');
+
+    await user.clear(titleInput);
+    await user.type(titleInput, 'Updated title');
+    await user.clear(bodyInput);
+    await user.type(bodyInput, 'Updated body');
+    await user.click(screen.getByRole('button', { name: 'Save' }));
+
+    expect(updatePost.mutateAsync).toHaveBeenCalledWith({
+      id: authoredPost.id,
+      post: {
+        title: 'Updated title',
+        body: 'Updated body',
+        url: authoredPost.url,
+        post_type: 'text'
+      }
+    });
+  });
+
+  it('does not show edit controls for media posts yet', () => {
+    const authoredMediaPost = {
+      ...basePost,
+      author_id: currentUser.id,
+      post_type: 'photo'
+    };
+
+    renderFeedItem(authoredMediaPost);
+
+    expect(screen.queryByRole('button', { name: editPostButtonName })).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: deletePostButtonName })).toBeInTheDocument();
   });
 });
