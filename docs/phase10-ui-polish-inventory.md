@@ -55,8 +55,7 @@ Current shape:
 - Feed renders paginated posts newest-first.
 - Post cards show author, follow/unfollow, content, likes, and author-only
   edit/delete controls.
-- The edit button exists visually for authored posts but does not open an edit
-  flow yet.
+- The edit button opens the edit flow for authored posts.
 
 Polish candidates:
 
@@ -112,24 +111,18 @@ Backend status:
 Frontend status:
 
 - `AuthorControls` renders an edit button for authored posts.
-- The edit button currently has no click handler.
-- TanStack Query hooks include create/delete/like/unlike, but no update-post
-  mutation yet.
-- Create forms are split by post type and can be reused carefully, but edit
-  behavior needs its own user flow decisions.
+- TanStack Query hooks include create/delete/update/like/unlike behavior.
+- Text, quote, and link posts use an edit form for editable fields.
+- Media posts support caption/title-only edits while preserving existing
+  attachments.
+- Media replacement remains a future enhancement.
 
-Edit behavior decisions to make before implementation:
+Edit behavior decisions:
 
-- Start with text, quote, and link editing first, or include media editing in
-  the first edit PR.
-- For media posts, decide whether editing should:
-  - update caption/title only,
-  - replace the attached media,
-  - or support both.
-- Decide whether edit modals should reuse create form components directly or use
-  a shared form shell with create/edit-specific submit behavior.
-- Decide whether changing a post type during edit is allowed. Recommended
-  initial behavior: keep post type fixed.
+- Text, quote, and link editing are supported.
+- Media posts support caption/title-only edits.
+- Media replacement is out of scope for the initial release polish pass.
+- Post type changes during edit are not supported.
 
 ## Suggested Phase 10 PR Chunks
 

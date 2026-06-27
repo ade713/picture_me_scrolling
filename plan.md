@@ -722,7 +722,7 @@ Recommended PR chunks:
 
 ## Phase 10: UI Polish and Post Editing
 
-Status: planned.
+Status: complete.
 
 Goal: improve release-quality visual polish and add post editing before release,
 while keeping Vite/build-tooling work separate.
@@ -768,8 +768,9 @@ Recommended PR chunks:
    - add focused tests for the chosen media edit path
 8. Release polish smoke pass:
    - run focused tests and build
-   - browser-smoke auth, dashboard, create, edit, delete, follow, like, and
+   - smoke-check auth, dashboard, create, edit, delete, follow, like, and
      responsive layouts
+   - release closeout notes live in `docs/phase10-release-smoke-closeout.md`
 
 ## Future Build Tooling: Vite
 
