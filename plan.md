@@ -791,6 +791,92 @@ track:
 - Backend production readiness and performance should continue as a separate
   production-readiness track.
 
+## Production Readiness Track
+
+This track starts after the frontend modernization phases are complete. It is
+not a continuation of the frontend modernization plan; it focuses on preparing
+the Rails backend and production system behavior for release.
+
+## Phase 11: Backend Production Readiness and Performance
+
+Status: planned.
+
+Goal: make the Rails API safer, easier to deploy, and better prepared for
+production traffic without changing frontend response contracts unnecessarily.
+
+Focus areas:
+
+- Backend performance inventory.
+- Feed query ownership and database-backed ordering.
+- Database indexes for high-traffic associations.
+- Jbuilder serialization query behavior.
+- Production config, logging, caching, and deployment assumptions.
+- Backend smoke and closeout documentation.
+
+Recommended PR chunks:
+
+1. Backend performance inventory:
+   - audit controllers, models, Jbuilder views, routes, and schema indexes
+   - document current query-heavy paths before changing behavior
+   - note that `Api::PostsController` is relatively lean and mostly owns
+     request orchestration
+   - identify non-controller logic currently living in shared controller helpers
+   - avoid behavior changes in the inventory PR
+2. Feed query boundary cleanup:
+   - move feed query construction out of `ApplicationController`
+   - consider `Post.feed_for(user)` / `Post.visible_to(user)` or a small
+     `FeedQuery` object for current-user-plus-followed-author lookup
+   - keep request param handling for `page`, `per_page`, and pagination close to
+     the controller or query object
+   - preserve the current feed response shape: `posts`, `post_ids`, and
+     `pagination`
+3. Feed query optimization:
+   - optimize `GET /api/posts` after the query boundary is clearer
+   - keep newest-first ordering database-backed with deterministic `id`
+     tie-breaking
+   - add or extend tests for ordering, pagination, own posts, and followed-user
+     posts
+4. Database indexes:
+   - add indexes for high-traffic lookup paths such as post authors, likes, and
+     follows
+   - add uniqueness indexes where model behavior requires unique likes or
+     follows
+   - keep migrations focused and independently reviewable
+5. Jbuilder/API serialization review:
+   - review `post.followers_ids.include?(current_user.id)`,
+     `post.likers_ids.include?(current_user.id)`, `post.likes.count`, and
+     author/avatar lookups for feed-page query cost
+   - optimize query/preload behavior before changing serializer libraries
+   - preload authors and attachments where useful
+   - consider computing current-user liked/followed sets once per feed response
+   - decide whether Jbuilder remains sufficient after query cleanup or whether
+     a serializer such as Blueprinter would improve readability/performance
+   - if migrating away from Jbuilder, do it in a separate follow-up PR after
+     response contracts and tests are stable
+   - keep frontend field names stable
+6. Production config and observability review:
+   - review production logging, static asset serving, Active Storage settings,
+     cache settings, and required environment variables
+   - compare hosting options before choosing a target platform
+   - evaluate hosting candidates for Rails/PostgreSQL support, persistent
+     storage assumptions, Active Storage/S3 compatibility, background-job
+     needs, deploy complexity, cost, logs/metrics, SSL/custom domains, and
+     environment variable management
+   - verify production Active Storage S3 configuration expectations
+   - confirm required AWS/S3 environment variables:
+     `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `S3_REGION`,
+     `S3_BUCKET_NAME`, and `ACTIVE_STORAGE_SERVICE`
+   - document expected bucket permissions and CORS assumptions
+   - smoke-check upload and render behavior against the selected storage
+     service when production storage is available
+   - document hosting-neutral deployment requirements
+   - avoid provider-specific changes until the hosting target is selected
+7. Backend closeout and smoke pass:
+   - run focused Rails model/controller tests
+   - run frontend build only if API response contracts are touched
+   - document final production-readiness status and remaining deployment
+     decisions
+
 ## Future Build Tooling: Vite
 
 Status: planned.
