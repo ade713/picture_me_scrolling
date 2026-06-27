@@ -115,13 +115,11 @@ Frontend status:
 - Text, quote, and link posts use an edit form for editable fields.
 - Media posts support caption/title-only edits while preserving existing
   attachments.
-- Media replacement remains a future enhancement.
 
 Edit behavior decisions:
 
 - Text, quote, and link editing are supported.
 - Media posts support caption/title-only edits.
-- Media replacement is out of scope for the initial release polish pass.
 - Post type changes during edit are not supported.
 
 ## Suggested Phase 10 PR Chunks
@@ -149,8 +147,7 @@ Edit behavior decisions:
    - support text/quote/link first unless media behavior is already decided
    - update the feed cache after successful edits
 7. Media edit support:
-   - add caption/title-only or replacement behavior based on the agreed
-     decision
+   - add caption/title-only media edit behavior
    - add tests for the chosen media edit path
 8. Release polish smoke pass:
    - run focused tests and build

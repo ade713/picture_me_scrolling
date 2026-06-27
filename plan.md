@@ -1,11 +1,13 @@
 # Frontend Modernization Plan
 
-This plan documents the selected direction for modernizing the Picture Me
-Scrolling frontend.
+This plan documents the selected direction and completed rollout for
+modernizing the Picture Me Scrolling frontend.
 
-The app is already on React 19, but several frontend patterns are still from the
-older Redux/class-component era. The goal is to modernize the app in phases
-without combining too many high-risk changes at once.
+Status: complete.
+
+The app started this track on React 19 while still carrying several frontend
+patterns from the older Redux/class-component era. The goal was to modernize
+the app in phases without combining too many high-risk changes at once.
 
 ## Chosen Direction
 
@@ -16,7 +18,7 @@ Use:
 - Zustand for client/UI state
 - native `fetch` for API requests
 
-Remove over time:
+Removed during this track:
 
 - Redux
 - React-Redux container patterns
@@ -763,14 +765,31 @@ Recommended PR chunks:
      already decided
    - update the feed cache after successful edits
 7. Media edit support:
-   - add caption/title-only or replacement behavior based on the agreed media
-     edit decision
+   - add caption/title-only media edit behavior
    - add focused tests for the chosen media edit path
 8. Release polish smoke pass:
    - run focused tests and build
    - smoke-check auth, dashboard, create, edit, delete, follow, like, and
      responsive layouts
    - release closeout notes live in `docs/phase10-release-smoke-closeout.md`
+   - closeout notes live in `docs/frontend-modernization-closeout.md`
+
+## Frontend Modernization Closeout
+
+Status: complete.
+
+Phases 1-10 are the completed frontend modernization track. The app now uses
+React 19 functional components, hooks, TanStack Query for server state, fetch
+API utilities, React Router modernization, component behavior tests, feed
+pagination, media loading improvements, responsive UI polish, and post editing.
+
+The remaining frontend-adjacent work is no longer part of this modernization
+track:
+
+- Vite migration is a separate future build-tooling project.
+- Media edits are intentionally caption/title-only.
+- Backend production readiness and performance should continue as a separate
+  production-readiness track.
 
 ## Future Build Tooling: Vite
 
