@@ -810,7 +810,8 @@ Focus areas:
 - Feed query ownership and database-backed ordering.
 - Database indexes for high-traffic associations.
 - Jbuilder serialization query behavior.
-- Production config, logging, caching, and deployment assumptions.
+- Production config, secrets, logging, caching, and deployment assumptions.
+- Health checks and website status monitoring.
 - Backend smoke and closeout documentation.
 
 Recommended PR chunks:
@@ -854,7 +855,7 @@ Recommended PR chunks:
    - if migrating away from Jbuilder, do it in a separate follow-up PR after
      response contracts and tests are stable
    - keep frontend field names stable
-6. Production config and observability review:
+6. Production config, hosting, and secrets review:
    - review production logging, static asset serving, Active Storage settings,
      cache settings, and required environment variables
    - compare hosting options before choosing a target platform
@@ -862,6 +863,10 @@ Recommended PR chunks:
      storage assumptions, Active Storage/S3 compatibility, background-job
      needs, deploy complexity, cost, logs/metrics, SSL/custom domains, and
      environment variable management
+   - review `SECRET_KEY_BASE`, Rails credentials vs platform env vars, and
+     session/cookie security assumptions
+   - confirm no secrets, local artifacts, or provider-specific credentials are
+     committed
    - verify production Active Storage S3 configuration expectations
    - confirm required AWS/S3 environment variables:
      `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `S3_REGION`,
@@ -871,7 +876,15 @@ Recommended PR chunks:
      service when production storage is available
    - document hosting-neutral deployment requirements
    - avoid provider-specific changes until the hosting target is selected
-7. Backend closeout and smoke pass:
+7. Health check and monitoring review:
+   - add or document a lightweight health/status check for production
+   - confirm the health check can verify Rails boot and database reachability
+     without exposing sensitive data
+   - define what production logs and errors need to be visible after release
+   - evaluate monitoring/error-reporting options such as host-provided logs,
+     Sentry, Honeybadger, or Rollbar
+   - document the chosen minimum monitoring approach for launch
+8. Backend closeout and smoke pass:
    - run focused Rails model/controller tests
    - run frontend build only if API response contracts are touched
    - document final production-readiness status and remaining deployment
