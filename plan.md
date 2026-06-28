@@ -823,6 +823,7 @@ Recommended PR chunks:
      request orchestration
    - identify non-controller logic currently living in shared controller helpers
    - avoid behavior changes in the inventory PR
+   - inventory notes live in `docs/phase11-backend-performance-inventory.md`
 2. Feed query boundary cleanup:
    - move feed query construction out of `ApplicationController`
    - consider `Post.feed_for(user)` / `Post.visible_to(user)` or a small
