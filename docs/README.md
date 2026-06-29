@@ -52,6 +52,7 @@ NB: All feature MVPs will have the following:
 * [Behavior Smoke Checks][behavior-smoke-checks]
 * [Frontend Smoke Checklist][frontend-smoke-checklist]
 * [Frontend Modernization Closeout][frontend-modernization-closeout]
+* [Phase 11 Backend Performance Inventory][phase11-backend-performance-inventory]
 * [Phase 7 Verification Closeout][phase7-verification-closeout]
 
 [api-endpoints]: ./api-endpoints.md
@@ -60,6 +61,7 @@ NB: All feature MVPs will have the following:
 [db-schema]: ./db-schema.md
 [frontend-smoke-checklist]: ./frontend-smoke-checklist.md
 [frontend-modernization-closeout]: ./frontend-modernization-closeout.md
+[phase11-backend-performance-inventory]: ./phase11-backend-performance-inventory.md
 [phase7-verification-closeout]: ./phase7-verification-closeout.md
 [sample-state]: ./sample-state.md
 
