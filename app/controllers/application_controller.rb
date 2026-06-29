@@ -25,38 +25,4 @@ class ApplicationController < ActionController::Base
   def require_logged_in
     render json: ['You must be logged in'], status: :unauthorized unless logged_in?
   end
-
-  private
-
-  def paginated_feed_for(user)
-    posts = sorted_feed_posts_for(user)
-    pagination = feed_pagination(posts.count)
-
-    [
-      posts.offset(pagination[:offset]).limit(pagination[:per_page]),
-      pagination
-    ]
-  end
-
-  def sorted_feed_posts_for(user)
-    author_ids = [user.id, *user.followees.pluck(:followee_id)]
-
-    Post.where(author_id: author_ids.uniq)
-        .order(created_at: :desc, id: :desc)
-  end
-
-  def feed_pagination(total_count)
-    page = [params.fetch(:page, 1).to_i, 1].max
-    per_page = params.fetch(:per_page, 20).to_i.clamp(1, 50)
-    total_pages = (total_count.to_f / per_page).ceil
-
-    {
-      has_more: page < total_pages,
-      offset: (page - 1) * per_page,
-      page: page,
-      per_page: per_page,
-      total_count: total_count,
-      total_pages: total_pages
-    }
-  end
 end
