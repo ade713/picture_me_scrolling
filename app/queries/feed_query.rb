@@ -28,12 +28,13 @@ class FeedQuery
   attr_reader :user, :page, :per_page
 
   def feed_posts
-    Post.where(author_id: feed_author_ids)
+    Post.where(author_id: user.id)
+        .or(Post.where(author_id: followed_author_ids))
         .order(created_at: :desc, id: :desc)
   end
 
-  def feed_author_ids
-    [user.id, *user.followees.pluck(:followee_id)].uniq
+  def followed_author_ids
+    Follow.where(follower_id: user.id).select(:followee_id)
   end
 
   def pagination_for(total_count)

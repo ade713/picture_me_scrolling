@@ -31,14 +31,31 @@ class FeedQueryTest < ActiveSupport::TestCase
     assert_equal 2, pagination[:total_count]
   end
 
+  test 'returns own posts when user follows no one' do
+    posts, pagination = FeedQuery.call(user: @unrelated_author)
+    post_ids = posts.map(&:id)
+
+    assert_equal [@unrelated_post.id], post_ids
+    assert_equal 1, pagination[:total_count]
+  end
+
   test 'orders posts newest first with id tie breaker' do
+    older_timestamp = Time.zone.local(2026, 1, 1, 11, 0, 0)
     shared_timestamp = Time.zone.local(2026, 1, 1, 12, 0, 0)
-    @viewer_post.update!(created_at: shared_timestamp)
+    @viewer_post.update!(created_at: older_timestamp)
     @followed_post.update!(created_at: shared_timestamp)
+    newer_viewer_post = create_post(
+      @viewer,
+      'newer viewer post',
+      created_at: shared_timestamp
+    )
 
     posts, = FeedQuery.call(user: @viewer)
 
-    assert_equal [@followed_post.id, @viewer_post.id], posts.map(&:id)
+    assert_equal(
+      [newer_viewer_post.id, @followed_post.id, @viewer_post.id],
+      posts.map(&:id)
+    )
   end
 
   test 'paginates feed posts' do
@@ -82,11 +99,14 @@ class FeedQueryTest < ActiveSupport::TestCase
     )
   end
 
-  def create_post(author, title)
-    Post.create!(
+  def create_post(author, title, created_at: nil)
+    attributes = {
       author_id: author.id,
       title: title,
       post_type: 'text'
-    )
+    }
+    attributes[:created_at] = created_at if created_at
+
+    Post.create!(attributes)
   end
 end
