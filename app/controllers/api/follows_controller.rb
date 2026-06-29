@@ -25,7 +25,11 @@ class Api::FollowsController < ApplicationController
 
   def render_feed
     current_user.reload
-    @posts, @pagination = paginated_feed_for(current_user)
+    @posts, @pagination = FeedQuery.call(
+      user: current_user,
+      page: params[:page],
+      per_page: params[:per_page]
+    )
 
     render 'api/posts/index'
   end

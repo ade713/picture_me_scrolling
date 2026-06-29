@@ -48,7 +48,11 @@ class Api::PostsController < ApplicationController
   private
 
   def render_feed
-    @posts, @pagination = paginated_feed_for(current_user)
+    @posts, @pagination = FeedQuery.call(
+      user: current_user,
+      page: params[:page],
+      per_page: params[:per_page]
+    )
   end
 
   def post_params
