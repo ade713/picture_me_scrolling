@@ -30,6 +30,7 @@ class Api::FollowsController < ApplicationController
       page: params[:page],
       per_page: params[:per_page]
     )
+    prepare_post_rendering_context(@posts)
 
     render 'api/posts/index'
   end

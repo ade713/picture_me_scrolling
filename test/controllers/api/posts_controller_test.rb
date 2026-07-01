@@ -47,6 +47,15 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'index returns current user and followed user posts' do
+    Like.create!(
+      user_id: @viewer.id,
+      post_id: @followed_post.id
+    )
+    Like.create!(
+      user_id: @unrelated_author.id,
+      post_id: @viewer_post.id
+    )
+
     get api_posts_url
 
     assert_response :success
@@ -62,6 +71,12 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
       @followed_author.username,
       response_posts.dig(@followed_post.id.to_s, 'author')
     )
+    assert_equal true, response_posts.dig(@followed_post.id.to_s, 'followed')
+    assert_equal true, response_posts.dig(@followed_post.id.to_s, 'liked')
+    assert_equal 1, response_posts.dig(@followed_post.id.to_s, 'likes')
+    assert_equal false, response_posts.dig(@viewer_post.id.to_s, 'followed')
+    assert_equal false, response_posts.dig(@viewer_post.id.to_s, 'liked')
+    assert_equal 1, response_posts.dig(@viewer_post.id.to_s, 'likes')
   end
 
   test 'index returns feed posts newest first' do
