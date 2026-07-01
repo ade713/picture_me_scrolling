@@ -53,6 +53,7 @@ class Api::PostsController < ApplicationController
       page: params[:page],
       per_page: params[:per_page]
     )
+    prepare_post_rendering_context(@posts)
   end
 
   def post_params
