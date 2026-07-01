@@ -12,7 +12,19 @@
 require 'test_helper'
 
 class FollowTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test 'database prevents duplicate follower followee pairs' do
+    attributes = {
+      follower_id: users(:one).id,
+      followee_id: users(:two).id,
+      created_at: Time.current,
+      updated_at: Time.current
+    }
+
+    Follow.delete_all
+    Follow.insert_all!([attributes])
+
+    assert_raises ActiveRecord::RecordNotUnique do
+      Follow.insert_all!([attributes])
+    end
+  end
 end
