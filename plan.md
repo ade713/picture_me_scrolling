@@ -811,6 +811,7 @@ Focus areas:
 - Database indexes for high-traffic associations.
 - Jbuilder serialization query behavior.
 - Production config, secrets, logging, caching, and deployment assumptions.
+- Render production hosting setup.
 - Health checks and website status monitoring.
 - Backend smoke and closeout documentation.
 
@@ -878,7 +879,23 @@ Recommended PR chunks:
    - document hosting-neutral deployment requirements
    - review notes live in `docs/backend-production-readiness.md`
    - avoid provider-specific changes until the hosting target is selected
-7. Health check and monitoring review:
+7. Render production hosting setup:
+   - use Render as the selected production hosting target for now
+   - keep the initial setup cost-conscious: Starter web service, Basic-256mb
+     Postgres, and S3 for Active Storage media
+   - update production database config to prefer `DATABASE_URL` while retaining
+     the existing password-based fallback for non-Render deployments
+   - add a Render build/deploy script or documented build commands for
+     JavaScript bundle build, Rails asset precompile, and migrations
+   - document required Render environment variables and which values must be
+     configured manually in the dashboard
+   - avoid committing secrets, provider credentials, or generated production
+     artifacts
+   - decide whether to use dashboard-managed Render services first, and defer
+     `render.yaml` until repo-managed infrastructure is clearly useful
+   - document post-deploy smoke checks for auth, feed pagination, follows,
+     likes, post create/edit/delete, and media upload/render
+8. Health check and monitoring review:
    - add or document a lightweight health/status check for production
    - confirm the health check can verify Rails boot and database reachability
      without exposing sensitive data
@@ -886,7 +903,7 @@ Recommended PR chunks:
    - evaluate monitoring/error-reporting options such as host-provided logs,
      Sentry, Honeybadger, or Rollbar
    - document the chosen minimum monitoring approach for launch
-8. Backend closeout and smoke pass:
+9. Backend closeout and smoke pass:
    - run focused Rails model/controller tests
    - run frontend build only if API response contracts are touched
    - document final production-readiness status and remaining deployment
