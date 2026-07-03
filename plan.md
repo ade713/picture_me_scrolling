@@ -876,6 +876,7 @@ Recommended PR chunks:
    - smoke-check upload and render behavior against the selected storage
      service when production storage is available
    - document hosting-neutral deployment requirements
+   - review notes live in `docs/backend-production-readiness.md`
    - avoid provider-specific changes until the hosting target is selected
 7. Health check and monitoring review:
    - add or document a lightweight health/status check for production
