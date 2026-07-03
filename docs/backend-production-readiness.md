@@ -6,13 +6,13 @@ requirements that should be satisfied before release.
 
 ## Current Posture
 
-- Production hosting has not been reselected.
+- Render is the selected initial production hosting target.
 - The previous Heroku app/account is gone.
 - Active Storage is the runtime media path.
 - Paperclip compatibility has been removed.
 - Old S3 files are archive/manual recovery media, not an active migration
   dependency.
-- Provider-specific deploy files should wait until a hosting target is chosen.
+- Render setup details live in `docs/render-production-setup.md`.
 
 ## Required Production Environment
 
@@ -99,11 +99,16 @@ The current `.gitignore` already ignores:
 - `node_modules/`
 - generated bundle artifacts
 
-## Hosting Evaluation
+## Hosting Decision
 
-Choose a host that fits a Rails/PostgreSQL app with Active Storage media.
+Render is the selected first production target because it supports a small
+Rails/PostgreSQL deployment with managed logs, environment variables, custom
+domains, and straightforward dashboard configuration.
 
-Evaluate each candidate for:
+The initial target is a cost-conscious setup: Starter web service,
+Basic-256mb Postgres, and S3-backed Active Storage media.
+
+If hosting is revisited later, evaluate each candidate for:
 
 - Rails and Ruby version support
 - PostgreSQL support, backups, and restore workflow
@@ -117,14 +122,15 @@ Evaluate each candidate for:
 - metrics, uptime checks, and error visibility
 - pricing for low-traffic portfolio usage
 
-Avoid provider-specific config until the hosting target is selected. Once the
-target is chosen, add the minimum platform files in a focused deployment PR.
+Render-specific setup is documented separately. Keep secrets and generated
+production artifacts out of the repo.
 
 ## Launch Checklist
 
 Before production release:
 
-1. Select the hosting provider and database plan.
+1. Use Render Starter web service and Basic-256mb Postgres for the initial
+   production deployment.
 2. Configure `SECRET_KEY_BASE`, database credentials, and required AWS/S3 env
    vars in the host.
 3. Confirm production asset build commands run successfully:
@@ -145,8 +151,9 @@ Before production release:
 
 ## Deferred
 
-- Health check and monitoring setup belongs in Phase 11-7.
-- Provider-specific deploy files should wait until hosting is selected.
+- Health check and monitoring setup belongs in Phase 11-8.
+- `render.yaml` remains deferred until repo-managed Render infrastructure is
+  clearly useful.
 - Rails credentials migration can be done after the hosting secret-management
   approach is chosen.
 - Vite remains a separate future build-tooling project.
