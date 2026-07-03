@@ -53,6 +53,7 @@ NB: All feature MVPs will have the following:
 * [Frontend Smoke Checklist][frontend-smoke-checklist]
 * [Frontend Modernization Closeout][frontend-modernization-closeout]
 * [Backend Production Readiness][backend-production-readiness]
+* [Render Production Setup][render-production-setup]
 * [Phase 11 Backend Performance Inventory][phase11-backend-performance-inventory]
 * [Phase 7 Verification Closeout][phase7-verification-closeout]
 
@@ -64,6 +65,7 @@ NB: All feature MVPs will have the following:
 [frontend-smoke-checklist]: ./frontend-smoke-checklist.md
 [frontend-modernization-closeout]: ./frontend-modernization-closeout.md
 [phase11-backend-performance-inventory]: ./phase11-backend-performance-inventory.md
+[render-production-setup]: ./render-production-setup.md
 [phase7-verification-closeout]: ./phase7-verification-closeout.md
 [sample-state]: ./sample-state.md
 

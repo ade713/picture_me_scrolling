@@ -895,6 +895,7 @@ Recommended PR chunks:
      `render.yaml` until repo-managed infrastructure is clearly useful
    - document post-deploy smoke checks for auth, feed pagination, follows,
      likes, post create/edit/delete, and media upload/render
+   - Render setup notes live in `docs/render-production-setup.md`
 8. Health check and monitoring review:
    - add or document a lightweight health/status check for production
    - confirm the health check can verify Rails boot and database reachability
