@@ -19,6 +19,7 @@ requirements that should be satisfied before release.
 The selected host must provide:
 
 - `SECRET_KEY_BASE`
+- `RAILS_MASTER_KEY` for Rails encrypted credentials
 - `DATABASE_URL` or equivalent PostgreSQL database config
 - `AWS_ACCESS_KEY_ID`
 - `AWS_SECRET_ACCESS_KEY`
@@ -81,13 +82,12 @@ Before launch, smoke-check:
 ## Secrets
 
 Production `SECRET_KEY_BASE` is read from the environment through
-`config/secrets.yml`. That is acceptable for the next deployment as long as the
-host provides the variable securely.
+`config/secrets.yml`. Rails encrypted credentials are also initialized through
+`config/credentials.yml.enc`, with `RAILS_MASTER_KEY` supplied by Render.
 
-After the hosting target is chosen, decide whether to keep platform environment
-variables or move production secrets to Rails credentials. Do not commit
-provider credentials, local `.env` files, generated keys, database dumps, or
-storage artifacts.
+Keep platform environment variables as the primary production secret path for
+this deployment. Do not commit provider credentials, local `.env` files,
+generated keys, database dumps, storage artifacts, or `config/master.key`.
 
 The current `.gitignore` already ignores:
 
@@ -95,6 +95,8 @@ The current `.gitignore` already ignores:
 - `/log/*`
 - `/tmp/*`
 - `/config/application.yml`
+- `/config/master.key`
+- `/config/credentials/*.key`
 - `.DS_Store`
 - `node_modules/`
 - generated bundle artifacts
@@ -154,6 +156,6 @@ Before production release:
 - Health check and monitoring setup belongs in Phase 11-8.
 - `render.yaml` remains deferred until repo-managed Render infrastructure is
   clearly useful.
-- Rails credentials migration can be done after the hosting secret-management
-  approach is chosen.
+- Moving all production secrets into Rails credentials can be revisited after
+  the first Render deployment is stable.
 - Vite remains a separate future build-tooling project.

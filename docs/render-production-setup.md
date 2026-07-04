@@ -35,6 +35,10 @@ Production database config now prefers `DATABASE_URL`, which Render provides for
 Postgres connections. The existing `FSP_DATABASE_PASSWORD` fallback remains for
 non-Render deployments.
 
+Rails encrypted credentials are initialized through `config/credentials.yml.enc`.
+The matching `config/master.key` stays local and ignored; copy its value into
+Render as `RAILS_MASTER_KEY` rather than committing it.
+
 ## Render Service Settings
 
 Create the Render Postgres database first, then create the Rails web service.
@@ -65,6 +69,7 @@ Configure these on the Render web service:
 | `RACK_ENV` | `production` | Keeps Rack/Rails aligned. |
 | `DATABASE_URL` | internal Render Postgres URL | Use the internal URL from the Render database. |
 | `SECRET_KEY_BASE` | generated secret | Generate with `bin/rails secret`; do not commit it. |
+| `RAILS_MASTER_KEY` | local master key | Copy from `config/master.key`; do not commit it. |
 | `RAILS_SERVE_STATIC_FILES` | `true` | Lets Rails serve precompiled assets on Render. |
 | `RAILS_LOG_TO_STDOUT` | `true` | Sends logs to Render's log stream. |
 | `RAILS_MAX_THREADS` | `5` | Matches the current Puma/default DB pool setting. |
@@ -76,7 +81,9 @@ Configure these on the Render web service:
 | `S3_BUCKET_NAME` | production media bucket | Do not use the legacy archive bucket. |
 
 Do not configure `FSP_DATABASE_PASSWORD` on Render unless intentionally using
-the non-`DATABASE_URL` fallback path.
+the non-`DATABASE_URL` fallback path. Keep `config/master.key` out of git;
+Render should store that value only as the `RAILS_MASTER_KEY` environment
+variable.
 
 ## S3 Setup Notes
 
