@@ -83,7 +83,9 @@ Before launch, smoke-check:
 
 Production `SECRET_KEY_BASE` is read from the environment through
 `config/secrets.yml`. Rails encrypted credentials are also initialized through
-`config/credentials.yml.enc`, with `RAILS_MASTER_KEY` supplied by Render.
+`config/credentials.yml.enc`. The matching master key was generated locally,
+and its value should be copied into Render as `RAILS_MASTER_KEY`; Render should
+store that value, not generate it.
 
 Keep platform environment variables as the primary production secret path for
 this deployment. Do not commit provider credentials, local `.env` files,
