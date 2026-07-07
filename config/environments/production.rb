@@ -21,8 +21,8 @@ Rails.application.configure do
     'Cache-Control' => 'public, max-age=31536000, immutable'
   }
 
-  # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :uglifier
+  # Sprockets receives modern Rails JS that Uglifier cannot parse reliably.
+  config.assets.js_compressor = nil
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
