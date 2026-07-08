@@ -13,8 +13,7 @@ class Api::UsersController < ApplicationController
   end
 
   def index
-    rec_users = User.all - current_user.followee_users - [current_user]
-    @users = rec_users.take(6)
+    @users = current_user.recommended_follow_users
   end
 
   def show

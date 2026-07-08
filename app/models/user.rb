@@ -47,7 +47,11 @@ class User < ApplicationRecord
     through: :followee_users,
     source: :posts
 
-  def recommended_follows
+  def recommended_follow_users(limit: 6)
+    User
+      .where.not(id: followee_users.select(:id))
+      .where.not(id: id)
+      .limit(limit)
   end
 
   has_one_attached :avatar
