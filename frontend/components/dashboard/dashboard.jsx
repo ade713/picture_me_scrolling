@@ -35,7 +35,7 @@ const Dashboard = () => {
                 aria-hidden="true"></i>
             </a>
             <a
-              href="https://www.linkedin.com/in/ade-farquhar-2a66a233"
+              href="https://www.linkedin.com/in/ade-farquhar"
               target="_blank"
               rel="noopener noreferrer">
               <i
