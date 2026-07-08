@@ -49,6 +49,18 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 2, viewer.recommended_follow_users(limit: 2).length
   end
 
+  test "recommended_follow_users returns empty when every other user is followed" do
+    viewer = create_user("viewer")
+    followed_user = create_user("followed_user")
+
+    Follow.create!(
+      follower_id: viewer.id,
+      followee_id: followed_user.id
+    )
+
+    assert_empty viewer.recommended_follow_users
+  end
+
   private
 
   def create_user(username)

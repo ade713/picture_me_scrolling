@@ -48,9 +48,12 @@ class User < ApplicationRecord
     source: :posts
 
   def recommended_follow_users(limit: 6)
-    User
-      .where.not(id: followee_users.select(:id))
-      .where.not(id: id)
+    recommended_users = recommended_follow_user_scope.limit(limit)
+
+    return recommended_users if recommended_users.exists?
+
+    recommended_follow_user_scope
+      .order(Arel.sql("RANDOM()"))
       .limit(limit)
   end
 
@@ -80,5 +83,13 @@ class User < ApplicationRecord
   def self.find_by_credentials(username, password)
     user = User.find_by(username: username)
     user && user.is_password?(password) ? user : nil
+  end
+
+  private
+
+  def recommended_follow_user_scope
+    User
+      .where.not(id: followee_users.select(:id))
+      .where.not(id: id)
   end
 end
