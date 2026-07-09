@@ -41,6 +41,16 @@ Recommended fix:
 - Confirm newly signed-up users render with the fallback image in recommended users and feed items.
 - Keep uploaded avatars preferred over the default image.
 
+### Audio Post Player Spacing
+
+Audio posts have too much empty vertical space above the audio player bar, making the post card feel unbalanced. The audio body layout should reduce the top spacing while keeping the player, caption, likes, and owner controls readable.
+
+Recommended fix:
+
+- Adjust audio post body spacing so the player sits closer to the author row.
+- Confirm spacing still works for captions, owner controls, and responsive feed widths.
+- Keep media controls usable on desktop and mobile.
+
 ### Duplicate Login Error Message
 
 Entering both an invalid username and invalid password currently displays the same login error twice. The auth form should show one `Invalid username or password` message whether one credential is wrong or both are wrong. The same auth error also stays visible when switching between Log In and Sign Up, so mode changes should clear stale auth errors.
@@ -74,5 +84,6 @@ Recommended fix:
 - Clear stale auth errors when toggling between Log In and Sign Up.
 - Add recommended-user seed posts that visibly prove follow-driven feed updates.
 - Add a default profile image fallback for users without uploaded avatars.
+- Tighten excess spacing above audio players in audio post cards.
 - Add production-safe demo seed task if manual production seeding becomes repetitive.
 - Add Render production smoke checklist updates after the full smoke pass is complete.

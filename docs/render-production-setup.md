@@ -73,7 +73,7 @@ Configure these on the Render web service:
 | `RAILS_SERVE_STATIC_FILES` | `true` | Lets Rails serve precompiled assets on Render. |
 | `RAILS_LOG_TO_STDOUT` | `true` | Sends logs to Render's log stream. |
 | `RAILS_MAX_THREADS` | `5` | Matches the current Puma/default DB pool setting. |
-| `WEB_CONCURRENCY` | `1` | Conservative for the low-cost Starter instance. |
+| `WEB_CONCURRENCY` | `2` | Allows two Puma workers for better request handling on the Render instance. |
 | `ACTIVE_STORAGE_SERVICE` | `amazon` | Uses S3 for runtime media. |
 | `AWS_ACCESS_KEY_ID` | S3 access key | Store only in Render. |
 | `AWS_SECRET_ACCESS_KEY` | S3 secret key | Store only in Render. |
