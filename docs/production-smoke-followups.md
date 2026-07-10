@@ -87,3 +87,10 @@ Recommended fix:
 - Tighten excess spacing above audio players in audio post cards.
 - Add production-safe demo seed task if manual production seeding becomes repetitive.
 - Add Render production smoke checklist updates after the full smoke pass is complete.
+
+## Future To-Dos After Issue Fixes
+
+- Add profile/settings features so users can choose or update profile pictures/thumbnails. This could also include profile account management such as password updates.
+- Add a small pop-up or modal confirmation with Yes/No actions after clicking delete post.
+- Add hover indication for edit and highlight/like buttons so interactive controls feel clearer.
+- Add accessible labels and lightweight custom tooltips for clickable icon actions, including follow, like/unlike, edit, delete, and social links where helpful.
