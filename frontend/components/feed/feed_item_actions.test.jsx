@@ -144,6 +144,36 @@ describe('FeedItem actions', () => {
     });
   });
 
+  it('prevents duplicate edit saves while an update request is pending', async () => {
+    const user = userEvent.setup();
+    let resolveUpdatePost;
+    updatePost.mutateAsync.mockReturnValue(new Promise(resolve => {
+      resolveUpdatePost = resolve;
+    }));
+    const authoredPost = {
+      ...basePost,
+      author_id: currentUser.id
+    };
+
+    renderFeedItem(authoredPost);
+
+    await user.click(screen.getByRole('button', { name: editPostButtonName }));
+
+    const titleInput = screen.getByPlaceholderText('Title');
+
+    await user.clear(titleInput);
+    await user.type(titleInput, 'Updated title');
+
+    const saveButton = screen.getByRole('button', { name: 'Save' });
+    await user.click(saveButton);
+    await user.click(saveButton);
+
+    expect(updatePost.mutateAsync).toHaveBeenCalledTimes(1);
+    expect(saveButton).toBeDisabled();
+
+    resolveUpdatePost({ ...authoredPost, title: 'Updated title' });
+  });
+
   it('opens the edit modal and submits updated media post captions', async () => {
     const user = userEvent.setup();
     const authoredMediaPost = {
