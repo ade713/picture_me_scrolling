@@ -34,11 +34,13 @@ describe('AuthForm', () => {
   beforeEach(() => {
     loginMutation = {
       error: null,
-      mutate: vi.fn()
+      mutate: vi.fn(),
+      reset: vi.fn()
     };
     signupMutation = {
       error: null,
-      mutate: vi.fn()
+      mutate: vi.fn(),
+      reset: vi.fn()
     };
 
     useCurrentUser.mockReturnValue({ data: null });
@@ -103,6 +105,32 @@ describe('AuthForm', () => {
     renderAuthForm('/signup');
 
     expect(screen.getByText('Username has already been taken')).toBeInTheDocument();
+  });
+
+  it('dedupes repeated login errors', () => {
+    loginMutation.error = {
+      errors: ['Invalid username or password']
+    };
+
+    renderAuthForm();
+
+    expect(screen.getAllByText('Invalid username or password')).toHaveLength(1);
+  });
+
+  it('clears stale auth errors when switching auth modes', async () => {
+    const user = userEvent.setup();
+    loginMutation.error = {
+      errors: ['Invalid username or password']
+    };
+
+    renderAuthForm();
+    loginMutation.reset.mockClear();
+    signupMutation.reset.mockClear();
+
+    await user.click(screen.getByRole('link', { name: 'Sign Up' }));
+
+    expect(loginMutation.reset).toHaveBeenCalledTimes(1);
+    expect(signupMutation.reset).toHaveBeenCalledTimes(1);
   });
 
   it('redirects authenticated users to the dashboard', async () => {

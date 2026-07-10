@@ -6,7 +6,9 @@ import useGuestLogin from "./use_guest_login";
 
 const mutationErrors = (mutation) => (mutation.error ? mutation.error.errors : []);
 
-const authErrors = (...mutations) => mutations.flatMap(mutationErrors);
+const authErrors = (...mutations) => (
+  [...new Set(mutations.flatMap(mutationErrors))]
+);
 
 const AuthForm = () => {
   const currentUser = useCurrentUser();
@@ -23,7 +25,7 @@ const AuthForm = () => {
   const navTarget = isSignup ? "/" : "/signup";
   const navText = isSignup ? "Log In" : "Sign Up";
   const submitText = isSignup ? "Sign Up" : "Log In";
-  const errors = authErrors(formMutation, login);
+  const errors = isSignup ? authErrors(signup, login) : authErrors(login);
   const loggedIn = Boolean(currentUser.data);
 
   useEffect(() => {
@@ -31,6 +33,11 @@ const AuthForm = () => {
       navigate("/dashboard");
     }
   }, [loggedIn, navigate]);
+
+  useEffect(() => {
+    login.reset();
+    signup.reset();
+  }, [isSignup]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
