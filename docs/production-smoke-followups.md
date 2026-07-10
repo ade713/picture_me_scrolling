@@ -51,22 +51,15 @@ Recommended fix:
 - Confirm spacing still works for captions, owner controls, and responsive feed widths.
 - Keep media controls usable on desktop and mobile.
 
-### Duplicate Login Error Message
-
-Entering both an invalid username and invalid password currently displays the same login error twice. The auth form should show one `Invalid username or password` message whether one credential is wrong or both are wrong. The same auth error also stays visible when switching between Log In and Sign Up, so mode changes should clear stale auth errors.
-
-Recommended fix:
-
-- Dedupe repeated auth errors before rendering them in the auth form.
-- Confirm invalid username, invalid password, and both-invalid cases each render a single visible error.
-- Keep the generic error wording so the app does not reveal which credential was wrong.
-- Clear stale auth errors when switching between Log In and Sign Up modes.
-
 ## Addressed Follow-Ups
 
 ### Duplicate Post Submissions
 
 Addressed in PR #100 by guarding create post submissions and edit modal saves while requests are pending. The Post and Save buttons now disable during in-flight requests, and repeated rapid clicks are blocked with a submit-handler guard.
+
+### Duplicate Login Error Message
+
+Addressed in PR #101 by deduping rendered auth errors and resetting login/signup mutation errors when switching between Log In and Sign Up modes. Invalid credentials now show one generic error message, and stale auth errors clear when the auth mode changes.
 
 ## Remaining Production Smoke Checks
 
@@ -74,8 +67,6 @@ Addressed in PR #100 by guarding create post submissions and edit modal saves wh
 
 ## Follow-Up Candidate PRs
 
-- Dedupe repeated auth/login errors so invalid credentials show one message.
-- Clear stale auth errors when toggling between Log In and Sign Up.
 - Add recommended-user seed posts that visibly prove follow-driven feed updates.
 - Add a default profile image fallback for users without uploaded avatars.
 - Tighten excess spacing above audio players in audio post cards.
