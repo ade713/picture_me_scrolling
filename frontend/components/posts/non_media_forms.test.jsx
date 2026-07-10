@@ -124,6 +124,28 @@ describe('non-media post forms', () => {
     });
   });
 
+  it('prevents duplicate post submissions while a create request is pending', async () => {
+    const user = userEvent.setup();
+    let resolveCreatePost;
+    createPostMutation.mutateAsync.mockReturnValue(new Promise(resolve => {
+      resolveCreatePost = resolve;
+    }));
+
+    render(<TextForm />);
+
+    await user.click(screen.getByRole('button', { name: 'Text' }));
+    await user.type(screen.getByPlaceholderText('Title'), 'A small thought');
+
+    const postButton = screen.getByRole('button', { name: 'Post' });
+    await user.click(postButton);
+    await user.click(postButton);
+
+    expect(createPostMutation.mutateAsync).toHaveBeenCalledTimes(1);
+    expect(postButton).toBeDisabled();
+
+    resolveCreatePost({ id: 1 });
+  });
+
   it('clears text form state and errors when closed', async () => {
     const user = userEvent.setup();
     createPostMutation.error = {
