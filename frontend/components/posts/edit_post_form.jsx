@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import Modal from 'react-modal';
 
 import { useUpdatePost } from '../../query/post_hooks';
@@ -60,11 +60,14 @@ const disableSubmit = ({ post, title, url }) => (
 
 const EditPostForm = ({ isOpen, onClose, post }) => {
   const updatePost = useUpdatePost();
+  const submittingRef = useRef(false);
   const fields = initialFields(post);
   const [body, setBody] = useState(fields.body);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [title, setTitle] = useState(fields.title);
   const [url, setUrl] = useState(fields.url);
   const [linkErrors, setLinkErrors] = useState([]);
+  const mutationIsSubmitting = updatePost.isPending || updatePost.isLoading;
   const mutationErrors = updatePost.error
     ? updatePost.error.errors || [updatePost.error.message]
     : [];
@@ -77,6 +80,8 @@ const EditPostForm = ({ isOpen, onClose, post }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
+    if (submittingRef.current || mutationIsSubmitting) return;
+
     const normalizedUrl = url.trim();
 
     if (isLinkPost(post) && !validateLinkUrl(normalizedUrl)) {
@@ -85,6 +90,8 @@ const EditPostForm = ({ isOpen, onClose, post }) => {
     }
 
     setLinkErrors([]);
+    submittingRef.current = true;
+    setIsSubmitting(true);
 
     updatePost.mutateAsync({
       id: post.id,
@@ -94,7 +101,10 @@ const EditPostForm = ({ isOpen, onClose, post }) => {
         title,
         url: normalizedUrl
       })
-    }).then(closeModal);
+    }).then(closeModal).finally(() => {
+      submittingRef.current = false;
+      setIsSubmitting(false);
+    });
   };
 
   return (
@@ -140,7 +150,11 @@ const EditPostForm = ({ isOpen, onClose, post }) => {
         <div className="submit-form">
           <FormErrors errors={ [...linkErrors, ...mutationErrors] } />
           <ModalButtonFooter
-            disabled={ disableSubmit({ post, title, url }) }
+            disabled={
+              disableSubmit({ post, title, url }) ||
+              isSubmitting ||
+              mutationIsSubmitting
+            }
             onClose={ closeModal }
             onSubmit={ handleSubmit }
             submitLabel="Save"

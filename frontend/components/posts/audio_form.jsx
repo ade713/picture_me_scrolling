@@ -7,7 +7,7 @@ import { usePostFormProps } from './post_form_hooks';
 
 const AudioForm = () => {
   const createMediaPostMutation = useCreateMediaPost();
-  const { clearErrors, createMediaPost, currentUser, errors } = usePostFormProps(createMediaPostMutation);
+  const { clearErrors, createMediaPost, currentUser, errors, isSubmitting } = usePostFormProps(createMediaPostMutation);
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -54,7 +54,9 @@ const AudioForm = () => {
     formData.append('post[body]', body);
     formData.append('post[image]', audioFile);
 
-    createMediaPost(formData).then(closeModal);
+    createMediaPost(formData).then(result => {
+      if (result) closeModal();
+    });
   };
 
   return (
@@ -105,7 +107,7 @@ const AudioForm = () => {
                  <div className="submit-form">
                    <FormErrors errors={ errors } />
                    <ModalButtonFooter
-                     disabled={ !audioFile }
+                     disabled={ !audioFile || isSubmitting }
                      onClose={ closeModal }
                      onSubmit={ handleSubmit }
                    />

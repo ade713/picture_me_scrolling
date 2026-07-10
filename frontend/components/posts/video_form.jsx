@@ -7,7 +7,7 @@ import { usePostFormProps } from './post_form_hooks';
 
 const VideoForm = () => {
   const createMediaPostMutation = useCreateMediaPost();
-  const { clearErrors, createMediaPost, currentUser, errors } = usePostFormProps(createMediaPostMutation);
+  const { clearErrors, createMediaPost, currentUser, errors, isSubmitting } = usePostFormProps(createMediaPostMutation);
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -54,7 +54,9 @@ const VideoForm = () => {
     formData.append('post[body]', body);
     formData.append('post[image]', videoFile);
 
-    createMediaPost(formData).then(closeModal);
+    createMediaPost(formData).then(result => {
+      if (result) closeModal();
+    });
   };
 
   return (
@@ -108,7 +110,7 @@ const VideoForm = () => {
                  <div className="submit-form">
                    <FormErrors errors={ errors } />
                    <ModalButtonFooter
-                     disabled={ !videoFile }
+                     disabled={ !videoFile || isSubmitting }
                      onClose={ closeModal }
                      onSubmit={ handleSubmit }
                    />
