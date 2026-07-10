@@ -8,7 +8,7 @@ import { usePostFormProps } from './post_form_hooks';
 
 const LinkForm = () => {
   const createPostMutation = useCreatePost();
-  const { clearErrors, createPost, currentUser, errors } = usePostFormProps(createPostMutation);
+  const { clearErrors, createPost, currentUser, errors, isSubmitting } = usePostFormProps(createPostMutation);
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -46,7 +46,9 @@ const LinkForm = () => {
       post_type: 'link'
     };
 
-    createPost(post).then(closeModal);
+    createPost(post).then(result => {
+      if (result) closeModal();
+    });
   };
 
   return (
@@ -95,7 +97,7 @@ const LinkForm = () => {
                  <div className="submit-form">
                    <FormErrors errors={ [...linkErrors, ...errors] } />
                    <ModalButtonFooter
-                     disabled={ !url }
+                     disabled={ !url || isSubmitting }
                      onClose={ closeModal }
                      onSubmit={ handleSubmit }
                    />

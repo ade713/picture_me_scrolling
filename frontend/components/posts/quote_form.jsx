@@ -7,7 +7,7 @@ import { usePostFormProps } from './post_form_hooks';
 
 const QuoteForm = () => {
   const createPostMutation = useCreatePost();
-  const { clearErrors, createPost, currentUser, errors } = usePostFormProps(createPostMutation);
+  const { clearErrors, createPost, currentUser, errors, isSubmitting } = usePostFormProps(createPostMutation);
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -34,7 +34,9 @@ const QuoteForm = () => {
       post_type: 'quote'
     };
 
-    createPost(post).then(closeModal);
+    createPost(post).then(result => {
+      if (result) closeModal();
+    });
   };
 
   return (
@@ -77,7 +79,7 @@ const QuoteForm = () => {
                  <div className="submit-form">
                    <FormErrors errors={ errors } />
                    <ModalButtonFooter
-                     disabled={ !title }
+                     disabled={ !title || isSubmitting }
                      onClose={ closeModal }
                      onSubmit={ handleSubmit }
                    />
