@@ -62,16 +62,11 @@ Recommended fix:
 - Keep the generic error wording so the app does not reveal which credential was wrong.
 - Clear stale auth errors when switching between Log In and Sign Up modes.
 
+## Addressed Follow-Ups
+
 ### Duplicate Post Submissions
 
-Users can create multiple posts from the same modal request by clicking the Post button repeatedly before the create request finishes.
-
-Recommended fix:
-
-- Disable the modal Post button while the create mutation is pending.
-- Add a submit-handler guard so repeated clicks do nothing while a request is in flight.
-- Optionally show Posting... while the request is pending.
-- Apply the behavior consistently across text, quote, link, photo, audio, and video post forms.
+Addressed in PR #100 by guarding create post submissions and edit modal saves while requests are pending. The Post and Save buttons now disable during in-flight requests, and repeated rapid clicks are blocked with a submit-handler guard.
 
 ## Remaining Production Smoke Checks
 
@@ -79,7 +74,6 @@ Recommended fix:
 
 ## Follow-Up Candidate PRs
 
-- Prevent duplicate post submissions from repeated Post button clicks.
 - Dedupe repeated auth/login errors so invalid credentials show one message.
 - Clear stale auth errors when toggling between Log In and Sign Up.
 - Add recommended-user seed posts that visibly prove follow-driven feed updates.
