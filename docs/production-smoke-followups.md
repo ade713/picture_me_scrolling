@@ -41,16 +41,6 @@ Recommended fix:
 - Confirm newly signed-up users render with the fallback image in recommended users and feed items.
 - Keep uploaded avatars preferred over the default image.
 
-### Audio Post Player Spacing
-
-Audio posts have too much empty vertical space above the audio player bar, making the post card feel unbalanced. The audio body layout should reduce the top spacing while keeping the player, caption, likes, and owner controls readable.
-
-Recommended fix:
-
-- Adjust audio post body spacing so the player sits closer to the author row.
-- Confirm spacing still works for captions, owner controls, and responsive feed widths.
-- Keep media controls usable on desktop and mobile.
-
 ## Addressed Follow-Ups
 
 ### Duplicate Post Submissions
@@ -61,6 +51,10 @@ Addressed in PR #100 by guarding create post submissions and edit modal saves wh
 
 Addressed in PR #101 by deduping rendered auth errors and resetting login/signup mutation errors when switching between Log In and Sign Up modes. Invalid credentials now show one generic error message, and stale auth errors clear when the auth mode changes.
 
+### Audio Post Player Spacing
+
+Addressed in PR #102 by rendering audio posts with the native audio element and removing stale video-era sizing. Audio posts now sit closer to the author row, keep a small gap before the caption, and avoid excess empty space below the footer.
+
 ## Remaining Production Smoke Checks
 
 - None at this time.
@@ -69,7 +63,6 @@ Addressed in PR #101 by deduping rendered auth errors and resetting login/signup
 
 - Add recommended-user seed posts that visibly prove follow-driven feed updates.
 - Add a default profile image fallback for users without uploaded avatars.
-- Tighten excess spacing above audio players in audio post cards.
 - Add production-safe demo seed task if manual production seeding becomes repetitive.
 - Add Render production smoke checklist updates after the full smoke pass is complete.
 
