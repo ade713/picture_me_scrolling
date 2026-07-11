@@ -14,10 +14,6 @@ div.post-link-main {
   }
 }
 
-div.post-audio {
-  min-height: 249px;
-}
-
 div.post-photo {
   min-height: 430px;
 }
@@ -68,15 +64,15 @@ div.post-upload-video {
   width: 100%;
 }
 
-div.post-upload-audio video,
+div.post-upload-audio audio,
 div.post-upload-photo img,
 div.post-upload-video video {
   display: block;
   width: 100%;
 }
 
-div.post-upload-audio video {
-  height: 120px;
+div.post-upload-audio audio {
+  margin-bottom: 10px;
 }
 
 div.post-upload-photo img,
@@ -85,7 +81,6 @@ div.post-upload-video video {
 }
 
 @include mobile {
-  div.post-audio,
   div.post-photo,
   div.post-video,
   div.post-quote,

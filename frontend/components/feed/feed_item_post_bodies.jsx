@@ -6,9 +6,9 @@ export const AudioPost = ({ footer, header, post }) => (
   <div className="post-audio">
     { header }
     <div className="post-upload-audio">
-      <video controls preload="metadata">
+      <audio controls preload="metadata">
         <source src={ post.image_url } />
-      </video>
+      </audio>
     </div>
     <div className="post-caption">
       { post.title }

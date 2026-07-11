@@ -53,6 +53,7 @@ const bodyCases = [
   },
   {
     assertions: container => {
+      expect(container.querySelector('.post-upload-audio audio')).toBeInTheDocument();
       expect(container.querySelector('.post-upload-audio source')).toHaveAttribute(
         'src',
         '/uploads/post-media.png'
