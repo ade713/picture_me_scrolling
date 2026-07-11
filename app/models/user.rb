@@ -11,6 +11,8 @@
 #
 
 class User < ApplicationRecord
+  DEFAULT_AVATAR_IMAGE = 'profile_blue_150x150.png'.freeze
+
   validates :username,
             :password_digest,
             :session_token,

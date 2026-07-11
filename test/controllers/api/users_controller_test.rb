@@ -6,6 +6,8 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
     Follow.delete_all
     Post.delete_all
     User.delete_all
+    ActiveStorage::Attachment.delete_all
+    ActiveStorage::Blob.delete_all
   end
 
   test 'create signs up a user, logs them in, and returns the user payload' do
@@ -21,7 +23,7 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal 'new_user', response_json['username']
     assert response_json['id'].present?
-    assert response_json.key?('avatar_url')
+    assert_includes response_json['avatar_url'], default_avatar_name
   end
 
   test 'create returns validation errors for invalid signup params' do
@@ -85,7 +87,10 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
       recommended_user.username,
       response_json.dig(recommended_user.id.to_s, 'username')
     )
-    assert response_json.dig(recommended_user.id.to_s).key?('avatar_url')
+    assert_includes(
+      response_json.dig(recommended_user.id.to_s, 'avatar_url'),
+      default_avatar_name
+    )
   end
 
   test 'show requires login' do
@@ -107,7 +112,20 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal user.id, response_json['id']
     assert_equal user.username, response_json['username']
-    assert response_json.key?('avatar_url')
+    assert_includes response_json['avatar_url'], default_avatar_name
+  end
+
+  test 'show prefers an attached avatar over the default profile image' do
+    viewer = create_user('viewer')
+    user = create_user('visible_user')
+    user.avatar.attach(uploaded_avatar)
+
+    login_as(viewer)
+    get api_user_url(user)
+
+    assert_response :success
+    assert_includes response_json['avatar_url'], 'test-image.svg'
+    refute_includes response_json['avatar_url'], default_avatar_name
   end
 
   private
@@ -130,5 +148,16 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
 
   def response_json
     JSON.parse(response.body)
+  end
+
+  def uploaded_avatar
+    Rack::Test::UploadedFile.new(
+      Rails.root.join('test/fixtures/files/test-image.svg'),
+      'image/svg+xml'
+    )
+  end
+
+  def default_avatar_name
+    File.basename(User::DEFAULT_AVATAR_IMAGE, '.*')
   end
 end

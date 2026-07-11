@@ -1,3 +1,2 @@
 json.extract! user, :id, :username
-json.avatar_url user.avatar.attached? ? url_for(user.avatar) : nil
-
+json.avatar_url avatar_url_for(user)
