@@ -31,16 +31,6 @@ Recommended fix:
 - Make sure at least some recommended-user posts are outside the guest feed until the user is followed.
 - Re-run the production follow/unfollow smoke check after seeding.
 
-### Default Profile Image For New Users
-
-Newly created profiles should have a default avatar/profile image when the user has not uploaded one. This keeps recommended users, feed items, and account surfaces from showing broken or empty avatar states in production.
-
-Recommended fix:
-
-- Add a default avatar fallback in the user JSON/view layer or Active Storage URL helper.
-- Confirm newly signed-up users render with the fallback image in recommended users and feed items.
-- Keep uploaded avatars preferred over the default image.
-
 ## Addressed Follow-Ups
 
 ### Duplicate Post Submissions
@@ -55,6 +45,10 @@ Addressed in PR #101 by deduping rendered auth errors and resetting login/signup
 
 Addressed in PR #102 by rendering audio posts with the native audio element and removing stale video-era sizing. Audio posts now sit closer to the author row, keep a small gap before the caption, and avoid excess empty space below the footer.
 
+### Default Profile Image For New Users
+
+Addressed in PR #103 by adding a shared default avatar fallback for user payloads and feed post author payloads. New profiles without uploaded avatars now render a default profile image, while uploaded avatars remain preferred when present.
+
 ## Remaining Production Smoke Checks
 
 - None at this time.
@@ -62,7 +56,6 @@ Addressed in PR #102 by rendering audio posts with the native audio element and 
 ## Follow-Up Candidate PRs
 
 - Add recommended-user seed posts that visibly prove follow-driven feed updates.
-- Add a default profile image fallback for users without uploaded avatars.
 - Add production-safe demo seed task if manual production seeding becomes repetitive.
 - Add Render production smoke checklist updates after the full smoke pass is complete.
 

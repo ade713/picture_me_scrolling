@@ -12,7 +12,7 @@ else
   )
 end
 
-json.author_avatar post.author.avatar.attached? ? url_for(post.author.avatar) : nil
+json.author_avatar avatar_url_for(post.author)
 post_like_count = if @post_like_counts
                     @post_like_counts.fetch(post.id, 0)
                   else

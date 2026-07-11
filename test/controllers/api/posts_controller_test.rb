@@ -123,7 +123,7 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_equal false, response_json['liked']
     assert_equal 0, response_json['likes']
     assert response_json.key?('image_url')
-    assert response_json.key?('author_avatar')
+    assert_includes response_json['author_avatar'], default_avatar_name
   end
 
   test 'create requires login' do
@@ -333,5 +333,9 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
       Rails.root.join('test/fixtures/files/test-image.svg'),
       'image/svg+xml'
     )
+  end
+
+  def default_avatar_name
+    File.basename(User::DEFAULT_AVATAR_IMAGE, '.*')
   end
 end
