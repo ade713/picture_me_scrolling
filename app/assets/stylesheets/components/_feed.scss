@@ -187,6 +187,62 @@ button.load-more-posts:disabled {
   cursor: wait;
 }
 
+.delete-post-confirmation {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background-color: rgba(0, 0, 0, 0.35);
+}
+
+.delete-post-confirmation-panel {
+  width: min(360px, 100%);
+  border: 1px solid black;
+  border-radius: 3px;
+  padding: 24px;
+  background-color: white;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.24);
+
+  h2 {
+    margin-bottom: 12px;
+    font-size: 28px;
+  }
+
+  p {
+    margin-bottom: 20px;
+    line-height: 1.4;
+  }
+}
+
+.delete-post-confirmation-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+
+  button {
+    min-width: 72px;
+    min-height: 36px;
+    border: 1px solid black;
+    border-radius: 3px;
+    padding: 6px 12px;
+    font-weight: bold;
+  }
+}
+
+.delete-post-confirm-btn {
+  background-color: black;
+  color: white;
+}
+
+.delete-post-cancel-btn {
+  background-color: white;
+  color: black;
+}
+
 @include mobile {
   div.post-header,
   div.post-footer {

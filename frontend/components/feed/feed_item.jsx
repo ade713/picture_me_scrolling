@@ -12,7 +12,8 @@ import { AudioPost,
          QuotePost,
          TextPost,
          VideoPost } from './feed_item_post_bodies';
-import { PostFooter,
+import { DeletePostConfirmation,
+         PostFooter,
          PostFrame,
          PostHeader } from './feed_item_parts';
 import EditPostForm from '../posts/edit_post_form';
@@ -34,7 +35,15 @@ const FeedItem = ({ post, priorityMedia = false }) => {
   const unfollowUser = useUnfollowUser();
   const unlikePost = useUnlikePost();
   const [editingPost, setEditingPost] = useState(null);
+  const [deleteConfirmationPost, setDeleteConfirmationPost] = useState(null);
   const isAuthor = Boolean(currentUser.data) && post.author_id === currentUser.data.id;
+
+  const closeDeleteConfirmation = () => setDeleteConfirmationPost(null);
+
+  const confirmDeletePost = () => {
+    deletePost.mutate(deleteConfirmationPost);
+    closeDeleteConfirmation();
+  };
 
   const postHeader = (
     <PostHeader
@@ -48,7 +57,7 @@ const FeedItem = ({ post, priorityMedia = false }) => {
   const postFooter = (
     <PostFooter
       isAuthor={ isAuthor }
-      onDelete={ deletedPost => deletePost.mutate(deletedPost) }
+      onDelete={ deletedPost => setDeleteConfirmationPost(deletedPost) }
       onEdit={ editedPost => setEditingPost(editedPost) }
       onLike={ id => likePost.mutate(id) }
       onUnlike={ id => unlikePost.mutate(id) }
@@ -72,6 +81,13 @@ const FeedItem = ({ post, priorityMedia = false }) => {
           isOpen={ Boolean(editingPost) }
           onClose={ () => setEditingPost(null) }
           post={ editingPost }
+        />
+      ) }
+      { deleteConfirmationPost && (
+        <DeletePostConfirmation
+          onCancel={ closeDeleteConfirmation }
+          onConfirm={ confirmDeletePost }
+          post={ deleteConfirmationPost }
         />
       ) }
     </PostFrame>
