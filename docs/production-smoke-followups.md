@@ -49,7 +49,8 @@ Addressed in PR #103 by adding a shared default avatar fallback for user payload
 
 ## Follow-Up Candidate PRs
 
-- Add production-safe demo seed task if manual production seeding becomes repetitive.
+- Keep using manual `RAILS_ENV=production bin/rails db:seed` while production is pre-announcement and has no real user data to preserve.
+- Add a production-safe demo seed task before broader release or once manual production seeding would risk deleting real user content.
 - Add Render production smoke checklist updates after the full smoke pass is complete.
 
 ## Future To-Dos After Issue Fixes
