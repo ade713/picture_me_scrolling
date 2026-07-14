@@ -89,8 +89,7 @@ describe('FeedItem actions', () => {
     expect(unlikePost.mutate).toHaveBeenCalledWith(basePost.id);
   });
 
-  it('shows delete controls only for the current user posts', async () => {
-    const user = userEvent.setup();
+  it('shows delete controls only for the current user posts', () => {
     const authoredPost = {
       ...basePost,
       author_id: currentUser.id
@@ -102,13 +101,45 @@ describe('FeedItem actions', () => {
     expect(screen.getByRole('button', { name: editPostButtonName })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: deletePostButtonName })).toBeInTheDocument();
 
-    await user.click(screen.getByRole('button', { name: deletePostButtonName }));
-
-    expect(deletePost.mutate).toHaveBeenCalledWith(authoredPost);
-
     rerender(feedItemElement(basePost));
 
     expect(screen.queryByRole('button', { name: deletePostButtonName })).not.toBeInTheDocument();
+  });
+
+  it('requires confirmation before deleting current user posts', async () => {
+    const user = userEvent.setup();
+    const authoredPost = {
+      ...basePost,
+      author_id: currentUser.id
+    };
+
+    renderFeedItem(authoredPost);
+
+    await user.click(screen.getByRole('button', { name: deletePostButtonName }));
+
+    expect(screen.getByRole('dialog', { name: 'Delete post?' })).toBeInTheDocument();
+    expect(deletePost.mutate).not.toHaveBeenCalled();
+
+    await user.click(screen.getByRole('button', { name: 'Yes' }));
+
+    expect(deletePost.mutate).toHaveBeenCalledWith(authoredPost);
+    expect(screen.queryByRole('dialog', { name: 'Delete post?' })).not.toBeInTheDocument();
+  });
+
+  it('cancels delete confirmation without deleting the post', async () => {
+    const user = userEvent.setup();
+    const authoredPost = {
+      ...basePost,
+      author_id: currentUser.id
+    };
+
+    renderFeedItem(authoredPost);
+
+    await user.click(screen.getByRole('button', { name: deletePostButtonName }));
+    await user.click(screen.getByRole('button', { name: 'No' }));
+
+    expect(deletePost.mutate).not.toHaveBeenCalled();
+    expect(screen.queryByRole('dialog', { name: 'Delete post?' })).not.toBeInTheDocument();
   });
 
   it('opens the edit modal and submits updated text post fields', async () => {

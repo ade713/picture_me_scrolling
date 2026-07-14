@@ -122,6 +122,37 @@ export const PostFooter = ({ isAuthor, onDelete, onEdit, onLike, onUnlike, post 
   </div>
 );
 
+export const DeletePostConfirmation = ({ onCancel, onConfirm, post }) => {
+  const titleId = `delete-post-confirmation-title-${post.id}`;
+
+  return (
+    <div
+      aria-labelledby={ titleId }
+      aria-modal="true"
+      className="delete-post-confirmation"
+      role="dialog">
+      <div className="delete-post-confirmation-panel">
+        <h2 id={ titleId }>Delete post?</h2>
+        <p>
+          Are you sure you want to delete { postActionLabel(post) }?
+        </p>
+        <div className="delete-post-confirmation-actions">
+          <button
+            className="delete-post-cancel-btn"
+            onClick={ onCancel }>
+            No
+          </button>
+          <button
+            className="delete-post-confirm-btn"
+            onClick={ onConfirm }>
+            Yes
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export const PostFrame = ({ children, post, priorityMedia = false }) => (
   <li className="feed-post">
     <img
