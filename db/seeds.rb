@@ -89,7 +89,7 @@ create_post!(author_id: fozzie.id, title: "Picmes is AWESOME! =D #WakaWaka", pos
 # Follow relationships keep local feed behavior predictable:
 # - the guest starts with followed posts in the feed
 # - recommended users still include users with posts, like DarkHadouMaster
-# - recommended users still include users without posts, like Ryu
+# - recommended users have posts that become visible after follow actions
 create_follow!(follower: guest_user1, followee: starwars)
 create_follow!(follower: guest_user1, followee: starks)
 
@@ -163,6 +163,18 @@ performance_users.each_with_index do |user, user_index|
     end
   end
 end
+
+# These unfollowed users appear early in the guest's recommended users list.
+# Creating their posts after the performance data makes follow-driven feed
+# updates easier to confirm near the top of the feed during smoke testing.
+create_post!(author_id: ryu.id, title: "Back to training", body: "A quiet morning before the next match.", post_type: 'text')
+create_post!(author_id: ryu.id, title: "Frame data notes", url: 'https://wiki.supercombo.gg/w/Street_Fighter_6/Ryu', post_type: 'link')
+create_post!(author_id: bobsburger.id, title: "Burger of the day", body: "The Smoke Test Swiss is back on the board.", post_type: 'text')
+create_post!(author_id: bobsburger.id, title: "Recipe inspiration", url: 'https://www.seriouseats.com/hamburger-recipes-5117825', post_type: 'link')
+create_post!(author_id: rick.id, title: "Portal notes", body: "- Garage Lab", post_type: 'quote')
+create_post!(author_id: rick.id, title: "Dimension C-137 checklist", body: "Calibrate portal fluid before touching production.", post_type: 'text')
+create_post!(author_id: morty.id, title: "Aw geez, another timeline", body: "Trying to keep the dashboard stable.", post_type: 'text')
+create_post!(author_id: morty.id, title: "Study guide for chaos", url: 'https://en.wikipedia.org/wiki/Butterfly_effect', post_type: 'link')
 
 performance_users.each do |user|
   create_follow!(follower: guest_user1, followee: user)
