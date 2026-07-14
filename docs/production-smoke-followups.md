@@ -21,17 +21,11 @@ Keep this list focused on behavior that should be fixed before a broader release
 
 ## Bugs / Buggy Behavior
 
+## Addressed Follow-Ups
+
 ### Recommended User Follow Feed Coverage
 
-Production/demo seed data should include posts authored by recommended users so following a recommended user visibly changes the feed. This can likely be addressed in `db/seeds.rb` by ensuring each recommended/demo user has at least one recent post that is not already visible to the guest before follow.
-
-Recommended fix:
-
-- Add or verify seeded posts for recommended users.
-- Make sure at least some recommended-user posts are outside the guest feed until the user is followed.
-- Re-run the production follow/unfollow smoke check after seeding.
-
-## Addressed Follow-Ups
+Addressed by the recommended-user feed seed coverage PR by adding recent lightweight text, quote, and link posts for early recommended users. Those posts are created after performance seed posts so following recommended users should visibly update the guest feed near the top during smoke testing.
 
 ### Duplicate Post Submissions
 
@@ -55,7 +49,6 @@ Addressed in PR #103 by adding a shared default avatar fallback for user payload
 
 ## Follow-Up Candidate PRs
 
-- Add recommended-user seed posts that visibly prove follow-driven feed updates.
 - Add production-safe demo seed task if manual production seeding becomes repetitive.
 - Add Render production smoke checklist updates after the full smoke pass is complete.
 
