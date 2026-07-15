@@ -43,6 +43,14 @@ Addressed in PR #102 by rendering audio posts with the native audio element and 
 
 Addressed in PR #103 by adding a shared default avatar fallback for user payloads and feed post author payloads. New profiles without uploaded avatars now render a default profile image, while uploaded avatars remain preferred when present.
 
+### Delete Confirmation
+
+Addressed in PR #105 by adding a confirmation dialog before authored posts are deleted. Delete mutations now run only after the user confirms the destructive action.
+
+### Icon Action Accessibility And Hover States
+
+Addressed in PR #106 by adding accessible labels and native title tooltips to follow, like/unlike, edit, delete, recommended-user follow, GitHub, and LinkedIn icon actions. The PR also added clearer hover/focus states and centered icon buttons.
+
 ## Remaining Production Smoke Checks
 
 - None at this time.
@@ -56,6 +64,3 @@ Addressed in PR #103 by adding a shared default avatar fallback for user payload
 ## Future To-Dos After Issue Fixes
 
 - Add profile/settings features so users can choose or update profile pictures/thumbnails. This could also include profile account management such as password updates.
-- Add a small pop-up or modal confirmation with Yes/No actions after clicking delete post.
-- Add hover indication for edit and highlight/like buttons so interactive controls feel clearer.
-- Add accessible labels and lightweight custom tooltips for clickable icon actions, including follow, like/unlike, edit, delete, and social links where helpful.
