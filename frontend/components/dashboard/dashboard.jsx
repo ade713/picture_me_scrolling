@@ -27,17 +27,21 @@ const Dashboard = () => {
           <RecommendedUsers />
           <footer className="dash-right-footer">
             <a
+              aria-label="GitHub profile"
               href="https://github.com/ade713"
               target="_blank"
-              rel="noopener noreferrer">
+              rel="noopener noreferrer"
+              title="GitHub profile">
               <i
                 className="fa fa-github"
                 aria-hidden="true"></i>
             </a>
             <a
+              aria-label="LinkedIn profile"
               href="https://www.linkedin.com/in/ade-farquhar"
               target="_blank"
-              rel="noopener noreferrer">
+              rel="noopener noreferrer"
+              title="LinkedIn profile">
               <i
                 className="fa fa-linkedin-square"
                 aria-hidden="true"></i>
