@@ -3,6 +3,12 @@ import React from 'react';
 import { imageLoadingProps } from '../../util/media_loading_util';
 
 const postActionLabel = post => post.title || `post by ${post.author}`;
+const followActionLabel = post => `Follow ${post.author}`;
+const unfollowActionLabel = post => `Unfollow ${post.author}`;
+const likeActionLabel = post => `Like ${postActionLabel(post)}`;
+const unlikeActionLabel = post => `Unlike ${postActionLabel(post)}`;
+const editActionLabel = post => `Edit ${postActionLabel(post)}`;
+const deleteActionLabel = post => `Delete ${postActionLabel(post)}`;
 
 export const FollowButton = ({ isAuthor, onFollow, onUnfollow, post }) => {
   if (isAuthor) {
@@ -12,8 +18,10 @@ export const FollowButton = ({ isAuthor, onFollow, onUnfollow, post }) => {
   if (post.followed) {
     return (
       <button
+        aria-label={ unfollowActionLabel(post) }
         className="unfollow-btn"
-        onClick={ () => onUnfollow(post.author_id) }>
+        onClick={ () => onUnfollow(post.author_id) }
+        title={ unfollowActionLabel(post) }>
         Unfollow
       </button>
     );
@@ -21,8 +29,10 @@ export const FollowButton = ({ isAuthor, onFollow, onUnfollow, post }) => {
 
   return (
     <button
+      aria-label={ followActionLabel(post) }
       className="follow-btn"
-      onClick={ () => onFollow(post.author_id) }>
+      onClick={ () => onFollow(post.author_id) }
+      title={ followActionLabel(post) }>
       Follow
     </button>
   );
@@ -36,9 +46,10 @@ export const LikeButton = ({ isAuthor, onLike, onUnlike, post }) => {
   if (post.liked) {
     return (
       <button
-        aria-label={ `Unlike ${postActionLabel(post)}` }
+        aria-label={ unlikeActionLabel(post) }
         className="like-btn-on"
-        onClick={ () => onUnlike(post.id) }>
+        onClick={ () => onUnlike(post.id) }
+        title={ unlikeActionLabel(post) }>
         <i className="fa fa-heart fa-2x" aria-hidden="true"></i>
       </button>
     );
@@ -46,9 +57,10 @@ export const LikeButton = ({ isAuthor, onLike, onUnlike, post }) => {
 
   return (
     <button
-      aria-label={ `Like ${postActionLabel(post)}` }
+      aria-label={ likeActionLabel(post) }
       className="like-btn-off"
-      onClick={ () => onLike(post.id) }>
+      onClick={ () => onLike(post.id) }
+      title={ likeActionLabel(post) }>
       <i className="fa fa-heart-o fa-2x" aria-hidden="true"></i>
     </button>
   );
@@ -78,18 +90,20 @@ export const AuthorControls = ({ isAuthor, onDelete, onEdit, post }) => {
   return (
     <>
       <button
-        aria-label={ `Edit ${postActionLabel(post)}` }
+        aria-label={ editActionLabel(post) }
         className="edit-post-btn"
-        onClick={ () => onEdit(post) }>
+        onClick={ () => onEdit(post) }
+        title={ editActionLabel(post) }>
         <i
           className="fa fa-pencil-square-o fa-2x"
           id="edit-btn-icon"
           aria-hidden="true"></i>
       </button>
       <button
-        aria-label={ `Delete ${postActionLabel(post)}` }
+        aria-label={ deleteActionLabel(post) }
         className="delete-post-btn"
-        onClick={ () => onDelete(post) } >
+        onClick={ () => onDelete(post) }
+        title={ deleteActionLabel(post) }>
         <i className="fa fa-trash fa-2x" aria-hidden="true"></i>
       </button>
     </>

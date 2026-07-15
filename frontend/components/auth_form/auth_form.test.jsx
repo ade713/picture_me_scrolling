@@ -67,6 +67,13 @@ describe('AuthForm', () => {
     expect(screen.getByRole('link', { name: 'Log In' })).toHaveAttribute('href', '/');
   });
 
+  it('labels social profile links', () => {
+    renderAuthForm();
+
+    expect(screen.getByRole('link', { name: 'GitHub profile' })).toHaveAttribute('title', 'GitHub profile');
+    expect(screen.getByRole('link', { name: 'LinkedIn profile' })).toHaveAttribute('title', 'LinkedIn profile');
+  });
+
   it('submits login credentials through the login mutation', async () => {
     const user = userEvent.setup();
     renderAuthForm();

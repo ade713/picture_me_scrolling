@@ -101,10 +101,10 @@ const AuthForm = () => {
         </div>
       </div>
       <footer className='auth-footer'>
-        <a href='https://github.com/ade713' target='_blank' rel='noopener noreferrer'>
+        <a aria-label='GitHub profile' href='https://github.com/ade713' target='_blank' rel='noopener noreferrer' title='GitHub profile'>
           <i className='fa fa-github fa-2x' aria-hidden='true'></i>
         </a>
-        <a href='https://www.linkedin.com/in/ade-farquhar-2a66a233' target='_blank' rel='noopener noreferrer'>
+        <a aria-label='LinkedIn profile' href='https://www.linkedin.com/in/ade-farquhar-2a66a233' target='_blank' rel='noopener noreferrer' title='LinkedIn profile'>
           <i className='fa fa-linkedin-square fa-2x' aria-hidden='true'></i>
         </a>
       </footer>

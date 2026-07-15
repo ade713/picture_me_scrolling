@@ -51,12 +51,15 @@ li.rec-user-item {
     justify-content: center;
     min-width: 40px;
     min-height: 40px;
+    padding: 0;
     border-radius: 3px;
+    transition: transform 0.15s ease;
   }
 
   button.follow-user:hover,
-  button.follow-user:focus {
-    color: #CE0063;
+  button.follow-user:focus-visible {
+    box-shadow: 1px 1px 3px lightslategrey;
+    transform: scale(1.08);
   }
 
   button.follow-user:focus-visible {

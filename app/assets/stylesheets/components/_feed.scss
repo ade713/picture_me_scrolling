@@ -56,12 +56,18 @@ div.follow-hdr {
     color: blue;
   }
 
-  button.follow-btn:hover {
-    text-shadow: 2px 2px 4px lightblue;
+  button.follow-btn:hover,
+  button.follow-btn:focus-visible {
+    background-color: rgba(0, 0, 0, 0.01);
+    box-shadow: 1px 1px 3px lightblue;
+    transform: scale(1.08);
   }
 
-  button.unfollow-btn:hover {
-    text-shadow: 2px 2px 4px lightslategrey;
+  button.unfollow-btn:hover,
+  button.unfollow-btn:focus-visible {
+    background-color: rgba(0, 0, 0, 0.01);
+    box-shadow: 1px 1px 3px lightslategrey;
+    transform: scale(1.08);
   }
 }
 
@@ -141,6 +147,31 @@ button.follow-btn,
 button.unfollow-btn {
   min-width: 36px;
   min-height: 36px;
+  padding: 0;
+  border-radius: 3px;
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
+}
+
+button.like-btn-on,
+button.like-btn-off,
+button.edit-post-btn,
+button.delete-post-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  // transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+button.like-btn-on:hover,
+button.like-btn-off:hover,
+button.edit-post-btn:hover,
+button.delete-post-btn:hover {
+  background-color: rgba(0, 0, 0, 0.01);
+  box-shadow: 1px 1px 3px lightslategrey;
+  transform: scale(1.08);
 }
 
 button.like-btn-on:focus-visible,

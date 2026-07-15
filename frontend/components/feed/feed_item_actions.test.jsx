@@ -29,7 +29,9 @@ vi.mock('../../query/user_hooks', () => ({
 
 const editPostButtonName = `Edit ${basePost.title}`;
 const deletePostButtonName = `Delete ${basePost.title}`;
+const followUserButtonName = `Follow ${basePost.author}`;
 const likePostButtonName = `Like ${basePost.title}`;
+const unfollowUserButtonName = `Unfollow ${basePost.author}`;
 const unlikePostButtonName = `Unlike ${basePost.title}`;
 
 describe('FeedItem actions', () => {
@@ -63,13 +65,21 @@ describe('FeedItem actions', () => {
     const user = userEvent.setup();
     const { rerender } = renderFeedItem({ followed: false });
 
-    await user.click(screen.getByRole('button', { name: 'Follow' }));
+    const followButton = screen.getByRole('button', { name: followUserButtonName });
+
+    expect(followButton).toHaveAttribute('title', followUserButtonName);
+
+    await user.click(followButton);
 
     expect(followUser.mutate).toHaveBeenCalledWith(basePost.author_id);
 
     rerender(feedItemElement({ followed: true }));
 
-    await user.click(screen.getByRole('button', { name: 'Unfollow' }));
+    const unfollowButton = screen.getByRole('button', { name: unfollowUserButtonName });
+
+    expect(unfollowButton).toHaveAttribute('title', unfollowUserButtonName);
+
+    await user.click(unfollowButton);
 
     expect(unfollowUser.mutate).toHaveBeenCalledWith(basePost.author_id);
   });
@@ -78,13 +88,21 @@ describe('FeedItem actions', () => {
     const user = userEvent.setup();
     const { rerender } = renderFeedItem({ liked: false });
 
-    await user.click(screen.getByRole('button', { name: likePostButtonName }));
+    const likeButton = screen.getByRole('button', { name: likePostButtonName });
+
+    expect(likeButton).toHaveAttribute('title', likePostButtonName);
+
+    await user.click(likeButton);
 
     expect(likePost.mutate).toHaveBeenCalledWith(basePost.id);
 
     rerender(feedItemElement({ liked: true }));
 
-    await user.click(screen.getByRole('button', { name: unlikePostButtonName }));
+    const unlikeButton = screen.getByRole('button', { name: unlikePostButtonName });
+
+    expect(unlikeButton).toHaveAttribute('title', unlikePostButtonName);
+
+    await user.click(unlikeButton);
 
     expect(unlikePost.mutate).toHaveBeenCalledWith(basePost.id);
   });
@@ -96,10 +114,10 @@ describe('FeedItem actions', () => {
     };
     const { rerender } = renderFeedItem(authoredPost);
 
-    expect(screen.queryByRole('button', { name: 'Follow' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: followUserButtonName })).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: likePostButtonName })).not.toBeInTheDocument();
-    expect(screen.getByRole('button', { name: editPostButtonName })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: deletePostButtonName })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: editPostButtonName })).toHaveAttribute('title', editPostButtonName);
+    expect(screen.getByRole('button', { name: deletePostButtonName })).toHaveAttribute('title', deletePostButtonName);
 
     rerender(feedItemElement(basePost));
 
