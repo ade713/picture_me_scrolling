@@ -1,5 +1,7 @@
 import React from 'react';
 
+const followActionLabel = user => `Follow ${user.username}`;
+
 const RecUserItem = ({ followUser, user }) => (
   <li className="rec-user-item">
     <div className="rec-user-block">
@@ -12,9 +14,10 @@ const RecUserItem = ({ followUser, user }) => (
       </span>
     </div>
     <button
-      aria-label={ `Follow ${user.username}` }
+      aria-label={ followActionLabel(user) }
       className="follow-user"
-      onClick={ () => followUser(user.id) }>
+      onClick={ () => followUser(user.id) }
+      title={ followActionLabel(user) }>
       <i className="fa fa-plus-square" aria-hidden="true"></i>
     </button>
   </li>

@@ -62,7 +62,11 @@ describe('RecommendedUsers', () => {
     const user = userEvent.setup();
     render(<RecommendedUsers />);
 
-    await user.click(screen.getByRole('button', { name: `Follow ${recommendedUsers[1].username}` }));
+    const followButton = screen.getByRole('button', { name: `Follow ${recommendedUsers[1].username}` });
+
+    expect(followButton).toHaveAttribute('title', `Follow ${recommendedUsers[1].username}`);
+
+    await user.click(followButton);
 
     expect(followUser.mutate).toHaveBeenCalledWith(recommendedUsers[1].id);
   });
