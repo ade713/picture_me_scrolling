@@ -791,6 +791,28 @@ track:
 - Backend production readiness and performance should continue as a separate
   production-readiness track.
 
+## Frontend Follow-Up: Accessibility Audit
+
+Status: planned.
+
+Goal: run a full app-wide accessibility audit after the targeted icon-label and
+hover-state fixes.
+
+Scope:
+
+- Keyboard-only navigation across auth, dashboard, feed, post forms, edit modal,
+  delete confirmation, recommended users, and social links.
+- Screen reader labels, landmarks, headings, and icon-only controls.
+- Modal behavior, including focus management, Escape handling, focus return, and
+  background interaction.
+- Color contrast and visible focus states.
+- Form label coverage beyond placeholder text.
+- Automated checks with axe or a similar tool where practical.
+- Manual desktop/mobile smoke pass for accessibility-sensitive flows.
+
+Keep this as its own focused PR/phase so it does not get mixed into visual
+polish or backend production work.
+
 ## Production Readiness Track
 
 This track starts after the frontend modernization phases are complete. It is
