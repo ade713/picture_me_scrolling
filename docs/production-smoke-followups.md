@@ -1,7 +1,8 @@
 # Production Smoke Follow-Ups
 
 Track bugs and rough edges found during the first Render production smoke pass.
-Keep this list focused on behavior that should be fixed before a broader release.
+Keep this list focused on remaining behavior that should be fixed before a
+broader release.
 
 ## Confirmed Working
 
@@ -19,48 +20,40 @@ Keep this list focused on behavior that should be fixed before a broader release
 - Audio posts create and play through S3.
 - Photo posts create and render through S3.
 
-## Bugs / Buggy Behavior
-
-## Addressed Follow-Ups
-
-### Recommended User Follow Feed Coverage
-
-Addressed by the recommended-user feed seed coverage PR by adding recent lightweight text, quote, and link posts for early recommended users. Those posts are created after performance seed posts so following recommended users should visibly update the guest feed near the top during smoke testing.
-
-### Duplicate Post Submissions
-
-Addressed in PR #100 by guarding create post submissions and edit modal saves while requests are pending. The Post and Save buttons now disable during in-flight requests, and repeated rapid clicks are blocked with a submit-handler guard.
-
-### Duplicate Login Error Message
-
-Addressed in PR #101 by deduping rendered auth errors and resetting login/signup mutation errors when switching between Log In and Sign Up modes. Invalid credentials now show one generic error message, and stale auth errors clear when the auth mode changes.
-
-### Audio Post Player Spacing
-
-Addressed in PR #102 by rendering audio posts with the native audio element and removing stale video-era sizing. Audio posts now sit closer to the author row, keep a small gap before the caption, and avoid excess empty space below the footer.
-
-### Default Profile Image For New Users
-
-Addressed in PR #103 by adding a shared default avatar fallback for user payloads and feed post author payloads. New profiles without uploaded avatars now render a default profile image, while uploaded avatars remain preferred when present.
-
-### Delete Confirmation
-
-Addressed in PR #105 by adding a confirmation dialog before authored posts are deleted. Delete mutations now run only after the user confirms the destructive action.
-
-### Icon Action Accessibility And Hover States
-
-Addressed in PR #106 by adding accessible labels and native title tooltips to follow, like/unlike, edit, delete, recommended-user follow, GitHub, and LinkedIn icon actions. The PR also added clearer hover/focus states and centered icon buttons.
-
-## Remaining Production Smoke Checks
+## Open Bugs / Buggy Behavior
 
 - None at this time.
 
-## Follow-Up Candidate PRs
+## Resolved During Production Smoke
 
-- Keep using manual `RAILS_ENV=production bin/rails db:seed` while production is pre-announcement and has no real user data to preserve.
-- Add a production-safe demo seed task before broader release or once manual production seeding would risk deleting real user content.
-- Add Render production smoke checklist updates after the full smoke pass is complete.
+These issues were found during the first Render smoke pass and have since been
+addressed:
 
-## Future To-Dos After Issue Fixes
+- Recommended-user feed coverage now has lightweight seed posts for early
+  recommended users.
+- Duplicate post submissions are guarded during create and edit requests.
+- Duplicate login errors are deduped, and stale auth errors clear when switching
+  auth modes.
+- Audio posts use tighter spacing around the native audio player and caption.
+- New users without uploaded avatars render a default profile image.
+- Authored post deletes require confirmation before the delete mutation runs.
+- Icon-only actions have accessible labels, native title tooltips, and clearer
+  hover/focus states.
+
+## Release Follow-Up PRs
+
+- Add a production-safe demo seed task before broader release or once manual
+  production seeding would risk deleting real user content.
+- Add Render production smoke checklist updates if the current manual notes are
+  not enough for repeated release checks.
+
+## Current Production Seed Approach
+
+While production is pre-announcement and has no real user data to preserve,
+manual `RAILS_ENV=production bin/rails db:seed` is acceptable for refreshing demo
+data. Replace this with a production-safe demo seed task before broader release
+or once real user content must be preserved.
+
+## Future Product To-Dos
 
 - Add profile/settings features so users can choose or update profile pictures/thumbnails. This could also include profile account management such as password updates.
