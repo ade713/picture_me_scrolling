@@ -930,6 +930,7 @@ Recommended PR chunks:
    - run frontend build only if API response contracts are touched
    - document final production-readiness status and remaining deployment
      decisions
+   - closeout notes live in `docs/phase11-backend-closeout.md`
 
 ## Future Build Tooling: Vite
 

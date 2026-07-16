@@ -207,4 +207,4 @@ Future test additions should focus on:
 - feed query extraction preserving response shape
 - index/uniqueness behavior for likes and follows
 - Jbuilder relationship fields after preloading/set-based cleanup
-- health-check endpoint behavior if one is added
+- continued health-check behavior if the endpoint contract changes
