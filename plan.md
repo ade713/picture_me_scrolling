@@ -919,13 +919,12 @@ Recommended PR chunks:
      likes, post create/edit/delete, and media upload/render
    - Render setup notes live in `docs/render-production-setup.md`
 8. Health check and monitoring review:
-   - add or document a lightweight health/status check for production
-   - confirm the health check can verify Rails boot and database reachability
-     without exposing sensitive data
-   - define what production logs and errors need to be visible after release
-   - evaluate monitoring/error-reporting options such as host-provided logs,
-     Sentry, Honeybadger, or Rollbar
-   - document the chosen minimum monitoring approach for launch
+   - add `GET /up` as a lightweight health/status check for production
+   - verify Rails boot and database reachability without exposing sensitive data
+   - return HTTP 503 when the database check fails
+   - document Render logs and metrics as the minimum launch monitoring path
+   - keep external error reporting such as Sentry, Honeybadger, or Rollbar as a
+     later add-on unless production visibility needs grow
 9. Backend closeout and smoke pass:
    - run focused Rails model/controller tests
    - run frontend build only if API response contracts are touched

@@ -53,6 +53,7 @@ Recommended web service settings:
 | Build command | `bin/render-build.sh` |
 | Pre-deploy command | `bin/rails db:migrate` |
 | Start command | `bin/rails server` |
+| Health check path | `/up` |
 | Auto deploy | Enabled after first successful manual deploy |
 
 The pre-deploy command keeps migrations out of the build step. Render supports
@@ -105,9 +106,10 @@ needs. Before launch, confirm:
 5. Trigger the first manual deploy.
 6. Watch the build logs for `npm ci`, `npm run build`, and asset precompile.
 7. Confirm migrations run in the pre-deploy step.
-8. Open the `.onrender.com` URL and run the smoke checks below.
-9. Enable auto deploy after the first successful manual deploy.
-10. Add a custom domain only after the Render URL smoke pass is clean.
+8. Confirm Render can reach the `/up` health check path.
+9. Open the `.onrender.com` URL and run the smoke checks below.
+10. Enable auto deploy after the first successful manual deploy.
+11. Add a custom domain only after the Render URL smoke pass is clean.
 
 ## Post-Deploy Smoke Checks
 
@@ -126,6 +128,6 @@ Run these against the Render URL:
 
 - `render.yaml` can be added later if dashboard-managed services become hard to
   reproduce.
-- Health checks, uptime monitoring, and error reporting remain Phase 11-8.
+- External uptime monitoring and error reporting can be added later if Render logs and metrics are not enough for launch visibility.
 - Web service or database plan upgrades should be driven by Render metrics after
   launch.
