@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root 'static_pages#root'
+  get 'up', to: 'health#show'
 
   namespace :api, defaults: { format: :json } do
     resources :users, only: [:create, :index, :show] do

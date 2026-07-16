@@ -173,8 +173,8 @@ No tracked `.DS_Store` files were found during this inventory pass.
 
 ## Health and Monitoring Findings
 
-There is no dedicated health/status endpoint yet. Phase 11 should either add
-one or document the selected host's health-check strategy.
+Phase 11-8 adds `GET /up` as the dedicated health/status endpoint and documents
+it as the selected Render health-check path.
 
 Useful minimum health behavior:
 

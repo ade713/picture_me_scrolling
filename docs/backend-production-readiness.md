@@ -153,9 +153,14 @@ Before production release:
    and media upload/render.
 9. Confirm logs and errors are visible through the selected monitoring path.
 
+## Health Check And Monitoring
+
+Phase 11-8 adds `GET /up` as the production health endpoint. It returns `{ "status": "ok" }` only after Rails can execute a lightweight database query. If the database check fails, it returns HTTP 503 with `{ "status": "unavailable" }`. The response intentionally avoids secrets, environment names, hostnames, database names, versions, or exception details.
+
+Use Render's built-in logs and metrics as the minimum launch monitoring path. Add external error reporting such as Sentry, Honeybadger, or Rollbar later if production error visibility needs exceed what Render provides.
+
 ## Deferred
 
-- Health check and monitoring setup belongs in Phase 11-8.
 - `render.yaml` remains deferred until repo-managed Render infrastructure is
   clearly useful.
 - Moving all production secrets into Rails credentials can be revisited after
