@@ -42,17 +42,20 @@ addressed:
 
 ## Release Follow-Up PRs
 
-- Add a production-safe demo seed task before broader release or once manual
-  production seeding would risk deleting real user content.
 - Add Render production smoke checklist updates if the current manual notes are
   not enough for repeated release checks.
 
 ## Current Production Seed Approach
 
-While production is pre-announcement and has no real user data to preserve,
-manual `RAILS_ENV=production bin/rails db:seed` is acceptable for refreshing demo
-data. Replace this with a production-safe demo seed task before broader release
-or once real user content must be preserved.
+Use the production-safe demo seed task when demo records need to be refreshed
+without deleting existing production content:
+
+```sh
+RAILS_ENV=production bin/rails demo:seed
+```
+
+The full `RAILS_ENV=production bin/rails db:seed` task remains destructive and
+should only be used before real production data needs to be preserved.
 
 ## Future Product To-Dos
 
