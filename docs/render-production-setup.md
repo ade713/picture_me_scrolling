@@ -124,6 +124,13 @@ Run these against the Render URL:
 - Delete an authored post.
 - Confirm uploaded avatars/media are served from Active Storage/S3 URLs.
 
+## Demo Data Refresh
+
+Use the production-safe demo seed task to create or update the demo account,
+followed feed posts, and recommended-user posts without deleting existing data:
+
+`RAILS_ENV=production bin/rails demo:seed`
+
 ## Deferred
 
 - `render.yaml` can be added later if dashboard-managed services become hard to
