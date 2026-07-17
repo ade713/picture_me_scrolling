@@ -122,6 +122,7 @@ const EditPostForm = ({ isOpen, onClose, post }) => {
         <div className="title-field">
           <textarea
             className="title-input"
+            aria-label={ isLinkPost(post) ? 'Edit link title' : 'Edit post title' }
             placeholder={ titlePlaceholder(post) }
             value={ title }
             onChange={ e => setTitle(e.currentTarget.value) } />
@@ -130,6 +131,7 @@ const EditPostForm = ({ isOpen, onClose, post }) => {
           <div className="post-body">
             <textarea
               className="body-input"
+              aria-label="Edit link URL"
               placeholder="Type or paste Link URL here"
               value={ url }
               onChange={ e => {
@@ -142,6 +144,7 @@ const EditPostForm = ({ isOpen, onClose, post }) => {
           <div className="post-body">
             <textarea
               className="body-input"
+              aria-label={ isQuotePost(post) ? 'Edit quote source' : 'Edit post body' }
               placeholder={ bodyPlaceholder(post) }
               value={ body }
               onChange={ e => setBody(e.currentTarget.value) } />

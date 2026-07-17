@@ -87,12 +87,14 @@ const AudioForm = () => {
 
                    <input className="media-input"
                           type="file"
+                          aria-label="Choose audio file"
                           accept="audio/*"
                           onChange={ handleMedia } />
                  </div>
                  <div className="title-field">
                    <textarea
                      className="title-input"
+                     aria-label="Audio caption"
                      placeholder="Upload Audio/Song above&#10;Add Audio/Song caption here"
                      value={ title }
                      onChange={ e => setTitle(e.currentTarget.value) } />

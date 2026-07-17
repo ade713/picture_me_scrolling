@@ -77,6 +77,7 @@ const LinkForm = () => {
                <div className="post-form">
                  <div className="title-field">
                    <textarea className="title-input"
+                     aria-label="Link title"
                      placeholder="Name/describe link here"
                      value={ title }
                      onChange={ e => setTitle(e.currentTarget.value) } />
@@ -86,6 +87,7 @@ const LinkForm = () => {
                  <div className="post-body">
                    <textarea
                      className="body-input"
+                     aria-label="Link URL"
                      placeholder="Type or paste Link URL here"
                      value={ url }
                      onChange={ e => {

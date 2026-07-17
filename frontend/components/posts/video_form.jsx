@@ -90,12 +90,14 @@ const VideoForm = () => {
                    <input
                      className="media-input"
                      type="file"
+                     aria-label="Choose video file"
                      accept="video/*"
                      onChange={ handleMedia } />
                  </div>
 
                  <div className="title-field">
                    <textarea className="title-input"
+                             aria-label="Video caption"
                              placeholder="Upload Video above&#10;Add Video caption here"
                              value={ title }
                              onChange={ e => setTitle(e.currentTarget.value) } />
