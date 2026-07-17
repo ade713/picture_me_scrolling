@@ -65,6 +65,7 @@ const QuoteForm = () => {
                <div className="quote-post-form">
                  <div className="title-field">
                    <textarea className="title-input"
+                             aria-label="Quote text"
                              placeholder="&quot;Quote&quot;"
                              value={ title }
                              onChange={ e => setTitle(e.currentTarget.value) } />
@@ -72,6 +73,7 @@ const QuoteForm = () => {
                  </div>
                  <div className="post-body">
                    <textarea className="body-input"
+                     aria-label="Quote source"
                      placeholder="- Source"
                      value={ body }
                      onChange={ e => setBody(e.currentTarget.value) } />

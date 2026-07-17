@@ -86,6 +86,7 @@ const PhotoForm = () => {
                  <div className="media-field">
                    <input className="media-input"
                           type="file"
+                          aria-label="Choose photo file"
                           accept="image/*"
                           onChange={ handleMedia } />
                    { imageUrl && (
@@ -97,6 +98,7 @@ const PhotoForm = () => {
 
                  <div className="title-field">
                    <textarea className="title-input"
+                             aria-label="Photo caption"
                              placeholder="Upload Photo above&#10;Add Photo caption here"
                              value={ title }
                              onChange={ e => setTitle(e.currentTarget.value) } />

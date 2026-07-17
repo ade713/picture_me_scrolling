@@ -75,6 +75,8 @@ const AuthForm = () => {
                 <input
                   type='text'
                   value={username}
+                  aria-label='Username'
+                  autoComplete='username'
                   placeholder='Your Username'
                   onChange={(e) => setUsername(e.currentTarget.value)}
                   className='auth-login-input'
@@ -84,6 +86,8 @@ const AuthForm = () => {
                 <input
                   type='password'
                   value={password}
+                  aria-label='Password'
+                  autoComplete={isSignup ? 'new-password' : 'current-password'}
                   placeholder='Your Password'
                   onChange={(e) => setPassword(e.currentTarget.value)}
                   className='auth-login-input'
