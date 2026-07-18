@@ -221,6 +221,12 @@ footer.auth-footer {
   font-size: 24px;
 }
 
+footer.auth-footer a:focus-visible {
+  border-radius: 3px;
+  outline: 3px solid #CE0063;
+  outline-offset: 3px;
+}
+
 footer i {
   display: flex;
   justify-content: flex-end;

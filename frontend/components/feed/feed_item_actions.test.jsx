@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { useDeletePost, useLikePost, useUnlikePost, useUpdatePost } from '../../query/post_hooks';
@@ -153,11 +153,18 @@ describe('FeedItem actions', () => {
 
     renderFeedItem(authoredPost);
 
-    await user.click(screen.getByRole('button', { name: deletePostButtonName }));
-    await user.click(screen.getByRole('button', { name: 'No' }));
+    const deleteButton = screen.getByRole('button', { name: deletePostButtonName });
+
+    await user.click(deleteButton);
+
+    const cancelButton = screen.getByRole('button', { name: 'No' });
+    await waitFor(() => expect(cancelButton).toHaveFocus());
+
+    await user.keyboard('{Escape}');
 
     expect(deletePost.mutate).not.toHaveBeenCalled();
     expect(screen.queryByRole('dialog', { name: 'Delete post?' })).not.toBeInTheDocument();
+    expect(deleteButton).toHaveFocus();
   });
 
   it('opens the edit modal and submits updated text post fields', async () => {

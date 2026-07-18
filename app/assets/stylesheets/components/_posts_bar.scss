@@ -51,6 +51,11 @@ button.post-bar-button:hover {
   transform: scale(1.10);
 }
 
+button.post-bar-button:focus-visible {
+  outline: 3px solid #CE0063;
+  outline-offset: 3px;
+}
+
 div.bar-form-button {
   display: flex;
   justify-content: center;
