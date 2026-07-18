@@ -938,6 +938,28 @@ Recommended PR chunks:
      decisions
    - closeout notes live in `docs/phase11-backend-closeout.md`
 
+## Future Account Recovery: Forgotten Password
+
+Status: planned after the initial profile/settings page.
+
+Goal: allow users who cannot provide their current password to securely reset
+it through a verified recovery channel.
+
+Prerequisites and scope:
+
+- add an email address to user accounts and require email verification
+- provide a forgotten-password request form without revealing whether an
+  account exists
+- issue short-lived, single-use reset tokens and store only token digests
+- deliver reset links through transactional email infrastructure
+- provide a reset page for entering and confirming a new password
+- expire and invalidate tokens after use, password changes, or a newer request
+- rate-limit recovery requests and avoid logging passwords or raw reset tokens
+- add backend, frontend, email-delivery, expiration, and abuse-case tests
+
+Keep this separate from the initial settings-page password form, which should
+continue to require the authenticated user's current password.
+
 ## Future Build Tooling: Vite
 
 Status: planned.
