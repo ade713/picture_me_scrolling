@@ -541,7 +541,7 @@ Recommended PR chunks:
 
 ## Phase 7.5: Frontend Component Behavior Tests
 
-Status: planned.
+Status: complete.
 
 Goal: add a small component-focused frontend test layer to protect important
 React behavior before more UI, CSS, and component cleanup work continues.
@@ -663,7 +663,7 @@ Completed follow-up PRs:
 
 ## Phase 9: Performance and UX Optimization
 
-Status: planned.
+Status: complete.
 
 Goal: make performance improvements intentionally, with measurement where useful,
 instead of mixing them into every modernization PR.
@@ -825,7 +825,7 @@ the Rails backend and production system behavior for release.
 
 ## Phase 11: Backend Production Readiness and Performance
 
-Status: planned.
+Status: complete.
 
 Goal: make the Rails API safer, easier to deploy, and better prepared for
 production traffic without changing frontend response contracts unnecessarily.
