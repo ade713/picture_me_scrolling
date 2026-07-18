@@ -793,12 +793,16 @@ track:
 
 ## Frontend Follow-Up: Accessibility Audit
 
-Status: planned.
+Status: initial pass complete.
 
-Goal: run a full app-wide accessibility audit after the targeted icon-label and
-hover-state fixes.
+Goal: continue app-wide accessibility hardening after the targeted icon-label,
+hover-state, and first audit pass.
 
-Scope:
+The initial audit pass lives in `docs/app-wide-accessibility-audit.md` and added
+low-risk form labels, autocomplete hints, form error live-region semantics, and
+modal footer button types.
+
+Remaining scope:
 
 - Keyboard-only navigation across auth, dashboard, feed, post forms, edit modal,
   delete confirmation, recommended users, and social links.
