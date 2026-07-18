@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { useCreatePost } from '../../query/post_hooks';
@@ -167,6 +167,22 @@ describe('non-media post forms', () => {
     await user.click(screen.getByRole('button', { name: 'Text' }));
 
     expect(screen.getByPlaceholderText('Title')).toHaveValue('');
+  });
+
+  it('closes a post modal with Escape and returns focus to its trigger', async () => {
+    const user = userEvent.setup();
+
+    render(<TextForm />);
+
+    const trigger = screen.getByRole('button', { name: 'Text' });
+    await user.click(trigger);
+
+    expect(screen.getByRole('dialog', { name: 'Text post form' })).toBeInTheDocument();
+
+    await user.keyboard('{Escape}');
+
+    expect(screen.queryByRole('dialog', { name: 'Text post form' })).not.toBeInTheDocument();
+    await waitFor(() => expect(trigger).toHaveFocus());
   });
 
   it('shows a validation error for invalid link URLs', async () => {

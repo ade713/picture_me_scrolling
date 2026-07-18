@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useRef } from 'react';
+import Modal from 'react-modal';
 
 import { imageLoadingProps } from '../../util/media_loading_util';
 
@@ -137,33 +138,37 @@ export const PostFooter = ({ isAuthor, onDelete, onEdit, onLike, onUnlike, post 
 );
 
 export const DeletePostConfirmation = ({ onCancel, onConfirm, post }) => {
-  const titleId = `delete-post-confirmation-title-${post.id}`;
+  const cancelButtonRef = useRef(null);
 
   return (
-    <div
-      aria-labelledby={ titleId }
-      aria-modal="true"
-      className="delete-post-confirmation"
-      role="dialog">
-      <div className="delete-post-confirmation-panel">
-        <h2 id={ titleId }>Delete post?</h2>
-        <p>
-          Are you sure you want to delete { postActionLabel(post) }?
-        </p>
-        <div className="delete-post-confirmation-actions">
-          <button
-            className="delete-post-cancel-btn"
-            onClick={ onCancel }>
-            No
-          </button>
-          <button
-            className="delete-post-confirm-btn"
-            onClick={ onConfirm }>
-            Yes
-          </button>
-        </div>
+    <Modal
+      isOpen
+      contentLabel="Delete post?"
+      className="delete-post-confirmation-panel"
+      overlayClassName="delete-post-confirmation"
+      shouldCloseOnOverlayClick={ false }
+      onAfterOpen={ () => {
+        window.requestAnimationFrame(() => cancelButtonRef.current?.focus());
+      } }
+      onRequestClose={ onCancel }>
+      <h2>Delete post?</h2>
+      <p>
+        Are you sure you want to delete { postActionLabel(post) }?
+      </p>
+      <div className="delete-post-confirmation-actions">
+        <button
+          ref={ cancelButtonRef }
+          className="delete-post-cancel-btn"
+          onClick={ onCancel }>
+          No
+        </button>
+        <button
+          className="delete-post-confirm-btn"
+          onClick={ onConfirm }>
+          Yes
+        </button>
       </div>
-    </div>
+    </Modal>
   );
 };
 

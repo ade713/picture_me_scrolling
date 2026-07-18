@@ -74,6 +74,27 @@ describe('AuthForm', () => {
     expect(screen.getByRole('link', { name: 'LinkedIn profile' })).toHaveAttribute('title', 'LinkedIn profile');
   });
 
+  it('reaches the auth controls in a logical keyboard order', async () => {
+    const user = userEvent.setup();
+
+    renderAuthForm();
+
+    await user.tab();
+    expect(screen.getByRole('link', { name: 'Sign Up' })).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole('textbox', { name: 'Username' })).toHaveFocus();
+    await user.tab();
+    expect(screen.getByLabelText('Password')).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole('button', { name: 'Log In' })).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole('button', { name: 'Guest Log In' })).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole('link', { name: 'GitHub profile' })).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole('link', { name: 'LinkedIn profile' })).toHaveFocus();
+  });
+
   it('submits login credentials through the login mutation', async () => {
     const user = userEvent.setup();
     renderAuthForm();

@@ -230,13 +230,19 @@ button.load-more-posts:disabled {
 }
 
 .delete-post-confirmation-panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  box-sizing: border-box;
   width: min(360px, 100%);
   border: 1px solid black;
   border-radius: 3px;
   padding: 24px;
   background-color: white;
+  font-family: 'Muli', sans-serif;
   text-align: center;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.24);
+  transform: translate(-50%, -50%);
 
   h2 {
     margin-bottom: 12px;
@@ -272,6 +278,12 @@ button.load-more-posts:disabled {
 .delete-post-cancel-btn {
   background-color: white;
   color: black;
+}
+
+.delete-post-confirm-btn:focus-visible,
+.delete-post-cancel-btn:focus-visible {
+  outline: 3px solid #CE0063;
+  outline-offset: 3px;
 }
 
 @include mobile {

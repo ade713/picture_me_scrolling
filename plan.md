@@ -805,10 +805,12 @@ modal footer button types.
 Remaining scope:
 
 - Keyboard-only navigation across auth, dashboard, feed, post forms, edit modal,
-  delete confirmation, recommended users, and social links.
+  delete confirmation, recommended users, and social links. Automated keyboard
+  coverage and focus styling pass complete; repeat the live browser smoke pass
+  when local browser tooling is available.
 - Screen reader labels, landmarks, headings, and icon-only controls.
 - Modal behavior, including focus management, Escape handling, focus return, and
-  background interaction.
+  background interaction. Complete.
 - Color contrast and visible focus states.
 - Form label coverage beyond placeholder text.
 - Automated checks with axe or a similar tool where practical.

@@ -32,19 +32,30 @@ Scanned:
 - GitHub and LinkedIn social links have accessible names and native titles.
 - React Modal is configured with the app root in production entry code and test
   helpers.
-- Delete confirmation has dialog semantics and labeled confirm/cancel actions.
+- Delete confirmation uses React Modal with labeled confirm/cancel actions,
+  initial focus on the safe action, Escape handling, focus containment, and
+  focus return.
 
 ## Remaining Follow-Ups
 
-- Review custom delete-confirmation focus management: focus should move into the
-  dialog, Escape should close if supported, and focus should return to the
-  delete button after cancellation/confirmation.
 - Consider adding an automated axe/Vitest accessibility smoke test once the
   dependency choice is made.
-- Do a manual keyboard-only smoke pass in browser for auth, dashboard, create,
-  edit, delete confirmation, follow, like, and load-more flows.
+- Repeat the manual keyboard-only browser smoke pass when local browser tooling
+  is available. Automated keyboard coverage now protects auth tab order, create
+  modal Escape/focus return, and delete-confirmation initial focus, Escape, and
+  focus return.
 - Review heading levels on the auth marketing copy; multiple visual `h1`
   elements may be noisy for screen-reader navigation.
+
+## Keyboard and Modal Focus Follow-Up
+
+- Added visible focus indicators for post-type controls, delete-confirmation
+  actions, and logged-out social links.
+- Added focused keyboard regression tests for auth control order and modal
+  Escape/focus-return behavior.
+- The live browser smoke pass could not run in this workspace because the local
+  browser-control connection was unavailable. The frontend component suite and
+  production build completed successfully.
 
 ## Verification
 
