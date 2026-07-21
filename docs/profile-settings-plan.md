@@ -121,6 +121,8 @@ frontend/components/settings/
 - Require a file.
 - Accept JPEG, PNG, WebP, and GIF raster images.
 - Reject SVG uploads because SVG can contain executable content.
+- Validate the decoded image content rather than trusting only its filename,
+  extension, or client-provided MIME type.
 - Require equal image width and height in the first version. The frontend may
   reject a known non-square image early for faster feedback, but the server must
   remain the authoritative dimension check.
@@ -133,9 +135,10 @@ crop using `object-fit: cover` or an image-processing variant. Do not silently
 crop non-square files in the first version; explain the square-image requirement
 before file selection and return a clear validation error when it is not met.
 
-The exact server-side dimension-inspection library and validation flow will be
-selected during implementation; detailed square-image handling is deferred for
-now.
+Select the exact server-side image-inspection dependency during the first
+backend PR after checking its Rails, Render, and supported-format compatibility.
+It must authoritatively verify decoded raster content, supported format, file
+size, width, and height. Detailed future cropping behavior remains deferred.
 
 ### Storage cleanup
 
@@ -161,6 +164,12 @@ Synchronous cleanup adds an S3 deletion to the request. If that deletion fails,
 keep the new avatar as the successful account update, log the old blob ID and
 cleanup failure, and leave periodic orphan cleanup as a future operational
 safeguard. Do not expose storage details in the user-facing error output.
+
+An old-object cleanup failure is a partial operational failure, not a failed
+avatar update. Return the successful updated-user response, retain the new
+avatar, and log enough information for later cleanup. Logs may include the user
+ID, previous blob ID or object key, and exception class, but must not include
+signed URLs, credentials, uploaded contents, or other sensitive data.
 
 Never purge the existing avatar before the new attachment has been validated,
 uploaded, and saved. If the new upload fails, the current avatar must remain
@@ -193,6 +202,9 @@ Requirements:
 - Require the current password before accepting a change.
 - Require the new password to satisfy the existing minimum length of six
   characters.
+- Enforce a maximum of 72 bytes because BCrypt ignores password content beyond
+  that boundary. Apply the same maximum consistently to signup and settings
+  password changes so passwords are never silently truncated.
 - Require the new password and confirmation to match.
 - Clear all password fields after a successful update.
 - Never return or log current or new password values.
@@ -256,8 +268,11 @@ Agreed behavior:
 - Keep one shared guest account and do not add a `demo_account` database column
   solely for this exception.
 - Centralize shared-guest identification in one server-side model or policy
-  method using the existing guest-account constant. Do not repeat username
-  comparisons across controllers or components.
+  method. Do not repeat username comparisons across controllers or components.
+- Give the shared-guest username a stable domain-level owner, such as
+  `User::SHARED_GUEST_USERNAME`. The `User` model should not depend on the
+  `DemoSeed` service; instead, demo seeding should reference the user-domain
+  constant.
 - Expose a capability such as `account_settings_enabled` in the current-user
   JSON instead of exposing the username-based rule. The frontend should depend
   on that capability when disabling the forms and showing the explanation.
@@ -315,12 +330,15 @@ page.
 - the correct current password allows a password change
 - an incorrect current password returns `422`
 - short and mismatched new passwords return `422`
+- passwords longer than 72 bytes are rejected without changing the password
 - a failed update leaves the existing password valid
 - a successful update makes the new password valid
 - a valid avatar attaches and appears in returned user JSON
 - replacing an avatar keeps one attachment
 - replacing an avatar purges the previous blob record and stored object
 - missing, oversized, and unsupported avatar files are rejected
+- files whose decoded contents do not match an allowed raster format are
+  rejected
 - non-square avatar images are rejected without replacing the current avatar
 - failed avatar validation preserves the existing avatar
 - guest password and avatar changes are rejected
@@ -359,8 +377,12 @@ page.
 
 1. Account API and security rules:
    - add current-user account routes and controller actions
-   - add password verification and avatar validation
+   - add password verification, including the shared 72-byte maximum
+   - select the server-side image-inspection dependency and add authoritative
+     content, format, size, and square-dimension validation
    - protect the guest account
+   - implement synchronous old-avatar cleanup and its partial-failure logging
+     contract
    - add Rails tests
 2. Settings page and query integration:
    - add the protected route and page structure
