@@ -6,6 +6,10 @@ Rails.application.routes.draw do
     resources :users, only: [:create, :index, :show] do
       resource :follow, only: [:create, :destroy]
     end
+    resource :account, only: [] do
+      patch :avatar
+      patch :password
+    end
     resource :session, only: [:create, :destroy]
     resources :posts, only: [:create, :index, :show, :update, :destroy] do
       resource :like, only: [:create, :destroy]

@@ -2,7 +2,7 @@
 module DemoSeed
   module_function
 
-  GUEST_USERNAME = 'PicMeS Guest'.freeze
+  GUEST_USERNAME = User::SHARED_GUEST_USERNAME
   DEFAULT_PASSWORD = '1Welcome2To3PicMeS'.freeze
   DEMO_PASSWORD = 'pass123'.freeze
 
