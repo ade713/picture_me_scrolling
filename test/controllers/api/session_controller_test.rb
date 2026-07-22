@@ -25,6 +25,7 @@ class Api::SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_equal @user.id, response_json['id']
     assert_equal @user.username, response_json['username']
     assert response_json.key?('avatar_url')
+    assert response_json['account_settings_enabled']
   end
 
   test 'create returns unauthorized for invalid credentials' do

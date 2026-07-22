@@ -12,14 +12,19 @@
 
 class User < ApplicationRecord
   DEFAULT_AVATAR_IMAGE = 'profile_blue_150x150.png'.freeze
+  MAXIMUM_PASSWORD_BYTES = 72
+  SHARED_GUEST_USERNAME = 'PicMeS Guest'.freeze
 
   validates :username,
             :password_digest,
             :session_token,
             presence: true, uniqueness: true
   validates :password, length: { minimum: 6, allow_nil: true }
+  validate :password_within_bcrypt_limit
 
   after_initialize :ensure_session_token!
+  before_destroy :remember_avatar_blob_for_purge
+  after_destroy_commit :purge_destroyed_avatar
 
   has_many :posts,
     primary_key: :id,
@@ -59,7 +64,7 @@ class User < ApplicationRecord
       .limit(limit)
   end
 
-  has_one_attached :avatar
+  has_one_attached :avatar, dependent: :destroy
 
   attr_reader :password
 
@@ -70,6 +75,10 @@ class User < ApplicationRecord
 
   def is_password?(password)
     BCrypt::Password.new(self.password_digest).is_password?(password)
+  end
+
+  def account_settings_enabled?
+    username != SHARED_GUEST_USERNAME
   end
 
   def ensure_session_token!
@@ -88,6 +97,26 @@ class User < ApplicationRecord
   end
 
   private
+
+  def remember_avatar_blob_for_purge
+    @avatar_blob_for_purge = avatar.blob if avatar.attached?
+  end
+
+  def purge_destroyed_avatar
+    @avatar_blob_for_purge&.purge
+  rescue StandardError => error
+    Rails.logger.error(
+      "Destroyed user avatar purge failed user_id=#{id} " \
+      "blob_id=#{@avatar_blob_for_purge&.id} " \
+      "key=#{@avatar_blob_for_purge&.key} error=#{error.class}"
+    )
+  end
+
+  def password_within_bcrypt_limit
+    return unless password && password.bytesize > MAXIMUM_PASSWORD_BYTES
+
+    errors.add(:password, "is too long (maximum is #{MAXIMUM_PASSWORD_BYTES} bytes)")
+  end
 
   def recommended_follow_user_scope
     User

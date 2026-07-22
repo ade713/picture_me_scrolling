@@ -13,6 +13,8 @@
 require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
   setup do
     Follow.delete_all
     User.delete_all
@@ -59,6 +61,45 @@ class UserTest < ActiveSupport::TestCase
     )
 
     assert_empty viewer.recommended_follow_users
+  end
+
+  test "password validation rejects values beyond the bcrypt byte limit" do
+    user = User.new(
+      username: "long_password_user",
+      password: "é" * 37
+    )
+
+    refute user.valid?
+    assert_includes user.errors.full_messages,
+                    "Password is too long (maximum is #{User::MAXIMUM_PASSWORD_BYTES} bytes)"
+  end
+
+  test "account settings are disabled only for the shared guest" do
+    guest = create_user(User::SHARED_GUEST_USERNAME)
+    user = create_user("settings_user")
+
+    refute guest.account_settings_enabled?
+    assert user.account_settings_enabled?
+  end
+
+  test "destroying a user purges the avatar blob and stored object without a job" do
+    user = create_user("avatar_destroy_user")
+    File.open(Rails.root.join("app/assets/images/profile_blue_150x150.png")) do |file|
+      user.avatar.attach(
+        io: file,
+        filename: "avatar.png",
+        content_type: "image/png"
+      )
+    end
+    blob = user.avatar.blob
+    key = blob.key
+
+    assert_no_enqueued_jobs only: ActiveStorage::PurgeJob do
+      user.destroy!
+    end
+
+    refute ActiveStorage::Blob.exists?(blob.id)
+    refute ActiveStorage::Blob.service.exist?(key)
   end
 
   private

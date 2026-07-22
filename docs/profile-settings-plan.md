@@ -135,10 +135,11 @@ crop using `object-fit: cover` or an image-processing variant. Do not silently
 crop non-square files in the first version; explain the square-image requirement
 before file selection and return a clear validation error when it is not met.
 
-Select the exact server-side image-inspection dependency during the first
-backend PR after checking its Rails, Render, and supported-format compatibility.
-It must authoritatively verify decoded raster content, supported format, file
-size, width, and height. Detailed future cropping behavior remains deferred.
+Use the pure-Ruby `fastimage` dependency for the first version. It recognizes
+the agreed raster formats from file content and reads their dimensions without
+adding ImageMagick or libvips deployment requirements. The backend must combine
+that content-derived format and dimension inspection with the upload byte-size
+limit. Detailed future cropping behavior remains deferred.
 
 ### Storage cleanup
 

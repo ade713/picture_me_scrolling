@@ -34,6 +34,9 @@ gem 'annotate'
 gem 'aws-sdk-s3', '~> 1.202'
 
 gem 'figaro'
+
+# Inspect uploaded avatar formats and dimensions without native image tooling.
+gem 'fastimage', '~> 2.4'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
