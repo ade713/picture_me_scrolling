@@ -30,7 +30,6 @@
 
 .settings-brand:focus-visible,
 .settings-back-link:focus-visible,
-.settings-page button:focus-visible,
 .settings-page input:focus-visible {
   outline: 3px solid #CE0063;
   outline-offset: 3px;
@@ -202,13 +201,18 @@
 }
 
 .settings-page button[type='button'] {
-  color: black;
-  background-color: white;
+  color: white;
+  background-color: lightslategrey;
+  border-color: lightslategrey;
 }
 
 .settings-page button:not(:disabled):hover {
-  color: #DE0F01;
-  background-color: white;
+  box-shadow: 2px 2px 4px lightslategrey;
+}
+
+.settings-page button:focus-visible {
+  outline: 2px solid black;
+  outline-offset: 2px;
 }
 
 .settings-page button:disabled,
@@ -216,6 +220,11 @@
 .settings-page input:disabled::file-selector-button {
   cursor: not-allowed;
   opacity: 0.55;
+}
+
+.settings-page button:disabled {
+  background-color: lightslategrey;
+  border-color: lightslategrey;
 }
 
 .settings-errors,
