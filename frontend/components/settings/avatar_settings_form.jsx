@@ -1,6 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { useUpdateAvatar } from '../../query/account_hooks';
+import useAvatarPreview from './use_avatar_preview';
 
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -12,65 +13,28 @@ const ACCEPTED_IMAGE_TYPES = [
 const AvatarSettingsForm = ({ disabled = false, username }) => {
   const updateAvatar = useUpdateAvatar();
   const fileInputRef = useRef(null);
-  const previewUrlRef = useRef(null);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
-  const [isCheckingDimensions, setIsCheckingDimensions] = useState(false);
-  const [validationError, setValidationError] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
+  const {
+    selectedFile,
+    previewUrl,
+    isCheckingDimensions,
+    validationError,
+    clearSelection,
+    markPreviewUnreadable,
+    selectFile,
+    validateDimensions
+  } = useAvatarPreview();
 
-  const revokePreviewUrl = () => {
-    if (!previewUrlRef.current) return;
-
-    URL.revokeObjectURL(previewUrlRef.current);
-    previewUrlRef.current = null;
-  };
-
-  const clearSelection = () => {
-    revokePreviewUrl();
-    setSelectedFile(null);
-    setPreviewUrl(null);
-    setIsCheckingDimensions(false);
-    setValidationError(null);
+  const resetSelection = () => {
+    clearSelection();
 
     if (fileInputRef.current) fileInputRef.current.value = '';
   };
 
-  useEffect(() => () => revokePreviewUrl(), []);
-
   const handleFileChange = event => {
-    const file = event.target.files[0];
-
-    revokePreviewUrl();
     updateAvatar.reset();
     setSuccessMessage(null);
-    setValidationError(null);
-    setSelectedFile(file || null);
-
-    if (!file) {
-      setPreviewUrl(null);
-      setIsCheckingDimensions(false);
-      return;
-    }
-
-    const objectUrl = URL.createObjectURL(file);
-    previewUrlRef.current = objectUrl;
-    setPreviewUrl(objectUrl);
-    setIsCheckingDimensions(true);
-  };
-
-  const handlePreviewLoad = event => {
-    const { naturalHeight, naturalWidth } = event.currentTarget;
-
-    setIsCheckingDimensions(false);
-    setValidationError(
-      naturalWidth === naturalHeight ? null : 'Avatar must be a square image'
-    );
-  };
-
-  const handlePreviewError = () => {
-    setIsCheckingDimensions(false);
-    setValidationError('Avatar must be a readable image');
+    selectFile(event.target.files[0] || null);
   };
 
   const handleSubmit = event => {
@@ -79,7 +43,7 @@ const AvatarSettingsForm = ({ disabled = false, username }) => {
 
     updateAvatar.mutate(selectedFile, {
       onSuccess: () => {
-        clearSelection();
+        resetSelection();
         setSuccessMessage('Avatar updated successfully');
       }
     });
@@ -102,8 +66,8 @@ const AvatarSettingsForm = ({ disabled = false, username }) => {
         <img
           alt={ `${username} avatar preview` }
           className="settings-avatar-preview"
-          onError={ handlePreviewError }
-          onLoad={ handlePreviewLoad }
+          onError={ markPreviewUnreadable }
+          onLoad={ validateDimensions }
           src={ previewUrl }
         />
       ) }
@@ -133,7 +97,7 @@ const AvatarSettingsForm = ({ disabled = false, username }) => {
           <button
             type="button"
             disabled={ disabled || updateAvatar.isPending }
-            onClick={ clearSelection }>
+            onClick={ resetSelection }>
             Clear selection
           </button>
         ) }
