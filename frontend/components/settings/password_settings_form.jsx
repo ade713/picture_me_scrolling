@@ -48,6 +48,9 @@ const PasswordSettingsForm = ({ disabled = false }) => {
     ...(updatePassword.error?.errors || [])
   ];
   const controlsDisabled = disabled || updatePassword.isPending;
+  const submitDisabled = (
+    controlsDisabled || Object.values(passwords).some(password => password.length === 0)
+  );
 
   return (
     <form className="password-settings-form" onSubmit={ handleSubmit }>
@@ -103,7 +106,7 @@ const PasswordSettingsForm = ({ disabled = false }) => {
 
       { successMessage && <p role="status">{ successMessage }</p> }
 
-      <button type="submit" disabled={ controlsDisabled }>
+      <button type="submit" disabled={ submitDisabled }>
         { updatePassword.isPending ? 'Updating password…' : 'Update password' }
       </button>
     </form>

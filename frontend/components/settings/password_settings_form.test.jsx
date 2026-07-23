@@ -32,6 +32,21 @@ describe('PasswordSettingsForm', () => {
     await user.type(screen.getByLabelText('Confirm new password'), confirmation);
   };
 
+  it('keeps submission disabled until every password field is filled', async () => {
+    const user = userEvent.setup();
+    render(<PasswordSettingsForm />);
+
+    const submit = screen.getByRole('button', { name: 'Update password' });
+    expect(submit).toBeDisabled();
+
+    await user.type(screen.getByLabelText('Current password'), 'old-password');
+    await user.type(screen.getByLabelText('New password'), 'new-password');
+    expect(submit).toBeDisabled();
+
+    await user.type(screen.getByLabelText('Confirm new password'), 'new-password');
+    expect(submit).toBeEnabled();
+  });
+
   it('submits the current and matching new passwords', async () => {
     const user = userEvent.setup();
     render(<PasswordSettingsForm />);

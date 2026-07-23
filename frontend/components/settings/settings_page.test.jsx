@@ -1,5 +1,6 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
 
 import { useUpdateAvatar, useUpdatePassword } from '../../query/account_hooks';
@@ -129,7 +130,8 @@ describe('SettingsPage', () => {
     expect(screen.getByRole('button', { name: 'Update password' })).toBeDisabled();
   });
 
-  it('keeps avatar and password pending states independent', () => {
+  it('keeps avatar and password pending states independent', async () => {
+    const user = userEvent.setup();
     useCurrentUser.mockReturnValue({
       data: {
         id: 1,
@@ -150,6 +152,11 @@ describe('SettingsPage', () => {
     expect(screen.getByLabelText('Choose a new avatar')).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Updating avatar…' })).toBeDisabled();
     expect(screen.getByLabelText('Current password')).toBeEnabled();
+
+    await user.type(screen.getByLabelText('Current password'), 'old-password');
+    await user.type(screen.getByLabelText('New password'), 'new-password');
+    await user.type(screen.getByLabelText('Confirm new password'), 'new-password');
+
     expect(screen.getByRole('button', { name: 'Update password' })).toBeEnabled();
   });
 });
