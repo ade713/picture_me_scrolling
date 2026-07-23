@@ -1,50 +1,64 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
-import { useCurrentUser } from '../../query/session_hooks';
-import AvatarSettingsForm from './avatar_settings_form';
+import { useCurrentUser } from "../../query/session_hooks";
+import AvatarSettingsForm from "./avatar_settings_form";
+import PasswordSettingsForm from "./password_settings_form";
 
 const SettingsPage = () => {
   const currentUser = useCurrentUser().data;
+  const settingsEnabled = currentUser.account_settings_enabled;
 
   return (
-    <div className="settings-page">
-      <header className="settings-nav">
-        <Link className="settings-brand" to="/dashboard">
+    <div className='settings-page'>
+      <header className='settings-nav'>
+        <Link className='settings-brand' to='/dashboard'>
           PicMeS
         </Link>
       </header>
 
-      <main className="settings-main">
-        <div className="settings-panel">
-          <Link className="settings-back-link" to="/dashboard">
+      <main className='settings-main'>
+        <div className='settings-panel'>
+          <Link className='settings-back-link' to='/dashboard'>
             Back to dashboard
           </Link>
 
-          <div className="settings-user-summary">
+          <div className='settings-user-summary'>
             <img
-              alt={ `${currentUser.username} avatar` }
-              className="settings-current-avatar"
-              src={ currentUser.avatar_url }
+              alt={`${currentUser.username} avatar`}
+              className='settings-current-avatar'
+              src={currentUser.avatar_url}
             />
             <div>
               <h1>Settings</h1>
-              <p>{ currentUser.username }</p>
+              <p>{currentUser.username}</p>
             </div>
           </div>
 
-          <section className="settings-section" aria-labelledby="avatar-settings-heading">
-            <h2 id="avatar-settings-heading">Avatar</h2>
+          {!settingsEnabled && (
+            <div className='settings-restriction' role='note'>
+              <strong>Shared account settings are disabled.</strong>
+              <p>
+                This guest account can view settings, but a personal account is required to change an avatar or
+                password.
+              </p>
+            </div>
+          )}
+
+          <section className='settings-section' aria-labelledby='avatar-settings-heading'>
+            <h2 id='avatar-settings-heading'>Avatar</h2>
             <p>Choose a square JPEG, PNG, WebP, or GIF image up to 5 MB.</p>
             <AvatarSettingsForm
-              currentAvatarUrl={ currentUser.avatar_url }
-              username={ currentUser.username }
+              currentAvatarUrl={currentUser.avatar_url}
+              disabled={!settingsEnabled}
+              username={currentUser.username}
             />
           </section>
 
-          <section className="settings-section" aria-labelledby="password-settings-heading">
-            <h2 id="password-settings-heading">Password</h2>
+          <section className='settings-section' aria-labelledby='password-settings-heading'>
+            <h2 id='password-settings-heading'>Password</h2>
             <p>Confirm your current password before choosing a new one.</p>
+            <PasswordSettingsForm disabled={!settingsEnabled} />
           </section>
         </div>
       </main>

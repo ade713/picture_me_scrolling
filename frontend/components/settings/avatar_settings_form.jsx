@@ -9,7 +9,7 @@ const ACCEPTED_IMAGE_TYPES = [
   'image/gif'
 ];
 
-const AvatarSettingsForm = ({ currentAvatarUrl, username }) => {
+const AvatarSettingsForm = ({ currentAvatarUrl, disabled = false, username }) => {
   const updateAvatar = useUpdateAvatar();
   const fileInputRef = useRef(null);
   const previewUrlRef = useRef(null);
@@ -109,7 +109,7 @@ const AvatarSettingsForm = ({ currentAvatarUrl, username }) => {
       <label htmlFor="avatar-file">Choose a new avatar</label>
       <input
         accept={ ACCEPTED_IMAGE_TYPES.join(',') }
-        disabled={ updateAvatar.isPending }
+        disabled={ disabled || updateAvatar.isPending }
         id="avatar-file"
         onChange={ handleFileChange }
         ref={ fileInputRef }
@@ -130,12 +130,12 @@ const AvatarSettingsForm = ({ currentAvatarUrl, username }) => {
         { selectedFile && (
           <button
             type="button"
-            disabled={ updateAvatar.isPending }
+            disabled={ disabled || updateAvatar.isPending }
             onClick={ clearSelection }>
             Clear selection
           </button>
         ) }
-        <button type="submit" disabled={ submitDisabled }>
+        <button type="submit" disabled={ disabled || submitDisabled }>
           { updateAvatar.isPending ? 'Updating avatar…' : 'Update avatar' }
         </button>
       </div>

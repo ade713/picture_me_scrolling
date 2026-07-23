@@ -16,6 +16,12 @@ vi.mock('../../query/account_hooks', () => ({
     isPending: false,
     mutate: vi.fn(),
     reset: vi.fn()
+  })),
+  useUpdatePassword: vi.fn(() => ({
+    error: null,
+    isPending: false,
+    mutate: vi.fn(),
+    reset: vi.fn()
   }))
 }));
 
@@ -96,5 +102,24 @@ describe('SettingsPage', () => {
     });
     expect(screen.getByText('Log in')).toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: 'Settings' })).not.toBeInTheDocument();
+  });
+
+  it('explains and enforces shared guest restrictions', () => {
+    useCurrentUser.mockReturnValue({
+      data: {
+        id: 1,
+        username: 'PicMeS Guest',
+        avatar_url: '/avatars/guest.png',
+        account_settings_enabled: false
+      }
+    });
+
+    renderSettingsRoute();
+
+    expect(screen.getByRole('note')).toHaveTextContent('Shared account settings are disabled');
+    expect(screen.getByLabelText('Choose a new avatar')).toBeDisabled();
+    expect(screen.getByLabelText('Current password')).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Update avatar' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Update password' })).toBeDisabled();
   });
 });
