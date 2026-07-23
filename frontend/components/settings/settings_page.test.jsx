@@ -17,6 +17,22 @@ vi.mock('../../query/account_hooks', () => ({
   useUpdatePassword: vi.fn()
 }));
 
+const buildCurrentUser = (overrides = {}) => ({
+  id: 1,
+  username: 'Athos',
+  avatar_url: '/avatars/athos.png',
+  account_settings_enabled: true,
+  ...overrides
+});
+
+const buildMutation = (overrides = {}) => ({
+  error: null,
+  isPending: false,
+  mutate: vi.fn(),
+  reset: vi.fn(),
+  ...overrides
+});
+
 const LocationPath = () => {
   const location = useLocation();
 
@@ -43,18 +59,8 @@ const renderSettingsRoute = () => render(
 
 describe('SettingsPage', () => {
   beforeEach(() => {
-    useUpdateAvatar.mockReturnValue({
-      error: null,
-      isPending: false,
-      mutate: vi.fn(),
-      reset: vi.fn()
-    });
-    useUpdatePassword.mockReturnValue({
-      error: null,
-      isPending: false,
-      mutate: vi.fn(),
-      reset: vi.fn()
-    });
+    useUpdateAvatar.mockReturnValue(buildMutation());
+    useUpdatePassword.mockReturnValue(buildMutation());
   });
 
   afterEach(() => {
@@ -62,14 +68,7 @@ describe('SettingsPage', () => {
   });
 
   it('renders the current user and settings sections', () => {
-    useCurrentUser.mockReturnValue({
-      data: {
-        id: 1,
-        username: 'Athos',
-        avatar_url: '/avatars/athos.png',
-        account_settings_enabled: true
-      }
-    });
+    useCurrentUser.mockReturnValue({ data: buildCurrentUser() });
 
     renderSettingsRoute();
 
@@ -81,14 +80,7 @@ describe('SettingsPage', () => {
   });
 
   it('provides brand and back links to the dashboard', () => {
-    useCurrentUser.mockReturnValue({
-      data: {
-        id: 1,
-        username: 'Athos',
-        avatar_url: '/avatars/athos.png',
-        account_settings_enabled: true
-      }
-    });
+    useCurrentUser.mockReturnValue({ data: buildCurrentUser() });
 
     renderSettingsRoute();
 
@@ -113,12 +105,11 @@ describe('SettingsPage', () => {
 
   it('explains and enforces shared guest restrictions', () => {
     useCurrentUser.mockReturnValue({
-      data: {
-        id: 1,
+      data: buildCurrentUser({
         username: 'PicMeS Guest',
         avatar_url: '/avatars/guest.png',
         account_settings_enabled: false
-      }
+      })
     });
 
     renderSettingsRoute();
@@ -132,20 +123,8 @@ describe('SettingsPage', () => {
 
   it('keeps avatar and password pending states independent', async () => {
     const user = userEvent.setup();
-    useCurrentUser.mockReturnValue({
-      data: {
-        id: 1,
-        username: 'Athos',
-        avatar_url: '/avatars/athos.png',
-        account_settings_enabled: true
-      }
-    });
-    useUpdateAvatar.mockReturnValue({
-      error: null,
-      isPending: true,
-      mutate: vi.fn(),
-      reset: vi.fn()
-    });
+    useCurrentUser.mockReturnValue({ data: buildCurrentUser() });
+    useUpdateAvatar.mockReturnValue(buildMutation({ isPending: true }));
 
     renderSettingsRoute();
 
