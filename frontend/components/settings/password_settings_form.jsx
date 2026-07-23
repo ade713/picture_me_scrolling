@@ -80,7 +80,7 @@ const PasswordSettingsForm = ({ disabled = false }) => {
         value={ passwords.password }
       />
       <p id="new-password-requirements">
-        Use at least 6 characters and no more than 72 bytes.
+        Use minimum 6 characters and maximum 64 characters.
       </p>
 
       <label htmlFor="password-confirmation">Confirm new password</label>
