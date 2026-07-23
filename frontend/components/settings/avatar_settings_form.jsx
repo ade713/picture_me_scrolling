@@ -9,7 +9,7 @@ const ACCEPTED_IMAGE_TYPES = [
   'image/gif'
 ];
 
-const AvatarSettingsForm = ({ currentAvatarUrl, disabled = false, username }) => {
+const AvatarSettingsForm = ({ disabled = false, username }) => {
   const updateAvatar = useUpdateAvatar();
   const fileInputRef = useRef(null);
   const previewUrlRef = useRef(null);
@@ -98,13 +98,15 @@ const AvatarSettingsForm = ({ currentAvatarUrl, disabled = false, username }) =>
 
   return (
     <form className="avatar-settings-form" onSubmit={ handleSubmit }>
-      <img
-        alt={ `${username} avatar preview` }
-        className="settings-avatar-preview"
-        onError={ previewUrl ? handlePreviewError : undefined }
-        onLoad={ previewUrl ? handlePreviewLoad : undefined }
-        src={ previewUrl || currentAvatarUrl }
-      />
+      { previewUrl && (
+        <img
+          alt={ `${username} avatar preview` }
+          className="settings-avatar-preview"
+          onError={ handlePreviewError }
+          onLoad={ handlePreviewLoad }
+          src={ previewUrl }
+        />
+      ) }
 
       <label htmlFor="avatar-file">Choose a new avatar</label>
       <input

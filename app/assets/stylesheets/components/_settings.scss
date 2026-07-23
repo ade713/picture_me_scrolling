@@ -1,0 +1,279 @@
+.settings-page {
+  box-sizing: border-box;
+  min-height: 100vh;
+  color: black;
+  background-color: white;
+  font-family: 'Muli', sans-serif;
+}
+
+.settings-nav {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 52px;
+  padding: 0 16px;
+  color: white;
+  background-color: black;
+  border-bottom: 1px solid black;
+}
+
+.settings-brand {
+  border-radius: 3px;
+  font-family: 'Mogra', cursive;
+  font-size: 25px;
+  line-height: 1;
+}
+
+.settings-brand:hover {
+  color: #DE0F01;
+}
+
+.settings-brand:focus-visible,
+.settings-back-link:focus-visible,
+.settings-page button:focus-visible,
+.settings-page input:focus-visible {
+  outline: 3px solid #CE0063;
+  outline-offset: 3px;
+}
+
+.settings-main {
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.settings-panel {
+  box-sizing: border-box;
+  width: min(100%, 960px);
+}
+
+.settings-content {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  align-items: start;
+  gap: 36px;
+  margin-top: 28px;
+}
+
+.settings-summary-column,
+.settings-forms {
+  min-width: 0;
+}
+
+.settings-forms {
+  padding: 36px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 4px;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.16);
+}
+
+.settings-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid currentColor;
+  font-weight: 700;
+}
+
+.settings-back-link:hover {
+  color: #CE0063;
+}
+
+.settings-user-summary {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.settings-user-summary h1 {
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-size: 38px;
+  line-height: 1;
+}
+
+.settings-user-summary p {
+  margin-top: 8px;
+  font-size: 18px;
+}
+
+.settings-current-avatar,
+.settings-avatar-preview {
+  @include avatar-frame(96px);
+  flex: 0 0 96px;
+  background-color: white;
+}
+
+.settings-restriction {
+  margin-top: 28px;
+  padding: 16px;
+  background-color: #fff4cf;
+  border: 2px solid black;
+  border-radius: 3px;
+  line-height: 1.45;
+}
+
+.settings-restriction strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.settings-section {
+  margin-top: 36px;
+  padding-top: 36px;
+  border-top: 1px solid black;
+}
+
+.settings-forms .settings-section:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+
+.settings-section h2 {
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-size: 30px;
+}
+
+.settings-section > p {
+  margin-top: 8px;
+  color: #3f3f3f;
+  line-height: 1.45;
+}
+
+.avatar-settings-form,
+.password-settings-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.avatar-settings-form label,
+.password-settings-form label {
+  font-weight: 700;
+}
+
+.avatar-settings-form input[type='file'],
+.password-settings-form input[type='password'] {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 3px;
+}
+
+.avatar-settings-form input[type='file']::file-selector-button {
+  margin-right: 12px;
+  padding: 7px 10px;
+  color: black;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 3px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.password-settings-form #new-password-requirements {
+  color: #555555;
+  font-size: 14px;
+}
+
+.settings-form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.settings-page button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 8px 16px;
+  color: white;
+  background-color: black;
+  border: 2px solid black;
+  border-radius: 3px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.settings-page button[type='button'] {
+  color: black;
+  background-color: white;
+}
+
+.settings-page button:not(:disabled):hover {
+  color: #DE0F01;
+  background-color: white;
+}
+
+.settings-page button:disabled,
+.settings-page input:disabled,
+.settings-page input:disabled::file-selector-button {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.settings-errors,
+.settings-page [role='status'] {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 3px;
+  line-height: 1.4;
+}
+
+.settings-errors {
+  color: #8b0000;
+  background-color: #fff0f0;
+  border: 1px solid #8b0000;
+}
+
+.settings-page [role='status'] {
+  color: #125c2d;
+  background-color: #eefaf2;
+  border: 1px solid #125c2d;
+}
+
+@include mobile {
+  .settings-main {
+    padding: 20px 12px;
+  }
+
+  .settings-panel {
+    padding: 0 6px;
+  }
+
+  .settings-content {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .settings-forms {
+    padding: 24px 18px;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.16);
+  }
+
+  .settings-user-summary {
+    gap: 16px;
+  }
+
+  .settings-current-avatar,
+  .settings-avatar-preview {
+    @include avatar-size(80px, 80px);
+  }
+
+  .settings-section {
+    margin-top: 32px;
+    padding-top: 32px;
+  }
+
+  .settings-form-actions,
+  .settings-form-actions button,
+  .password-settings-form > button {
+    width: 100%;
+  }
+}

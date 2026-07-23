@@ -30,7 +30,6 @@ describe('AvatarSettingsForm', () => {
 
   const renderForm = () => render(
     <AvatarSettingsForm
-      currentAvatarUrl="/avatars/current.png"
       username="Athos"
     />
   );
@@ -41,13 +40,10 @@ describe('AvatarSettingsForm', () => {
     fireEvent.load(image);
   };
 
-  it('shows the current avatar before a file is selected', () => {
+  it('waits to show a preview until a file is selected', () => {
     renderForm();
 
-    expect(screen.getByAltText('Athos avatar preview')).toHaveAttribute(
-      'src',
-      '/avatars/current.png'
-    );
+    expect(screen.queryByAltText('Athos avatar preview')).not.toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Update avatar' })).toBeDisabled();
   });
 
@@ -85,10 +81,7 @@ describe('AvatarSettingsForm', () => {
 
     expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:avatar.png');
     expect(input).toHaveValue('');
-    expect(screen.getByAltText('Athos avatar preview')).toHaveAttribute(
-      'src',
-      '/avatars/current.png'
-    );
+    expect(screen.queryByAltText('Athos avatar preview')).not.toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Clear selection' })).not.toBeInTheDocument();
     expect(screen.getByRole('status')).toHaveTextContent('Avatar updated successfully');
   });
@@ -120,10 +113,7 @@ describe('AvatarSettingsForm', () => {
     await user.click(screen.getByRole('button', { name: 'Clear selection' }));
 
     expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:second.png');
-    expect(screen.getByAltText('Athos avatar preview')).toHaveAttribute(
-      'src',
-      '/avatars/current.png'
-    );
+    expect(screen.queryByAltText('Athos avatar preview')).not.toBeInTheDocument();
   });
 
   it('revokes the current preview URL when unmounted', async () => {

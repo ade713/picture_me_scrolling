@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
 
+import { useUpdateAvatar, useUpdatePassword } from '../../query/account_hooks';
 import { useCurrentUser } from '../../query/session_hooks';
 import { ProtectedRoute } from '../../util/route_util';
 import SettingsPage from './settings_page';
@@ -11,18 +12,8 @@ vi.mock('../../query/session_hooks', () => ({
 }));
 
 vi.mock('../../query/account_hooks', () => ({
-  useUpdateAvatar: vi.fn(() => ({
-    error: null,
-    isPending: false,
-    mutate: vi.fn(),
-    reset: vi.fn()
-  })),
-  useUpdatePassword: vi.fn(() => ({
-    error: null,
-    isPending: false,
-    mutate: vi.fn(),
-    reset: vi.fn()
-  }))
+  useUpdateAvatar: vi.fn(),
+  useUpdatePassword: vi.fn()
 }));
 
 const LocationPath = () => {
@@ -50,6 +41,21 @@ const renderSettingsRoute = () => render(
 );
 
 describe('SettingsPage', () => {
+  beforeEach(() => {
+    useUpdateAvatar.mockReturnValue({
+      error: null,
+      isPending: false,
+      mutate: vi.fn(),
+      reset: vi.fn()
+    });
+    useUpdatePassword.mockReturnValue({
+      error: null,
+      isPending: false,
+      mutate: vi.fn(),
+      reset: vi.fn()
+    });
+  });
+
   afterEach(() => {
     vi.clearAllMocks();
   });
@@ -121,5 +127,29 @@ describe('SettingsPage', () => {
     expect(screen.getByLabelText('Current password')).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Update avatar' })).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Update password' })).toBeDisabled();
+  });
+
+  it('keeps avatar and password pending states independent', () => {
+    useCurrentUser.mockReturnValue({
+      data: {
+        id: 1,
+        username: 'Athos',
+        avatar_url: '/avatars/athos.png',
+        account_settings_enabled: true
+      }
+    });
+    useUpdateAvatar.mockReturnValue({
+      error: null,
+      isPending: true,
+      mutate: vi.fn(),
+      reset: vi.fn()
+    });
+
+    renderSettingsRoute();
+
+    expect(screen.getByLabelText('Choose a new avatar')).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Updating avatar…' })).toBeDisabled();
+    expect(screen.getByLabelText('Current password')).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Update password' })).toBeEnabled();
   });
 });

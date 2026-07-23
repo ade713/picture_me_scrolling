@@ -20,46 +20,52 @@ const SettingsPage = () => {
       <main className='settings-main'>
         <div className='settings-panel'>
           <Link className='settings-back-link' to='/dashboard'>
+            <span aria-hidden='true'>←</span>
             Back to dashboard
           </Link>
 
-          <div className='settings-user-summary'>
-            <img
-              alt={`${currentUser.username} avatar`}
-              className='settings-current-avatar'
-              src={currentUser.avatar_url}
-            />
-            <div>
-              <h1>Settings</h1>
-              <p>{currentUser.username}</p>
+          <div className='settings-content'>
+            <div className='settings-summary-column'>
+              <div className='settings-user-summary'>
+                <img
+                  alt={`${currentUser.username} avatar`}
+                  className='settings-current-avatar'
+                  src={currentUser.avatar_url}
+                />
+                <div>
+                  <h1>Settings</h1>
+                  <p>{currentUser.username}</p>
+                </div>
+              </div>
+
+              {!settingsEnabled && (
+                <div className='settings-restriction' role='note'>
+                  <strong>Shared account settings are disabled.</strong>
+                  <p>
+                    This guest account can view settings, but a personal account is required to change an avatar or
+                    password.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className='settings-forms'>
+              <section className='settings-section' aria-labelledby='avatar-settings-heading'>
+                <h2 id='avatar-settings-heading'>Avatar</h2>
+                <p>Choose a square JPEG, PNG, WebP, or GIF image up to 5 MB.</p>
+                <AvatarSettingsForm
+                  disabled={!settingsEnabled}
+                  username={currentUser.username}
+                />
+              </section>
+
+              <section className='settings-section' aria-labelledby='password-settings-heading'>
+                <h2 id='password-settings-heading'>Password</h2>
+                <p>Confirm your current password before choosing a new one.</p>
+                <PasswordSettingsForm disabled={!settingsEnabled} />
+              </section>
             </div>
           </div>
-
-          {!settingsEnabled && (
-            <div className='settings-restriction' role='note'>
-              <strong>Shared account settings are disabled.</strong>
-              <p>
-                This guest account can view settings, but a personal account is required to change an avatar or
-                password.
-              </p>
-            </div>
-          )}
-
-          <section className='settings-section' aria-labelledby='avatar-settings-heading'>
-            <h2 id='avatar-settings-heading'>Avatar</h2>
-            <p>Choose a square JPEG, PNG, WebP, or GIF image up to 5 MB.</p>
-            <AvatarSettingsForm
-              currentAvatarUrl={currentUser.avatar_url}
-              disabled={!settingsEnabled}
-              username={currentUser.username}
-            />
-          </section>
-
-          <section className='settings-section' aria-labelledby='password-settings-heading'>
-            <h2 id='password-settings-heading'>Password</h2>
-            <p>Confirm your current password before choosing a new one.</p>
-            <PasswordSettingsForm disabled={!settingsEnabled} />
-          </section>
         </div>
       </main>
     </div>
