@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { useCurrentUser } from '../../query/session_hooks';
+import AvatarSettingsForm from './avatar_settings_form';
 
 const SettingsPage = () => {
   const currentUser = useCurrentUser().data;
@@ -35,6 +36,10 @@ const SettingsPage = () => {
           <section className="settings-section" aria-labelledby="avatar-settings-heading">
             <h2 id="avatar-settings-heading">Avatar</h2>
             <p>Choose a square JPEG, PNG, WebP, or GIF image up to 5 MB.</p>
+            <AvatarSettingsForm
+              currentAvatarUrl={ currentUser.avatar_url }
+              username={ currentUser.username }
+            />
           </section>
 
           <section className="settings-section" aria-labelledby="password-settings-heading">

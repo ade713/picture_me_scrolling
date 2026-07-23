@@ -10,6 +10,15 @@ vi.mock('../../query/session_hooks', () => ({
   useCurrentUser: vi.fn()
 }));
 
+vi.mock('../../query/account_hooks', () => ({
+  useUpdateAvatar: vi.fn(() => ({
+    error: null,
+    isPending: false,
+    mutate: vi.fn(),
+    reset: vi.fn()
+  }))
+}));
+
 const LocationPath = () => {
   const location = useLocation();
 
