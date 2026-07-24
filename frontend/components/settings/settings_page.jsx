@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import { avatarSettings } from "../../config/account_settings";
+import { routes } from "../../config/routes";
 import { useCurrentUser } from "../../query/session_hooks";
 import AvatarSettingsForm from "./avatar_settings_form";
 import PasswordSettingsForm from "./password_settings_form";
@@ -12,14 +14,14 @@ const SettingsPage = () => {
   return (
     <div className='settings-page'>
       <header className='settings-nav'>
-        <Link className='settings-brand' to='/dashboard'>
+        <Link className='settings-brand' to={routes.dashboard}>
           PicMeS
         </Link>
       </header>
 
       <main className='settings-main'>
         <div className='settings-panel'>
-          <Link className='settings-back-link' to='/dashboard'>
+          <Link className='settings-back-link' to={routes.dashboard}>
             <span aria-hidden='true'>←</span>
             Back to dashboard
           </Link>
@@ -52,7 +54,10 @@ const SettingsPage = () => {
             <div className='settings-forms'>
               <section className='settings-section' aria-labelledby='avatar-settings-heading'>
                 <h2 id='avatar-settings-heading'>Avatar</h2>
-                <p>Choose a square JPEG, PNG, WebP, or GIF image up to 5 MB.</p>
+                <p>
+                  Choose a square {avatarSettings.formatLabel} image up to{' '}
+                  {avatarSettings.maximumFileSizeMegabytes} MB.
+                </p>
                 <AvatarSettingsForm
                   disabled={!settingsEnabled}
                   username={currentUser.username}

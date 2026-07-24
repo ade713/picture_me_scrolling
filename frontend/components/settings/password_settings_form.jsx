@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { passwordSettings } from '../../config/account_settings';
 import { useUpdatePassword } from '../../query/account_hooks';
 
 const EMPTY_PASSWORDS = {
@@ -72,7 +73,8 @@ const PasswordSettingsForm = ({ disabled = false }) => {
         autoComplete="new-password"
         disabled={ controlsDisabled }
         id="new-password"
-        minLength="6"
+        minLength={ passwordSettings.minimumLength }
+        maxLength={ passwordSettings.maximumLength }
         name="password"
         onChange={ handleChange }
         required
@@ -80,7 +82,8 @@ const PasswordSettingsForm = ({ disabled = false }) => {
         value={ passwords.password }
       />
       <p id="new-password-requirements">
-        Use minimum 6 characters and maximum 64 characters.
+        Use minimum { passwordSettings.minimumLength } characters and maximum{' '}
+        { passwordSettings.maximumLength } characters.
       </p>
 
       <label htmlFor="password-confirmation">Confirm new password</label>
@@ -88,7 +91,8 @@ const PasswordSettingsForm = ({ disabled = false }) => {
         autoComplete="new-password"
         disabled={ controlsDisabled }
         id="password-confirmation"
-        minLength="6"
+        minLength={ passwordSettings.minimumLength }
+        maxLength={ passwordSettings.maximumLength }
         name="password_confirmation"
         onChange={ handleChange }
         required

@@ -1,14 +1,8 @@
 import React, { useRef, useState } from 'react';
 
+import { avatarSettings } from '../../config/account_settings';
 import { useUpdateAvatar } from '../../query/account_hooks';
 import useAvatarPreview from './use_avatar_preview';
-
-const ACCEPTED_IMAGE_TYPES = [
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'image/gif'
-];
 
 const AvatarSettingsForm = ({ disabled = false, username }) => {
   const updateAvatar = useUpdateAvatar();
@@ -74,7 +68,7 @@ const AvatarSettingsForm = ({ disabled = false, username }) => {
 
       <label htmlFor="avatar-file">Choose a new avatar</label>
       <input
-        accept={ ACCEPTED_IMAGE_TYPES.join(',') }
+        accept={ avatarSettings.acceptedMimeTypes.join(',') }
         disabled={ disabled || updateAvatar.isPending }
         id="avatar-file"
         onChange={ handleFileChange }

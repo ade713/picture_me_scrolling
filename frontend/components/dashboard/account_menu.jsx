@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import { routes } from '../../config/routes';
 import { useCurrentUser, useLogout } from '../../query/session_hooks';
 
 const ACCOUNT_MENU_ID = 'dashboard-account-menu';
@@ -66,7 +67,7 @@ const AccountMenu = () => {
         className="account-menu-popup"
         hidden={ !isOpen }
         id={ ACCOUNT_MENU_ID }>
-        <Link to="/settings" onClick={ () => setIsOpen(false) }>
+        <Link to={ routes.settings } onClick={ () => setIsOpen(false) }>
           Settings
         </Link>
         <button

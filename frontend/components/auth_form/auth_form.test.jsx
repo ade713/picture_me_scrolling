@@ -176,6 +176,13 @@ describe('AuthForm', () => {
     });
   });
 
+  it('applies the shared password length guidance during signup', () => {
+    renderAuthForm('/signup');
+
+    expect(screen.getByLabelText('Password')).toHaveAttribute('minlength', '6');
+    expect(screen.getByLabelText('Password')).toHaveAttribute('maxlength', '64');
+  });
+
   it('preserves guest login timing behavior', () => {
     vi.useFakeTimers();
     renderAuthForm();
