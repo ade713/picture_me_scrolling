@@ -1,7 +1,7 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter } from 'react-router-dom';
+import { MemoryRouter, useNavigate } from 'react-router-dom';
 
 import { useCurrentUser, useLogout } from '../../query/session_hooks';
 import AccountMenu from './account_menu';
@@ -29,9 +29,24 @@ describe('AccountMenu', () => {
     vi.clearAllMocks();
   });
 
-  const renderMenu = () => render(
+  const RouteChanger = () => {
+    const navigate = useNavigate();
+
+    return (
+      <button type="button" onClick={ () => navigate('/another-route') }>
+        Change route
+      </button>
+    );
+  };
+
+  const renderMenu = ({
+    withOutsideControl = false,
+    withRouteChanger = false
+  } = {}) => render(
     <MemoryRouter>
       <AccountMenu />
+      { withOutsideControl && <button type="button">Outside control</button> }
+      { withRouteChanger && <RouteChanger /> }
     </MemoryRouter>
   );
 
@@ -52,11 +67,69 @@ describe('AccountMenu', () => {
     await user.click(trigger);
 
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.getByRole('link', { name: 'Settings' })).toHaveAttribute(
+    const settingsLink = screen.getByRole('link', { name: 'Settings' });
+    expect(settingsLink).toHaveAttribute(
       'href',
       '/settings'
     );
     expect(screen.getByRole('button', { name: 'Log Out' })).toBeInTheDocument();
+
+    await user.click(settingsLink);
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('opens through native keyboard button behavior', async () => {
+    const user = userEvent.setup();
+    renderMenu();
+
+    const trigger = screen.getByRole('button', { name: 'Athos' });
+    trigger.focus();
+    await user.keyboard('{Enter}');
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('link', { name: 'Settings' })).toBeInTheDocument();
+  });
+
+  it('closes on Escape and returns focus to the trigger', async () => {
+    const user = userEvent.setup();
+    renderMenu();
+
+    const trigger = screen.getByRole('button', { name: 'Athos' });
+    await user.click(trigger);
+    await user.tab();
+    expect(screen.getByRole('link', { name: 'Settings' })).toHaveFocus();
+
+    await user.keyboard('{Escape}');
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(trigger).toHaveFocus();
+    expect(screen.queryByRole('link', { name: 'Settings' })).not.toBeInTheDocument();
+  });
+
+  it('closes when the user clicks outside the account menu', async () => {
+    const user = userEvent.setup();
+    renderMenu({ withOutsideControl: true });
+
+    const trigger = screen.getByRole('button', { name: 'Athos' });
+    await user.click(trigger);
+    await user.click(screen.getByRole('button', { name: 'Outside control' }));
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('link', { name: 'Settings' })).not.toBeInTheDocument();
+  });
+
+  it('closes when the current route changes', async () => {
+    const user = userEvent.setup();
+    renderMenu({ withRouteChanger: true });
+
+    const trigger = screen.getByRole('button', { name: 'Athos' });
+    await user.click(trigger);
+    // A click without pointer events isolates route dismissal from outside-click dismissal.
+    fireEvent.click(screen.getByRole('button', { name: 'Change route' }));
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('link', { name: 'Settings' })).not.toBeInTheDocument();
   });
 
   it('closes the menu and runs the existing logout mutation', async () => {
