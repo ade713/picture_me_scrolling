@@ -1,17 +1,18 @@
+import { apiEndpoints } from '../config/api_endpoints';
 import { destroy, get, post } from './api_client';
 
 export const fetchUsers = () => (
-  get('/api/users')
+  get(apiEndpoints.users.collection)
 );
 
 export const fetchUser = id => (
-  get(`/api/users/${id}`)
+  get(apiEndpoints.users.detail(id))
 );
 
 export const createFollow = id => (
-  post(`/api/users/${id}/follow`)
+  post(apiEndpoints.users.follow(id))
 );
 
 export const deleteFollow = id => (
-  destroy(`/api/users/${id}/follow`)
+  destroy(apiEndpoints.users.follow(id))
 );
