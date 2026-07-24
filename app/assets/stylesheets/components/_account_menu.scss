@@ -1,0 +1,101 @@
+.account-menu {
+  position: relative;
+  margin-right: 1%;
+}
+
+.account-menu-trigger {
+  display: block;
+  max-width: 40vw;
+  padding: 6px 12px;
+  overflow: hidden;
+  color: white;
+  background-color: transparent;
+  border: 2px solid white;
+  border-radius: 3px;
+  font-size: 22px;
+  line-height: 1.1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-menu-trigger[aria-expanded='true'] {
+  color: black;
+  background-color: white;
+}
+
+.account-menu-trigger:hover {
+  box-shadow: 0 0 5px white;
+}
+
+.account-menu-trigger:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
+.account-menu-popup {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  box-sizing: border-box;
+  gap: 8px;
+  width: 220px;
+  max-width: calc(100vw - 24px);
+  padding: 8px;
+  color: black;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 3px;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+  font-family: 'Muli', sans-serif;
+  font-size: 17px;
+  z-index: 20;
+}
+
+.account-menu-popup[hidden] {
+  display: none;
+}
+
+.account-menu-popup a,
+.account-menu-popup button {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 12px;
+  color: black;
+  background-color: white;
+  border-radius: 3px;
+  text-align: left;
+}
+
+.account-menu-popup a:hover,
+.account-menu-popup button:not(:disabled):hover,
+.account-menu-popup a:focus-visible,
+.account-menu-popup button:focus-visible {
+  color: white;
+  background-color: black;
+}
+
+.account-menu-popup a:focus-visible,
+.account-menu-popup button:focus-visible {
+  outline: 2px solid black;
+  outline-offset: 2px;
+}
+
+.account-menu-popup button:disabled {
+  color: #666666;
+  cursor: not-allowed;
+}
+
+@include mobile {
+  .account-menu {
+    margin-right: 12px;
+  }
+
+  .account-menu-trigger {
+    max-width: 55vw;
+    padding: 6px 10px;
+    font-size: 18px;
+  }
+}

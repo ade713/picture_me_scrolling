@@ -20,6 +20,7 @@ header.dash-nav {
   background-color: black;
   border-bottom: 1px solid black;
   opacity: 1;
+  z-index: 10;
 }
 
 div.dash-main {
@@ -36,18 +37,6 @@ div.dash-main {
   width: auto;
 }
 
-button.dash-logout {
-  font-size: 25px;
-  text-align: center;
-  width: 100px;
-  padding-right: 1%;
-}
-
-button.dash-logout:hover {
-  color: #DE0F01;
-}
-
-button.dash-logout:focus-visible,
 footer.dash-right-footer a:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 3px;
@@ -106,12 +95,6 @@ footer.dash-right-footer {
 }
 
 @include mobile {
-  button.dash-logout {
-    width: auto;
-    padding-right: 16px;
-    font-size: 20px;
-  }
-
   .dash-title {
     padding-left: 16px;
   }
