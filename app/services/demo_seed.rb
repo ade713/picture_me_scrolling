@@ -71,7 +71,7 @@ module DemoSeed
           author: author,
           title: format('Demo feed text %02d', sequence),
           body: TEXT_BODIES[index % TEXT_BODIES.length],
-          post_type: 'text',
+          post_type: Post::TYPES.fetch(:text),
           created_at: seeded_at - (sequence + 10).minutes
         )
       when 1
@@ -79,7 +79,7 @@ module DemoSeed
           author: author,
           title: format('Demo feed quote %02d', sequence),
           body: "- #{QUOTE_SOURCES[index % QUOTE_SOURCES.length]}",
-          post_type: 'quote',
+          post_type: Post::TYPES.fetch(:quote),
           created_at: seeded_at - (sequence + 10).minutes
         )
       else
@@ -87,7 +87,7 @@ module DemoSeed
           author: author,
           title: format('Demo feed link %02d', sequence),
           url: LINK_URLS[index % LINK_URLS.length],
-          post_type: 'link',
+          post_type: Post::TYPES.fetch(:link),
           created_at: seeded_at - (sequence + 10).minutes
         )
       end
@@ -100,7 +100,7 @@ module DemoSeed
         author: author,
         title: "Recommended demo text #{index + 1}",
         body: 'Follow this demo user to confirm the feed updates without a refresh.',
-        post_type: 'text',
+        post_type: Post::TYPES.fetch(:text),
         created_at: seeded_at - index.minutes
       )
 
@@ -108,7 +108,7 @@ module DemoSeed
         author: author,
         title: "Recommended demo link #{index + 1}",
         url: LINK_URLS[index % LINK_URLS.length],
-        post_type: 'link',
+        post_type: Post::TYPES.fetch(:link),
         created_at: seeded_at - (index + users.length).minutes
       )
     end

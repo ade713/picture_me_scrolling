@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { postTypes } from '../../config/post_types';
 import { useCurrentUser } from '../../query/session_hooks';
 import { useDeletePost,
          useLikePost,
@@ -19,12 +20,12 @@ import { DeletePostConfirmation,
 import EditPostForm from '../posts/edit_post_form';
 
 const POST_BODY_COMPONENTS = {
-  audio: AudioPost,
-  link: LinkPost,
-  photo: PhotoPost,
-  quote: QuotePost,
-  text: TextPost,
-  video: VideoPost
+  [postTypes.audio]: AudioPost,
+  [postTypes.link]: LinkPost,
+  [postTypes.photo]: PhotoPost,
+  [postTypes.quote]: QuotePost,
+  [postTypes.text]: TextPost,
+  [postTypes.video]: VideoPost
 };
 
 const FeedItem = ({ post, priorityMedia = false }) => {

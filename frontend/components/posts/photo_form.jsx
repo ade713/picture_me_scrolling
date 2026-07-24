@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
+import { postTypes } from '../../config/post_types';
 import { useCreateMediaPost } from '../../query/post_hooks';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
 import { usePostFormProps } from './post_form_hooks';
@@ -50,7 +51,7 @@ const PhotoForm = () => {
     const formData = new FormData();
     formData.append('post[url]', url);
     formData.append('post[title]', title);
-    formData.append('post[post_type]', 'photo');
+    formData.append('post[post_type]', postTypes.photo);
     formData.append('post[body]', body);
     formData.append('post[image]', imageFile);
 

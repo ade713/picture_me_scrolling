@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
+import { postTypes } from '../../config/post_types';
 import { useCreatePost } from '../../query/post_hooks';
 import { INVALID_LINK_URL_ERROR, validateLinkUrl } from '../../util/link_url_validation';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
@@ -43,7 +44,7 @@ const LinkForm = () => {
       title,
       body,
       url: normalizedUrl,
-      post_type: 'link'
+      post_type: postTypes.link
     };
 
     createPost(post).then(result => {

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
+import { postTypes } from '../../config/post_types';
 import { useCreatePost } from '../../query/post_hooks';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
 import { usePostFormProps } from './post_form_hooks';
@@ -31,7 +32,7 @@ const TextForm = () => {
       title,
       body,
       url,
-      post_type: 'text'
+      post_type: postTypes.text
     };
 
     createPost(post).then(result => {
