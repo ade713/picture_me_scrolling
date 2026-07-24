@@ -54,8 +54,12 @@ describe('AccountMenu', () => {
     renderMenu();
 
     const trigger = screen.getByRole('button', { name: 'Athos' });
+    const popup = document.getElementById('dashboard-account-menu');
     expect(trigger).toHaveAttribute('aria-expanded', 'false');
     expect(trigger).toHaveAttribute('aria-haspopup', 'true');
+    expect(trigger).toHaveClass('account-menu-trigger');
+    expect(popup).toHaveClass('account-menu-popup');
+    expect(popup).toHaveAttribute('hidden');
     expect(screen.queryByRole('link', { name: 'Settings' })).not.toBeInTheDocument();
   });
 
@@ -67,6 +71,7 @@ describe('AccountMenu', () => {
     await user.click(trigger);
 
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(document.getElementById('dashboard-account-menu')).not.toHaveAttribute('hidden');
     const settingsLink = screen.getByRole('link', { name: 'Settings' });
     expect(settingsLink).toHaveAttribute(
       'href',
