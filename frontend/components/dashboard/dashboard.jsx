@@ -1,23 +1,17 @@
 import React from 'react';
 
-import { useLogout } from '../../query/session_hooks';
 import Feed from '../feed/feed';
 import RecommendedUsers from '../users/recommended_users';
+import AccountMenu from './account_menu';
 
 const Dashboard = () => {
-  const logout = useLogout();
-
-  const handleLogout = () => {
-    logout.mutate();
-  };
-
   return (
     <div className="dash-page">
       <header className="dash-nav">
         <h1 className="dash-title">
           PicMeS
         </h1>
-        <button className="dash-logout" onClick={ handleLogout }>Log Out</button>
+        <AccountMenu />
       </header>
       <div className="dash-main">
         <div className="dash-feed">
