@@ -96,6 +96,30 @@ describe('AccountMenu', () => {
     expect(screen.getByRole('link', { name: 'Settings' })).toBeInTheDocument();
   });
 
+  it('opens with Space through native keyboard button behavior', async () => {
+    const user = userEvent.setup();
+    renderMenu();
+
+    const trigger = screen.getByRole('button', { name: 'Athos' });
+    trigger.focus();
+    await user.keyboard(' ');
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByRole('link', { name: 'Settings' })).toBeInTheDocument();
+  });
+
+  it('tabs through Settings and Log Out in document order', async () => {
+    const user = userEvent.setup();
+    renderMenu();
+
+    await user.click(screen.getByRole('button', { name: 'Athos' }));
+    await user.tab();
+    expect(screen.getByRole('link', { name: 'Settings' })).toHaveFocus();
+
+    await user.tab();
+    expect(screen.getByRole('button', { name: 'Log Out' })).toHaveFocus();
+  });
+
   it('closes on Escape and returns focus to the trigger', async () => {
     const user = userEvent.setup();
     renderMenu();
