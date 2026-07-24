@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { apiEndpoints } from '../config/api_endpoints';
 import { patch } from '../util/api_client';
 import { queryKeys } from './query_keys';
 
@@ -11,7 +12,7 @@ export const useUpdateAvatar = () => {
       const formData = new FormData();
       formData.append('avatar', avatar);
 
-      return patch('/api/account/avatar', formData);
+      return patch(apiEndpoints.account.avatar, formData);
     },
     onSuccess: currentUser => {
       queryClient.setQueryData(queryKeys.currentUser, currentUser);
@@ -23,6 +24,6 @@ export const useUpdateAvatar = () => {
 
 export const useUpdatePassword = () => (
   useMutation({
-    mutationFn: account => patch('/api/account/password', { account })
+    mutationFn: account => patch(apiEndpoints.account.password, { account })
   })
 );

@@ -12,6 +12,8 @@
 
 class User < ApplicationRecord
   DEFAULT_AVATAR_IMAGE = 'profile_blue_150x150.png'.freeze
+  MINIMUM_PASSWORD_LENGTH = 6
+  MAXIMUM_PASSWORD_LENGTH = 64
   MAXIMUM_PASSWORD_BYTES = 72
   SHARED_GUEST_USERNAME = 'PicMeS Guest'.freeze
 
@@ -19,7 +21,12 @@ class User < ApplicationRecord
             :password_digest,
             :session_token,
             presence: true, uniqueness: true
-  validates :password, length: { minimum: 6, allow_nil: true }
+  validates :password,
+            length: {
+              minimum: MINIMUM_PASSWORD_LENGTH,
+              maximum: MAXIMUM_PASSWORD_LENGTH,
+              allow_nil: true
+            }
   validate :password_within_bcrypt_limit
 
   after_initialize :ensure_session_token!

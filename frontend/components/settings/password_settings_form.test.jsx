@@ -32,6 +32,15 @@ describe('PasswordSettingsForm', () => {
     await user.type(screen.getByLabelText('Confirm new password'), confirmation);
   };
 
+  it('applies the shared password length constraints', () => {
+    render(<PasswordSettingsForm />);
+
+    expect(screen.getByLabelText('New password')).toHaveAttribute('minlength', '6');
+    expect(screen.getByLabelText('New password')).toHaveAttribute('maxlength', '64');
+    expect(screen.getByLabelText('Confirm new password')).toHaveAttribute('minlength', '6');
+    expect(screen.getByLabelText('Confirm new password')).toHaveAttribute('maxlength', '64');
+  });
+
   it('keeps submission disabled until every password field is filled', async () => {
     const user = userEvent.setup();
     render(<PasswordSettingsForm />);

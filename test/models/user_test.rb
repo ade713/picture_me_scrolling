@@ -74,6 +74,16 @@ class UserTest < ActiveSupport::TestCase
                     "Password is too long (maximum is #{User::MAXIMUM_PASSWORD_BYTES} bytes)"
   end
 
+  test "password validation rejects values beyond the character limit" do
+    user = User.new(
+      username: "long_password_user",
+      password: "a" * (User::MAXIMUM_PASSWORD_LENGTH + 1)
+    )
+
+    refute user.valid?
+    assert_includes user.errors.full_messages, "Password is too long (maximum is 64 characters)"
+  end
+
   test "account settings are disabled only for the shared guest" do
     guest = create_user(User::SHARED_GUEST_USERNAME)
     user = create_user("settings_user")

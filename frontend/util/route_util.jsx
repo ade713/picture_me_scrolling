@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { routes } from '../config/routes';
 import { useCurrentUser } from '../query/session_hooks';
 
 export const AuthRoute = ({ children }) => {
@@ -9,7 +10,7 @@ export const AuthRoute = ({ children }) => {
   return !loggedIn ? (
     children
   ) : (
-    <Navigate to="/dashboard" replace />
+    <Navigate to={ routes.dashboard } replace />
   );
 };
 
@@ -20,6 +21,6 @@ export const ProtectedRoute = ({ children }) => {
   return loggedIn ? (
     children
   ) : (
-    <Navigate to="/" replace />
+    <Navigate to={ routes.home } replace />
   );
 };

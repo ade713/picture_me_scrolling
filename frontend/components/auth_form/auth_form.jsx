@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
+import { passwordSettings } from "../../config/account_settings";
+import { routes } from "../../config/routes";
 import { useCurrentUser, useLogin, useSignup } from "../../query/session_hooks";
 import useGuestLogin from "./use_guest_login";
 
@@ -20,9 +22,9 @@ const AuthForm = () => {
   const [password, setPassword] = useState("");
   const logInAsGuest = useGuestLogin({ login, setUsername, setPassword });
 
-  const isSignup = location.pathname === "/signup";
+  const isSignup = location.pathname === routes.signup;
   const formMutation = isSignup ? signup : login;
-  const navTarget = isSignup ? "/" : "/signup";
+  const navTarget = isSignup ? routes.home : routes.signup;
   const navText = isSignup ? "Log In" : "Sign Up";
   const submitText = isSignup ? "Sign Up" : "Log In";
   const errors = isSignup ? authErrors(signup, login) : authErrors(login);
@@ -30,7 +32,7 @@ const AuthForm = () => {
 
   useEffect(() => {
     if (loggedIn) {
-      navigate("/dashboard");
+      navigate(routes.dashboard);
     }
   }, [loggedIn, navigate]);
 
@@ -88,6 +90,8 @@ const AuthForm = () => {
                   value={password}
                   aria-label='Password'
                   autoComplete={isSignup ? 'new-password' : 'current-password'}
+                  minLength={isSignup ? passwordSettings.minimumLength : undefined}
+                  maxLength={isSignup ? passwordSettings.maximumLength : undefined}
                   placeholder='Your Password'
                   onChange={(e) => setPassword(e.currentTarget.value)}
                   className='auth-login-input'

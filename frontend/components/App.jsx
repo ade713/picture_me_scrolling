@@ -4,13 +4,14 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 import Dashboard from "./dashboard/dashboard";
 import AuthForm from "./auth_form/auth_form";
 import SettingsPage from "./settings/settings_page";
+import { routes } from "../config/routes";
 import { AuthRoute, ProtectedRoute } from "../util/route_util";
 
 const App = () => (
   <HashRouter>
     <Routes>
       <Route
-        path='/dashboard'
+        path={routes.dashboard}
         element={
           <ProtectedRoute>
             <Dashboard />
@@ -18,7 +19,7 @@ const App = () => (
         }
       />
       <Route
-        path='/settings'
+        path={routes.settings}
         element={
           <ProtectedRoute>
             <SettingsPage />
@@ -26,7 +27,7 @@ const App = () => (
         }
       />
       <Route
-        path='/signup'
+        path={routes.signup}
         element={
           <AuthRoute>
             <AuthForm />
@@ -34,7 +35,7 @@ const App = () => (
         }
       />
       <Route
-        path='/'
+        path={routes.home}
         element={
           <AuthRoute>
             <AuthForm />
