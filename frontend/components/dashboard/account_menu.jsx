@@ -45,8 +45,12 @@ const AccountMenu = () => {
     logout.mutate();
   };
 
+  const handleBlur = event => {
+    if (!event.currentTarget.contains(event.relatedTarget)) setIsOpen(false);
+  };
+
   return (
-    <div className="account-menu" ref={ menuRef }>
+    <div className="account-menu" onBlur={ handleBlur } ref={ menuRef }>
       <button
         aria-controls={ ACCOUNT_MENU_ID }
         aria-expanded={ isOpen }

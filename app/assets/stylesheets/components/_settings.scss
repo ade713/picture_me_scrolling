@@ -247,6 +247,13 @@
   border: 1px solid #125c2d;
 }
 
+@include tablet {
+  .settings-content {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
 @include mobile {
   .settings-main {
     padding: 20px 12px;
@@ -254,11 +261,6 @@
 
   .settings-panel {
     padding: 0 6px;
-  }
-
-  .settings-content {
-    grid-template-columns: 1fr;
-    gap: 32px;
   }
 
   .settings-forms {

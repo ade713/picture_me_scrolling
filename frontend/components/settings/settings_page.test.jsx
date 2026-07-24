@@ -138,4 +138,45 @@ describe('SettingsPage', () => {
 
     expect(screen.getByRole('button', { name: 'Update password' })).toBeEnabled();
   });
+
+  it('follows a logical keyboard order and skips unavailable submit actions', async () => {
+    const user = userEvent.setup();
+    useCurrentUser.mockReturnValue({ data: buildCurrentUser() });
+
+    renderSettingsRoute();
+
+    await user.tab();
+    expect(screen.getByRole('link', { name: 'PicMeS' })).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole('link', { name: 'Back to dashboard' })).toHaveFocus();
+    await user.tab();
+    expect(screen.getByLabelText('Choose a new avatar')).toHaveFocus();
+    await user.tab();
+    expect(screen.getByLabelText('Current password')).toHaveFocus();
+    await user.tab();
+    expect(screen.getByLabelText('New password')).toHaveFocus();
+    await user.tab();
+    expect(screen.getByLabelText('Confirm new password')).toHaveFocus();
+    await user.tab();
+    expect(document.body).toHaveFocus();
+  });
+
+  it('skips disabled guest settings controls in keyboard navigation', async () => {
+    const user = userEvent.setup();
+    useCurrentUser.mockReturnValue({
+      data: buildCurrentUser({
+        username: 'PicMeS Guest',
+        account_settings_enabled: false
+      })
+    });
+
+    renderSettingsRoute();
+
+    await user.tab();
+    expect(screen.getByRole('link', { name: 'PicMeS' })).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole('link', { name: 'Back to dashboard' })).toHaveFocus();
+    await user.tab();
+    expect(document.body).toHaveFocus();
+  });
 });
