@@ -110,7 +110,7 @@ describe('AccountMenu', () => {
 
   it('tabs through Settings and Log Out in document order', async () => {
     const user = userEvent.setup();
-    renderMenu();
+    renderMenu({ withOutsideControl: true });
 
     await user.click(screen.getByRole('button', { name: 'Athos' }));
     await user.tab();
@@ -118,6 +118,11 @@ describe('AccountMenu', () => {
 
     await user.tab();
     expect(screen.getByRole('button', { name: 'Log Out' })).toHaveFocus();
+
+    await user.tab();
+    expect(screen.getByRole('button', { name: 'Outside control' })).toHaveFocus();
+    expect(screen.getByRole('button', { name: 'Athos' })).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.queryByRole('link', { name: 'Settings' })).not.toBeInTheDocument();
   });
 
   it('closes on Escape and returns focus to the trigger', async () => {
