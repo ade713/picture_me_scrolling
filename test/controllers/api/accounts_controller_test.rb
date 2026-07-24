@@ -45,12 +45,19 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
     assert @user.reload.is_password?('password')
   end
 
-  test 'password update enforces minimum and bcrypt byte limits' do
+  test 'password update enforces character and bcrypt byte limits' do
     login_as(@user)
 
     patch password_api_account_url, params: password_params(password: 'short', password_confirmation: 'short')
     assert_response :unprocessable_entity
     assert_includes response_json, 'Password is too short (minimum is 6 characters)'
+
+    long_password = 'a' * (User::MAXIMUM_PASSWORD_LENGTH + 1)
+    patch password_api_account_url,
+          params: password_params(password: long_password, password_confirmation: long_password)
+
+    assert_response :unprocessable_entity
+    assert_includes response_json, 'Password is too long (maximum is 64 characters)'
 
     oversized_password = 'a' * (User::MAXIMUM_PASSWORD_BYTES + 1)
     patch password_api_account_url,

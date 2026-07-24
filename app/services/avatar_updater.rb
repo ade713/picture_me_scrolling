@@ -1,4 +1,6 @@
 class AvatarUpdater
+  MAXIMUM_FILE_SIZE_MEGABYTES = 5
+  FORMAT_LABEL = 'JPEG, PNG, WebP, or GIF'.freeze
   ALLOWED_TYPES = %i[gif jpeg png webp].freeze
   CONTENT_TYPES = {
     gif: 'image/gif',
@@ -6,7 +8,7 @@ class AvatarUpdater
     png: 'image/png',
     webp: 'image/webp'
   }.freeze
-  MAXIMUM_FILE_SIZE = 5.megabytes
+  MAXIMUM_FILE_SIZE = MAXIMUM_FILE_SIZE_MEGABYTES.megabytes
 
   Result = Struct.new(:user, :errors, keyword_init: true) do
     def success?
@@ -45,15 +47,17 @@ class AvatarUpdater
 
   def validate_upload
     return ['Avatar is required'] unless upload
-    return ['Avatar must be 5 MB or smaller'] if upload.size > MAXIMUM_FILE_SIZE
+    if upload.size > MAXIMUM_FILE_SIZE
+      return ["Avatar must be #{MAXIMUM_FILE_SIZE_MEGABYTES} MB or smaller"]
+    end
 
     @image_type, dimensions = image_metadata
     errors = []
-    errors << 'Avatar must be a JPEG, PNG, WebP, or GIF image' unless ALLOWED_TYPES.include?(@image_type)
+    errors << "Avatar must be a #{FORMAT_LABEL} image" unless ALLOWED_TYPES.include?(@image_type)
     errors << 'Avatar must be a square image' unless dimensions && dimensions[0] == dimensions[1]
     errors
   rescue FastImage::FastImageException, IOError, SystemCallError
-    ['Avatar must be a readable JPEG, PNG, WebP, or GIF image']
+    ["Avatar must be a readable #{FORMAT_LABEL} image"]
   ensure
     upload.tempfile.rewind if upload&.respond_to?(:tempfile)
   end
