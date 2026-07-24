@@ -5,9 +5,10 @@ import { destroy, get, patch, post } from '../util/api_client';
 import { queryKeys } from './query_keys';
 
 export const POSTS_PER_PAGE = 10;
+const INITIAL_POSTS_PAGE = 1;
 
 export const feedCacheFromPage = page => ({
-  pageParams: [page.pagination?.page || 1],
+  pageParams: [page.pagination?.page || INITIAL_POSTS_PAGE],
   pages: [page]
 });
 
@@ -89,7 +90,7 @@ const removePostFromCache = (feed, deletedPost) => {
 export const usePosts = () => (
   useInfiniteQuery({
     queryKey: queryKeys.posts,
-    initialPageParam: 1,
+    initialPageParam: INITIAL_POSTS_PAGE,
     queryFn: ({ pageParam }) => get(apiEndpoints.posts.feed({
       page: pageParam,
       perPage: POSTS_PER_PAGE

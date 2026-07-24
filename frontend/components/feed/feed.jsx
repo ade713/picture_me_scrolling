@@ -4,6 +4,8 @@ import { usePosts } from '../../query/post_hooks';
 import FeedItem from './feed_item';
 import PostBar from '../posts/post_bar';
 
+const PRIORITY_MEDIA_POST_COUNT = 3;
+
 const Feed = () => {
   const posts = usePosts();
   const loadedPosts = posts.data?.posts;
@@ -11,7 +13,7 @@ const Feed = () => {
     <FeedItem
       key={ post.id }
       post={ post }
-      priorityMedia={ index < 3 } />
+      priorityMedia={ index < PRIORITY_MEDIA_POST_COUNT } />
   ), [loadedPosts]);
 
   if (posts.isLoading) {

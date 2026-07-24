@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 
-import { passwordSettings } from '../../config/account_settings';
+import {
+  PASSWORD_UPDATE_SUCCESS_MESSAGE,
+  passwordSettings
+} from '../../config/account_settings';
 import { useUpdatePassword } from '../../query/account_hooks';
 
 const EMPTY_PASSWORDS = {
@@ -39,7 +42,7 @@ const PasswordSettingsForm = ({ disabled = false }) => {
       onSuccess: () => {
         setPasswords(EMPTY_PASSWORDS);
         setValidationError(null);
-        setSuccessMessage('Password updated successfully');
+        setSuccessMessage(PASSWORD_UPDATE_SUCCESS_MESSAGE);
       }
     });
   };

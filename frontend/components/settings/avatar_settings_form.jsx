@@ -1,6 +1,9 @@
 import React, { useRef, useState } from 'react';
 
-import { avatarSettings } from '../../config/account_settings';
+import {
+  AVATAR_UPDATE_SUCCESS_MESSAGE,
+  avatarSettings
+} from '../../config/account_settings';
 import { useUpdateAvatar } from '../../query/account_hooks';
 import useAvatarPreview from './use_avatar_preview';
 
@@ -38,7 +41,7 @@ const AvatarSettingsForm = ({ disabled = false, username }) => {
     updateAvatar.mutate(selectedFile, {
       onSuccess: () => {
         resetSelection();
-        setSuccessMessage('Avatar updated successfully');
+        setSuccessMessage(AVATAR_UPDATE_SUCCESS_MESSAGE);
       }
     });
   };
