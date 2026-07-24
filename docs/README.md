@@ -57,6 +57,7 @@ NB: All feature MVPs will have the following:
 * [Phase 11 Backend Closeout][phase11-backend-closeout]
 * [Phase 11 Backend Performance Inventory][phase11-backend-performance-inventory]
 * [Phase 7 Verification Closeout][phase7-verification-closeout]
+* [Profile and Settings Closeout][profile-settings-closeout]
 
 [api-endpoints]: ./api-endpoints.md
 [backend-production-readiness]: ./backend-production-readiness.md
@@ -67,6 +68,7 @@ NB: All feature MVPs will have the following:
 [frontend-modernization-closeout]: ./frontend-modernization-closeout.md
 [phase11-backend-performance-inventory]: ./phase11-backend-performance-inventory.md
 [phase11-backend-closeout]: ./phase11-backend-closeout.md
+[profile-settings-closeout]: ./profile-settings-closeout.md
 [render-production-setup]: ./render-production-setup.md
 [phase7-verification-closeout]: ./phase7-verification-closeout.md
 [sample-state]: ./sample-state.md

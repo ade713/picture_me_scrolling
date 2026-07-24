@@ -407,6 +407,10 @@ together.
 
 ## Proposed PR Chunks
 
+All four implementation chunks are complete. Final verification results and
+remaining follow-ups are recorded in
+[`docs/profile-settings-closeout.md`](./profile-settings-closeout.md).
+
 1. Account API and security rules:
    - add current-user account routes and controller actions
    - add password verification, including the shared 72-byte maximum
