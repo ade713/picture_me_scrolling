@@ -322,29 +322,27 @@ page.
   - show an accessible success message
 - Announce success and error feedback with appropriate live-region semantics.
 
-## Post-Feature Technical Debt
+## Post-Feature Constants Cleanup
 
-After the settings page and dashboard account menu are complete, schedule a
-focused constants and configuration cleanup. Waiting until both surfaces exist
-will show which values are genuinely shared and avoid abstractions based on a
-single use.
+Status: completed after the settings page and dashboard account menu.
 
-Review and centralize repeated values where appropriate, including:
+The cleanup centralized genuinely shared values:
 
-- avatar MIME types and user-facing format names
-- the 5 MB avatar upload limit
-- avatar validation and feedback messages
-- the password minimum length and 72-byte BCrypt limit
-- account API endpoint paths
-- success and validation messages
-- query keys and application route paths
+- Frontend avatar MIME types, format labels, and upload-size guidance live in
+  `frontend/config/account_settings.js`.
+- Frontend password length guidance and form constraints live in
+  `frontend/config/account_settings.js`.
+- Account endpoint paths live in `frontend/config/api_endpoints.js`.
+- Application route paths live in `frontend/config/routes.js`.
+- Rails password character and BCrypt byte limits remain authoritative on
+  `User`.
+- Rails avatar type and upload-size limits remain authoritative on
+  `AvatarUpdater`.
 
-Keep security and validation rules authoritative on the Rails side. Frontend
-constants may mirror server limits for guidance and early feedback, but must
-not become the authorization or validation boundary. Routes, API paths, and
-reusable UI messages can live in focused frontend configuration modules. Tests
-may import stable constants when doing so improves maintainability without
-preventing the test from detecting accidental contract changes.
+One-off success and validation messages remain local rather than being
+abstracted without reuse. Query keys were already centralized and did not need
+further changes. Contract tests retain literal route, endpoint, and message
+expectations where importing the production constant would weaken the test.
 
 As a separate avatar follow-up, reconsider the square-image requirement.
 Common avatar flows accept rectangular images and display a centered square

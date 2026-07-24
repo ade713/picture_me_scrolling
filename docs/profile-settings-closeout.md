@@ -46,8 +46,6 @@ The final closeout checks passed:
 
 ## Follow-Ups
 
-- Complete the focused constants and configuration cleanup recorded in
-  `docs/profile-settings-plan.md`.
 - Reconsider square-only avatar validation in favor of centered display
   cropping or an interactive crop flow.
 - Add a forgotten-password flow separately after email ownership and reset
