@@ -1,5 +1,7 @@
 import { csrfHeaders } from './csrf_api_util';
 
+const HTTP_NO_CONTENT = 204;
+
 export class ApiError extends Error {
   constructor(message, { status, response, data, errors } = {}) {
     super(message);
@@ -16,7 +18,7 @@ const isFormData = body => (
 );
 
 const parseResponse = async response => {
-  if (response.status === 204) return null;
+  if (response.status === HTTP_NO_CONTENT) return null;
 
   const contentType = response.headers.get('content-type') || '';
 

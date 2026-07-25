@@ -13,7 +13,17 @@
 #
 
 class Post < ApplicationRecord
+  TYPES = {
+    audio: 'audio',
+    link: 'link',
+    photo: 'photo',
+    quote: 'quote',
+    text: 'text',
+    video: 'video'
+  }.freeze
+
   validates :title, :author_id, presence: true
+  validates :post_type, inclusion: { in: TYPES.values }
 
   belongs_to :author,
     primary_key: :id,

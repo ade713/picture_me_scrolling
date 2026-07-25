@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
+import { postTypeLabels, postTypes } from '../../config/post_types';
 import { useCreatePost } from '../../query/post_hooks';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
 import { usePostFormProps } from './post_form_hooks';
@@ -31,7 +32,7 @@ const TextForm = () => {
       title,
       body,
       url,
-      post_type: 'text'
+      post_type: postTypes.text
     };
 
     createPost(post).then(result => {
@@ -47,7 +48,7 @@ const TextForm = () => {
             <i className="fa fa-font fa-3x" aria-hidden="true"></i>
           </div>
           <span className="new-post-label">
-            Text
+            {postTypeLabels[postTypes.text]}
           </span>
         </div>
       </button>

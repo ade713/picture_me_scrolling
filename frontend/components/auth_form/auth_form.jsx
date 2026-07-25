@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import { passwordSettings } from "../../config/account_settings";
+import { buttonLabels } from "../../config/button_labels";
 import { routes } from "../../config/routes";
 import { useCurrentUser, useLogin, useSignup } from "../../query/session_hooks";
 import useGuestLogin from "./use_guest_login";
@@ -25,8 +26,8 @@ const AuthForm = () => {
   const isSignup = location.pathname === routes.signup;
   const formMutation = isSignup ? signup : login;
   const navTarget = isSignup ? routes.home : routes.signup;
-  const navText = isSignup ? "Log In" : "Sign Up";
-  const submitText = isSignup ? "Sign Up" : "Log In";
+  const navText = isSignup ? buttonLabels.logIn : buttonLabels.signUp;
+  const submitText = isSignup ? buttonLabels.signUp : buttonLabels.logIn;
   const errors = isSignup ? authErrors(signup, login) : authErrors(login);
   const loggedIn = Boolean(currentUser.data);
 
@@ -102,7 +103,7 @@ const AuthForm = () => {
               </button>
             </form>
             <button type='button' className='guest-login' onClick={logInAsGuest}>
-              Guest Log In
+              {buttonLabels.guestLogin}
             </button>
             <div className='auth-errors' aria-live='polite'>{renderErrors()}</div>
           </section>

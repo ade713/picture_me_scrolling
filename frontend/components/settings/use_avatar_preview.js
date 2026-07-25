@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 
+import {
+  AVATAR_MUST_BE_SQUARE_MESSAGE,
+  AVATAR_UNREADABLE_MESSAGE
+} from '../../config/account_settings';
+
 const useAvatarPreview = () => {
   const previewUrlRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -44,13 +49,13 @@ const useAvatarPreview = () => {
 
     setIsCheckingDimensions(false);
     setValidationError(
-      naturalWidth === naturalHeight ? null : 'Avatar must be a square image'
+      naturalWidth === naturalHeight ? null : AVATAR_MUST_BE_SQUARE_MESSAGE
     );
   };
 
   const markPreviewUnreadable = () => {
     setIsCheckingDimensions(false);
-    setValidationError('Avatar must be a readable image');
+    setValidationError(AVATAR_UNREADABLE_MESSAGE);
   };
 
   useEffect(() => () => revokePreviewUrl(), []);

@@ -12,6 +12,7 @@
 
 class User < ApplicationRecord
   DEFAULT_AVATAR_IMAGE = 'profile_blue_150x150.png'.freeze
+  DEFAULT_RECOMMENDED_FOLLOW_LIMIT = 6
   MINIMUM_PASSWORD_LENGTH = 6
   MAXIMUM_PASSWORD_LENGTH = 64
   MAXIMUM_PASSWORD_BYTES = 72
@@ -61,7 +62,7 @@ class User < ApplicationRecord
     through: :followee_users,
     source: :posts
 
-  def recommended_follow_users(limit: 6)
+  def recommended_follow_users(limit: DEFAULT_RECOMMENDED_FOLLOW_LIMIT)
     recommended_users = recommended_follow_user_scope.limit(limit)
 
     return recommended_users if recommended_users.exists?

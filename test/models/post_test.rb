@@ -15,7 +15,10 @@
 require 'test_helper'
 
 class PostTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  test 'post type must be supported' do
+    post = Post.new(title: 'Unsupported post', author_id: 1, post_type: 'document')
+
+    refute post.valid?
+    assert_includes post.errors[:post_type], 'is not included in the list'
+end
 end

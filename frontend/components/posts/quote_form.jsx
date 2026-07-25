@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
+import { postTypeLabels, postTypes } from '../../config/post_types';
 import { useCreatePost } from '../../query/post_hooks';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
 import { usePostFormProps } from './post_form_hooks';
@@ -31,7 +32,7 @@ const QuoteForm = () => {
       title: `"${title}"`,
       body: `- ${body}`,
       url,
-      post_type: 'quote'
+      post_type: postTypes.quote
     };
 
     createPost(post).then(result => {
@@ -47,7 +48,7 @@ const QuoteForm = () => {
             <i className="fa fa-quote-left fa-3x" aria-hidden="true"></i>
           </div>
           <span className="new-post-label">
-            Quote
+            {postTypeLabels[postTypes.quote]}
           </span>
         </div>
       </button>

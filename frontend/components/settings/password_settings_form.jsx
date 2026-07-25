@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
-import { passwordSettings } from '../../config/account_settings';
+import {
+  PASSWORD_CONFIRMATION_MISMATCH_MESSAGE,
+  PASSWORD_UPDATE_SUCCESS_MESSAGE,
+  passwordSettings
+} from '../../config/account_settings';
+import { buttonLabels } from '../../config/button_labels';
 import { useUpdatePassword } from '../../query/account_hooks';
 
 const EMPTY_PASSWORDS = {
@@ -31,7 +36,7 @@ const PasswordSettingsForm = ({ disabled = false }) => {
     event.preventDefault();
 
     if (passwords.password !== passwords.password_confirmation) {
-      setValidationError('New password and confirmation must match');
+      setValidationError(PASSWORD_CONFIRMATION_MISMATCH_MESSAGE);
       return;
     }
 
@@ -39,7 +44,7 @@ const PasswordSettingsForm = ({ disabled = false }) => {
       onSuccess: () => {
         setPasswords(EMPTY_PASSWORDS);
         setValidationError(null);
-        setSuccessMessage('Password updated successfully');
+        setSuccessMessage(PASSWORD_UPDATE_SUCCESS_MESSAGE);
       }
     });
   };
@@ -111,7 +116,7 @@ const PasswordSettingsForm = ({ disabled = false }) => {
       { successMessage && <p role="status">{ successMessage }</p> }
 
       <button type="submit" disabled={ submitDisabled }>
-        { updatePassword.isPending ? 'Updating password…' : 'Update password' }
+        { updatePassword.isPending ? buttonLabels.updatingPassword : buttonLabels.updatePassword }
       </button>
     </form>
   );

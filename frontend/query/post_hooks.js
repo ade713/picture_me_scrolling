@@ -1,12 +1,14 @@
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { apiEndpoints } from '../config/api_endpoints';
 import { destroy, get, patch, post } from '../util/api_client';
 import { queryKeys } from './query_keys';
 
 export const POSTS_PER_PAGE = 10;
+const INITIAL_POSTS_PAGE = 1;
 
 export const feedCacheFromPage = page => ({
-  pageParams: [page.pagination?.page || 1],
+  pageParams: [page.pagination?.page || INITIAL_POSTS_PAGE],
   pages: [page]
 });
 
@@ -88,10 +90,11 @@ const removePostFromCache = (feed, deletedPost) => {
 export const usePosts = () => (
   useInfiniteQuery({
     queryKey: queryKeys.posts,
-    initialPageParam: 1,
-    queryFn: ({ pageParam }) => get(
-      `/api/posts?page=${pageParam}&per_page=${POSTS_PER_PAGE}`
-    ),
+    initialPageParam: INITIAL_POSTS_PAGE,
+    queryFn: ({ pageParam }) => get(apiEndpoints.posts.feed({
+      page: pageParam,
+      perPage: POSTS_PER_PAGE
+    })),
     getNextPageParam: lastPage => (
       lastPage.pagination.has_more ? lastPage.pagination.page + 1 : undefined
     ),
@@ -107,7 +110,7 @@ export const useCreatePost = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: newPost => post('/api/posts', { post: newPost }),
+    mutationFn: newPost => post(apiEndpoints.posts.collection, { post: newPost }),
     onSuccess: newPost => {
       queryClient.setQueryData(queryKeys.posts, posts => (
         addPostToCache(posts, newPost)
@@ -121,7 +124,7 @@ export const useCreateMediaPost = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: formData => post('/api/posts', formData),
+    mutationFn: formData => post(apiEndpoints.posts.collection, formData),
     onSuccess: newPost => {
       queryClient.setQueryData(queryKeys.posts, posts => (
         addPostToCache(posts, newPost)
@@ -135,7 +138,7 @@ export const useDeletePost = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: deletedPost => destroy(`/api/posts/${deletedPost.id}`),
+    mutationFn: deletedPost => destroy(apiEndpoints.posts.detail(deletedPost.id)),
     onSuccess: deletedPost => {
       queryClient.setQueryData(queryKeys.posts, posts => (
         removePostFromCache(posts, deletedPost)
@@ -150,7 +153,7 @@ export const useUpdatePost = () => {
 
   return useMutation({
     mutationFn: ({ id, post: updatedPost }) => (
-      patch(`/api/posts/${id}`, postRequestBody(updatedPost))
+      patch(apiEndpoints.posts.detail(id), postRequestBody(updatedPost))
     ),
     onSuccess: updatedPost => {
       queryClient.setQueryData(queryKeys.posts, posts => (
@@ -166,7 +169,7 @@ export const useLikePost = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: id => post(`/api/posts/${id}/like`),
+    mutationFn: id => post(apiEndpoints.posts.like(id)),
     onSuccess: updatedPost => {
       queryClient.setQueryData(queryKeys.posts, posts => (
         updatePostInCache(posts, updatedPost)
@@ -180,7 +183,7 @@ export const useUnlikePost = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: id => destroy(`/api/posts/${id}/like`),
+    mutationFn: id => destroy(apiEndpoints.posts.like(id)),
     onSuccess: updatedPost => {
       queryClient.setQueryData(queryKeys.posts, posts => (
         updatePostInCache(posts, updatedPost)

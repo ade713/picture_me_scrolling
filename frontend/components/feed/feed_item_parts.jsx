@@ -1,15 +1,16 @@
 import React, { useRef } from 'react';
 import Modal from 'react-modal';
 
+import { buttonActionLabels, buttonLabels } from '../../config/button_labels';
 import { imageLoadingProps } from '../../util/media_loading_util';
 
 const postActionLabel = post => post.title || `post by ${post.author}`;
-const followActionLabel = post => `Follow ${post.author}`;
-const unfollowActionLabel = post => `Unfollow ${post.author}`;
-const likeActionLabel = post => `Like ${postActionLabel(post)}`;
-const unlikeActionLabel = post => `Unlike ${postActionLabel(post)}`;
-const editActionLabel = post => `Edit ${postActionLabel(post)}`;
-const deleteActionLabel = post => `Delete ${postActionLabel(post)}`;
+const followActionLabel = post => buttonActionLabels.followUser(post.author);
+const unfollowActionLabel = post => buttonActionLabels.unfollowUser(post.author);
+const likeActionLabel = post => buttonActionLabels.likePost(postActionLabel(post));
+const unlikeActionLabel = post => buttonActionLabels.unlikePost(postActionLabel(post));
+const editActionLabel = post => buttonActionLabels.editPost(postActionLabel(post));
+const deleteActionLabel = post => buttonActionLabels.deletePost(postActionLabel(post));
 
 export const FollowButton = ({ isAuthor, onFollow, onUnfollow, post }) => {
   if (isAuthor) {
@@ -23,7 +24,7 @@ export const FollowButton = ({ isAuthor, onFollow, onUnfollow, post }) => {
         className="unfollow-btn"
         onClick={ () => onUnfollow(post.author_id) }
         title={ unfollowActionLabel(post) }>
-        Unfollow
+        {buttonLabels.unfollow}
       </button>
     );
   }
@@ -34,7 +35,7 @@ export const FollowButton = ({ isAuthor, onFollow, onUnfollow, post }) => {
       className="follow-btn"
       onClick={ () => onFollow(post.author_id) }
       title={ followActionLabel(post) }>
-      Follow
+      {buttonLabels.follow}
     </button>
   );
 };
@@ -160,12 +161,12 @@ export const DeletePostConfirmation = ({ onCancel, onConfirm, post }) => {
           ref={ cancelButtonRef }
           className="delete-post-cancel-btn"
           onClick={ onCancel }>
-          No
+          {buttonLabels.cancelDelete}
         </button>
         <button
           className="delete-post-confirm-btn"
           onClick={ onConfirm }>
-          Yes
+          {buttonLabels.confirmDelete}
         </button>
       </div>
     </Modal>

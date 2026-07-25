@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
+import { postTypeLabels, postTypes } from '../../config/post_types';
 import { useCreateMediaPost } from '../../query/post_hooks';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
 import { usePostFormProps } from './post_form_hooks';
@@ -50,7 +51,7 @@ const VideoForm = () => {
     const formData = new FormData();
     formData.append('post[url]', url);
     formData.append('post[title]', title);
-    formData.append('post[post_type]', 'video');
+    formData.append('post[post_type]', postTypes.video);
     formData.append('post[body]', body);
     formData.append('post[image]', videoFile);
 
@@ -69,7 +70,7 @@ const VideoForm = () => {
             <i className="fa fa-video-camera fa-3x" aria-hidden="true"></i>
           </div>
           <span className="new-post-label">
-            Video
+            {postTypeLabels[postTypes.video]}
           </span>
         </div>
       </button>

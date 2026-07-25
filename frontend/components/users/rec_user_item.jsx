@@ -1,6 +1,8 @@
 import React from 'react';
 
-const followActionLabel = user => `Follow ${user.username}`;
+import { buttonActionLabels } from '../../config/button_labels';
+
+const followActionLabel = user => buttonActionLabels.followUser(user.username);
 
 const RecUserItem = ({ followUser, user }) => (
   <li className="rec-user-item">

@@ -1,6 +1,7 @@
 class FeedQuery
   DEFAULT_PAGE = 1
   DEFAULT_PER_PAGE = 20
+  MIN_PER_PAGE = 1
   MAX_PER_PAGE = 50
 
   def self.call(user:, page: nil, per_page: nil)
@@ -59,7 +60,7 @@ class FeedQuery
   end
 
   def normalized_per_page
-    integer_param(per_page, DEFAULT_PER_PAGE).clamp(1, MAX_PER_PAGE)
+    integer_param(per_page, DEFAULT_PER_PAGE).clamp(MIN_PER_PAGE, MAX_PER_PAGE)
   end
 
   def integer_param(value, fallback)
