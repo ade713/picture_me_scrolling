@@ -15,4 +15,8 @@ export const passwordSettings = Object.freeze({
 });
 
 export const AVATAR_UPDATE_SUCCESS_MESSAGE = 'Avatar updated successfully';
+export const AVATAR_MUST_BE_SQUARE_MESSAGE = 'Avatar must be a square image';
+export const AVATAR_UNREADABLE_MESSAGE = 'Avatar must be a readable image';
+export const PASSWORD_CONFIRMATION_MISMATCH_MESSAGE =
+  'New password and confirmation must match';
 export const PASSWORD_UPDATE_SUCCESS_MESSAGE = 'Password updated successfully';

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import {
+  PASSWORD_CONFIRMATION_MISMATCH_MESSAGE,
   PASSWORD_UPDATE_SUCCESS_MESSAGE,
   passwordSettings
 } from '../../config/account_settings';
@@ -35,7 +36,7 @@ const PasswordSettingsForm = ({ disabled = false }) => {
     event.preventDefault();
 
     if (passwords.password !== passwords.password_confirmation) {
-      setValidationError('New password and confirmation must match');
+      setValidationError(PASSWORD_CONFIRMATION_MISMATCH_MESSAGE);
       return;
     }
 
