@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import Modal from 'react-modal';
 
+import { buttonLabels } from '../../config/button_labels';
 import { mediaPostTypes, postTypes } from '../../config/post_types';
 import { useUpdatePost } from '../../query/post_hooks';
 import { INVALID_LINK_URL_ERROR, validateLinkUrl } from '../../util/link_url_validation';
@@ -159,7 +160,7 @@ const EditPostForm = ({ isOpen, onClose, post }) => {
             }
             onClose={ closeModal }
             onSubmit={ handleSubmit }
-            submitLabel="Save"
+            submitLabel={ buttonLabels.save }
           />
         </div>
       </div>

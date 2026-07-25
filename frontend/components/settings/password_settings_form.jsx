@@ -4,6 +4,7 @@ import {
   PASSWORD_UPDATE_SUCCESS_MESSAGE,
   passwordSettings
 } from '../../config/account_settings';
+import { buttonLabels } from '../../config/button_labels';
 import { useUpdatePassword } from '../../query/account_hooks';
 
 const EMPTY_PASSWORDS = {
@@ -114,7 +115,7 @@ const PasswordSettingsForm = ({ disabled = false }) => {
       { successMessage && <p role="status">{ successMessage }</p> }
 
       <button type="submit" disabled={ submitDisabled }>
-        { updatePassword.isPending ? 'Updating password…' : 'Update password' }
+        { updatePassword.isPending ? buttonLabels.updatingPassword : buttonLabels.updatePassword }
       </button>
     </form>
   );

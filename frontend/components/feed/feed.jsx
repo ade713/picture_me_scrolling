@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 
+import { buttonLabels } from '../../config/button_labels';
 import { usePosts } from '../../query/post_hooks';
 import FeedItem from './feed_item';
 import PostBar from '../posts/post_bar';
@@ -55,7 +56,7 @@ const Feed = () => {
           className="load-more-posts"
           disabled={ posts.isFetchingNextPage }
           onClick={ () => posts.fetchNextPage() }>
-          { posts.isFetchingNextPage ? 'Loading posts...' : 'Load more posts' }
+          { posts.isFetchingNextPage ? buttonLabels.loadingPosts : buttonLabels.loadMorePosts }
         </button>
       ) }
     </div>

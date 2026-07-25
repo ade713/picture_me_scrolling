@@ -12,3 +12,12 @@ export const mediaPostTypes = Object.freeze([
   postTypes.photo,
   postTypes.video
 ]);
+
+export const postTypeLabels = Object.freeze({
+  [postTypes.audio]: 'Audio',
+  [postTypes.link]: 'Link',
+  [postTypes.photo]: 'Photo',
+  [postTypes.quote]: 'Quote',
+  [postTypes.text]: 'Text',
+  [postTypes.video]: 'Video'
+});

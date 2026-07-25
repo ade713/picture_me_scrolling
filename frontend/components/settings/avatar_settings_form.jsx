@@ -4,6 +4,7 @@ import {
   AVATAR_UPDATE_SUCCESS_MESSAGE,
   avatarSettings
 } from '../../config/account_settings';
+import { buttonLabels } from '../../config/button_labels';
 import { useUpdateAvatar } from '../../query/account_hooks';
 import useAvatarPreview from './use_avatar_preview';
 
@@ -95,11 +96,11 @@ const AvatarSettingsForm = ({ disabled = false, username }) => {
             type="button"
             disabled={ disabled || updateAvatar.isPending }
             onClick={ resetSelection }>
-            Clear selection
+            {buttonLabels.clearSelection}
           </button>
         ) }
         <button type="submit" disabled={ disabled || submitDisabled }>
-          { updateAvatar.isPending ? 'Updating avatar…' : 'Update avatar' }
+          { updateAvatar.isPending ? buttonLabels.updatingAvatar : buttonLabels.updateAvatar }
         </button>
       </div>
     </form>

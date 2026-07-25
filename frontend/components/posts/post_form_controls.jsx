@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { buttonLabels } from '../../config/button_labels';
+
 export const FormErrors = ({ errors }) => (
   <div className="form-errors" role="alert" aria-live="polite">
     <strong>
@@ -18,14 +20,14 @@ export const ModalButtonFooter = ({
   disabled,
   onClose,
   onSubmit,
-  submitLabel = 'Post'
+  submitLabel = buttonLabels.post
 }) => (
   <div className="modal-button">
     <button
       className="form-button"
       type="button"
       onClick={ onClose }>
-      Close
+      {buttonLabels.close}
     </button>
     <button
       className="post-submit-button"

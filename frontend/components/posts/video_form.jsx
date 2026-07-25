@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
-import { postTypes } from '../../config/post_types';
+import { postTypeLabels, postTypes } from '../../config/post_types';
 import { useCreateMediaPost } from '../../query/post_hooks';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
 import { usePostFormProps } from './post_form_hooks';
@@ -70,7 +70,7 @@ const VideoForm = () => {
             <i className="fa fa-video-camera fa-3x" aria-hidden="true"></i>
           </div>
           <span className="new-post-label">
-            Video
+            {postTypeLabels[postTypes.video]}
           </span>
         </div>
       </button>

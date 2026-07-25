@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import { buttonLabels } from '../../config/button_labels';
 import { routes } from '../../config/routes';
 import { useCurrentUser, useLogout } from '../../query/session_hooks';
 
@@ -74,7 +75,7 @@ const AccountMenu = () => {
           disabled={ logout.isPending }
           onClick={ handleLogout }
           type="button">
-          { logout.isPending ? 'Logging out…' : 'Log Out' }
+          { logout.isPending ? buttonLabels.loggingOut : buttonLabels.logOut }
         </button>
       </div>
     </div>
