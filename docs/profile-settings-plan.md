@@ -203,9 +203,10 @@ Requirements:
 - Require the current password before accepting a change.
 - Require the new password to satisfy the existing minimum length of six
   characters.
-- Enforce a maximum of 72 bytes because BCrypt ignores password content beyond
-  that boundary. Apply the same maximum consistently to signup and settings
-  password changes so passwords are never silently truncated.
+- Present and enforce a user-facing maximum of 64 characters consistently
+  across signup and settings password changes.
+- Retain the authoritative 72-byte BCrypt safety check so multibyte passwords
+  are never silently truncated.
 - Require the new password and confirmation to match.
 - Clear all password fields after a successful update.
 - Never return or log current or new password values.
@@ -339,10 +340,11 @@ The cleanup centralized genuinely shared values:
 - Rails avatar type and upload-size limits remain authoritative on
   `AvatarUpdater`.
 
-One-off success and validation messages remain local rather than being
-abstracted without reuse. Query keys were already centralized and did not need
-further changes. Contract tests retain literal route, endpoint, and message
-expectations where importing the production constant would weaken the test.
+Account settings success and validation messages live in
+`frontend/config/account_settings.js`. Query keys were already centralized and
+did not need further changes. Contract tests retain literal route, endpoint,
+and message expectations where importing the production constant would weaken
+the test.
 
 As a separate avatar follow-up, reconsider the square-image requirement.
 Common avatar flows accept rectangular images and display a centered square
@@ -411,7 +413,8 @@ remaining follow-ups are recorded in
 
 1. Account API and security rules:
    - add current-user account routes and controller actions
-   - add password verification, including the shared 72-byte maximum
+   - add password verification, including the shared 64-character limit and
+     authoritative 72-byte BCrypt safety limit
    - select the server-side image-inspection dependency and add authoritative
      content, format, size, and square-dimension validation
    - protect the guest account

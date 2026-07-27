@@ -44,6 +44,13 @@ The final closeout checks passed:
 - Rails `application.css` - compiled successfully through Sprockets.
 - `git diff --check` - passed.
 
+## Post-Feature Cleanup
+
+The follow-up constants work is complete. Shared account settings limits,
+messages, API endpoints, route paths, post types, button labels, and behavioral
+values now have explicit ownership instead of being repeated throughout the
+application.
+
 ## Follow-Ups
 
 - Reconsider square-only avatar validation in favor of centered display

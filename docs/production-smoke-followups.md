@@ -56,7 +56,3 @@ RAILS_ENV=production bin/rails demo:seed
 
 The full `RAILS_ENV=production bin/rails db:seed` task remains destructive and
 should only be used before real production data needs to be preserved.
-
-## Future Product To-Dos
-
-- Add profile/settings features so users can choose or update profile pictures/thumbnails. This could also include profile account management such as password updates.

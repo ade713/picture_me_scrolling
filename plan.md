@@ -940,7 +940,7 @@ Recommended PR chunks:
 
 ## Future Account Recovery: Forgotten Password
 
-Status: planned after the initial profile/settings page.
+Status: planned. The initial profile/settings page is complete.
 
 Goal: allow users who cannot provide their current password to securely reset
 it through a verified recovery channel.
