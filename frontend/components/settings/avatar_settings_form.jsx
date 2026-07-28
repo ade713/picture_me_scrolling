@@ -15,12 +15,12 @@ const AvatarSettingsForm = ({ disabled = false, username }) => {
   const {
     selectedFile,
     previewUrl,
-    isCheckingDimensions,
+    isLoadingPreview,
     validationError,
     clearSelection,
+    markPreviewReady,
     markPreviewUnreadable,
-    selectFile,
-    validateDimensions
+    selectFile
   } = useAvatarPreview();
 
   const resetSelection = () => {
@@ -37,7 +37,7 @@ const AvatarSettingsForm = ({ disabled = false, username }) => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    if (!selectedFile || isCheckingDimensions || validationError) return;
+    if (!selectedFile || isLoadingPreview || validationError) return;
 
     updateAvatar.mutate(selectedFile, {
       onSuccess: () => {
@@ -53,7 +53,7 @@ const AvatarSettingsForm = ({ disabled = false, username }) => {
   ];
   const submitDisabled = (
     !selectedFile ||
-    isCheckingDimensions ||
+    isLoadingPreview ||
     Boolean(validationError) ||
     updateAvatar.isPending
   );
@@ -65,7 +65,7 @@ const AvatarSettingsForm = ({ disabled = false, username }) => {
           alt={ `${username} avatar preview` }
           className="settings-avatar-preview"
           onError={ markPreviewUnreadable }
-          onLoad={ validateDimensions }
+          onLoad={ markPreviewReady }
           src={ previewUrl }
         />
       ) }
