@@ -1,15 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 
-import {
-  AVATAR_MUST_BE_SQUARE_MESSAGE,
-  AVATAR_UNREADABLE_MESSAGE
-} from '../../config/account_settings';
+import { AVATAR_UNREADABLE_MESSAGE } from '../../config/account_settings';
 
 const useAvatarPreview = () => {
   const previewUrlRef = useRef(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
-  const [isCheckingDimensions, setIsCheckingDimensions] = useState(false);
+  const [isLoadingPreview, setIsLoadingPreview] = useState(false);
   const [validationError, setValidationError] = useState(null);
 
   const revokePreviewUrl = () => {
@@ -23,7 +20,7 @@ const useAvatarPreview = () => {
     revokePreviewUrl();
     setSelectedFile(null);
     setPreviewUrl(null);
-    setIsCheckingDimensions(false);
+    setIsLoadingPreview(false);
     setValidationError(null);
   };
 
@@ -34,27 +31,23 @@ const useAvatarPreview = () => {
 
     if (!file) {
       setPreviewUrl(null);
-      setIsCheckingDimensions(false);
+      setIsLoadingPreview(false);
       return;
     }
 
     const objectUrl = URL.createObjectURL(file);
     previewUrlRef.current = objectUrl;
     setPreviewUrl(objectUrl);
-    setIsCheckingDimensions(true);
+    setIsLoadingPreview(true);
   };
 
-  const validateDimensions = event => {
-    const { naturalHeight, naturalWidth } = event.currentTarget;
-
-    setIsCheckingDimensions(false);
-    setValidationError(
-      naturalWidth === naturalHeight ? null : AVATAR_MUST_BE_SQUARE_MESSAGE
-    );
+  const markPreviewReady = () => {
+    setIsLoadingPreview(false);
+    setValidationError(null);
   };
 
   const markPreviewUnreadable = () => {
-    setIsCheckingDimensions(false);
+    setIsLoadingPreview(false);
     setValidationError(AVATAR_UNREADABLE_MESSAGE);
   };
 
@@ -63,12 +56,12 @@ const useAvatarPreview = () => {
   return {
     selectedFile,
     previewUrl,
-    isCheckingDimensions,
+    isLoadingPreview,
     validationError,
     clearSelection,
     markPreviewUnreadable,
-    selectFile,
-    validateDimensions
+    markPreviewReady,
+    selectFile
   };
 };
 

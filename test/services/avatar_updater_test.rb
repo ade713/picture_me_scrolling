@@ -8,7 +8,7 @@ class AvatarUpdaterTest < ActiveSupport::TestCase
     ActiveStorage::Blob.delete_all
 
     @user = User.create!(username: 'avatar_service_user', password: 'password')
-    @user.avatar.attach(square_avatar)
+    @user.avatar.attach(valid_avatar)
   end
 
   test 'cleanup failure keeps the successful replacement and logs the stale blob' do
@@ -17,7 +17,7 @@ class AvatarUpdaterTest < ActiveSupport::TestCase
 
     previous_blob.stub(:purge, -> { raise ActiveStorage::FileNotFoundError }) do
       Rails.logger.stub(:error, ->(message) { log_messages << message }) do
-        result = AvatarUpdater.new(user: @user, upload: square_avatar).call
+        result = AvatarUpdater.new(user: @user, upload: valid_avatar).call
 
         assert result.success?
       end
@@ -41,7 +41,7 @@ class AvatarUpdaterTest < ActiveSupport::TestCase
       :upload,
       ->(*, **) { raise ActiveStorage::IntegrityError }
     ) do
-      result = AvatarUpdater.new(user: @user, upload: square_avatar).call
+      result = AvatarUpdater.new(user: @user, upload: valid_avatar).call
 
       refute result.success?
     end
@@ -53,7 +53,7 @@ class AvatarUpdaterTest < ActiveSupport::TestCase
 
   private
 
-  def square_avatar
+  def valid_avatar
     Rack::Test::UploadedFile.new(
       Rails.root.join('app/assets/images/profile_blue_150x150.png'),
       'image/png'

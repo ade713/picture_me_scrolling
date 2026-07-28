@@ -20,7 +20,7 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'account endpoints require login' do
-    patch avatar_api_account_url, params: { avatar: square_avatar }
+    patch avatar_api_account_url, params: { avatar: valid_avatar }
     assert_response :unauthorized
 
     patch password_api_account_url, params: password_params
@@ -86,14 +86,14 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'avatar update attaches a valid square raster image' do
+  test 'avatar update attaches a valid rectangular raster image' do
     login_as(@user)
-    patch avatar_api_account_url, params: { avatar: square_avatar }
+    patch avatar_api_account_url, params: { avatar: rectangular_avatar }
 
     assert_response :success
     assert @user.reload.avatar.attached?
-    assert_equal 'profile_blue_150x150.png', @user.avatar.filename.to_s
-    assert_includes response_json['avatar_url'], 'profile_blue_150x150.png'
+    assert_equal 'mac_table.png', @user.avatar.filename.to_s
+    assert_includes response_json['avatar_url'], 'mac_table.png'
   end
 
   test 'avatar update requires an image' do
@@ -117,12 +117,8 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
     refute @user.reload.avatar.attached?
   end
 
-  test 'avatar update rejects non-square and oversized images' do
+  test 'avatar update rejects oversized images' do
     login_as(@user)
-
-    patch avatar_api_account_url, params: { avatar: non_square_avatar }
-    assert_response :unprocessable_entity
-    assert_includes response_json, 'Avatar must be a square image'
 
     patch avatar_api_account_url, params: { avatar: oversized_avatar }
     assert_response :unprocessable_entity
@@ -131,7 +127,7 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'avatar replacement purges the previous blob and stored object without a job' do
-    @user.avatar.attach(square_avatar)
+    @user.avatar.attach(valid_avatar)
     previous_blob = @user.avatar.blob
     previous_key = previous_blob.key
     assert ActiveStorage::Blob.service.exist?(previous_key)
@@ -139,7 +135,7 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
     login_as(@user)
 
     assert_no_enqueued_jobs only: ActiveStorage::PurgeJob do
-      patch avatar_api_account_url, params: { avatar: square_avatar }
+      patch avatar_api_account_url, params: { avatar: valid_avatar }
     end
 
     assert_response :success
@@ -150,12 +146,12 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'failed avatar validation preserves the previous blob and stored object' do
-    @user.avatar.attach(square_avatar)
+    @user.avatar.attach(valid_avatar)
     previous_blob = @user.avatar.blob
     previous_key = previous_blob.key
 
     login_as(@user)
-    patch avatar_api_account_url, params: { avatar: non_square_avatar }
+    patch avatar_api_account_url, params: { avatar: svg_avatar }
 
     assert_response :unprocessable_entity
     assert ActiveStorage::Blob.exists?(previous_blob.id)
@@ -171,7 +167,7 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
     assert_response :unprocessable_entity
     assert_equal ['Account settings are unavailable for the shared guest account'], response_json
 
-    patch avatar_api_account_url, params: { avatar: square_avatar }
+    patch avatar_api_account_url, params: { avatar: valid_avatar }
     assert_response :unprocessable_entity
     assert_equal ['Account settings are unavailable for the shared guest account'], response_json
     assert guest.reload.is_password?('password')
@@ -200,11 +196,11 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
     }
   end
 
-  def square_avatar
+  def valid_avatar
     uploaded_file(Rails.root.join('app/assets/images/profile_blue_150x150.png'), 'image/png')
   end
 
-  def non_square_avatar
+  def rectangular_avatar
     uploaded_file(Rails.root.join('app/assets/images/mac_table.png'), 'image/png')
   end
 

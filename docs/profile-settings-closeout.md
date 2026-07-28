@@ -51,9 +51,12 @@ messages, API endpoints, route paths, post types, button labels, and behavioral
 values now have explicit ownership instead of being repeated throughout the
 application.
 
+The rectangular-avatar follow-up removed square-only validation. Users can
+upload square or rectangular raster images, and the existing square avatar
+frames display them with centered `object-fit: cover` cropping while preserving
+the original stored image.
+
 ## Follow-Ups
 
-- Reconsider square-only avatar validation in favor of centered display
-  cropping or an interactive crop flow.
 - Add a forgotten-password flow separately after email ownership and reset
   token delivery are designed.

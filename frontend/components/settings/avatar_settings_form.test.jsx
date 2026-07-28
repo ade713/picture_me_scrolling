@@ -34,11 +34,7 @@ describe('AvatarSettingsForm', () => {
     />
   );
 
-  const loadPreview = (image, width, height) => {
-    Object.defineProperty(image, 'naturalWidth', { configurable: true, value: width });
-    Object.defineProperty(image, 'naturalHeight', { configurable: true, value: height });
-    fireEvent.load(image);
-  };
+  const loadPreview = image => fireEvent.load(image);
 
   it('waits to show a preview until a file is selected', () => {
     renderForm();
@@ -47,7 +43,7 @@ describe('AvatarSettingsForm', () => {
     expect(screen.getByRole('button', { name: 'Update avatar' })).toBeDisabled();
   });
 
-  it('previews and submits a selected square image', async () => {
+  it('previews and submits a selected image', async () => {
     const user = userEvent.setup();
     const file = new File(['avatar'], 'avatar.png', { type: 'image/png' });
     renderForm();
@@ -59,7 +55,7 @@ describe('AvatarSettingsForm', () => {
     expect(preview).toHaveAttribute('src', 'blob:avatar.png');
     expect(screen.getByRole('button', { name: 'Update avatar' })).toBeDisabled();
 
-    loadPreview(preview, 200, 200);
+    loadPreview(preview);
     await user.click(screen.getByRole('button', { name: 'Update avatar' }));
 
     expect(updateAvatar.mutate).toHaveBeenCalledWith(file, {
@@ -76,7 +72,7 @@ describe('AvatarSettingsForm', () => {
     const input = screen.getByLabelText('Choose a new avatar');
     await user.upload(input, file);
     const preview = screen.getByAltText('Athos avatar preview');
-    loadPreview(preview, 200, 200);
+    loadPreview(preview);
     await user.click(screen.getByRole('button', { name: 'Update avatar' }));
 
     expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:avatar.png');
@@ -86,17 +82,18 @@ describe('AvatarSettingsForm', () => {
     expect(screen.getByRole('status')).toHaveTextContent('Avatar updated successfully');
   });
 
-  it('blocks a known non-square image before submission', async () => {
+  it('accepts a rectangular image', async () => {
     const user = userEvent.setup();
     const file = new File(['avatar'], 'wide.png', { type: 'image/png' });
     renderForm();
 
     await user.upload(screen.getByLabelText('Choose a new avatar'), file);
-    loadPreview(screen.getByAltText('Athos avatar preview'), 300, 200);
+    loadPreview(screen.getByAltText('Athos avatar preview'));
+    await user.click(screen.getByRole('button', { name: 'Update avatar' }));
 
-    expect(screen.getByRole('alert')).toHaveTextContent('Avatar must be a square image');
-    expect(screen.getByRole('button', { name: 'Update avatar' })).toBeDisabled();
-    expect(updateAvatar.mutate).not.toHaveBeenCalled();
+    expect(updateAvatar.mutate).toHaveBeenCalledWith(file, {
+      onSuccess: expect.any(Function)
+    });
   });
 
   it('revokes preview URLs when a file is replaced or cleared', async () => {

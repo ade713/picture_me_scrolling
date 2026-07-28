@@ -55,7 +55,7 @@ const SettingsPage = () => {
               <section className='settings-section' aria-labelledby='avatar-settings-heading'>
                 <h2 id='avatar-settings-heading'>Avatar</h2>
                 <p>
-                  Choose a square {avatarSettings.formatLabel} image up to{' '}
+                  Choose a {avatarSettings.formatLabel} image up to{' '}
                   {avatarSettings.maximumFileSizeMegabytes} MB.
                 </p>
                 <AvatarSettingsForm
