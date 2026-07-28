@@ -123,23 +123,19 @@ frontend/components/settings/
 - Reject SVG uploads because SVG can contain executable content.
 - Validate the decoded image content rather than trusting only its filename,
   extension, or client-provided MIME type.
-- Require equal image width and height in the first version. The frontend may
-  reject a known non-square image early for faster feedback, but the server must
-  remain the authoritative dimension check.
+- Accept both square and rectangular images.
 - Enforce a reasonable upload limit, proposed as 5 MB.
 - Return validation errors without replacing the current avatar.
 
-Centered square cropping of non-square uploads is a possible later enhancement.
-That version could let the user position the image and store or render a square
-crop using `object-fit: cover` or an image-processing variant. Do not silently
-crop non-square files in the first version; explain the square-image requirement
-before file selection and return a clear validation error when it is not met.
+Display rectangular uploads in the existing square avatar frames with centered
+`object-fit: cover` cropping. Preserve the original uploaded image rather than
+creating a second cropped object. Interactive crop positioning remains a
+possible later enhancement if centered cropping proves insufficient.
 
-Use the pure-Ruby `fastimage` dependency for the first version. It recognizes
-the agreed raster formats from file content and reads their dimensions without
-adding ImageMagick or libvips deployment requirements. The backend must combine
-that content-derived format and dimension inspection with the upload byte-size
-limit. Detailed future cropping behavior remains deferred.
+Use the pure-Ruby `fastimage` dependency. It recognizes the agreed raster
+formats from file content and confirms readable image dimensions without adding
+ImageMagick or libvips deployment requirements. The backend combines that
+content-derived inspection with the upload byte-size limit.
 
 ### Storage cleanup
 
@@ -346,12 +342,9 @@ did not need further changes. Contract tests retain literal route, endpoint,
 and message expectations where importing the production constant would weaken
 the test.
 
-As a separate avatar follow-up, reconsider the square-image requirement.
-Common avatar flows accept rectangular images and display a centered square
-crop with `object-fit: cover`. Start by deciding whether centered display
-cropping is sufficient or whether users need interactive crop positioning,
-then update server validation, frontend preview behavior, guidance, and tests
-together.
+The rectangular-avatar follow-up removed the square-image requirement. Avatar
+frames use centered `object-fit: cover` cropping while storage retains the
+original uploaded image.
 
 ## Test Plan
 
@@ -371,7 +364,7 @@ together.
 - missing, oversized, and unsupported avatar files are rejected
 - files whose decoded contents do not match an allowed raster format are
   rejected
-- non-square avatar images are rejected without replacing the current avatar
+- rectangular avatar images are accepted
 - failed avatar validation preserves the existing avatar
 - guest password and avatar changes are rejected
 
@@ -384,7 +377,7 @@ together.
 - the settings page is protected
 - current username and avatar render
 - selecting an avatar displays a local preview
-- selecting a known non-square image displays the square-image validation error
+- selecting a rectangular image displays a centered square preview
 - replacing or clearing a selected file revokes its temporary preview URL
 - avatar submission uses `FormData`
 - avatar success refreshes current-user and dependent query data
@@ -416,7 +409,7 @@ remaining follow-ups are recorded in
    - add password verification, including the shared 64-character limit and
      authoritative 72-byte BCrypt safety limit
    - select the server-side image-inspection dependency and add authoritative
-     content, format, size, and square-dimension validation
+     content, format, and size validation
    - protect the guest account
    - implement synchronous old-avatar cleanup and its partial-failure logging
      contract
