@@ -32,7 +32,7 @@ class User < ApplicationRecord
             length: { maximum: MAXIMUM_EMAIL_LENGTH },
             uniqueness: { case_sensitive: false },
             allow_blank: true
-  validates :email, presence: true, on: :signup
+  validates :email, presence: true, on: [:signup, :email_update]
   validates :password,
             length: {
               minimum: MINIMUM_PASSWORD_LENGTH,
@@ -41,6 +41,7 @@ class User < ApplicationRecord
             }
   validate :password_within_bcrypt_limit
 
+  before_validation :clear_email_verification, if: :will_save_change_to_email?
   after_initialize :ensure_session_token!
   before_destroy :remember_avatar_blob_for_purge
   after_destroy_commit :purge_destroyed_avatar
@@ -116,6 +117,10 @@ class User < ApplicationRecord
   end
 
   private
+
+  def clear_email_verification
+    self.email_verified_at = nil
+  end
 
   def remember_avatar_blob_for_purge
     @avatar_blob_for_purge = avatar.blob if avatar.attached?

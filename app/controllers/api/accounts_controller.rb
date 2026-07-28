@@ -13,6 +13,17 @@ class Api::AccountsController < ApplicationController
     end
   end
 
+  def email
+    current_user.email = email_params[:email]
+
+    if current_user.save(context: :email_update)
+      @user = current_user
+      render 'api/users/current_user'
+    else
+      render json: current_user.errors.full_messages, status: :unprocessable_entity
+    end
+  end
+
   def password
     attributes = password_params
 
@@ -39,6 +50,10 @@ class Api::AccountsController < ApplicationController
   end
 
   private
+
+  def email_params
+    params.fetch(:account, ActionController::Parameters.new).permit(:email)
+  end
 
   def password_params
     params.fetch(:account, ActionController::Parameters.new).permit(

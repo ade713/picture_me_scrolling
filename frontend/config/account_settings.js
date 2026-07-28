@@ -9,6 +9,10 @@ export const avatarSettings = Object.freeze({
   maximumFileSizeMegabytes: 5
 });
 
+export const emailSettings = Object.freeze({
+  maximumLength: 254
+});
+
 export const passwordSettings = Object.freeze({
   minimumLength: 6,
   maximumLength: 64
@@ -16,6 +20,9 @@ export const passwordSettings = Object.freeze({
 
 export const AVATAR_UPDATE_SUCCESS_MESSAGE = 'Avatar updated successfully';
 export const AVATAR_UNREADABLE_MESSAGE = 'Avatar must be a readable image';
+export const EMAIL_NOT_VERIFIED_STATUS_MESSAGE = 'Email address is not verified';
+export const EMAIL_UPDATE_SUCCESS_MESSAGE = 'Email updated successfully';
+export const EMAIL_VERIFIED_STATUS_MESSAGE = 'Verified email address';
 export const PASSWORD_CONFIRMATION_MISMATCH_MESSAGE =
   'New password and confirmation must match';
 export const PASSWORD_UPDATE_SUCCESS_MESSAGE = 'Password updated successfully';

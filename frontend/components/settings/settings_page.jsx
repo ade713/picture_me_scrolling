@@ -1,10 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { avatarSettings } from "../../config/account_settings";
+import {
+  EMAIL_NOT_VERIFIED_STATUS_MESSAGE,
+  EMAIL_VERIFIED_STATUS_MESSAGE,
+  avatarSettings
+} from "../../config/account_settings";
 import { routes } from "../../config/routes";
 import { useCurrentUser } from "../../query/session_hooks";
 import AvatarSettingsForm from "./avatar_settings_form";
+import EmailSettingsForm from "./email_settings_form";
 import PasswordSettingsForm from "./password_settings_form";
 
 const SettingsPage = () => {
@@ -44,8 +49,8 @@ const SettingsPage = () => {
                 <div className='settings-restriction' role='note'>
                   <strong>Shared account settings are disabled.</strong>
                   <p>
-                    This guest account can view settings, but a personal account is required to change an avatar or
-                    password.
+                    This guest account can view settings, but a personal account is required to change an email,
+                    avatar, or password.
                   </p>
                 </div>
               )}
@@ -61,6 +66,19 @@ const SettingsPage = () => {
                 <AvatarSettingsForm
                   disabled={!settingsEnabled}
                   username={currentUser.username}
+                />
+              </section>
+
+              <section className='settings-section' aria-labelledby='email-settings-heading'>
+                <h2 id='email-settings-heading'>Email</h2>
+                <p>
+                  {currentUser.email_verified_at
+                    ? EMAIL_VERIFIED_STATUS_MESSAGE
+                    : EMAIL_NOT_VERIFIED_STATUS_MESSAGE}
+                </p>
+                <EmailSettingsForm
+                  currentEmail={currentUser.email}
+                  disabled={!settingsEnabled}
                 />
               </section>
 

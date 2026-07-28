@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     end
     resource :account, only: [] do
       patch :avatar
+      patch :email
       patch :password
     end
     resource :session, only: [:create, :destroy]

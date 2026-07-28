@@ -22,6 +22,19 @@ export const useUpdateAvatar = () => {
   });
 };
 
+export const useUpdateEmail = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: email => patch(apiEndpoints.account.email, {
+      account: { email }
+    }),
+    onSuccess: currentUser => {
+      queryClient.setQueryData(queryKeys.currentUser, currentUser);
+    }
+  });
+};
+
 export const useUpdatePassword = () => (
   useMutation({
     mutationFn: account => patch(apiEndpoints.account.password, { account })

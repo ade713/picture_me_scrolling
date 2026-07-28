@@ -1,6 +1,7 @@
 export const apiEndpoints = Object.freeze({
   account: Object.freeze({
     avatar: '/api/account/avatar',
+    email: '/api/account/email',
     password: '/api/account/password'
   }),
   posts: Object.freeze({

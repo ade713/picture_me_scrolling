@@ -129,6 +129,15 @@ class UserTest < ActiveSupport::TestCase
     assert_includes duplicate.errors.full_messages, "Email has already been taken"
   end
 
+  test "changing email clears its verification timestamp" do
+    user = create_user("verified_email_user", email: "current@example.com")
+    user.update!(email_verified_at: Time.current)
+
+    user.update!(email: "new@example.com")
+
+    assert_nil user.email_verified_at
+  end
+
   test "account settings are disabled only for the shared guest" do
     guest = create_user(User::SHARED_GUEST_USERNAME)
     user = create_user("settings_user")

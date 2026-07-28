@@ -10,9 +10,9 @@ class Api::SessionsControllerTest < ActionDispatch::IntegrationTest
     @user = User.create!(
       username: 'session_user',
       email: 'session@example.com',
-      email_verified_at: Time.current,
       password: 'password'
     )
+    @user.update!(email_verified_at: Time.current)
   end
 
   test 'create logs in a user and returns the user payload' do

@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
 
-import { useUpdateAvatar, useUpdatePassword } from '../../query/account_hooks';
+import { useUpdateAvatar, useUpdateEmail, useUpdatePassword } from '../../query/account_hooks';
 import { useCurrentUser } from '../../query/session_hooks';
 import { ProtectedRoute } from '../../util/route_util';
 import SettingsPage from './settings_page';
@@ -14,12 +14,15 @@ vi.mock('../../query/session_hooks', () => ({
 
 vi.mock('../../query/account_hooks', () => ({
   useUpdateAvatar: vi.fn(),
+  useUpdateEmail: vi.fn(),
   useUpdatePassword: vi.fn()
 }));
 
 const buildCurrentUser = (overrides = {}) => ({
   id: 1,
   username: 'Athos',
+  email: 'athos@example.com',
+  email_verified_at: null,
   avatar_url: '/avatars/athos.png',
   account_settings_enabled: true,
   ...overrides
@@ -60,6 +63,7 @@ const renderSettingsRoute = () => render(
 describe('SettingsPage', () => {
   beforeEach(() => {
     useUpdateAvatar.mockReturnValue(buildMutation());
+    useUpdateEmail.mockReturnValue(buildMutation());
     useUpdatePassword.mockReturnValue(buildMutation());
   });
 
@@ -75,6 +79,8 @@ describe('SettingsPage', () => {
     expect(screen.getByRole('heading', { level: 1, name: 'Settings' })).toBeInTheDocument();
     expect(screen.getByText('Athos')).toBeInTheDocument();
     expect(screen.getByAltText('Athos avatar')).toHaveAttribute('src', '/avatars/athos.png');
+    expect(screen.getByRole('heading', { level: 2, name: 'Email' })).toBeInTheDocument();
+    expect(screen.getByText('Email address is not verified')).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 2, name: 'Avatar' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 2, name: 'Password' })).toBeInTheDocument();
   });
@@ -115,6 +121,7 @@ describe('SettingsPage', () => {
     renderSettingsRoute();
 
     expect(screen.getByRole('note')).toHaveTextContent('Shared account settings are disabled');
+    expect(screen.getByLabelText('Email address')).toBeDisabled();
     expect(screen.getByLabelText('Choose a new avatar')).toBeDisabled();
     expect(screen.getByLabelText('Current password')).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Update avatar' })).toBeDisabled();
@@ -151,6 +158,8 @@ describe('SettingsPage', () => {
     expect(screen.getByRole('link', { name: 'Back to dashboard' })).toHaveFocus();
     await user.tab();
     expect(screen.getByLabelText('Choose a new avatar')).toHaveFocus();
+    await user.tab();
+    expect(screen.getByLabelText('Email address')).toHaveFocus();
     await user.tab();
     expect(screen.getByLabelText('Current password')).toHaveFocus();
     await user.tab();
