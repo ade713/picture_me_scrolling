@@ -52,6 +52,7 @@ NB: All feature MVPs will have the following:
 * [Behavior Smoke Checks][behavior-smoke-checks]
 * [Frontend Smoke Checklist][frontend-smoke-checklist]
 * [Frontend Modernization Closeout][frontend-modernization-closeout]
+* [Forgotten Password and Account Recovery Plan][forgotten-password-plan]
 * [Backend Production Readiness][backend-production-readiness]
 * [Render Production Setup][render-production-setup]
 * [Phase 11 Backend Closeout][phase11-backend-closeout]
@@ -66,6 +67,7 @@ NB: All feature MVPs will have the following:
 [db-schema]: ./db-schema.md
 [frontend-smoke-checklist]: ./frontend-smoke-checklist.md
 [frontend-modernization-closeout]: ./frontend-modernization-closeout.md
+[forgotten-password-plan]: ./forgotten-password-plan.md
 [phase11-backend-performance-inventory]: ./phase11-backend-performance-inventory.md
 [phase11-backend-closeout]: ./phase11-backend-closeout.md
 [profile-settings-closeout]: ./profile-settings-closeout.md
