@@ -4,6 +4,8 @@
 #
 #  id                  :integer          not null, primary key
 #  username            :string           not null
+#  email               :string
+#  email_verified_at   :datetime
 #  password_digest     :string           not null
 #  session_token       :string           not null
 #  created_at          :datetime         not null
@@ -13,15 +15,23 @@
 class User < ApplicationRecord
   DEFAULT_AVATAR_IMAGE = 'profile_blue_150x150.png'.freeze
   DEFAULT_RECOMMENDED_FOLLOW_LIMIT = 6
+  MAXIMUM_EMAIL_LENGTH = 254
   MINIMUM_PASSWORD_LENGTH = 6
   MAXIMUM_PASSWORD_LENGTH = 64
   MAXIMUM_PASSWORD_BYTES = 72
   SHARED_GUEST_USERNAME = 'PicMeS Guest'.freeze
 
+  normalizes :email, with: -> email { email.strip.downcase.presence }
+
   validates :username,
             :password_digest,
             :session_token,
             presence: true, uniqueness: true
+  validates :email,
+            format: { with: URI::MailTo::EMAIL_REGEXP },
+            length: { maximum: MAXIMUM_EMAIL_LENGTH },
+            uniqueness: { case_sensitive: false },
+            allow_blank: true
   validates :password,
             length: {
               minimum: MINIMUM_PASSWORD_LENGTH,
