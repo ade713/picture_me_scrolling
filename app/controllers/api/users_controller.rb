@@ -4,9 +4,9 @@ class Api::UsersController < ApplicationController
   def create
     @user = User.new(user_params)
 
-    if @user.save
+    if @user.save(context: :signup)
       login(@user)
-      render "api/users/show"
+      render "api/users/current_user"
     else
       render json: @user.errors.full_messages, status: :unprocessable_entity
     end
@@ -23,6 +23,6 @@ class Api::UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:username, :password)
+    params.require(:user).permit(:username, :email, :password)
   end
 end

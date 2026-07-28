@@ -9,6 +9,8 @@ class Api::SessionsControllerTest < ActionDispatch::IntegrationTest
 
     @user = User.create!(
       username: 'session_user',
+      email: 'session@example.com',
+      email_verified_at: Time.current,
       password: 'password'
     )
   end
@@ -24,6 +26,8 @@ class Api::SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal @user.id, response_json['id']
     assert_equal @user.username, response_json['username']
+    assert_equal @user.email, response_json['email']
+    assert_equal @user.email_verified_at.as_json, response_json['email_verified_at']
     assert response_json.key?('avatar_url')
     assert response_json['account_settings_enabled']
   end

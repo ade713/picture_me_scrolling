@@ -7,7 +7,7 @@ class Api::AccountsController < ApplicationController
 
     if result.success?
       @user = result.user
-      render 'api/users/show'
+      render 'api/users/current_user'
     else
       render json: result.errors, status: :unprocessable_entity
     end
@@ -32,7 +32,7 @@ class Api::AccountsController < ApplicationController
 
     if current_user.save
       @user = current_user
-      render 'api/users/show'
+      render 'api/users/current_user'
     else
       render json: current_user.errors.full_messages, status: :unprocessable_entity
     end

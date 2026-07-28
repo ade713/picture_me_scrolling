@@ -32,6 +32,7 @@ class User < ApplicationRecord
             length: { maximum: MAXIMUM_EMAIL_LENGTH },
             uniqueness: { case_sensitive: false },
             allow_blank: true
+  validates :email, presence: true, on: :signup
   validates :password,
             length: {
               minimum: MINIMUM_PASSWORD_LENGTH,

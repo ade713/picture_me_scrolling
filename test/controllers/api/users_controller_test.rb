@@ -15,6 +15,7 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
       post api_users_url, params: {
         user: {
           username: 'new_user',
+          email: ' NEW_USER@Example.COM ',
           password: 'password'
         }
       }
@@ -22,8 +23,24 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_equal 'new_user', response_json['username']
+    assert_equal 'new_user@example.com', response_json['email']
+    assert_nil response_json['email_verified_at']
     assert response_json['id'].present?
     assert_includes response_json['avatar_url'], default_avatar_name
+  end
+
+  test 'create requires an email for a new signup' do
+    assert_no_difference('User.count') do
+      post api_users_url, params: {
+        user: {
+          username: 'missing_email_user',
+          password: 'password'
+        }
+      }
+    end
+
+    assert_response :unprocessable_entity
+    assert_includes response_json, "Email can't be blank"
   end
 
   test 'create returns validation errors for invalid signup params' do
@@ -113,6 +130,8 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal user.id, response_json['id']
     assert_equal user.username, response_json['username']
     assert_includes response_json['avatar_url'], default_avatar_name
+    refute response_json.key?('email')
+    refute response_json.key?('email_verified_at')
   end
 
   test 'show prefers an attached avatar over the default profile image' do
