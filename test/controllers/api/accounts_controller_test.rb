@@ -86,14 +86,14 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
-  test 'avatar update attaches a valid square raster image' do
+  test 'avatar update attaches a valid rectangular raster image' do
     login_as(@user)
-    patch avatar_api_account_url, params: { avatar: square_avatar }
+    patch avatar_api_account_url, params: { avatar: non_square_avatar }
 
     assert_response :success
     assert @user.reload.avatar.attached?
-    assert_equal 'profile_blue_150x150.png', @user.avatar.filename.to_s
-    assert_includes response_json['avatar_url'], 'profile_blue_150x150.png'
+    assert_equal 'mac_table.png', @user.avatar.filename.to_s
+    assert_includes response_json['avatar_url'], 'mac_table.png'
   end
 
   test 'avatar update requires an image' do
@@ -117,12 +117,8 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
     refute @user.reload.avatar.attached?
   end
 
-  test 'avatar update rejects non-square and oversized images' do
+  test 'avatar update rejects oversized images' do
     login_as(@user)
-
-    patch avatar_api_account_url, params: { avatar: non_square_avatar }
-    assert_response :unprocessable_entity
-    assert_includes response_json, 'Avatar must be a square image'
 
     patch avatar_api_account_url, params: { avatar: oversized_avatar }
     assert_response :unprocessable_entity
@@ -155,7 +151,7 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
     previous_key = previous_blob.key
 
     login_as(@user)
-    patch avatar_api_account_url, params: { avatar: non_square_avatar }
+    patch avatar_api_account_url, params: { avatar: svg_avatar }
 
     assert_response :unprocessable_entity
     assert ActiveStorage::Blob.exists?(previous_blob.id)

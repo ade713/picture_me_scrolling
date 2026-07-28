@@ -51,10 +51,9 @@ class AvatarUpdater
       return ["Avatar must be #{MAXIMUM_FILE_SIZE_MEGABYTES} MB or smaller"]
     end
 
-    @image_type, dimensions = image_metadata
+    read_image_metadata
     errors = []
     errors << "Avatar must be a #{FORMAT_LABEL} image" unless ALLOWED_TYPES.include?(@image_type)
-    errors << 'Avatar must be a square image' unless dimensions && dimensions[0] == dimensions[1]
     errors
   rescue FastImage::FastImageException, IOError, SystemCallError
     ["Avatar must be a readable #{FORMAT_LABEL} image"]
@@ -62,12 +61,10 @@ class AvatarUpdater
     upload.tempfile.rewind if upload&.respond_to?(:tempfile)
   end
 
-  def image_metadata
+  def read_image_metadata
     path = upload.tempfile.path
-    [
-      FastImage.type(path, raise_on_failure: true),
-      FastImage.size(path, raise_on_failure: true)
-    ]
+    @image_type = FastImage.type(path, raise_on_failure: true)
+    FastImage.size(path, raise_on_failure: true)
   end
 
   def create_and_upload_blob
