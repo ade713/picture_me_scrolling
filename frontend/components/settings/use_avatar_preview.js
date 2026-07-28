@@ -61,7 +61,7 @@ const useAvatarPreview = () => {
     clearSelection,
     markPreviewUnreadable,
     markPreviewReady,
-    selectFile,
+    selectFile
   };
 };
 

@@ -51,7 +51,7 @@ class AvatarUpdater
       return ["Avatar must be #{MAXIMUM_FILE_SIZE_MEGABYTES} MB or smaller"]
     end
 
-    read_image_metadata
+    @image_type = validated_image_type
     errors = []
     errors << "Avatar must be a #{FORMAT_LABEL} image" unless ALLOWED_TYPES.include?(@image_type)
     errors
@@ -61,10 +61,11 @@ class AvatarUpdater
     upload.tempfile.rewind if upload&.respond_to?(:tempfile)
   end
 
-  def read_image_metadata
+  def validated_image_type
     path = upload.tempfile.path
-    @image_type = FastImage.type(path, raise_on_failure: true)
+    image_type = FastImage.type(path, raise_on_failure: true)
     FastImage.size(path, raise_on_failure: true)
+    image_type
   end
 
   def create_and_upload_blob
