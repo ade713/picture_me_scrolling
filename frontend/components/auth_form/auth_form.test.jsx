@@ -65,6 +65,11 @@ describe('AuthForm', () => {
 
     expect(screen.getByRole('button', { name: 'Sign Up' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Log In' })).toHaveAttribute('href', '/');
+    expect(screen.getByRole('textbox', { name: 'Email' })).toBeRequired();
+    expect(screen.getByRole('textbox', { name: 'Email' })).toHaveAttribute(
+      'maxlength',
+      '254'
+    );
   });
 
   it('labels social profile links', () => {
@@ -115,11 +120,13 @@ describe('AuthForm', () => {
     renderAuthForm('/signup');
 
     await user.type(screen.getByPlaceholderText('Your Username'), 'new-user');
+    await user.type(screen.getByPlaceholderText('Your Email'), 'new-user@example.com');
     await user.type(screen.getByPlaceholderText('Your Password'), 'password123');
     await user.click(screen.getByRole('button', { name: 'Sign Up' }));
 
     expect(signupMutation.mutate).toHaveBeenCalledWith({
       username: 'new-user',
+      email: 'new-user@example.com',
       password: 'password123'
     });
     expect(loginMutation.mutate).not.toHaveBeenCalled();

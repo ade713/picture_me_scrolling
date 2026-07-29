@@ -940,7 +940,8 @@ Recommended PR chunks:
 
 ## Future Account Recovery: Forgotten Password
 
-Status: planning in progress. The initial profile/settings page is complete.
+Status: implementation in progress. The initial profile/settings page is
+complete, and the email-identity PR is pending review.
 
 Goal: allow users who cannot provide their current password to securely reset
 it through a verified recovery channel.

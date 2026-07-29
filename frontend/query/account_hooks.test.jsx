@@ -3,7 +3,7 @@ import { act, renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { patch } from '../util/api_client';
-import { useUpdateAvatar, useUpdatePassword } from './account_hooks';
+import { useUpdateAvatar, useUpdateEmail, useUpdatePassword } from './account_hooks';
 import { queryKeys } from './query_keys';
 
 vi.mock('../util/api_client', () => ({
@@ -78,5 +78,26 @@ describe('account hooks', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
     expect(patch).toHaveBeenCalledWith('/api/account/password', { account });
     expect(queryClient.getQueryData(queryKeys.currentUser)).toBe(currentUser);
+  });
+
+  it('updates the email and current-user cache', async () => {
+    const currentUser = {
+      id: 1,
+      username: 'Athos',
+      email: 'new@example.com',
+      email_verified_at: null
+    };
+    patch.mockResolvedValue(currentUser);
+
+    const { result } = renderHook(() => useUpdateEmail(), { wrapper });
+
+    await act(async () => {
+      await result.current.mutateAsync('new@example.com');
+    });
+
+    expect(patch).toHaveBeenCalledWith('/api/account/email', {
+      account: { email: 'new@example.com' }
+    });
+    expect(queryClient.getQueryData(queryKeys.currentUser)).toEqual(currentUser);
   });
 });

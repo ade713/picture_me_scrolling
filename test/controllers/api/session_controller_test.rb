@@ -9,8 +9,10 @@ class Api::SessionsControllerTest < ActionDispatch::IntegrationTest
 
     @user = User.create!(
       username: 'session_user',
+      email: 'session@example.com',
       password: 'password'
     )
+    @user.update!(email_verified_at: Time.current)
   end
 
   test 'create logs in a user and returns the user payload' do
@@ -24,6 +26,8 @@ class Api::SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal @user.id, response_json['id']
     assert_equal @user.username, response_json['username']
+    assert_equal @user.email, response_json['email']
+    assert_equal @user.email_verified_at.as_json, response_json['email_verified_at']
     assert response_json.key?('avatar_url')
     assert response_json['account_settings_enabled']
   end
@@ -46,6 +50,16 @@ class Api::SessionsControllerTest < ActionDispatch::IntegrationTest
     get api_users_url
 
     assert_response :success
+  end
+
+  test 'authenticated root bootstraps private current-user fields' do
+    login_as(@user)
+
+    get root_url
+
+    assert_response :success
+    assert_includes response.body, %("email":"#{@user.email}")
+    assert_includes response.body, '"email_verified_at":'
   end
 
   test 'destroy logs out the current user and returns the user payload' do

@@ -141,6 +141,7 @@
 }
 
 .avatar-settings-form,
+.email-settings-form,
 .password-settings-form {
   display: flex;
   flex-direction: column;
@@ -150,11 +151,13 @@
 }
 
 .avatar-settings-form label,
+.email-settings-form label,
 .password-settings-form label {
   font-weight: 700;
 }
 
 .avatar-settings-form input[type='file'],
+.email-settings-form input[type='email'],
 .password-settings-form input[type='password'] {
   box-sizing: border-box;
   width: 100%;
@@ -284,6 +287,7 @@
 
   .settings-form-actions,
   .settings-form-actions button,
+  .email-settings-form > button,
   .password-settings-form > button {
     width: 100%;
   }

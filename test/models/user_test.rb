@@ -4,6 +4,8 @@
 #
 #  id                  :integer          not null, primary key
 #  username            :string           not null
+#  email               :string
+#  email_verified_at   :datetime
 #  password_digest     :string           not null
 #  session_token       :string           not null
 #  created_at          :datetime         not null
@@ -84,6 +86,58 @@ class UserTest < ActiveSupport::TestCase
     assert_includes user.errors.full_messages, "Password is too long (maximum is 64 characters)"
   end
 
+  test "email is optional for existing users" do
+    assert create_user("legacy_user").valid?
+  end
+
+  test "email is normalized before validation" do
+    user = create_user("email_user", email: "  USER@Example.COM ")
+
+    assert_equal "user@example.com", user.email
+  end
+
+  test "blank email is normalized to nil" do
+    user = create_user("blank_email_user", email: "   ")
+
+    assert_nil user.email
+  end
+
+  test "email must have a valid format" do
+    user = build_user("invalid_email_user", email: "not-an-email")
+
+    refute user.valid?
+    assert_includes user.errors.full_messages, "Email is invalid"
+  end
+
+  test "email cannot exceed the maximum length" do
+    local_part = "a" * User::MAXIMUM_EMAIL_LENGTH
+    user = build_user("long_email_user", email: "#{local_part}@example.com")
+
+    refute user.valid?
+    assert_includes user.errors.full_messages,
+                    "Email is too long (maximum is #{User::MAXIMUM_EMAIL_LENGTH} characters)"
+  end
+
+  test "email must be unique regardless of case or surrounding whitespace" do
+    create_user("first_email_user", email: "user@example.com")
+    duplicate = build_user(
+      "duplicate_email_user",
+      email: " USER@EXAMPLE.COM "
+    )
+
+    refute duplicate.valid?
+    assert_includes duplicate.errors.full_messages, "Email has already been taken"
+  end
+
+  test "changing email clears its verification timestamp" do
+    user = create_user("verified_email_user", email: "current@example.com")
+    user.update!(email_verified_at: Time.current)
+
+    user.update!(email: "new@example.com")
+
+    assert_nil user.email_verified_at
+  end
+
   test "account settings are disabled only for the shared guest" do
     guest = create_user(User::SHARED_GUEST_USERNAME)
     user = create_user("settings_user")
@@ -114,10 +168,15 @@ class UserTest < ActiveSupport::TestCase
 
   private
 
-  def create_user(username)
-    User.create!(
+  def build_user(username, email: nil)
+    User.new(
       username: username,
-      password: "password"
+      password: "password",
+      email: email
     )
+  end
+
+  def create_user(username, email: nil)
+    build_user(username, email: email).tap(&:save!)
   end
 end

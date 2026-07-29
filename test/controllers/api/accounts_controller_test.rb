@@ -23,6 +23,11 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
     patch avatar_api_account_url, params: { avatar: valid_avatar }
     assert_response :unauthorized
 
+    patch email_api_account_url, params: {
+      account: { email: 'account@example.com' }
+    }
+    assert_response :unauthorized
+
     patch password_api_account_url, params: password_params
     assert_response :unauthorized
   end
@@ -84,6 +89,69 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
 
     get api_users_url
     assert_response :success
+  end
+
+  test 'email update normalizes the address, clears verification, and retains the session' do
+    @user.update_columns(
+      email: 'old@example.com',
+      email_verified_at: Time.current
+    )
+    login_as(@user)
+    session_token = @user.reload.session_token
+
+    patch email_api_account_url, params: {
+      account: { email: ' NEW@Example.COM ' }
+    }
+
+    assert_response :success
+    assert_equal 'new@example.com', response_json['email']
+    assert_nil response_json['email_verified_at']
+    assert_equal 'new@example.com', @user.reload.email
+    assert_nil @user.email_verified_at
+    assert_equal session_token, @user.session_token
+
+    get api_users_url
+    assert_response :success
+  end
+
+  test 'email update preserves verification when the normalized address is unchanged' do
+    verified_at = Time.current.change(usec: 0)
+    @user.update_columns(
+      email: 'account@example.com',
+      email_verified_at: verified_at
+    )
+    login_as(@user)
+
+    patch email_api_account_url, params: {
+      account: { email: ' ACCOUNT@EXAMPLE.COM ' }
+    }
+
+    assert_response :success
+    assert_equal verified_at, @user.reload.email_verified_at
+  end
+
+  test 'email update rejects blank, invalid, and duplicate addresses' do
+    other_user = create_user('other_email_user')
+    other_user.update!(email: 'taken@example.com')
+    verified_at = Time.current.change(usec: 0)
+    @user.update_columns(
+      email: 'current@example.com',
+      email_verified_at: verified_at
+    )
+    login_as(@user)
+
+    [
+      ['', "Email can't be blank"],
+      ['not-an-email', 'Email is invalid'],
+      ['taken@example.com', 'Email has already been taken']
+    ].each do |email, error|
+      patch email_api_account_url, params: { account: { email: email } }
+
+      assert_response :unprocessable_entity
+      assert_includes response_json, error
+      assert_equal 'current@example.com', @user.reload.email
+      assert_equal verified_at, @user.email_verified_at
+    end
   end
 
   test 'avatar update attaches a valid rectangular raster image' do
@@ -170,7 +238,15 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
     patch avatar_api_account_url, params: { avatar: valid_avatar }
     assert_response :unprocessable_entity
     assert_equal ['Account settings are unavailable for the shared guest account'], response_json
+
+    patch email_api_account_url, params: {
+      account: { email: 'guest@example.com' }
+    }
+    assert_response :unprocessable_entity
+    assert_equal ['Account settings are unavailable for the shared guest account'], response_json
+
     assert guest.reload.is_password?('password')
+    assert_nil guest.email
     refute guest.avatar.attached?
   end
 

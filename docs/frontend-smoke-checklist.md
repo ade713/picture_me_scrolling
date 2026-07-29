@@ -41,12 +41,28 @@ Use the seeded guest account:
 
 - Visit the root URL while logged out.
   - Expected: auth page renders.
+- Create a personal account with a unique username, email, and valid password.
+  - Expected: the normalized email is retained and the dashboard renders
+    without a page refresh.
 - Log in as the guest user.
   - Expected: dashboard renders without a page refresh.
 - Refresh the dashboard while logged in.
   - Expected: dashboard still renders and current user is preserved.
 - Log out.
   - Expected: auth page renders again.
+
+## Account Settings Smoke
+
+- Open Settings with a personal account that does not yet have an email.
+  - Expected: the Email field is empty and marked as not verified.
+- Add or change the email using mixed case and surrounding spaces.
+  - Expected: the normalized address appears after success, remains unverified,
+    and the current session is retained.
+- Submit an invalid or already-used email.
+  - Expected: an accessible validation message appears and the stored email is
+    unchanged.
+- Open Settings as `PicMeS Guest`.
+  - Expected: email, avatar, and password controls are disabled.
 
 ## Dashboard Feed Smoke
 
@@ -94,6 +110,7 @@ export PATH="$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH"
 DISABLE_SPRING=1 bin/rails test \
   test/controllers/api/session_controller_test.rb \
   test/controllers/api/users_controller_test.rb \
+  test/controllers/api/accounts_controller_test.rb \
   test/controllers/api/follows_controller_test.rb \
   test/controllers/api/posts_controller_test.rb \
   test/controllers/api/likes_controller_test.rb

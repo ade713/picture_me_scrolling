@@ -4,7 +4,7 @@ class Api::SessionsController < ApplicationController
 
     if @user
       login(@user)
-      render "api/users/show"
+      render "api/users/current_user"
     else
       render json: ['Invalid username or password'], status: :unauthorized
     end
@@ -15,7 +15,7 @@ class Api::SessionsController < ApplicationController
 
     if @user
       logout
-      render "api/users/show"
+      render "api/users/current_user"
     else
       render json: ['No current user present'], status: :not_found
     end

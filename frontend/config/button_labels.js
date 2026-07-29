@@ -15,8 +15,10 @@ export const buttonLabels = Object.freeze({
   signUp: 'Sign Up',
   unfollow: 'Unfollow',
   updateAvatar: 'Update avatar',
+  updateEmail: 'Update email',
   updatePassword: 'Update password',
   updatingAvatar: 'Updating avatar…',
+  updatingEmail: 'Updating email…',
   updatingPassword: 'Updating password…'
 });
 

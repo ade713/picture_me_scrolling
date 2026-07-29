@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { passwordSettings } from "../../config/account_settings";
+import {
+  emailSettings,
+  passwordSettings
+} from "../../config/account_settings";
 import { buttonLabels } from "../../config/button_labels";
 import { routes } from "../../config/routes";
 import { useCurrentUser, useLogin, useSignup } from "../../query/session_hooks";
@@ -20,6 +23,7 @@ const AuthForm = () => {
   const login = useLogin();
   const signup = useSignup();
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const logInAsGuest = useGuestLogin({ login, setUsername, setPassword });
 
@@ -44,7 +48,11 @@ const AuthForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    formMutation.mutate({ username, password });
+    const credentials = isSignup
+      ? { username, email, password }
+      : { username, password };
+
+    formMutation.mutate(credentials);
   };
 
   const renderErrors = () => (
@@ -85,6 +93,21 @@ const AuthForm = () => {
                   className='auth-login-input'
                 />
               </label>
+              {isSignup && (
+                <label className='auth-field'>
+                  <input
+                    type='email'
+                    value={email}
+                    aria-label='Email'
+                    autoComplete='email'
+                    maxLength={emailSettings.maximumLength}
+                    placeholder='Your Email'
+                    required
+                    onChange={(e) => setEmail(e.currentTarget.value)}
+                    className='auth-login-input'
+                  />
+                </label>
+              )}
               <label className='auth-field'>
                 <input
                   type='password'

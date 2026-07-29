@@ -4,6 +4,8 @@
 #
 #  id                  :integer          not null, primary key
 #  username            :string           not null
+#  email               :string
+#  email_verified_at   :datetime
 #  password_digest     :string           not null
 #  session_token       :string           not null
 #  created_at          :datetime         not null
@@ -13,15 +15,24 @@
 class User < ApplicationRecord
   DEFAULT_AVATAR_IMAGE = 'profile_blue_150x150.png'.freeze
   DEFAULT_RECOMMENDED_FOLLOW_LIMIT = 6
+  MAXIMUM_EMAIL_LENGTH = 254
   MINIMUM_PASSWORD_LENGTH = 6
   MAXIMUM_PASSWORD_LENGTH = 64
   MAXIMUM_PASSWORD_BYTES = 72
   SHARED_GUEST_USERNAME = 'PicMeS Guest'.freeze
 
+  normalizes :email, with: -> email { email.strip.downcase.presence }
+
   validates :username,
             :password_digest,
             :session_token,
             presence: true, uniqueness: true
+  validates :email,
+            format: { with: URI::MailTo::EMAIL_REGEXP },
+            length: { maximum: MAXIMUM_EMAIL_LENGTH },
+            uniqueness: { case_sensitive: false },
+            allow_blank: true
+  validates :email, presence: true, on: [:signup, :email_update]
   validates :password,
             length: {
               minimum: MINIMUM_PASSWORD_LENGTH,
@@ -30,6 +41,7 @@ class User < ApplicationRecord
             }
   validate :password_within_bcrypt_limit
 
+  before_validation :clear_email_verification, if: :will_save_change_to_email?
   after_initialize :ensure_session_token!
   before_destroy :remember_avatar_blob_for_purge
   after_destroy_commit :purge_destroyed_avatar
@@ -105,6 +117,10 @@ class User < ApplicationRecord
   end
 
   private
+
+  def clear_email_verification
+    self.email_verified_at = nil
+  end
 
   def remember_avatar_blob_for_purge
     @avatar_blob_for_purge = avatar.blob if avatar.attached?

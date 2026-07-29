@@ -7,9 +7,20 @@ class Api::AccountsController < ApplicationController
 
     if result.success?
       @user = result.user
-      render 'api/users/show'
+      render 'api/users/current_user'
     else
       render json: result.errors, status: :unprocessable_entity
+    end
+  end
+
+  def email
+    current_user.email = email_params[:email]
+
+    if current_user.save(context: :email_update)
+      @user = current_user
+      render 'api/users/current_user'
+    else
+      render json: current_user.errors.full_messages, status: :unprocessable_entity
     end
   end
 
@@ -32,13 +43,17 @@ class Api::AccountsController < ApplicationController
 
     if current_user.save
       @user = current_user
-      render 'api/users/show'
+      render 'api/users/current_user'
     else
       render json: current_user.errors.full_messages, status: :unprocessable_entity
     end
   end
 
   private
+
+  def email_params
+    params.fetch(:account, ActionController::Parameters.new).permit(:email)
+  end
 
   def password_params
     params.fetch(:account, ActionController::Parameters.new).permit(
