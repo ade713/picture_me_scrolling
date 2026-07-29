@@ -305,6 +305,9 @@ MAILER_FROM_ADDRESS
 APP_HOST
 ```
 
+`APP_HOST` should contain only the public hostname, such as
+`picmes.example.com`; the production mailer adds the `https` protocol.
+
 The sending domain must publish the SPF and DKIM records supplied by the email
 provider. DMARC is recommended as an additional domain-protection policy.
 
@@ -396,6 +399,8 @@ Implementation status: complete on the feature branch and pending review.
 - add focused model and service coverage
 
 #### Part 2: Configure Verification Email Delivery
+
+Implementation status: complete on the feature branch and pending review.
 
 - configure Action Mailer, SMTP, development file delivery, and previews
 - add minimal HTML and plain-text verification emails

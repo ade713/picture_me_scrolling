@@ -80,6 +80,12 @@ Configure these on the Render web service:
 | `AWS_SECRET_ACCESS_KEY` | S3 secret key | Store only in Render. |
 | `S3_REGION` | selected S3 region | Must match the bucket. |
 | `S3_BUCKET_NAME` | production media bucket | Do not use the legacy archive bucket. |
+| `SMTP_ADDRESS` | SMTP provider hostname | For example, the hostname supplied by Resend or another selected provider. |
+| `SMTP_PORT` | `587` | Defaults to port 587 when omitted. |
+| `SMTP_USERNAME` | SMTP provider username | Store only in Render. |
+| `SMTP_PASSWORD` | SMTP provider password | Store only in Render. |
+| `MAILER_FROM_ADDRESS` | verified sender name and address | For example, `PicMeS Accounts <accounts@example.com>`. |
+| `APP_HOST` | public application hostname | Enter only the hostname, without `https://` or a trailing slash. |
 
 Do not configure `FSP_DATABASE_PASSWORD` on Render unless intentionally using
 the non-`DATABASE_URL` fallback path. Keep `config/master.key` out of git;
