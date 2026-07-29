@@ -1,26 +1,83 @@
-<h1>Verify your PicMeS email address</h1>
+<table
+  role="presentation"
+  width="100%"
+  cellpadding="0"
+  cellspacing="0"
+  style="width: 100%; background-color: #f3f3f3; font-family: Arial, Helvetica, sans-serif; color: #111111;"
+>
+  <tr>
+    <td align="center" style="padding: 40px 16px;">
+      <table
+        role="presentation"
+        width="100%"
+        cellpadding="0"
+        cellspacing="0"
+        style="width: 100%; max-width: 560px; background-color: #ffffff; border: 1px solid #d7d7d7; border-radius: 4px;"
+      >
+        <tr>
+          <td style="padding: 24px 32px; background-color: #000000; border-radius: 3px 3px 0 0;">
+            <p style="margin: 0; color: #ffffff; font-size: 24px; font-weight: 700;">
+              PicMeS
+            </p>
+          </td>
+        </tr>
 
-<p>Verify this email address for your PicMeS account.</p>
+        <tr>
+          <td style="padding: 36px 32px 32px;">
+            <h1 style="margin: 0 0 20px; font-size: 28px; line-height: 1.25;">
+              Verify your email address
+            </h1>
 
-<p>
-  <a
-    href="<%= @verification_url %>"
-    style="display: inline-block; padding: 12px 18px; color: #ffffff; background-color: #000000; text-decoration: none;"
-  >
-    Verify email address
-  </a>
-</p>
+            <p style="margin: 0 0 24px; font-size: 16px; line-height: 1.6;">
+              Verify this email address for your PicMeS account.
+            </p>
 
-<p>This link expires in 24 hours and can only be used once.</p>
+            <p style="margin: 0 0 24px;">
+              <a
+                href="<%= @verification_url %>"
+                style="display: inline-block; padding: 12px 18px; color: #ffffff; background-color: #000000; border: 1px solid #000000; border-radius: 3px; font-size: 16px; font-weight: 700; text-decoration: none;"
+              >
+                Verify email address
+              </a>
+            </p>
 
-<p>
-  If you did not create or update a PicMeS account, you can ignore this email.
-</p>
+            <p style="margin: 0 0 24px; font-size: 14px; line-height: 1.6; color: #4a4a4a;">
+              This link expires in 24 hours and can only be used once.
+            </p>
 
-<p>
-  If the button does not work, copy and paste this URL into your browser:
-  <br>
-  <a href="<%= @verification_url %>"><%= @verification_url %></a>
-</p>
+            <p style="margin: 0 0 24px; font-size: 14px; line-height: 1.6; color: #4a4a4a;">
+              If you did not create or update a PicMeS account, you can ignore this email.
+            </p>
 
-<p>&mdash; PicMeS</p>
+            <table
+              role="presentation"
+              width="100%"
+              cellpadding="0"
+              cellspacing="0"
+              style="width: 100%; border-top: 1px solid #e2e2e2;"
+            >
+              <tr>
+                <td style="padding-top: 24px;">
+                  <p style="margin: 0 0 8px; font-size: 12px; line-height: 1.5; color: #666666;">
+                    If the button does not work, copy and paste this URL into
+                    your browser:
+                  </p>
+
+                  <p style="margin: 0; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere;">
+                    <a href="<%= @verification_url %>" style="color: #111111;">
+                      <%= @verification_url %>
+                    </a>
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      <p style="margin: 20px 0 0; color: #666666; font-size: 12px;">
+        &copy; PicMeS
+      </p>
+    </td>
+  </tr>
+</table>
