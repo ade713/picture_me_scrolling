@@ -34,6 +34,13 @@ describe('EmailSettingsForm', () => {
     expect(screen.getByRole('button', { name: 'Update email' })).toBeDisabled();
   });
 
+  it('handles a legacy account without an email address', () => {
+    render(<EmailSettingsForm currentEmail={ null } />);
+
+    expect(screen.getByLabelText('Email address')).toHaveValue('');
+    expect(screen.getByRole('button', { name: 'Update email' })).toBeDisabled();
+  });
+
   it('submits a changed email address', async () => {
     const user = userEvent.setup();
     render(<EmailSettingsForm currentEmail="current@example.com" />);

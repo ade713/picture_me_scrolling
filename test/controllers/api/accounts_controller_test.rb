@@ -23,6 +23,11 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
     patch avatar_api_account_url, params: { avatar: valid_avatar }
     assert_response :unauthorized
 
+    patch email_api_account_url, params: {
+      account: { email: 'account@example.com' }
+    }
+    assert_response :unauthorized
+
     patch password_api_account_url, params: password_params
     assert_response :unauthorized
   end

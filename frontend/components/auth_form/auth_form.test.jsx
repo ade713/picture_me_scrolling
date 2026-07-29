@@ -65,7 +65,11 @@ describe('AuthForm', () => {
 
     expect(screen.getByRole('button', { name: 'Sign Up' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Log In' })).toHaveAttribute('href', '/');
-    expect(screen.getByRole('textbox', { name: 'Email' })).toBeInTheDocument();
+    expect(screen.getByRole('textbox', { name: 'Email' })).toBeRequired();
+    expect(screen.getByRole('textbox', { name: 'Email' })).toHaveAttribute(
+      'maxlength',
+      '254'
+    );
   });
 
   it('labels social profile links', () => {

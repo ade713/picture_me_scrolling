@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { passwordSettings } from "../../config/account_settings";
+import {
+  emailSettings,
+  passwordSettings
+} from "../../config/account_settings";
 import { buttonLabels } from "../../config/button_labels";
 import { routes } from "../../config/routes";
 import { useCurrentUser, useLogin, useSignup } from "../../query/session_hooks";
@@ -97,7 +100,9 @@ const AuthForm = () => {
                     value={email}
                     aria-label='Email'
                     autoComplete='email'
+                    maxLength={emailSettings.maximumLength}
                     placeholder='Your Email'
+                    required
                     onChange={(e) => setEmail(e.currentTarget.value)}
                     className='auth-login-input'
                   />

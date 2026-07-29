@@ -85,6 +85,17 @@ describe('SettingsPage', () => {
     expect(screen.getByRole('heading', { level: 2, name: 'Password' })).toBeInTheDocument();
   });
 
+  it('shows when the current email is verified', () => {
+    useCurrentUser.mockReturnValue({
+      data: buildCurrentUser({ email_verified_at: '2026-07-28T14:00:00.000Z' })
+    });
+
+    renderSettingsRoute();
+
+    expect(screen.getByText('Verified email address')).toBeInTheDocument();
+    expect(screen.queryByText('Email address is not verified')).not.toBeInTheDocument();
+  });
+
   it('provides brand and back links to the dashboard', () => {
     useCurrentUser.mockReturnValue({ data: buildCurrentUser() });
 

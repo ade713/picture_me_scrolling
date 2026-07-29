@@ -60,6 +60,7 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
   test 'create returns validation errors for duplicate usernames' do
     User.create!(
       username: 'taken_user',
+      email: 'existing@example.com',
       password: 'password'
     )
 
@@ -67,6 +68,7 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
       post api_users_url, params: {
         user: {
           username: 'taken_user',
+          email: 'new@example.com',
           password: 'password'
         }
       }
@@ -74,6 +76,27 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :unprocessable_entity
     assert_kind_of Array, response_json
+  end
+
+  test 'create returns validation errors for duplicate emails' do
+    User.create!(
+      username: 'existing_email_user',
+      email: 'taken@example.com',
+      password: 'password'
+    )
+
+    assert_no_difference('User.count') do
+      post api_users_url, params: {
+        user: {
+          username: 'new_username',
+          email: ' TAKEN@EXAMPLE.COM ',
+          password: 'password'
+        }
+      }
+    end
+
+    assert_response :unprocessable_entity
+    assert_includes response_json, 'Email has already been taken'
   end
 
   test 'index requires login' do
