@@ -69,7 +69,7 @@ Verification tokens should:
 
 - be generated with a cryptographically secure random value
 - store only a SHA-256 digest
-- expire
+- expire after 24 hours
 - be replaced when another verification email is requested
 - be deleted after successful verification
 
@@ -389,6 +389,8 @@ Implementation status: complete.
 
 #### Part 1: Add Verification Token Lifecycle
 
+Implementation status: complete on the feature branch and pending review.
+
 - add verification-token storage
 - add digest generation, expiration, replacement, and consumption services
 - add focused model and service coverage
@@ -497,7 +499,6 @@ into:
   recovery can be enabled.
 - Final transactional email provider.
 - Production sending domain and sender address.
-- Email-verification token lifetime.
 - The initial rate-limiting mechanism for reset requests.
 - Whether successful reset and verification endpoints return `204 No Content`
   or a small JSON success payload.

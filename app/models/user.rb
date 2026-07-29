@@ -42,6 +42,7 @@ class User < ApplicationRecord
   validate :password_within_bcrypt_limit
 
   before_validation :clear_email_verification, if: :will_save_change_to_email?
+  after_update :invalidate_email_verification_token, if: :saved_change_to_email?
   after_initialize :ensure_session_token!
   before_destroy :remember_avatar_blob_for_purge
   after_destroy_commit :purge_destroyed_avatar
@@ -73,6 +74,8 @@ class User < ApplicationRecord
   has_many :followed_posts,
     through: :followee_users,
     source: :posts
+
+  has_one :email_verification_token, dependent: :destroy
 
   def recommended_follow_users(limit: DEFAULT_RECOMMENDED_FOLLOW_LIMIT)
     recommended_users = recommended_follow_user_scope.limit(limit)
@@ -120,6 +123,10 @@ class User < ApplicationRecord
 
   def clear_email_verification
     self.email_verified_at = nil
+  end
+
+  def invalidate_email_verification_token
+    EmailVerificationToken.find_by(user_id: id)&.destroy!
   end
 
   def remember_avatar_blob_for_purge
