@@ -13,5 +13,9 @@ module Fsp
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    config.x.mailer_from_address = ENV.fetch(
+      "MAILER_FROM_ADDRESS",
+      "PicMeS Accounts <accounts@picmes.test>"
+    )
   end
 end
