@@ -52,6 +52,16 @@ class Api::SessionsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test 'authenticated root bootstraps private current-user fields' do
+    login_as(@user)
+
+    get root_url
+
+    assert_response :success
+    assert_includes response.body, %("email":"#{@user.email}")
+    assert_includes response.body, '"email_verified_at":'
+  end
+
   test 'destroy logs out the current user and returns the user payload' do
     login_as(@user)
 

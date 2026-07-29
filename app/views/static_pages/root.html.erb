@@ -1,7 +1,7 @@
 <script type="text/javascript">
   <% if logged_in? %>
   window.currentUser = <%= render(
-    partial: "api/users/user",
+    partial: "api/users/current_user",
     formats: [:json],
     locals: { user: current_user }
   ).html_safe %>
