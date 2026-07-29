@@ -28,6 +28,10 @@ Rails.application.configure do
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false
   config.action_mailer.perform_caching = false
+  config.action_mailer.default_url_options = {
+    host: "example.test",
+    protocol: "https"
+  }
 
   config.active_storage.service = :test
 
