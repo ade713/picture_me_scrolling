@@ -1,6 +1,7 @@
 # Forgotten Password and Account Recovery Plan
 
-Status: planning in progress.
+Status: implementation in progress. PR 1 email identity work is implemented
+and pending review.
 
 This document records the proposed forgotten-password flow, the decisions
 already agreed upon, and the remaining product and infrastructure choices.
@@ -376,6 +377,8 @@ button, and display the complete reset URL as a fallback.
 
 ### PR 1: Add User Email Identity
 
+Implementation status: complete on the feature branch and pending review.
+
 - add email and verification state to users
 - normalize and validate email addresses
 - update signup and current-user JSON
@@ -417,7 +420,8 @@ button, and display the complete reset URL as a fallback.
 
 ## Remaining Decisions
 
-- Whether unverified users may log in immediately after signup.
+- PR 1 currently preserves immediate login after signup for unverified users;
+  confirm this behavior before the account-recovery phase is merged.
 - Whether email is mandatory for all legacy users or only required before
   recovery can be enabled.
 - Final transactional email provider.

@@ -12,6 +12,7 @@ export PATH="$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH"
 DISABLE_SPRING=1 bin/rails test \
   test/controllers/api/session_controller_test.rb \
   test/controllers/api/users_controller_test.rb \
+  test/controllers/api/accounts_controller_test.rb \
   test/controllers/api/follows_controller_test.rb \
   test/controllers/api/posts_controller_test.rb \
   test/controllers/api/likes_controller_test.rb
@@ -26,6 +27,7 @@ Expected results:
 The focused API tests cover:
 
 - auth/session behavior
+- signup and current-account email behavior
 - user recommendations and user show payloads
 - follow/unfollow feed behavior
 - posts feed and CRUD behavior
