@@ -377,7 +377,7 @@ button, and display the complete reset URL as a fallback.
 
 ### PR 1: Add User Email Identity
 
-Implementation status: complete on the feature branch and pending review.
+Implementation status: complete.
 
 - add email and verification state to users
 - normalize and validate email addresses
@@ -385,38 +385,109 @@ Implementation status: complete on the feature branch and pending review.
 - add authenticated email management for existing accounts
 - preserve legacy-account and shared-guest behavior
 
-### PR 2: Add Email Verification
+### Phase 2: Add Email Verification
 
-- add verification-token storage and services
-- configure Action Mailer and SMTP delivery
+#### Part 1: Add Verification Token Lifecycle
+
+- add verification-token storage
+- add digest generation, expiration, replacement, and consumption services
+- add focused model and service coverage
+
+#### Part 2: Configure Verification Email Delivery
+
+- configure Action Mailer, SMTP, development file delivery, and previews
+- add minimal HTML and plain-text verification emails
+- add mailer tests without controller or frontend changes
+
+#### Part 3: Add Verification API
+
 - add verification and resend endpoints
-- add HTML and plain-text verification emails
-- cover expiration, replacement, confirmation, and delivery failures
+- trigger initial verification after signup
+- replace tokens when verification is resent
+- handle synchronous delivery failures
+- add focused controller coverage
 
-### PR 3: Add Password Recovery API
+#### Part 4: Add Verification UI
 
-- add one reset-token row per user
-- add issuance, replacement, expiration, pruning, and consumption services
-- add password-reset request and completion endpoints
-- add the agreed password-reset email
-- rotate sessions after recovery
-- add rate limiting and backend security coverage
+- add the verification route and confirmation page
+- add Settings verification status and resend action
+- add query hooks, pending states, feedback, and accessibility coverage
+- update the smoke documentation relevant to this behavior
 
-### PR 4: Add Password Recovery Pages
+### Phase 3: Add Password Recovery API
 
-- add forgot-password and reset-password routes
-- add API endpoints and TanStack Query mutations
-- add accessible forms, feedback, and pending states
-- handle invalid and expired reset links
-- add frontend behavior tests
+#### Part 1: Add Reset Token Lifecycle
 
-### PR 5: Verify and Close Out Account Recovery
+- add password-reset token storage
+- add issuance, digest lookup, expiration, replacement, and pruning
+- add concurrency safeguards and focused model and service coverage
+
+#### Part 2: Add Reset Requests
+
+- add the public reset-request endpoint and uniform `202 Accepted` response
+- add per-email and per-IP rate limiting
+- add the agreed password-reset email and preview
+- handle synchronous delivery failures
+- add request and mailer coverage
+
+#### Part 3: Complete Password Resets
+
+- add the reset-consumption endpoint
+- apply password validation and atomically delete the consumed token
+- rotate sessions and clear the requesting browser session
+- cover invalid, expired, used, and superseded tokens
+
+### Phase 4: Add Password Recovery Pages
+
+#### Part 1: Add Forgot Password Page
+
+- add the authentication-page link, route, form, and request mutation
+- show uniform success feedback and pending states
+- add behavior and accessibility coverage
+
+#### Part 2: Add Reset Password Page
+
+- add the reset route and token handling
+- add the new-password and confirmation form
+- handle invalid and expired links
+- return to login after success
+- add behavior and accessibility coverage
+
+#### Optional Part 3: Polish Recovery UI
+
+Open this part only if the first two UI PRs reveal enough independent work to
+justify it.
+
+- complete responsive and keyboard-only review
+- refine focus and announcement behavior
+- keep changes limited to discovered UI issues and their focused documentation
+
+### Phase 5: Verify and Close Out Account Recovery
+
+Keep this as one small PR when it contains only verification and documentation:
 
 - run Rails and frontend suites and the production build
 - verify production SMTP delivery, SPF, and DKIM
-- complete keyboard, responsive, and screen-reader-sensitive smoke checks
 - confirm tokens and passwords are absent from logs
-- update API, production, smoke, and closeout documentation
+- complete final smoke and closeout documentation
+
+If production email configuration requires meaningful code changes, split it
+into:
+
+1. `Verify and Close Out Account Recovery — Part 1: Add Production Email
+   Configuration`
+2. `Verify and Close Out Account Recovery — Part 2: Document Recovery
+   Verification`
+
+### PR Scope Guardrails
+
+- keep each PR centered on one independently reviewable concern
+- include tests and documentation with the behavior they cover
+- reassess the split when a PR approaches 10–15 changed files or 400–500 net
+  changed lines
+- split before implementation when the scope requires separate backend,
+  delivery, API, or frontend reviews
+- keep the application working and independently testable after every part
 
 ## Remaining Decisions
 
