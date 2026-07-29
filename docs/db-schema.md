@@ -10,6 +10,14 @@ email_verified_at | datetime  | nullable; set after ownership is verified
 password_digest   | string    | not null
 session_token     | string    | not null, indexed, unique
 
+## email_verification_tokens
+column name  | data type | details
+-------------|-----------|--------
+id           | bigint    | not null, primary key
+user_id      | integer   | not null, foreign key, indexed, unique
+token_digest | string    | not null, indexed, unique
+expires_at   | datetime  | not null, indexed
+
 ## posts
 column name | data type | details
 ------------|-----------|--------
