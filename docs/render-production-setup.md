@@ -87,6 +87,11 @@ Configure these on the Render web service:
 | `MAILER_FROM_ADDRESS` | verified sender name and address | For example, `PicMeS Accounts <accounts@example.com>`. |
 | `APP_HOST` | public application hostname | Enter only the hostname, without `https://` or a trailing slash. |
 
+The mail variables may be omitted while the verification API is not yet
+enabled, allowing production asset builds to complete during the phased
+implementation. Configure all six variables before deploying the verification
+API; the local fallbacks are not valid production email-delivery settings.
+
 Do not configure `FSP_DATABASE_PASSWORD` on Render unless intentionally using
 the non-`DATABASE_URL` fallback path. Keep `config/master.key` out of git;
 Render should store that value only as the `RAILS_MASTER_KEY` environment
