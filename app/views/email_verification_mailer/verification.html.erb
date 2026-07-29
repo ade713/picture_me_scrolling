@@ -1,0 +1,26 @@
+<h1>Verify your PicMeS email address</h1>
+
+<p>Verify this email address for your PicMeS account.</p>
+
+<p>
+  <a
+    href="<%= @verification_url %>"
+    style="display: inline-block; padding: 12px 18px; color: #ffffff; background-color: #000000; text-decoration: none;"
+  >
+    Verify email address
+  </a>
+</p>
+
+<p>This link expires in 24 hours and can only be used once.</p>
+
+<p>
+  If you did not create or update a PicMeS account, you can ignore this email.
+</p>
+
+<p>
+  If the button does not work, copy and paste this URL into your browser:
+  <br>
+  <a href="<%= @verification_url %>"><%= @verification_url %></a>
+</p>
+
+<p>&mdash; PicMeS</p>
