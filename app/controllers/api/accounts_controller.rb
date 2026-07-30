@@ -17,6 +17,7 @@ class Api::AccountsController < ApplicationController
     current_user.email = email_params[:email]
 
     if current_user.save(context: :email_update)
+      EmailVerificationSender.new(user: current_user).call if current_user.saved_change_to_email?
       @user = current_user
       render 'api/users/current_user'
     else

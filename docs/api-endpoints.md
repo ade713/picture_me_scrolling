@@ -5,7 +5,8 @@
 
 ### Users
 - `POST /api/users` - create a personal account using `user[username]`,
-  `user[email]`, and `user[password]`
+  `user[email]`, and `user[password]`; successful signup initiates email
+  verification without failing account creation when delivery is unavailable
 - `GET /api/users`
 - `GET /api/users/:id`
 
@@ -18,7 +19,8 @@
   multipart field `avatar`
 - `PATCH /api/account/email` - replace the authenticated user's email using
   `account[email]`; changing the normalized address clears its verification
-  timestamp
+  timestamp and initiates verification without failing the update when
+  delivery is unavailable
 - `PATCH /api/account/password` - change the authenticated user's password using
   `account[current_password]`, `account[password]`, and
   `account[password_confirmation]`
@@ -28,6 +30,37 @@ All account endpoints return `401` when no authenticated session exists and
 private current-user payload, including `email`, `email_verified_at`,
 `avatar_url`, and `account_settings_enabled`. User index and show payloads do
 not expose email fields.
+
+### Email Verification
+
+- `POST /api/email_verification` - resend verification to the authenticated
+  user's unverified email address
+- `PATCH /api/email_verification` - publicly confirm an email using
+  `email_verification[token]`
+
+Successful resend returns `200 OK`:
+
+```json
+{
+  "message": "Verification email sent"
+}
+```
+
+Resend returns `401 Unauthorized` without a session, `422 Unprocessable
+Entity` for an ineligible account, and `503 Service Unavailable` when
+synchronous delivery fails.
+
+Successful confirmation returns `200 OK`:
+
+```json
+{
+  "message": "Email address verified"
+}
+```
+
+Invalid, missing, used, or superseded tokens return `422 Unprocessable Entity`
+with `Verification link is invalid`. Expired tokens return the same status with
+`Verification link has expired`.
 
 ### Posts
 - `GET /api/posts`

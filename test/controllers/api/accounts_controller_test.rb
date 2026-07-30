@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'minitest/mock'
 
 class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
   include ActiveJob::TestHelper
@@ -7,9 +8,11 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
     Like.delete_all
     Follow.delete_all
     Post.delete_all
+    EmailVerificationToken.delete_all
     User.delete_all
     ActiveStorage::Attachment.delete_all
     ActiveStorage::Blob.delete_all
+    ActionMailer::Base.deliveries.clear
 
     @user = create_user('account_user')
     @tempfiles = []
@@ -109,6 +112,8 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'new@example.com', @user.reload.email
     assert_nil @user.email_verified_at
     assert_equal session_token, @user.session_token
+    assert_equal 1, EmailVerificationToken.count
+    assert_equal ['new@example.com'], ActionMailer::Base.deliveries.last.to
 
     get api_users_url
     assert_response :success
@@ -128,6 +133,27 @@ class Api::AccountsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_equal verified_at, @user.reload.email_verified_at
+    assert_equal 0, EmailVerificationToken.count
+    assert_empty ActionMailer::Base.deliveries
+  end
+
+  test 'email update succeeds when verification delivery fails' do
+    failing_delivery = Object.new
+    failing_delivery.define_singleton_method(:verification) { self }
+    failing_delivery.define_singleton_method(:deliver_now) { raise IOError }
+    login_as(@user)
+
+    Rails.logger.stub(:error, -> _message {}) do
+      EmailVerificationMailer.stub(:with, failing_delivery) do
+        patch email_api_account_url, params: {
+          account: { email: 'delivery-failure@example.com' }
+        }
+      end
+    end
+
+    assert_response :success
+    assert_equal 'delivery-failure@example.com', @user.reload.email
+    assert_equal 1, EmailVerificationToken.count
   end
 
   test 'email update rejects blank, invalid, and duplicate addresses' do
