@@ -1,13 +1,16 @@
 require 'test_helper'
+require 'minitest/mock'
 
 class Api::UsersControllerTest < ActionDispatch::IntegrationTest
   setup do
     Like.delete_all
     Follow.delete_all
     Post.delete_all
+    EmailVerificationToken.delete_all
     User.delete_all
     ActiveStorage::Attachment.delete_all
     ActiveStorage::Blob.delete_all
+    ActionMailer::Base.deliveries.clear
   end
 
   test 'create signs up a user, logs them in, and returns the user payload' do
@@ -27,6 +30,32 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
     assert_nil response_json['email_verified_at']
     assert response_json['id'].present?
     assert_includes response_json['avatar_url'], default_avatar_name
+    assert_equal 1, EmailVerificationToken.count
+    assert_equal ['new_user@example.com'], ActionMailer::Base.deliveries.last.to
+  end
+
+  test 'create succeeds when verification email delivery fails' do
+    failing_delivery = Object.new
+    failing_delivery.define_singleton_method(:verification) { self }
+    failing_delivery.define_singleton_method(:deliver_now) { raise IOError }
+
+    Rails.logger.stub(:error, -> _message {}) do
+      EmailVerificationMailer.stub(:with, failing_delivery) do
+        assert_difference('User.count', 1) do
+          post api_users_url, params: {
+            user: {
+              username: 'delivery_failure_user',
+              email: 'delivery-failure@example.com',
+              password: 'password'
+            }
+          }
+        end
+      end
+    end
+
+    assert_response :success
+    assert_equal 'delivery_failure_user', response_json['username']
+    assert_equal 1, EmailVerificationToken.count
   end
 
   test 'create requires an email for a new signup' do

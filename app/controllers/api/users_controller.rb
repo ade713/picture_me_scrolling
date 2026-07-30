@@ -6,6 +6,7 @@ class Api::UsersController < ApplicationController
 
     if @user.save(context: :signup)
       login(@user)
+      EmailVerificationSender.new(user: @user).call
       render "api/users/current_user"
     else
       render json: @user.errors.full_messages, status: :unprocessable_entity
