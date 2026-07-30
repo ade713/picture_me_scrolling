@@ -1,7 +1,7 @@
 # Forgotten Password and Account Recovery Plan
 
-Status: implementation in progress. PR 1 email identity work is implemented
-and pending review.
+Status: implementation in progress. Email identity, verification-token
+lifecycle, and email-delivery work are complete.
 
 This document records the proposed forgotten-password flow, the decisions
 already agreed upon, and the remaining product and infrastructure choices.
@@ -392,7 +392,7 @@ Implementation status: complete.
 
 #### Part 1: Add Verification Token Lifecycle
 
-Implementation status: complete on the feature branch and pending review.
+Implementation status: complete.
 
 - add verification-token storage
 - add digest generation, expiration, replacement, and consumption services
@@ -400,13 +400,15 @@ Implementation status: complete on the feature branch and pending review.
 
 #### Part 2: Configure Verification Email Delivery
 
-Implementation status: complete on the feature branch and pending review.
+Implementation status: complete.
 
 - configure Action Mailer, SMTP, development file delivery, and previews
 - add minimal HTML and plain-text verification emails
 - add mailer tests without controller or frontend changes
 
 #### Part 3: Add Verification API
+
+Implementation status: complete on the feature branch and pending review.
 
 - add verification and resend endpoints
 - trigger initial verification after signup
@@ -505,5 +507,6 @@ into:
 - Final transactional email provider.
 - Production sending domain and sender address.
 - The initial rate-limiting mechanism for reset requests.
-- Whether successful reset and verification endpoints return `204 No Content`
-  or a small JSON success payload.
+- Whether successful password-reset endpoints return `204 No Content` or a
+  small JSON success payload. Verification endpoints use a small JSON success
+  payload.
