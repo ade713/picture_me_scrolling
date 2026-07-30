@@ -3,6 +3,7 @@ import { HashRouter, Route, Routes } from "react-router-dom";
 
 import Dashboard from "./dashboard/dashboard";
 import AuthForm from "./auth_form/auth_form";
+import EmailVerificationPage from "./email_verification/email_verification_page";
 import SettingsPage from "./settings/settings_page";
 import { routes } from "../config/routes";
 import { AuthRoute, ProtectedRoute } from "../util/route_util";
@@ -25,6 +26,10 @@ const App = () => (
             <SettingsPage />
           </ProtectedRoute>
         }
+      />
+      <Route
+        path={routes.verifyEmail}
+        element={<EmailVerificationPage />}
       />
       <Route
         path={routes.signup}

@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
 
 import { useUpdateAvatar, useUpdateEmail, useUpdatePassword } from '../../query/account_hooks';
+import { useResendEmailVerification } from '../../query/email_verification_hooks';
 import { useCurrentUser } from '../../query/session_hooks';
 import { ProtectedRoute } from '../../util/route_util';
 import SettingsPage from './settings_page';
@@ -18,6 +19,10 @@ vi.mock('../../query/account_hooks', () => ({
   useUpdatePassword: vi.fn()
 }));
 
+vi.mock('../../query/email_verification_hooks', () => ({
+  useResendEmailVerification: vi.fn()
+}));
+
 const buildCurrentUser = (overrides = {}) => ({
   id: 1,
   username: 'Athos',
@@ -29,6 +34,7 @@ const buildCurrentUser = (overrides = {}) => ({
 });
 
 const buildMutation = (overrides = {}) => ({
+  data: null,
   error: null,
   isPending: false,
   mutate: vi.fn(),
@@ -65,6 +71,7 @@ describe('SettingsPage', () => {
     useUpdateAvatar.mockReturnValue(buildMutation());
     useUpdateEmail.mockReturnValue(buildMutation());
     useUpdatePassword.mockReturnValue(buildMutation());
+    useResendEmailVerification.mockReturnValue(buildMutation());
   });
 
   afterEach(() => {
@@ -81,6 +88,9 @@ describe('SettingsPage', () => {
     expect(screen.getByAltText('Athos avatar')).toHaveAttribute('src', '/avatars/athos.png');
     expect(screen.getByRole('heading', { level: 2, name: 'Email' })).toBeInTheDocument();
     expect(screen.getByText('Email address is not verified')).toBeInTheDocument();
+    expect(screen.getByRole('button', {
+      name: 'Resend verification email'
+    })).toBeEnabled();
     expect(screen.getByRole('heading', { level: 2, name: 'Avatar' })).toBeInTheDocument();
     expect(screen.getByRole('heading', { level: 2, name: 'Password' })).toBeInTheDocument();
   });
@@ -94,6 +104,45 @@ describe('SettingsPage', () => {
 
     expect(screen.getByText('Verified email address')).toBeInTheDocument();
     expect(screen.queryByText('Email address is not verified')).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', {
+      name: 'Resend verification email'
+    })).not.toBeInTheDocument();
+  });
+
+  it('resends verification and announces success', async () => {
+    const user = userEvent.setup();
+    const resendVerification = buildMutation({
+      data: { message: 'Verification email sent' }
+    });
+    useCurrentUser.mockReturnValue({ data: buildCurrentUser() });
+    useResendEmailVerification.mockReturnValue(resendVerification);
+
+    renderSettingsRoute();
+
+    await user.click(screen.getByRole('button', {
+      name: 'Resend verification email'
+    }));
+
+    expect(resendVerification.reset).toHaveBeenCalled();
+    expect(resendVerification.mutate).toHaveBeenCalledWith();
+    expect(screen.getByRole('status')).toHaveTextContent('Verification email sent');
+  });
+
+  it('shows resend errors and disables the action while pending', () => {
+    useCurrentUser.mockReturnValue({ data: buildCurrentUser() });
+    useResendEmailVerification.mockReturnValue(buildMutation({
+      error: { errors: ['Verification email could not be sent. Please try again.'] },
+      isPending: true
+    }));
+
+    renderSettingsRoute();
+
+    expect(screen.getByRole('alert')).toHaveTextContent(
+      'Verification email could not be sent. Please try again.'
+    );
+    expect(screen.getByRole('button', {
+      name: 'Sending verification email…'
+    })).toBeDisabled();
   });
 
   it('provides brand and back links to the dashboard', () => {
@@ -171,6 +220,10 @@ describe('SettingsPage', () => {
     expect(screen.getByLabelText('Choose a new avatar')).toHaveFocus();
     await user.tab();
     expect(screen.getByLabelText('Email address')).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole('button', {
+      name: 'Resend verification email'
+    })).toHaveFocus();
     await user.tab();
     expect(screen.getByLabelText('Current password')).toHaveFocus();
     await user.tab();
