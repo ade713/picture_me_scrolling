@@ -11,6 +11,8 @@ export const buttonLabels = Object.freeze({
   loggingOut: 'Logging out…',
   logOut: 'Log Out',
   post: 'Post',
+  resendVerificationEmail: 'Resend verification email',
+  resendingVerificationEmail: 'Sending verification email…',
   save: 'Save',
   signUp: 'Sign Up',
   unfollow: 'Unfollow',

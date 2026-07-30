@@ -408,7 +408,7 @@ Implementation status: complete.
 
 #### Part 3: Add Verification API
 
-Implementation status: complete on the feature branch and pending review.
+Implementation status: complete.
 
 - add verification and resend endpoints
 - trigger initial verification after signup
@@ -417,6 +417,8 @@ Implementation status: complete on the feature branch and pending review.
 - add focused controller coverage
 
 #### Part 4: Add Verification UI
+
+Implementation status: complete on the feature branch and pending review.
 
 - add the verification route and confirmation page
 - add Settings verification status and resend action

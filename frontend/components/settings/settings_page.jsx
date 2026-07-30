@@ -1,15 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import {
-  EMAIL_NOT_VERIFIED_STATUS_MESSAGE,
-  EMAIL_VERIFIED_STATUS_MESSAGE,
-  avatarSettings
-} from "../../config/account_settings";
+import { avatarSettings } from "../../config/account_settings";
 import { routes } from "../../config/routes";
 import { useCurrentUser } from "../../query/session_hooks";
 import AvatarSettingsForm from "./avatar_settings_form";
 import EmailSettingsForm from "./email_settings_form";
+import EmailVerificationStatus from "./email_verification_status";
 import PasswordSettingsForm from "./password_settings_form";
 
 const SettingsPage = () => {
@@ -71,14 +68,15 @@ const SettingsPage = () => {
 
               <section className='settings-section' aria-labelledby='email-settings-heading'>
                 <h2 id='email-settings-heading'>Email</h2>
-                <p>
-                  {currentUser.email_verified_at
-                    ? EMAIL_VERIFIED_STATUS_MESSAGE
-                    : EMAIL_NOT_VERIFIED_STATUS_MESSAGE}
-                </p>
                 <EmailSettingsForm
                   currentEmail={currentUser.email}
                   disabled={!settingsEnabled}
+                />
+                <EmailVerificationStatus
+                  currentEmail={currentUser.email}
+                  disabled={!settingsEnabled}
+                  key={currentUser.email}
+                  verifiedAt={currentUser.email_verified_at}
                 />
               </section>
 

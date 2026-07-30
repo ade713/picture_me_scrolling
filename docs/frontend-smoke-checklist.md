@@ -58,11 +58,35 @@ Use the seeded guest account:
 - Add or change the email using mixed case and surrounding spaces.
   - Expected: the normalized address appears after success, remains unverified,
     and the current session is retained.
+- Select Resend verification email for an unverified personal account.
+  - Expected: the button is disabled while pending and an accessible success
+    message appears after delivery.
+- Exercise a local delivery failure or temporarily stop the configured mail
+  service before resending.
+  - Expected: an accessible error appears and the resend action becomes
+    available for another attempt.
 - Submit an invalid or already-used email.
   - Expected: an accessible validation message appears and the stored email is
     unchanged.
 - Open Settings as `PicMeS Guest`.
   - Expected: email, avatar, and password controls are disabled.
+
+## Email Verification Smoke
+
+- Open the verification link from the generated message in `tmp/mail`.
+  - Expected: the public confirmation page announces a pending state, verifies
+    automatically, then focuses and announces the success result.
+- Follow a valid verification link while logged into the matching account.
+  - Expected: Continue to settings is available and Settings shows the email as
+    verified without requiring a full page refresh.
+- Follow a valid verification link while logged out.
+  - Expected: verification succeeds and Continue to login is available.
+- Reopen a used, expired, superseded, or malformed verification link.
+  - Expected: the page focuses an accessible error result and explains that a
+    new verification email can be requested from Settings.
+- Complete the flow using only the keyboard.
+  - Expected: the PicMeS link, resend action, and result navigation link have
+    visible focus indicators and follow document order.
 
 ## Dashboard Feed Smoke
 
@@ -111,6 +135,7 @@ DISABLE_SPRING=1 bin/rails test \
   test/controllers/api/session_controller_test.rb \
   test/controllers/api/users_controller_test.rb \
   test/controllers/api/accounts_controller_test.rb \
+  test/controllers/api/email_verifications_controller_test.rb \
   test/controllers/api/follows_controller_test.rb \
   test/controllers/api/posts_controller_test.rb \
   test/controllers/api/likes_controller_test.rb

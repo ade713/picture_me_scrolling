@@ -140,6 +140,19 @@
   line-height: 1.45;
 }
 
+.email-verification-status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.email-verification-status > p:first-child {
+  color: #3f3f3f;
+  line-height: 1.45;
+}
+
 .avatar-settings-form,
 .email-settings-form,
 .password-settings-form {
@@ -257,7 +270,103 @@
   }
 }
 
+.email-verification-page {
+  box-sizing: border-box;
+  min-height: 100vh;
+  color: black;
+  background-color: #f3f3f3;
+  font-family: 'Muli', sans-serif;
+}
+
+.email-verification-nav {
+  display: flex;
+  align-items: center;
+  min-height: 52px;
+  padding: 0 16px;
+  color: white;
+  background-color: black;
+}
+
+.email-verification-nav a {
+  border-radius: 3px;
+  font-family: 'Mogra', cursive;
+  font-size: 25px;
+  line-height: 1;
+}
+
+.email-verification-nav a:hover {
+  color: #DE0F01;
+}
+
+.email-verification-page main {
+  display: flex;
+  justify-content: center;
+  padding: 64px 20px;
+}
+
+.email-verification-card {
+  box-sizing: border-box;
+  width: min(100%, 560px);
+  padding: 40px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 4px;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.16);
+}
+
+.email-verification-card h1 {
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-size: 38px;
+  line-height: 1.1;
+}
+
+.email-verification-card p,
+.email-verification-errors {
+  margin-top: 18px;
+  line-height: 1.5;
+}
+
+.email-verification-errors {
+  padding: 12px;
+  color: #8b0000;
+  background-color: #fff0f0;
+  border: 1px solid #8b0000;
+  border-radius: 3px;
+}
+
+.email-verification-action {
+  display: inline-flex;
+  margin-top: 28px;
+  padding: 10px 16px;
+  color: white;
+  background-color: black;
+  border: 2px solid black;
+  border-radius: 3px;
+  font-weight: 700;
+}
+
+.email-verification-action:hover {
+  color: black;
+  background-color: white;
+}
+
+.email-verification-nav a:focus-visible,
+.email-verification-action:focus-visible,
+.email-verification-card h1:focus-visible {
+  outline: 3px solid #CE0063;
+  outline-offset: 3px;
+}
+
 @include mobile {
+  .email-verification-page main {
+    padding: 32px 12px;
+  }
+
+  .email-verification-card {
+    padding: 28px 20px;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.16);
+  }
+
   .settings-main {
     padding: 20px 12px;
   }
