@@ -4,6 +4,7 @@ export const apiEndpoints = Object.freeze({
     email: '/api/account/email',
     password: '/api/account/password'
   }),
+  emailVerification: '/api/email_verification',
   posts: Object.freeze({
     collection: '/api/posts',
     detail: id => `/api/posts/${id}`,
