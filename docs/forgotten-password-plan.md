@@ -418,7 +418,7 @@ Implementation status: complete.
 
 #### Part 4: Add Verification UI
 
-Implementation status: complete on the feature branch and pending review.
+Implementation status: complete.
 
 - add the verification route and confirmation page
 - add Settings verification status and resend action
