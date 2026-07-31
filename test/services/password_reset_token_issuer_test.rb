@@ -47,10 +47,15 @@ class PasswordResetTokenIssuerTest < ActiveSupport::TestCase
     end
   end
 
-  test 'prunes expired tokens when issuing a new token' do
+  test 'prunes only expired tokens when issuing a new token' do
     expired_user = create_user(
       'expired_reset_user',
       email: 'expired-reset@example.com',
+      verified: true
+    )
+    active_user = create_user(
+      'active_reset_user',
+      email: 'active-reset@example.com',
       verified: true
     )
     expired_token = PasswordResetToken.create!(
@@ -58,11 +63,17 @@ class PasswordResetTokenIssuerTest < ActiveSupport::TestCase
       token_digest: 'expired-token-digest',
       expires_at: @current_time
     )
+    active_token = PasswordResetToken.create!(
+      user: active_user,
+      token_digest: 'active-token-digest',
+      expires_at: @current_time + 1.second
+    )
 
     issue_token
 
     refute PasswordResetToken.exists?(expired_token.id)
-    assert_equal 1, PasswordResetToken.count
+    assert PasswordResetToken.exists?(active_token.id)
+    assert_equal 2, PasswordResetToken.count
   end
 
   test 'rejects users without a verified eligible email identity' do
