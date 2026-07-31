@@ -129,7 +129,7 @@ class UserTest < ActiveSupport::TestCase
     assert_includes duplicate.errors.full_messages, "Email has already been taken"
   end
 
-  test "changing email clears its verification timestamp and token" do
+  test "changing email clears its verification timestamp and identity tokens" do
     user = create_user("verified_email_user", email: "current@example.com")
     user.update!(email_verified_at: Time.current)
     verification_token = EmailVerificationToken.create!(
@@ -137,11 +137,17 @@ class UserTest < ActiveSupport::TestCase
       token_digest: "email-change-token",
       expires_at: 1.day.from_now
     )
+    reset_token = PasswordResetToken.create!(
+      user: user,
+      token_digest: "password-reset-token",
+      expires_at: 30.minutes.from_now
+    )
 
     user.update!(email: "new@example.com")
 
     assert_nil user.email_verified_at
     refute EmailVerificationToken.exists?(verification_token.id)
+    refute PasswordResetToken.exists?(reset_token.id)
   end
 
   test "account settings are disabled only for the shared guest" do

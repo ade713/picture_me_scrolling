@@ -429,6 +429,8 @@ Implementation status: complete.
 
 #### Part 1: Add Reset Token Lifecycle
 
+Implementation status: complete on the feature branch and pending review.
+
 - add password-reset token storage
 - add issuance, digest lookup, expiration, replacement, and pruning
 - add concurrency safeguards and focused model and service coverage
