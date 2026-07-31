@@ -18,6 +18,14 @@ user_id      | integer   | not null, foreign key, indexed, unique
 token_digest | string    | not null, indexed, unique
 expires_at   | datetime  | not null, indexed
 
+## password_reset_tokens
+column name  | data type | details
+-------------|-----------|--------
+id           | bigint    | not null, primary key
+user_id      | integer   | not null, foreign key, indexed, unique
+token_digest | string    | not null, indexed, unique
+expires_at   | datetime  | not null, indexed
+
 ## posts
 column name | data type | details
 ------------|-----------|--------
