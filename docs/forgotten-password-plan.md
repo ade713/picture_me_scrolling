@@ -450,6 +450,12 @@ Implementation status: complete on the feature branch and pending review.
 - rotate sessions and clear the requesting browser session
 - cover invalid, expired, used, and superseded tokens
 
+#### Phase 3 Follow-up
+
+- Investigate why the full Rails test suite reports completion without failures
+  but does not exit automatically. Address this before Phase 3 closes, or
+  earlier if it begins interfering with development or verification.
+
 ### Phase 4: Add Password Recovery Pages
 
 #### Part 1: Add Forgot Password Page
