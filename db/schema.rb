@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_07_28_150000) do
+ActiveRecord::Schema[7.1].define(version: 2026_07_30_170000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -73,6 +73,17 @@ ActiveRecord::Schema[7.1].define(version: 2026_07_28_150000) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
+  create_table "password_reset_tokens", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "token_digest", null: false
+    t.datetime "expires_at", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["expires_at"], name: "index_password_reset_tokens_on_expires_at"
+    t.index ["token_digest"], name: "index_password_reset_tokens_on_token_digest", unique: true
+    t.index ["user_id"], name: "index_password_reset_tokens_on_user_id", unique: true
+  end
+
   create_table "posts", id: :serial, force: :cascade do |t|
     t.string "title", null: false
     t.text "url"
@@ -101,4 +112,5 @@ ActiveRecord::Schema[7.1].define(version: 2026_07_28_150000) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "email_verification_tokens", "users", on_delete: :cascade
+  add_foreign_key "password_reset_tokens", "users", on_delete: :cascade
 end

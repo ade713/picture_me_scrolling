@@ -429,6 +429,8 @@ Implementation status: complete.
 
 #### Part 1: Add Reset Token Lifecycle
 
+Implementation status: complete on the feature branch and pending review.
+
 - add password-reset token storage
 - add issuance, digest lookup, expiration, replacement, and pruning
 - add concurrency safeguards and focused model and service coverage
@@ -447,6 +449,12 @@ Implementation status: complete.
 - apply password validation and atomically delete the consumed token
 - rotate sessions and clear the requesting browser session
 - cover invalid, expired, used, and superseded tokens
+
+#### Phase 3 Follow-up
+
+- Investigate why the full Rails test suite reports completion without failures
+  but does not exit automatically. Address this before Phase 3 closes, or
+  earlier if it begins interfering with development or verification.
 
 ### Phase 4: Add Password Recovery Pages
 
