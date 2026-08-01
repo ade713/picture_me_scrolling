@@ -438,6 +438,8 @@ Implementation status: complete.
 
 ### Phase 3: Add Password Recovery API
 
+Implementation status: complete.
+
 #### Part 1: Add Reset Token Lifecycle
 
 Implementation status: complete.
@@ -466,7 +468,7 @@ Split implementation into two PRs to remain within the review-size guardrail.
 
 #### Part 3: Complete Password Resets
 
-Implementation status: complete on the feature branch and pending review.
+Implementation status: complete.
 
 - add the reset-consumption endpoint
 - apply password validation and atomically delete the consumed token
@@ -476,10 +478,13 @@ Implementation status: complete on the feature branch and pending review.
 #### Phase 3 Follow-up
 
 - Investigate why the full Rails test suite reports completion without failures
-  but does not exit automatically. Address this before Phase 3 closes, or
-  earlier if it begins interfering with development or verification.
+  but does not exit automatically. The focused recovery suites remain usable;
+  resolve the runner issue before final account-recovery closeout, or earlier
+  if it begins interfering with development or verification.
 
 ### Phase 4: Add Password Recovery Pages
+
+Implementation status: not started. This is the next account-recovery phase.
 
 #### Part 1: Add Forgot Password Page
 
