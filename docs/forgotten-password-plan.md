@@ -477,10 +477,13 @@ Implementation status: complete.
 
 #### Phase 3 Follow-up
 
-- Investigate why the full Rails test suite reports completion without failures
-  but does not exit automatically. The focused recovery suites remain usable;
-  resolve the runner issue before final account-recovery closeout, or earlier
-  if it begins interfering with development or verification.
+Implementation status: complete.
+
+The full Rails suite exits normally. The follow-up run completed in about 145
+seconds with 152 tests and 749 assertions, no failures or errors, and exit
+status 0. The earlier apparent non-exit occurred while the serial suite was
+still running rather than after its summary, so no test-runner shutdown change
+is required.
 
 ### Phase 4: Add Password Recovery Pages
 
