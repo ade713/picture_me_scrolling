@@ -12,7 +12,7 @@ Rails.application.routes.draw do
       patch :password
     end
     resource :email_verification, only: [:create, :update]
-    resource :password_reset, only: :create
+    resource :password_reset, only: [:create, :update]
     resource :session, only: [:create, :destroy]
     resources :posts, only: [:create, :index, :show, :update, :destroy] do
       resource :like, only: [:create, :destroy]
