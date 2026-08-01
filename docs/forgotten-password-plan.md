@@ -448,7 +448,7 @@ Implementation status: complete.
 
 #### Part 2: Add Reset Requests
 
-Implementation status: complete on the feature branch and pending review.
+Implementation status: complete.
 
 Split implementation into two PRs to remain within the review-size guardrail.
 
@@ -465,6 +465,8 @@ Split implementation into two PRs to remain within the review-size guardrail.
 - add focused request and limiter coverage
 
 #### Part 3: Complete Password Resets
+
+Implementation status: complete on the feature branch and pending review.
 
 - add the reset-consumption endpoint
 - apply password validation and atomically delete the consumed token
@@ -537,6 +539,3 @@ into:
   recovery can be enabled.
 - Final transactional email provider.
 - Production sending domain and sender address.
-- Whether successful password-reset endpoints return `204 No Content` or a
-  small JSON success payload. Verification endpoints use a small JSON success
-  payload.
