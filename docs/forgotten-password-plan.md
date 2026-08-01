@@ -146,6 +146,17 @@ Request body:
 The response must not reveal whether the email exists, is verified, belongs to
 the guest account, or successfully received a message.
 
+Reset requests use fixed one-hour Rails cache counter windows with these limits:
+
+- 3 requests per normalized email address
+- 10 requests per IP address
+
+Email values are hashed before they are included in cache keys. Rate-limited
+requests return the same accepted response without issuing or delivering a
+token. The initial cache-backed mechanism fits the current deployment without
+adding a database table or external service. Revisit a shared cache if the app
+scales to multiple instances.
+
 Proposed response:
 
 ```text
@@ -429,7 +440,7 @@ Implementation status: complete.
 
 #### Part 1: Add Reset Token Lifecycle
 
-Implementation status: complete on the feature branch and pending review.
+Implementation status: complete.
 
 - add password-reset token storage
 - add issuance, digest lookup, expiration, replacement, and pruning
@@ -437,11 +448,21 @@ Implementation status: complete on the feature branch and pending review.
 
 #### Part 2: Add Reset Requests
 
-- add the public reset-request endpoint and uniform `202 Accepted` response
-- add per-email and per-IP rate limiting
+Implementation status: complete on the feature branch and pending review.
+
+Split implementation into two PRs to remain within the review-size guardrail.
+
+##### Part 2.1: Configure Reset Email Delivery
+
 - add the agreed password-reset email and preview
 - handle synchronous delivery failures
-- add request and mailer coverage
+- add sender and mailer coverage
+
+##### Part 2.2: Add Reset Request Endpoint and Rate Limiting
+
+- add the public reset-request endpoint and uniform `202 Accepted` response
+- add per-email and per-IP rate limiting
+- add focused request and limiter coverage
 
 #### Part 3: Complete Password Resets
 
@@ -516,7 +537,6 @@ into:
   recovery can be enabled.
 - Final transactional email provider.
 - Production sending domain and sender address.
-- The initial rate-limiting mechanism for reset requests.
 - Whether successful password-reset endpoints return `204 No Content` or a
   small JSON success payload. Verification endpoints use a small JSON success
   payload.
