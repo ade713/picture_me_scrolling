@@ -62,6 +62,24 @@ Invalid, missing, used, or superseded tokens return `422 Unprocessable Entity`
 with `Verification link is invalid`. Expired tokens return the same status with
 `Verification link has expired`.
 
+### Password Reset
+
+- `POST /api/password_reset` - publicly request a password-reset link using
+  `password_reset[email]`
+
+Every request returns `202 Accepted` with the same response, regardless of
+whether the address exists, is verified, is eligible, is rate limited, or
+successfully receives an email:
+
+```json
+{
+  "message": "If that address belongs to a verified account, a reset link has been sent."
+}
+```
+
+Only verified personal accounts receive email. Requests are limited to three
+per normalized email and ten per IP address in each fixed one-hour window.
+
 ### Posts
 - `GET /api/posts`
 - `POST /api/posts`

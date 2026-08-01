@@ -136,6 +136,7 @@ DISABLE_SPRING=1 bin/rails test \
   test/controllers/api/users_controller_test.rb \
   test/controllers/api/accounts_controller_test.rb \
   test/controllers/api/email_verifications_controller_test.rb \
+  test/controllers/api/password_resets_controller_test.rb \
   test/controllers/api/follows_controller_test.rb \
   test/controllers/api/posts_controller_test.rb \
   test/controllers/api/likes_controller_test.rb
