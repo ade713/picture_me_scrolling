@@ -171,6 +171,19 @@ input.auth-login-input::placeholder {
   color: #8a8a8a;
 }
 
+.forgot-password-link {
+  color: black;
+  font-size: 22px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.forgot-password-link:hover,
+.forgot-password-link:focus-visible {
+  color: #CE0063;
+  outline: none;
+}
+
 .auth-submit,
 .guest-login {
   display: inline-flex;

@@ -1,0 +1,128 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+
+import { emailSettings } from '../../config/account_settings';
+import { buttonLabels } from '../../config/button_labels';
+import {
+  FORGOT_PASSWORD_GUIDANCE,
+  FORGOT_PASSWORD_HEADING,
+  FORGOT_PASSWORD_PENDING_MESSAGE,
+  FORGOT_PASSWORD_SUCCESS_GUIDANCE,
+  FORGOT_PASSWORD_SUCCESS_HEADING,
+  RETURN_TO_LOGIN_LABEL
+} from '../../config/password_recovery';
+import { routes } from '../../config/routes';
+import { useRequestPasswordReset } from '../../query/password_reset_hooks';
+
+const ForgotPasswordPage = () => {
+  const requestPasswordReset = useRequestPasswordReset();
+  const [email, setEmail] = useState('');
+  const successHeading = useRef(null);
+  const submitDisabled = requestPasswordReset.isPending || email.trim().length === 0;
+
+  useEffect(() => {
+    if (requestPasswordReset.isSuccess) {
+      successHeading.current?.focus();
+    }
+  }, [requestPasswordReset.isSuccess]);
+
+  const handleChange = event => {
+    if (requestPasswordReset.isError) {
+      requestPasswordReset.reset();
+    }
+
+    setEmail(event.target.value);
+  };
+
+  const handleSubmit = event => {
+    event.preventDefault();
+    if (submitDisabled) return;
+
+    requestPasswordReset.mutate(email.trim());
+  };
+
+  const renderRequestState = () => {
+    // If the request was successful, show the success message and guidance.
+    if (requestPasswordReset.isSuccess) {
+      return (
+        <>
+          <h1
+            id="forgot-password-heading"
+            ref={successHeading}
+            tabIndex="-1"
+          >
+            {FORGOT_PASSWORD_SUCCESS_HEADING}
+          </h1>
+          <p role="status">{requestPasswordReset.data.message}</p>
+          <p>{FORGOT_PASSWORD_SUCCESS_GUIDANCE}</p>
+        </>
+      );
+    }
+
+    // Otherwise, show the form for requesting a password reset link.
+    return (
+      <>
+        <h1 id="forgot-password-heading">{FORGOT_PASSWORD_HEADING}</h1>
+        <p>{FORGOT_PASSWORD_GUIDANCE}</p>
+
+        <form className="forgot-password-form" onSubmit={handleSubmit}>
+          <label htmlFor="forgot-password-email">Email address</label>
+          <input
+            autoComplete="email"
+            disabled={requestPasswordReset.isPending}
+            id="forgot-password-email"
+            maxLength={emailSettings.maximumLength}
+            onChange={handleChange}
+            required
+            type="email"
+            value={email}
+          />
+
+          {requestPasswordReset.isError && (
+            <div className="forgot-password-errors" role="alert">
+              <ul>
+                {requestPasswordReset.error.errors.map(error => (
+                  <li key={error}>{error}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {requestPasswordReset.isPending && (
+            <p aria-live="polite" role="status">
+              {FORGOT_PASSWORD_PENDING_MESSAGE}
+            </p>
+          )}
+
+          <button disabled={submitDisabled} type="submit">
+            {requestPasswordReset.isPending
+              ? buttonLabels.sendingResetLink
+              : buttonLabels.sendResetLink}
+          </button>
+        </form>
+      </>
+    );
+  };
+
+  return (
+    <div className="password-recovery-page">
+      <header className="password-recovery-nav">
+        <Link to={routes.home}>PicMeS</Link>
+      </header>
+
+      <main>
+        <section
+          aria-labelledby="forgot-password-heading"
+          className="password-recovery-card"
+        >
+          {renderRequestState()}
+          <Link className="password-recovery-action" to={routes.home}>
+            <span aria-hidden="true">←</span> {RETURN_TO_LOGIN_LABEL}
+          </Link>
+        </section>
+      </main>
+    </div>
+  );
+};
+
+export default ForgotPasswordPage;
