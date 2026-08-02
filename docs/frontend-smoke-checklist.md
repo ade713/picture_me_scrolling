@@ -88,6 +88,20 @@ Use the seeded guest account:
   - Expected: the PicMeS link, resend action, and result navigation link have
     visible focus indicators and follow document order.
 
+## Forgot Password Smoke
+
+- From the logged-out login page, follow `Forgot password?`.
+  - Expected: the public request page renders with one required email field and
+    a Back to login link.
+- Submit a verified personal account email.
+  - Expected: the field and submit button are disabled while pending, then the
+    page focuses and announces the uniform Check your email result.
+- Repeat with a missing, unverified, or shared guest account email.
+  - Expected: the same accepted result appears without revealing eligibility.
+- Complete the request flow using only the keyboard.
+  - Expected: the PicMeS link, email field, submit button, and Back to login link
+    follow document order and have visible focus indicators.
+
 ## Dashboard Feed Smoke
 
 - Confirm the guest-owned `Welcome to PicMeS` post is visible.
