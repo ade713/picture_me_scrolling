@@ -37,4 +37,6 @@ export const EMAIL_VERIFICATION_SETTINGS_LINK_LABEL = 'Continue to settings';
 export const EMAIL_VERIFICATION_LOGIN_LINK_LABEL = 'Continue to login';
 export const PASSWORD_CONFIRMATION_MISMATCH_MESSAGE =
   'New password and confirmation must match';
+export const PASSWORD_REQUIREMENTS_MESSAGE =
+  `Use minimum ${passwordSettings.minimumLength} characters and maximum ${passwordSettings.maximumLength} characters.`;
 export const PASSWORD_UPDATE_SUCCESS_MESSAGE = 'Password updated successfully';

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import {
   PASSWORD_CONFIRMATION_MISMATCH_MESSAGE,
+  PASSWORD_REQUIREMENTS_MESSAGE,
   PASSWORD_UPDATE_SUCCESS_MESSAGE,
   passwordSettings
 } from '../../config/account_settings';
@@ -87,8 +88,7 @@ const PasswordSettingsForm = ({ disabled = false }) => {
         value={ passwords.password }
       />
       <p id="new-password-requirements">
-        Use minimum { passwordSettings.minimumLength } characters and maximum{' '}
-        { passwordSettings.maximumLength } characters.
+        { PASSWORD_REQUIREMENTS_MESSAGE }
       </p>
 
       <label htmlFor="password-confirmation">Confirm new password</label>

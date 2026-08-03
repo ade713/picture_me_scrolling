@@ -491,7 +491,7 @@ Implementation status: in progress.
 
 #### Part 1: Add Forgot Password Page
 
-Implementation status: complete on the feature branch and pending review.
+Implementation status: complete.
 
 - add the authentication-page link, route, form, and request mutation
 - show uniform success feedback and pending states
@@ -499,7 +499,7 @@ Implementation status: complete on the feature branch and pending review.
 
 #### Part 2: Add Reset Password Page
 
-Implementation status: not started.
+Implementation status: complete on the feature branch and pending review.
 
 - add the reset route and token handling
 - add the new-password and confirmation form

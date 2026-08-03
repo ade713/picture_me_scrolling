@@ -102,6 +102,27 @@ Use the seeded guest account:
   - Expected: the PicMeS link, email field, submit button, and Back to login link
     follow document order and have visible focus indicators.
 
+## Reset Password Smoke
+
+- Open the newest reset link from the generated message in `tmp/mail`.
+  - Expected: the public reset page shows new-password and confirmation fields,
+    including the shared 6–64 character guidance.
+- Submit matching valid passwords.
+  - Expected: both fields and the submit button are disabled while pending,
+    then the page focuses and announces the successful reset result.
+- Follow Continue to login after success.
+  - Expected: the login page renders, including when the reset link was opened
+    from a browser that previously had an authenticated session.
+- Submit mismatched or invalid passwords.
+  - Expected: an accessible validation message appears and the valid reset link
+    remains available for another attempt.
+- Submit a used, expired, superseded, or malformed reset link.
+  - Expected: the page focuses an accessible Reset link unavailable result and
+    offers a route to request a new link.
+- Complete the reset form using only the keyboard.
+  - Expected: the PicMeS link, both password fields, submit button, and result
+    navigation links follow document order and have visible focus indicators.
+
 ## Dashboard Feed Smoke
 
 - Confirm the guest-owned `Welcome to PicMeS` post is visible.
