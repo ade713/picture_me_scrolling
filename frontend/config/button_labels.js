@@ -13,6 +13,8 @@ export const buttonLabels = Object.freeze({
   post: 'Post',
   resendVerificationEmail: 'Resend verification email',
   resendingVerificationEmail: 'Sending verification email…',
+  resetPassword: 'Reset password',
+  resettingPassword: 'Resetting password…',
   sendResetLink: 'Send reset link',
   sendingResetLink: 'Sending reset link…',
   save: 'Save',
