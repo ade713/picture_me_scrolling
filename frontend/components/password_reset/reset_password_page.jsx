@@ -15,6 +15,7 @@ import {
 } from '../../config/password_recovery';
 import { routes } from '../../config/routes';
 import { useResetPassword } from '../../query/password_reset_hooks';
+import PasswordRecoveryLayout from './password_recovery_layout';
 import ResetPasswordForm from './reset_password_form';
 
 const ResetPasswordPage = () => {
@@ -58,7 +59,7 @@ const ResetPasswordPage = () => {
           >
             {RESET_PASSWORD_ERROR_HEADING}
           </h1>
-          <div className="password-reset-errors" role="alert">
+          <div className="password-recovery-errors" role="alert">
             <ul><li>{linkError}</li></ul>
           </div>
           <p>{RESET_PASSWORD_INVALID_LINK_GUIDANCE}</p>
@@ -86,23 +87,12 @@ const ResetPasswordPage = () => {
   }
 
   return (
-    <div className="password-recovery-page">
-      <header className="password-recovery-nav">
-        <Link to={routes.home}>PicMeS</Link>
-      </header>
-
-      <main>
-        <section
-          aria-labelledby="reset-password-heading"
-          className="password-recovery-card"
-        >
-          {renderResetState()}
-          <Link className="password-recovery-action" to={actionRoute}>
-            {actionLabel}
-          </Link>
-        </section>
-      </main>
-    </div>
+    <PasswordRecoveryLayout headingId="reset-password-heading">
+      {renderResetState()}
+      <Link className="password-recovery-action" to={actionRoute}>
+        {actionLabel}
+      </Link>
+    </PasswordRecoveryLayout>
   );
 };
 

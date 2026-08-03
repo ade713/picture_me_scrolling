@@ -487,7 +487,7 @@ is required.
 
 ### Phase 4: Add Password Recovery Pages
 
-Implementation status: in progress.
+Implementation status: complete.
 
 #### Part 1: Add Forgot Password Page
 
@@ -499,7 +499,7 @@ Implementation status: complete.
 
 #### Part 2: Add Reset Password Page
 
-Implementation status: complete on the feature branch and pending review.
+Implementation status: complete.
 
 - add the reset route and token handling
 - add the new-password and confirmation form
@@ -509,12 +509,14 @@ Implementation status: complete on the feature branch and pending review.
 
 #### Optional Part 3: Polish Recovery UI
 
-Open this part only if the first two UI PRs reveal enough independent work to
-justify it.
+Implementation status: complete without a separate PR.
 
-- complete responsive and keyboard-only review
-- refine focus and announcement behavior
-- keep changes limited to discovered UI issues and their focused documentation
+- responsive behavior was covered by component tests and a live mobile-width
+  smoke pass
+- keyboard order is covered by component tests; repeat the tab-order check with
+  a physical keyboard during Phase 5 verification
+- focus and announcement behavior is covered for successful, invalid, and
+  expired reset results
 
 ### Phase 5: Verify and Close Out Account Recovery
 

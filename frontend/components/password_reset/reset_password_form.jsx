@@ -85,7 +85,7 @@ const ResetPasswordForm = ({ resetPassword, token }) => {
       />
 
       {errors.length > 0 && (
-        <div className="password-reset-errors" role="alert">
+        <div className="password-recovery-errors" role="alert">
           <ul>
             {errors.map(error => <li key={error}>{error}</li>)}
           </ul>

@@ -13,6 +13,7 @@ import {
 } from '../../config/password_recovery';
 import { routes } from '../../config/routes';
 import { useRequestPasswordReset } from '../../query/password_reset_hooks';
+import PasswordRecoveryLayout from './password_recovery_layout';
 
 const ForgotPasswordPage = () => {
   const requestPasswordReset = useRequestPasswordReset();
@@ -42,7 +43,6 @@ const ForgotPasswordPage = () => {
   };
 
   const renderRequestState = () => {
-    // If the request was successful, show the success message and guidance.
     if (requestPasswordReset.isSuccess) {
       return (
         <>
@@ -59,7 +59,6 @@ const ForgotPasswordPage = () => {
       );
     }
 
-    // Otherwise, show the form for requesting a password reset link.
     return (
       <>
         <h1 id="forgot-password-heading">{FORGOT_PASSWORD_HEADING}</h1>
@@ -79,7 +78,7 @@ const ForgotPasswordPage = () => {
           />
 
           {requestPasswordReset.isError && (
-            <div className="forgot-password-errors" role="alert">
+            <div className="password-recovery-errors" role="alert">
               <ul>
                 {requestPasswordReset.error.errors.map(error => (
                   <li key={error}>{error}</li>
@@ -105,23 +104,12 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <div className="password-recovery-page">
-      <header className="password-recovery-nav">
-        <Link to={routes.home}>PicMeS</Link>
-      </header>
-
-      <main>
-        <section
-          aria-labelledby="forgot-password-heading"
-          className="password-recovery-card"
-        >
-          {renderRequestState()}
-          <Link className="password-recovery-action" to={routes.home}>
-            <span aria-hidden="true">←</span> {RETURN_TO_LOGIN_LABEL}
-          </Link>
-        </section>
-      </main>
-    </div>
+    <PasswordRecoveryLayout headingId="forgot-password-heading">
+      {renderRequestState()}
+      <Link className="password-recovery-action" to={routes.home}>
+        <span aria-hidden="true">←</span> {RETURN_TO_LOGIN_LABEL}
+      </Link>
+    </PasswordRecoveryLayout>
   );
 };
 
