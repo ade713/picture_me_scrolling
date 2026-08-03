@@ -6,6 +6,7 @@ import {
   passwordSettings
 } from "../../config/account_settings";
 import { buttonLabels } from "../../config/button_labels";
+import { FORGOT_PASSWORD_LINK_LABEL } from "../../config/password_recovery";
 import { routes } from "../../config/routes";
 import { useCurrentUser, useLogin, useSignup } from "../../query/session_hooks";
 import useGuestLogin from "./use_guest_login";
@@ -121,6 +122,11 @@ const AuthForm = () => {
                   className='auth-login-input'
                 />
               </label>
+              {!isSignup && (
+                <Link className='forgot-password-link' to={routes.forgotPassword}>
+                  {FORGOT_PASSWORD_LINK_LABEL}
+                </Link>
+              )}
               <button type='submit' className='auth-submit'>
                 {submitText}
               </button>

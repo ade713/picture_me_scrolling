@@ -58,6 +58,10 @@ describe('AuthForm', () => {
 
     expect(screen.getByRole('button', { name: 'Log In' })).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Sign Up' })).toHaveAttribute('href', '/signup');
+    expect(screen.getByRole('link', { name: 'Forgot password?' })).toHaveAttribute(
+      'href',
+      '/forgot-password'
+    );
   });
 
   it('renders signup mode on the signup route', () => {
@@ -70,6 +74,7 @@ describe('AuthForm', () => {
       'maxlength',
       '254'
     );
+    expect(screen.queryByRole('link', { name: 'Forgot password?' })).not.toBeInTheDocument();
   });
 
   it('labels social profile links', () => {
@@ -90,6 +95,8 @@ describe('AuthForm', () => {
     expect(screen.getByRole('textbox', { name: 'Username' })).toHaveFocus();
     await user.tab();
     expect(screen.getByLabelText('Password')).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole('link', { name: 'Forgot password?' })).toHaveFocus();
     await user.tab();
     expect(screen.getByRole('button', { name: 'Log In' })).toHaveFocus();
     await user.tab();

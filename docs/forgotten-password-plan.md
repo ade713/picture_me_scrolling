@@ -1,7 +1,7 @@
 # Forgotten Password and Account Recovery Plan
 
-Status: implementation in progress. Email identity, verification-token
-lifecycle, and email-delivery work are complete.
+Status: implementation in progress. Email identity, verification, and the
+password-recovery API are complete. Password-recovery UI work is in progress.
 
 This document records the proposed forgotten-password flow, the decisions
 already agreed upon, and the remaining product and infrastructure choices.
@@ -487,15 +487,19 @@ is required.
 
 ### Phase 4: Add Password Recovery Pages
 
-Implementation status: not started. This is the next account-recovery phase.
+Implementation status: in progress.
 
 #### Part 1: Add Forgot Password Page
+
+Implementation status: complete on the feature branch and pending review.
 
 - add the authentication-page link, route, form, and request mutation
 - show uniform success feedback and pending states
 - add behavior and accessibility coverage
 
 #### Part 2: Add Reset Password Page
+
+Implementation status: not started.
 
 - add the reset route and token handling
 - add the new-password and confirmation form
