@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import {
   PASSWORD_CONFIRMATION_MISMATCH_MESSAGE,
+  PASSWORD_REQUIREMENTS_MESSAGE,
   passwordSettings
 } from '../../config/account_settings';
 import { buttonLabels } from '../../config/button_labels';
@@ -66,8 +67,7 @@ const ResetPasswordForm = ({ resetPassword, token }) => {
         value={passwords.password}
       />
       <p id="recovery-password-requirements">
-        Use minimum {passwordSettings.minimumLength} characters and maximum{' '}
-        {passwordSettings.maximumLength} characters.
+        {PASSWORD_REQUIREMENTS_MESSAGE}
       </p>
 
       <label htmlFor="recovery-password-confirmation">Confirm new password</label>
