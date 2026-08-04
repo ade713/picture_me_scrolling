@@ -301,9 +301,9 @@ Email delivery should remain a small dependency:
 - do not add marketing features, analytics, or a dedicated IP
 - disable open and link tracking
 
-Resend is the proposed provider because its SMTP support and expected volume
-fit this portfolio application. Final provider selection and the production
-sending domain remain open until implementation begins.
+Resend is the selected provider because its SMTP support and expected volume
+fit this portfolio application. The production sender must use the domain
+verified in Resend.
 
 Proposed production variables:
 
@@ -316,8 +316,9 @@ MAILER_FROM_ADDRESS
 APP_HOST
 ```
 
-`APP_HOST` should contain only the public hostname, such as
-`picmes.example.com`; the production mailer adds the `https` protocol.
+`APP_HOST` contains only the public hostname,
+`picture-me-scrolling.onrender.com`; the production mailer adds the `https`
+protocol.
 
 The sending domain must publish the SPF and DKIM records supplied by the email
 provider. DMARC is recommended as an additional domain-protection policy.

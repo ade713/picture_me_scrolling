@@ -62,15 +62,16 @@ Rails.application.configure do
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_caching = false
+  config.x.mailer_from_address = ENV.fetch("MAILER_FROM_ADDRESS")
   config.action_mailer.default_url_options = {
-    host: ENV.fetch("APP_HOST", "localhost"),
+    host: ENV.fetch("APP_HOST"),
     protocol: "https"
   }
   config.action_mailer.smtp_settings = {
-    address: ENV.fetch("SMTP_ADDRESS", "localhost"),
+    address: ENV.fetch("SMTP_ADDRESS"),
     port: ENV.fetch("SMTP_PORT", 587).to_i,
-    user_name: ENV["SMTP_USERNAME"],
-    password: ENV["SMTP_PASSWORD"],
+    user_name: ENV.fetch("SMTP_USERNAME"),
+    password: ENV.fetch("SMTP_PASSWORD"),
     authentication: :plain,
     enable_starttls_auto: true
   }
