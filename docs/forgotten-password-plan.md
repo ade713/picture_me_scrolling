@@ -49,8 +49,13 @@ verification or password recovery.
 Only a verified email address may receive a password-reset link.
 
 Existing accounts need a way to add and verify an email through Settings.
-Email should be collected for new personal signups. Whether an unverified new
-account may log in immediately remains an open product decision.
+Email is collected for new personal signups. New users remain logged in after
+signup while their email is unverified so they can use the application and
+complete verification from Settings.
+
+Email remains optional for legacy personal accounts. Those users keep access
+to the application, but password recovery is unavailable until they add and
+verify an email address through Settings.
 
 Changing an email address should:
 
@@ -546,11 +551,15 @@ into:
   delivery, API, or frontend reviews
 - keep the application working and independently testable after every part
 
-## Remaining Decisions
+## Resolved Decisions
 
-- PR 1 currently preserves immediate login after signup for unverified users;
-  confirm this behavior before the account-recovery phase is merged.
-- Whether email is mandatory for all legacy users or only required before
-  recovery can be enabled.
-- Final transactional email provider.
+- Resend is the transactional email provider.
+- Legacy personal accounts are not required to add an email. Password recovery
+  becomes available after an email is added and verified through Settings.
+- New users remain logged in after signup while their email is unverified.
+  Verification is required for password recovery, not general application
+  access.
+
+## Remaining Decision
+
 - Production sending domain and sender address.
