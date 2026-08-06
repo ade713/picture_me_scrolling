@@ -35,6 +35,22 @@ url         | text      |
 body        | text      | not null
 author_id   | integer   | not null, foreign key, indexed
 
+## tags
+column name | data type | details
+------------|-----------|--------
+id          | bigint    | not null, primary key
+name        | string    | not null, indexed, unique
+
+## post_tags
+column name | data type | details
+------------|-----------|--------
+id          | bigint    | not null, primary key
+post_id     | integer   | not null, foreign key, indexed, cascades on post deletion
+tag_id      | bigint    | not null, foreign key, indexed, cascades on tag deletion
+
+Each post/tag pair is unique. The database removes the corresponding join rows
+when a post or tag is deleted.
+
 ## follows
 column name | data type | details
 ------------|-----------|--------
