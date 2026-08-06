@@ -42,6 +42,16 @@ npm run build:watch
 The Rails app serves the compiled JavaScript bundle from
 `app/assets/javascripts/bundle.js`.
 
+## Continuous Integration
+
+GitHub Actions runs independent backend and frontend checks for pull requests
+and pushes to `main`. The backend job prepares PostgreSQL and runs the Rails
+suite while also compiling the Rails stylesheet. The frontend job runs the
+Vitest suite and creates a production Webpack bundle.
+
+CI reads the Ruby and Node versions from `.tool-versions` and `.nvmrc`, matching
+the local development configuration.
+
 ## Features
 
 + Secured website use via front-end and back-end authentication.
