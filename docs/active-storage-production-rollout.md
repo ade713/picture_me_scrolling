@@ -6,8 +6,10 @@ Paperclip database columns have been removed.
 
 ## Current Production Status
 
-The original Heroku production app and custom domain are no longer active, and
-there is no known production Postgres backup or export.
+The original Heroku production app and its historical data are no longer
+active, and there is no known Postgres backup or export from that deployment.
+The current application is deployed separately on Render at
+`picturemescrolling.com`.
 
 The old production and development S3 buckets still exist. Because the
 production database is not available, those files should be treated as

@@ -9,22 +9,17 @@ Run these from the project root:
 
 ```sh
 export PATH="$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH"
-DISABLE_SPRING=1 bin/rails test \
-  test/controllers/api/session_controller_test.rb \
-  test/controllers/api/users_controller_test.rb \
-  test/controllers/api/accounts_controller_test.rb \
-  test/controllers/api/follows_controller_test.rb \
-  test/controllers/api/posts_controller_test.rb \
-  test/controllers/api/likes_controller_test.rb
+DISABLE_SPRING=1 bin/rails test
+npm run test:frontend
 npm run build
 ```
 
 Expected results:
 
-- Focused API behavior tests pass.
+- Full Rails and frontend suites pass.
 - Webpack compiles successfully.
 
-The focused API tests cover:
+The automated tests cover:
 
 - auth/session behavior
 - signup and current-account email behavior
@@ -33,6 +28,11 @@ The focused API tests cover:
 - posts feed and CRUD behavior
 - Active Storage-backed post uploads
 - like/unlike behavior
+- profile/settings behavior
+- email-verification delivery and token lifecycle
+- password-reset delivery, rate limiting, expiration, replacement, and
+  single-use behavior
+- recovery-page validation, accessibility, and focus behavior
 
 ## Local Seed Setup
 
@@ -66,6 +66,17 @@ Authentication:
   - Expected: dashboard still renders.
 - Log out.
   - Expected: auth page is available again.
+
+Settings and recovery:
+
+- Add or replace a personal-account email and complete verification.
+  - Expected: Settings reports the verified address.
+- Request a password-reset message from the logged-out authentication page.
+  - Expected: the uniform success state appears without revealing whether the
+    address belongs to an account.
+- Complete a reset with the newest valid link.
+  - Expected: the password changes, existing sessions are invalidated, and the
+    link cannot be reused.
 
 Initial feed:
 

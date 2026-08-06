@@ -1,25 +1,42 @@
 # Component Hierarchy
 
-## AuthFormContainer
-- AuthForm
+## Application Routes
 
-## DashboardContainer
-- FeedComponent
-  - PostsItemComponent
-- PostItemComponent
-  - LikeComponent
-  - TagComponent
-- NavBarContainer
+- `AuthForm`
+  - signup, login, guest login, and forgotten-password entry point
+- `Dashboard`
+  - `AccountMenu`
+  - `PostBar` and post-type forms
+  - `Feed`
+    - `FeedItem` and post-type bodies
+  - `RecommendedUsers`
+- `SettingsPage`
+  - `AvatarSettingsForm`
+  - `EmailSettingsForm`
+  - `EmailVerificationStatus`
+  - `PasswordSettingsForm`
+- `EmailVerificationPage`
+- `ForgotPasswordPage`
+  - `PasswordRecoveryLayout`
+- `ResetPasswordPage`
+  - `PasswordRecoveryLayout`
+  - `ResetPasswordForm`
 
-## PostFormContainer
-- PostFormComponent
+Protected routes require an authenticated current-user query. Authentication
+routes redirect authenticated users to the dashboard. Email verification and
+reset-token consumption remain public because users reach them from email.
 
+## Frontend Routes
 
-# Routes
-Path                        | Component
-----------------------------|---------------------
-"/login"                    | "AuthFormContainer"
-"/signup"                   | "AuthFormContainer"
-"/dashboard"                | "DashboardContainer"   
-"/dashboard/posts/:post_id" | "PostItemContainer"
-"/posts/new/:type"          | "PostFormContainer"
+Path                       | Component                  | Access
+---------------------------|----------------------------|----------------
+`/`                        | `AuthForm`                 | logged out
+`/signup`                  | `AuthForm`                 | logged out
+`/dashboard`               | `Dashboard`                | authenticated
+`/settings`                | `SettingsPage`             | authenticated
+`/verify-email/:token`     | `EmailVerificationPage`    | public
+`/forgot-password`         | `ForgotPasswordPage`       | logged out
+`/reset-password/:token`   | `ResetPasswordPage`        | public
+
+The application uses `HashRouter`, so deployed URLs include `#/` before these
+frontend paths.

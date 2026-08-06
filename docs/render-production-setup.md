@@ -123,13 +123,14 @@ needs. Before launch, confirm:
 6. Watch the build logs for `npm ci`, `npm run build`, and asset precompile.
 7. Confirm migrations run in the pre-deploy step.
 8. Confirm Render can reach the `/up` health check path.
-9. Open the `.onrender.com` URL and run the smoke checks below.
+9. Open `https://picturemescrolling.com` and run the smoke checks below.
 10. Enable auto deploy after the first successful manual deploy.
-11. Add a custom domain only after the Render URL smoke pass is clean.
+11. Confirm `https://www.picturemescrolling.com` redirects to the canonical
+    root domain and both hosts have valid TLS certificates.
 
 ## Post-Deploy Smoke Checks
 
-Run these against the Render URL:
+Run these against `https://picturemescrolling.com`:
 
 - Sign up, log in, log out, and guest log in.
 - Confirm dashboard feed loads newest-first and paginates with Load more posts.
@@ -138,6 +139,9 @@ Run these against the Render URL:
 - Create text, quote, link, photo, audio, and video posts.
 - Edit text, quote, link, and media captions/titles.
 - Delete an authored post.
+- Verify a personal-account email and resend verification.
+- Request and complete a password reset; confirm expired, superseded, and used
+  links fail and that a successful reset invalidates existing sessions.
 - Confirm uploaded avatars/media are served from Active Storage/S3 URLs.
 
 ## Demo Data Refresh

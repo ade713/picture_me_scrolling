@@ -938,20 +938,18 @@ Recommended PR chunks:
      decisions
    - closeout notes live in `docs/phase11-backend-closeout.md`
 
-## Future Account Recovery: Forgotten Password
+## Completed Account Recovery: Forgotten Password
 
-Status: implementation in progress. Profile/settings, email identity and
-verification, and the password-recovery API are complete. Password-recovery
-pages are the next phase.
+Status: complete and verified in production.
 
 Goal: allow users who cannot provide their current password to securely reset
 it through a verified recovery channel.
 
-The detailed recovery design, agreed decisions, open questions, and proposed PR
-sequence live in
+The detailed recovery design, implementation sequence, resolved decisions, and
+production closeout live in
 [`docs/forgotten-password-plan.md`](./docs/forgotten-password-plan.md).
 
-Prerequisites and scope:
+Completed scope:
 
 - add an email address to user accounts and require email verification
 - provide a forgotten-password request form without revealing whether an
@@ -962,6 +960,12 @@ Prerequisites and scope:
 - expire and invalidate tokens after use, password changes, or a newer request
 - rate-limit recovery requests and avoid logging passwords or raw reset tokens
 - add backend, frontend, email-delivery, expiration, and abuse-case tests
+
+Production delivery uses Resend with the verified
+`accounts.picturemescrolling.com` sending subdomain. Email verification,
+password recovery, token expiration/replacement/single-use behavior, session
+invalidation, accessibility, and sensitive-log filtering passed final
+production verification.
 
 Keep this separate from the initial settings-page password form, which should
 continue to require the authenticated user's current password.

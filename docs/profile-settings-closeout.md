@@ -58,5 +58,6 @@ the original stored image.
 
 ## Follow-Ups
 
-- Add a forgotten-password flow separately after email ownership and reset
-  token delivery are designed.
+- Forgotten-password recovery was completed separately, including verified
+  email ownership, production delivery, reset-token lifecycle, and final smoke
+  verification. See `docs/forgotten-password-plan.md`.

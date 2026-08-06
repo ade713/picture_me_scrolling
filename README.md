@@ -6,6 +6,8 @@ It is a single page application built with Ruby on Rails, React, PostgreSQL,
 TanStack Query, and Active Storage-compatible media handling. PicMeS also lets
 users experience the world through the experiences of others.
 
+Production: [picturemescrolling.com](https://picturemescrolling.com)
+
 ![homepage](./docs/home_page.png)
 
 ## Technology
@@ -42,8 +44,12 @@ The Rails app serves the compiled JavaScript bundle from
 ## Features
 
 + Secured website use via front-end and back-end authentication.
++ Verified email identity and single-use, expiring password recovery.
++ Profile settings for avatar, email, and authenticated password changes.
 + Blog posts of various types that include text, links, music/audio and videos.
   + a preview of video and images are displayed for the users
++ Follow and unfollow users to control the feed.
++ Like and unlike posts.
 
 ```js
 const handleMedia = e => {
@@ -99,9 +105,6 @@ A display of on the current user's blog posts.
 
 ### Reblog Post
 Grants users the ability to share/reblog another user's post on their respective feed.
-
-### Follows
-Users will be able to follow specific users whose posts will appear on their feed. Sample list of followees will appear on the dashboard's right column.
 
 ### Tags
 One word descriptions of the post that will allow users to view all posts that have the same tag.

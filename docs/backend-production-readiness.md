@@ -1,18 +1,21 @@
 # Backend Production Readiness
 
 This note captures the Phase 11-6 production config, hosting, and secrets
-review. It keeps the app hosting-neutral while recording the deployment
-requirements that should be satisfied before release.
+review together with the selected Render deployment path.
 
 ## Current Posture
 
 - Render is the selected initial production hosting target.
+- The application is deployed at `picturemescrolling.com`; the `www` hostname
+  redirects to the canonical root domain.
 - The previous Heroku app/account is gone.
 - Active Storage is the runtime media path.
 - Paperclip compatibility has been removed.
 - Old S3 files are archive/manual recovery media, not an active migration
   dependency.
 - Render setup details live in `docs/render-production-setup.md`.
+- Transactional account email is delivered through Resend from the verified
+  `accounts.picturemescrolling.com` subdomain.
 
 ## Required Production Environment
 
@@ -28,6 +31,12 @@ The selected host must provide:
 - `ACTIVE_STORAGE_SERVICE`, optional, defaults to `amazon`
 - `RAILS_SERVE_STATIC_FILES`, if Rails should serve compiled public assets
 - `RAILS_LOG_TO_STDOUT`, if the host expects STDOUT logging
+- `APP_HOST`
+- `SMTP_ADDRESS`
+- `SMTP_PORT`, optional, defaults to `587`
+- `SMTP_USERNAME`
+- `SMTP_PASSWORD`
+- `MAILER_FROM_ADDRESS`
 
 Development can also use:
 
@@ -36,8 +45,7 @@ Development can also use:
 
 ## Production Config Review
 
-`config/environments/production.rb` is mostly ready for a small Rails
-deployment:
+`config/environments/production.rb` supports the current Rails deployment:
 
 - eager loading and class caching are enabled
 - full error reports are disabled
@@ -69,10 +77,10 @@ The production S3 bucket should have:
 - region matching `S3_REGION`
 - CORS rules that allow browser uploads/downloads only from the production app
   origin when direct browser access is needed
-- lifecycle expectations documented before launch, including whether old demo
-  media can be deleted
+- lifecycle expectations documented, including whether old demo media can be
+  deleted
 
-Before launch, smoke-check:
+Production smoke verification passed for:
 
 - avatar upload and render
 - photo post upload and render

@@ -19,6 +19,15 @@ broader release.
 - Video posts create and play through S3.
 - Audio posts create and play through S3.
 - Photo posts create and render through S3.
+- `picturemescrolling.com` and `www.picturemescrolling.com` serve over valid
+  TLS, with `www` redirecting to the canonical root domain.
+- Verification and password-reset email deliver through Resend from
+  `accounts.picturemescrolling.com`; SPF, DKIM, and DMARC pass.
+- Email verification, verification resend, and password recovery work in
+  production.
+- Expired, superseded, and consumed reset links fail as expected.
+- Successful password recovery invalidates existing authenticated sessions.
+- Recovery request logs filter email addresses, passwords, and raw tokens.
 
 ## Open Bugs / Buggy Behavior
 
@@ -40,10 +49,10 @@ addressed:
 - Icon-only actions have accessible labels, native title tooltips, and clearer
   hover/focus states.
 
-## Release Follow-Up PRs
+## Release Documentation
 
-- Add Render production smoke checklist updates if the current manual notes are
-  not enough for repeated release checks.
+Repeatable production checks are recorded in
+`docs/render-production-setup.md` and `docs/frontend-smoke-checklist.md`.
 
 ## Current Production Seed Approach
 

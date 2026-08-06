@@ -54,7 +54,8 @@ should be handled in focused follow-up work.
 
 ## Remaining Follow-Up
 
-- Choose a future production hosting target.
+- Render was selected as the production hosting target and is deployed at
+  `picturemescrolling.com`.
 - Decide the production secrets strategy before replacing `config/secrets.yml`.
 - Revisit Rails cache format after production cache storage is known.
 - Revisit Uglifier/Sprockets when the frontend asset boundary moves closer to

@@ -2,11 +2,12 @@
 
 ## Status
 
-Proposed. This document records the product and implementation decisions
-discussed before development begins.
+Complete. This document preserves the product and implementation decisions
+used to build the profile/settings feature.
 
-The forgotten-password flow is intentionally deferred. Its future scope is
-recorded separately in `plan.md`.
+Forgotten-password recovery was deferred from this feature and has since been
+completed separately. Its implementation and production closeout are recorded
+in `docs/forgotten-password-plan.md`.
 
 ## Goal
 
@@ -283,16 +284,17 @@ schema-backed policy at that time.
 
 ## Forgotten Password
 
-Forgotten-password recovery is out of scope for this feature. The first version
-of the settings page will require the authenticated user's current password.
+Forgotten-password recovery was out of scope for the initial settings feature.
+The settings password form continues to require the authenticated user's
+current password.
 
 Secure recovery requires verified account email addresses, short-lived and
 single-use reset tokens, transactional email delivery, expiration and
-invalidation rules, and rate limiting. That work is preserved as a separate
-future plan in `plan.md`.
+invalidation rules, and rate limiting. That separate account-recovery work is
+now complete and documented in `docs/forgotten-password-plan.md`.
 
-Do not add a nonfunctional `Forgot your password?` link to the first settings
-page.
+The functional `Forgot password?` entry point now lives on the logged-out
+authentication page.
 
 ## Frontend Data Flow
 

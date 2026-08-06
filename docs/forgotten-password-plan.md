@@ -1,12 +1,10 @@
 # Forgotten Password and Account Recovery Plan
 
-Status: implementation in progress. Email identity, verification, and the
-password-recovery API are complete. Password-recovery UI work is in progress.
+Status: complete and verified in production.
 
-This document records the proposed forgotten-password flow, the decisions
-already agreed upon, and the remaining product and infrastructure choices.
-Implementation should remain separate from the authenticated password form on
-the settings page.
+This document records the implemented forgotten-password flow, its design
+decisions, delivery configuration, and production closeout. Recovery remains
+separate from the authenticated password form on the settings page.
 
 ## Goal
 
@@ -24,18 +22,18 @@ The recovery flow should:
 
 ## Current Application State
 
-- Users currently have a username, password digest, and one session token.
-- Users do not currently have an email address.
-- Signup currently accepts only a username and password.
+- Users have a username, optional verified email identity, password digest,
+  and one active session token.
+- Personal signup collects an email address and sends a verification message.
 - The authenticated settings page changes a password only after confirming the
   current password.
-- Action Mailer is installed through Rails, but production delivery is not
-  configured and the default sender is still a placeholder.
+- Action Mailer delivers verification and password-reset email through Resend
+  in production.
 - The frontend uses hash routing.
 
 ## Email Identity
 
-The proposed user fields are:
+The user email-identity fields are:
 
 ```text
 email
@@ -162,7 +160,7 @@ token. The initial cache-backed mechanism fits the current deployment without
 adding a database table or external service. Revisit a shared cache if the app
 scales to multiple instances.
 
-Proposed response:
+Implemented response:
 
 ```text
 202 Accepted
@@ -258,7 +256,7 @@ than API paths. This keeps raw tokens out of normal Rails path logs.
 
 ## Frontend Routes and Pages
 
-Proposed public routes:
+Implemented public routes:
 
 ```text
 #/forgot-password
@@ -368,10 +366,10 @@ Subject:
 Reset your PicMeS password
 ```
 
-Proposed sender:
+Production sender:
 
 ```text
-PicMeS Accounts <accounts@your-domain.com>
+Picture Me Scrolling <no-reply@accounts.picturemescrolling.com>
 ```
 
 Plain-text copy:

@@ -48,16 +48,3 @@ column name | data type | details
 id          | integer   | not null, primary key
 user_id     | integer   | not null, foreign key, indexed
 post_id     | integer   | not null, foreign key, indexed
-
-## tags
-column name | data type | details
-------------|-----------|--------
-id          | integer   | not null, primary key
-name        | string    | not null
-
-## taggings
-column name | data type | details
-------------|-----------|--------
-id          | integer   | not null, primary key
-post_id     | integer   | not null, foreign key, indexed
-tag_id      | integer   | not null, foreign key, indexed
