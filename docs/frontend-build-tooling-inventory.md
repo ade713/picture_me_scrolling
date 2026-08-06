@@ -42,7 +42,7 @@ Rails assets:
 
 Stylesheets:
 
-- CSS/SCSS is still owned by Sprockets.
+- CSS/SCSS is compiled with Dart Sass through Sprockets.
 - Rails layout includes `stylesheet_link_tag 'application'`.
 - `app/assets/stylesheets/application.scss` imports reset, colors, component
   styles.
@@ -75,7 +75,8 @@ Rails asset dependency notes:
   were removed.
 - `coffee-rails` is still required because Sprockets 3 loads its CoffeeScript
   processor while resolving assets, even when the app has no CoffeeScript files.
-- `sass-rails` and Sprockets still actively support the stylesheet pipeline.
+- `dartsass-sprockets` preserves the existing Sprockets stylesheet pipeline
+  without relying on the end-of-life Ruby Sass or LibSass implementations.
 
 ## Current Build Flow
 

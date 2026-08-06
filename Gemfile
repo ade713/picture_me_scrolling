@@ -13,8 +13,8 @@ gem 'rails', '~> 7.1.2'
 gem 'puma', '~> 7.0'
 # Use PostgreSQL as the database for Active Record
 gem 'pg', '~> 1.6'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
+# Compile SCSS through Sprockets with Dart Sass.
+gem 'dartsass-sprockets', '~> 3.2'
 # Use Uglifier as compressor for JavaScript assets
 gem 'uglifier', '>= 1.3.0'
 # Sprockets 3 still loads its CoffeeScript processor while resolving assets.
