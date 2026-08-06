@@ -981,6 +981,23 @@ Vite is still the preferred long-term direction for a small modern React app,
 but the current Webpack/Babel setup is now documented and stable enough to keep
 using while higher-priority behavior and backend work continues.
 
+## Planned Feature: Post Tags
+
+Status: planned.
+
+Goal: let users add explicit tags to posts and filter the posts already
+available in their followed-user dashboard feed.
+
+The agreed product behavior, validation rules, schema and API design, frontend
+state ownership, accessibility behavior, deferred scope, and phased PR sequence
+live in [`docs/tags-plan.md`](./docs/tags-plan.md).
+
+The MVP uses explicit TagInput metadata, a `tags`/`post_tags` many-to-many data
+model, URL-owned filtering through `#/dashboard?tag=photography`, React Query
+for filtered infinite pagination, and Rails for authoritative validation and
+access-scoped filtering. It does not introduce global discovery, hashtag
+parsing, autocomplete, or Zustand state.
+
 ## Guardrails
 
 - Keep the app working after each chunk.
