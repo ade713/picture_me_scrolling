@@ -127,6 +127,12 @@ GEM
     concurrent-ruby (1.3.5)
     connection_pool (2.5.4)
     crass (1.0.6)
+    dartsass-sprockets (3.2.1)
+      railties (>= 4.0.0)
+      sassc-embedded (~> 1.80.1)
+      sprockets (> 3.0)
+      sprockets-rails
+      tilt
     date (3.5.0)
     debug_inspector (1.2.0)
     drb (2.2.3)
@@ -146,6 +152,27 @@ GEM
       thor (>= 0.14.0, < 2)
     globalid (1.3.0)
       activesupport (>= 6.1)
+    google-protobuf (4.35.1)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.35.1-aarch64-linux-gnu)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.35.1-aarch64-linux-musl)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.35.1-arm64-darwin)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.35.1-x86_64-darwin)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.35.1-x86_64-linux-gnu)
+      bigdecimal
+      rake (~> 13.3)
+    google-protobuf (4.35.1-x86_64-linux-musl)
+      bigdecimal
+      rake (~> 13.3)
     i18n (1.14.7)
       concurrent-ruby (~> 1.0)
     io-console (0.8.1)
@@ -282,17 +309,24 @@ GEM
       language_server-protocol (~> 3.17.0)
       prism (>= 1.2, < 2.0)
       rbs (>= 3, < 5)
-    sass (3.7.4)
-      sass-listen (~> 4.0.0)
-    sass-listen (4.0.0)
-      rb-fsevent (~> 0.9, >= 0.9.4)
-      rb-inotify (~> 0.9, >= 0.9.7)
-    sass-rails (5.1.0)
-      railties (>= 5.2.0)
-      sass (~> 3.1)
-      sprockets (>= 2.8, < 4.0)
-      sprockets-rails (>= 2.0, < 4.0)
-      tilt (>= 1.1, < 3)
+    sass-embedded (1.102.0-aarch64-linux-gnu)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.102.0-aarch64-linux-musl)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.102.0-arm-linux-gnueabihf)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.102.0-arm-linux-musleabihf)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.102.0-arm64-darwin)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.102.0-x86_64-darwin)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.102.0-x86_64-linux-gnu)
+      google-protobuf (~> 4.31)
+    sass-embedded (1.102.0-x86_64-linux-musl)
+      google-protobuf (~> 4.31)
+    sassc-embedded (1.80.9)
+      sass-embedded (~> 1.80)
     securerandom (0.4.1)
     spring (4.4.0)
     sprockets (3.7.5)
@@ -344,6 +378,7 @@ DEPENDENCIES
   binding_of_caller
   byebug
   coffee-rails (~> 4.2)
+  dartsass-sprockets (~> 3.2)
   fastimage (~> 2.4)
   figaro
   jbuilder (~> 2.5)
@@ -353,7 +388,6 @@ DEPENDENCIES
   puma (~> 7.0)
   rails (~> 7.1.2)
   ruby-lsp
-  sass-rails (~> 5.0)
   spring
   tzinfo-data
   uglifier (>= 1.3.0)

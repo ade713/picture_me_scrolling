@@ -17,6 +17,7 @@ In addition to the aforementioned tech, this site was also developed using:
 + **React** - frontend UI.
 + **TanStack Query** - server/API state and mutation handling.
 + **Webpack/Babel** - current JavaScript build pipeline.
++ **Dart Sass/Sprockets** - stylesheet compilation and asset integration.
 + **Active Storage** - media attachment support.
 + **Amazon S3** - media storage.
 + **Figaro** - application configuration.
