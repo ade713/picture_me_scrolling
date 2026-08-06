@@ -19,4 +19,7 @@ class Tag < ApplicationRecord
             length: { maximum: MAXIMUM_NAME_LENGTH },
             format: { with: NAME_FORMAT, allow_blank: true },
             uniqueness: true
+
+  has_many :post_tags, dependent: :destroy
+  has_many :posts, through: :post_tags
 end

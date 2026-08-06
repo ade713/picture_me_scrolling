@@ -62,4 +62,8 @@ class TagTest < ActiveSupport::TestCase
     refute duplicate.valid?
     assert_includes duplicate.errors[:name], 'has already been taken'
   end
+
+  test 'returns associated posts' do
+    assert_equal [posts(:one)], tags(:photography).posts.to_a
+  end
 end
