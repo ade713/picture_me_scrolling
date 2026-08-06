@@ -20,5 +20,9 @@ class PostTest < ActiveSupport::TestCase
 
     refute post.valid?
     assert_includes post.errors[:post_type], 'is not included in the list'
-end
+  end
+
+  test 'returns associated tags' do
+    assert_equal [tags(:photography)], posts(:one).tags.to_a
+  end
 end
