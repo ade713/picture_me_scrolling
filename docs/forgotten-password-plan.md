@@ -307,10 +307,11 @@ Email delivery should remain a small dependency:
 - disable open and link tracking
 
 Resend is the selected provider because its SMTP support and expected volume
-fit this portfolio application. The production sender must use the domain
-verified in Resend.
+fit this portfolio application. Account email is sent from the verified
+`accounts.picturemescrolling.com` subdomain so its sending reputation remains
+isolated from the root application domain.
 
-Proposed production variables:
+Production variables:
 
 ```text
 SMTP_ADDRESS
@@ -321,12 +322,13 @@ MAILER_FROM_ADDRESS
 APP_HOST
 ```
 
-`APP_HOST` contains only the public hostname,
-`picture-me-scrolling.onrender.com`; the production mailer adds the `https`
-protocol.
+`APP_HOST` is `picturemescrolling.com`; the production mailer adds the `https`
+protocol. `MAILER_FROM_ADDRESS` is
+`Picture Me Scrolling <no-reply@accounts.picturemescrolling.com>`.
 
-The sending domain must publish the SPF and DKIM records supplied by the email
-provider. DMARC is recommended as an additional domain-protection policy.
+The sending subdomain publishes the SPF, DKIM, and MX records supplied by
+Resend. Production delivery was confirmed with SPF, DKIM, and DMARC all
+reporting `PASS`.
 
 ### Agreed development workflow
 
@@ -519,27 +521,32 @@ Implementation status: complete without a separate PR.
 
 - responsive behavior was covered by component tests and a live mobile-width
   smoke pass
-- keyboard order is covered by component tests; repeat the tab-order check with
-  a physical keyboard during Phase 5 verification
+- keyboard order is covered by component tests and passed a physical-keyboard
+  verification during Phase 5
 - focus and announcement behavior is covered for successful, invalid, and
   expired reset results
 
 ### Phase 5: Verify and Close Out Account Recovery
 
-Keep this as one small PR when it contains only verification and documentation:
+Implementation status: complete.
 
-- run Rails and frontend suites and the production build
-- verify production SMTP delivery, SPF, and DKIM
-- confirm tokens and passwords are absent from logs
-- complete final smoke and closeout documentation
-
-If production email configuration requires meaningful code changes, split it
-into:
-
-1. `Verify and Close Out Account Recovery — Part 1: Add Production Email
-   Configuration`
-2. `Verify and Close Out Account Recovery — Part 2: Document Recovery
-   Verification`
+- the full Rails suite passed
+- the full frontend suite passed
+- the frontend production build passed
+- Render completed the production asset build, deployment, and application boot
+- `picturemescrolling.com` and `www.picturemescrolling.com` are verified with
+  valid TLS; `www` redirects to the canonical root domain
+- production verification and password-reset emails were delivered through
+  Resend from `accounts.picturemescrolling.com`
+- received email reported SPF, DKIM, and DMARC as `PASS`
+- verification and password-reset links used the production application host
+- physical keyboard order, focus indicators, and Enter activation passed
+- Rails request logs filtered email, password, reset-token, and
+  verification-token parameters
+- expired, superseded, and consumed reset links were rejected
+- a successful password reset invalidated existing authenticated sessions
+- production email verification and password recovery passed end-to-end smoke
+  testing
 
 ### PR Scope Guardrails
 
@@ -559,7 +566,7 @@ into:
 - New users remain logged in after signup while their email is unverified.
   Verification is required for password recovery, not general application
   access.
-
-## Remaining Decision
-
-- Production sending domain and sender address.
+- The canonical application domain is `picturemescrolling.com`.
+- Account email uses the verified `accounts.picturemescrolling.com` sending
+  subdomain and the sender
+  `Picture Me Scrolling <no-reply@accounts.picturemescrolling.com>`.

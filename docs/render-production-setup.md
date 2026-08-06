@@ -84,12 +84,18 @@ Configure these on the Render web service:
 | `SMTP_PORT` | `587` | Uses STARTTLS and defaults to port 587 when omitted. |
 | `SMTP_USERNAME` | `resend` | Resend SMTP username. |
 | `SMTP_PASSWORD` | Resend API key | Store only in Render. |
-| `MAILER_FROM_ADDRESS` | verified sender name and address | Must use the domain verified in Resend, for example `PicMeS Accounts <accounts@example.com>`. |
-| `APP_HOST` | `picture-me-scrolling.onrender.com` | Enter only the hostname, without `https://` or a trailing slash. |
+| `MAILER_FROM_ADDRESS` | `Picture Me Scrolling <no-reply@accounts.picturemescrolling.com>` | Uses the account-email subdomain verified in Resend. |
+| `APP_HOST` | `picturemescrolling.com` | Enter only the canonical hostname, without `https://` or a trailing slash. |
 
 Production boot now requires the host, sender, and SMTP connection variables so
 that a deployment cannot silently use local or test email settings. `SMTP_PORT`
 is the only optional mail variable because it has a valid production default.
+
+The root and `www` custom domains are verified in Render with valid TLS.
+`www.picturemescrolling.com` redirects to the canonical
+`picturemescrolling.com` host. Resend has verified the SPF, DKIM, and MX records
+for `accounts.picturemescrolling.com`; a delivered production message reported
+SPF, DKIM, and DMARC as `PASS`.
 
 Do not configure `FSP_DATABASE_PASSWORD` on Render unless intentionally using
 the non-`DATABASE_URL` fallback path. Keep `config/master.key` out of git;
