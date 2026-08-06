@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_07_30_170000) do
+ActiveRecord::Schema[7.1].define(version: 2026_08_06_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -84,6 +84,16 @@ ActiveRecord::Schema[7.1].define(version: 2026_07_30_170000) do
     t.index ["user_id"], name: "index_password_reset_tokens_on_user_id", unique: true
   end
 
+  create_table "post_tags", force: :cascade do |t|
+    t.integer "post_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id", "tag_id"], name: "index_post_tags_on_post_id_and_tag_id", unique: true
+    t.index ["post_id"], name: "index_post_tags_on_post_id"
+    t.index ["tag_id"], name: "index_post_tags_on_tag_id"
+  end
+
   create_table "posts", id: :serial, force: :cascade do |t|
     t.string "title", null: false
     t.text "url"
@@ -94,6 +104,13 @@ ActiveRecord::Schema[7.1].define(version: 2026_07_30_170000) do
     t.string "post_type"
     t.index ["author_id", "created_at", "id"], name: "index_posts_on_author_id_created_at_id"
     t.index ["author_id"], name: "index_posts_on_author_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
@@ -113,4 +130,6 @@ ActiveRecord::Schema[7.1].define(version: 2026_07_30_170000) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "email_verification_tokens", "users", on_delete: :cascade
   add_foreign_key "password_reset_tokens", "users", on_delete: :cascade
+  add_foreign_key "post_tags", "posts", on_delete: :cascade
+  add_foreign_key "post_tags", "tags", on_delete: :cascade
 end
