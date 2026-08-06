@@ -25,11 +25,11 @@ class TagTest < ActiveSupport::TestCase
   end
 
   test 'limits name length' do
-    tag = Tag.new(name: 'a' * (Tag::MAXIMUM_NAME_LENGTH + 1))
+    tag = Tag.new(name: 'a' * 31)
 
     refute tag.valid?
     assert_includes tag.errors[:name],
-                    "is too long (maximum is #{Tag::MAXIMUM_NAME_LENGTH} characters)"
+                    'is too long (maximum is 30 characters)'
   end
 
   test 'accepts supported name formats' do

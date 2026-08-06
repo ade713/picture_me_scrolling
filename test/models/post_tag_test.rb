@@ -24,7 +24,8 @@ class PostTagTest < ActiveSupport::TestCase
     duplicate = PostTag.new(post: posts(:one), tag: tags(:photography))
 
     refute duplicate.valid?
-    assert_includes duplicate.errors[:tag_id], PostTag::DUPLICATE_TAG_MESSAGE
+    assert_includes duplicate.errors[:tag_id],
+                    'has already been added to this post'
   end
 
   test 'allows the same tag on different posts' do
