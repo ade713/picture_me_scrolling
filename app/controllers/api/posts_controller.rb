@@ -2,13 +2,13 @@ class Api::PostsController < ApplicationController
   before_action :require_logged_in
 
   def create
-    @post = Post.new(post_params)
-    @post.author_id = current_user.id
+    @post = current_user.posts.build
+    result = write_post(@post)
 
-    if @post.save
+    if result.success?
       render "api/posts/show"
     else
-      render json: ['Unable to create post, check title/caption input'], status: :unprocessable_entity
+      render json: result.errors, status: :unprocessable_entity
     end
   end
 
@@ -28,10 +28,12 @@ class Api::PostsController < ApplicationController
       return
     end
 
-    if @post.update(post_params)
+    result = write_post(@post)
+
+    if result.success?
       render "api/posts/show"
     else
-      render json: @post.errors.full_messages, status: :unprocessable_entity
+      render json: result.errors, status: :unprocessable_entity
     end
   end
 
@@ -57,6 +59,13 @@ class Api::PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:title, :body, :url, :image, :post_type)
+    params.require(:post).permit(:title, :body, :url, :image, :post_type, tags: [])
+  end
+
+  def write_post(post)
+    attributes = post_params
+    tag_names = attributes.delete(:tags)
+
+    PostWriter.new(post: post, attributes: attributes, tag_names: tag_names).call
   end
 end
