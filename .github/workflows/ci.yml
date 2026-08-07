@@ -22,6 +22,7 @@ jobs:
     timeout-minutes: 10
 
     env:
+      DISABLE_SPRING: '1'
       PGHOST: 127.0.0.1
       PGPORT: 5432
       PGUSER: postgres
@@ -62,7 +63,7 @@ jobs:
           Rails.application.assets.find_asset("application.css")'
 
       - name: Run Rails tests
-        run: bundle exec rails test
+        run: bundle exec rails test --verbose
 
   frontend:
     name: Frontend
