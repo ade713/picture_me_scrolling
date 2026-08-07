@@ -63,7 +63,7 @@ jobs:
           Rails.application.assets.find_asset("application.css")'
 
       - name: Run Rails tests
-        run: bundle exec rails test
+        run: bundle exec rails test --verbose
 
   frontend:
     name: Frontend
