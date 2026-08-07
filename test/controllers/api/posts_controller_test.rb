@@ -162,6 +162,22 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_equal @viewer.username, response_json['author']
   end
 
+  test 'create adds normalized unique tags to a post' do
+    assert_difference(['Post.count', 'Tag.count'], 1) do
+      post api_posts_url, params: {
+        post: {
+          title: 'tagged post',
+          body: 'new body',
+          post_type: 'text',
+          tags: [' Cityscape ', 'cityscape']
+        }
+      }
+    end
+
+    assert_response :success
+    assert_equal ['cityscape'], Post.find(response_json['id']).tags.pluck(:name)
+  end
+
   test 'create attaches uploaded media and returns an image URL' do
     assert_difference('Post.count', 1) do
       assert_difference('ActiveStorage::Attachment.count', 1) do
@@ -199,7 +215,39 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
     end
 
     assert_response :unprocessable_entity
-    assert_equal ['Unable to create post, check title/caption input'], response_json
+    assert_equal ["Title can't be blank"], response_json
+  end
+
+  test 'create returns tag validation errors without persisting the post' do
+    assert_no_difference(['Post.count', 'Tag.count', 'PostTag.count']) do
+      post api_posts_url, params: {
+        post: {
+          title: 'invalid tags',
+          body: 'new body',
+          post_type: 'text',
+          tags: ['valid_tag', 'invalid-tag']
+        }
+      }
+    end
+
+    assert_response :unprocessable_entity
+    assert_equal ['Name is invalid'], response_json
+  end
+
+  test 'create rejects more than five unique tags' do
+    assert_no_difference(['Post.count', 'Tag.count', 'PostTag.count']) do
+      post api_posts_url, params: {
+        post: {
+          title: 'too many tags',
+          body: 'new body',
+          post_type: 'text',
+          tags: %w[one two three four five six]
+        }
+      }
+    end
+
+    assert_response :unprocessable_entity
+    assert_equal ['Posts can have up to 5 tags'], response_json
   end
 
   test 'update changes a current user post and returns the post payload' do
@@ -213,6 +261,63 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal 'updated title', response_json['title']
     assert_equal 'updated body', response_json['body']
+  end
+
+  test 'update replaces tags on a current user post' do
+    @viewer_post.tags << tags(:photography)
+
+    patch api_post_url(@viewer_post), params: {
+      post: {
+        title: 'updated title',
+        tags: [' Sunset ', 'travel']
+      }
+    }
+
+    assert_response :success
+    assert_equal %w[sunset travel], @viewer_post.reload.tags.order(:name).pluck(:name)
+  end
+
+  test 'update removes all tags when given an empty array' do
+    @viewer_post.tags << tags(:photography)
+
+    patch api_post_url(@viewer_post), params: {
+      post: {
+        title: 'updated title',
+        tags: []
+      }
+    }, as: :json
+
+    assert_response :success
+    assert_empty @viewer_post.reload.tags
+  end
+
+  test 'update preserves tags when they are omitted' do
+    @viewer_post.tags << tags(:photography)
+
+    patch api_post_url(@viewer_post), params: {
+      post: {
+        title: 'updated title'
+      }
+    }
+
+    assert_response :success
+    assert_equal ['photography'], @viewer_post.reload.tags.pluck(:name)
+  end
+
+  test 'update returns tag errors without changing the post or its tags' do
+    @viewer_post.tags << tags(:photography)
+
+    patch api_post_url(@viewer_post), params: {
+      post: {
+        title: 'should not persist',
+        tags: ['invalid-tag']
+      }
+    }
+
+    assert_response :unprocessable_entity
+    assert_equal ['Name is invalid'], response_json
+    assert_equal 'viewer post', @viewer_post.reload.title
+    assert_equal ['photography'], @viewer_post.tags.pluck(:name)
   end
 
   test 'update attaches uploaded media to a current user post' do
