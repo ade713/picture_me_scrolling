@@ -31,6 +31,16 @@ class FeedQueryTest < ActiveSupport::TestCase
     assert_equal 2, pagination[:total_count]
   end
 
+  test 'preloads tags for feed rendering' do
+    @viewer_post.tags << tags(:photography)
+
+    posts, = FeedQuery.call(user: @viewer)
+
+    posts.each do |post|
+      assert_predicate post.association(:tags), :loaded?
+    end
+  end
+
   test 'returns own posts when user follows no one' do
     posts, pagination = FeedQuery.call(user: @unrelated_author)
     post_ids = posts.map(&:id)

@@ -2,6 +2,7 @@ json.extract! post, :id, :title, :body, :post_type,
                     :url, :author_id
 json.image_url post.image.attached? ? url_for(post.image) : nil
 json.author post.author.username
+json.tags post.tags.map(&:name).sort
 
 if @followed_author_ids
   json.followed @followed_author_ids.include?(post.author_id)

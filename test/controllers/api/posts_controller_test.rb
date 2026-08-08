@@ -47,6 +47,7 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'index returns current user and followed user posts' do
+    @viewer_post.tags << tags(:photography)
     Like.create!(
       user_id: @viewer.id,
       post_id: @followed_post.id
@@ -77,6 +78,7 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_equal false, response_posts.dig(@viewer_post.id.to_s, 'followed')
     assert_equal false, response_posts.dig(@viewer_post.id.to_s, 'liked')
     assert_equal 1, response_posts.dig(@viewer_post.id.to_s, 'likes')
+    assert_equal ['photography'], response_posts.dig(@viewer_post.id.to_s, 'tags')
   end
 
   test 'index returns feed posts newest first' do
@@ -113,6 +115,9 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'show returns the requested post payload' do
+    @followed_post.tags << tags(:sunset)
+    @followed_post.tags << tags(:photography)
+
     get api_post_url(@followed_post)
 
     assert_response :success
@@ -124,6 +129,7 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 0, response_json['likes']
     assert response_json.key?('image_url')
     assert_includes response_json['author_avatar'], default_avatar_name
+    assert_equal %w[photography sunset], response_json['tags']
   end
 
   test 'create requires login' do
@@ -160,6 +166,7 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_equal 'text', response_json['post_type']
     assert_equal @viewer.id, response_json['author_id']
     assert_equal @viewer.username, response_json['author']
+    assert_empty response_json['tags']
   end
 
   test 'create adds normalized unique tags to a post' do
@@ -176,6 +183,7 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_equal ['cityscape'], Post.find(response_json['id']).tags.pluck(:name)
+    assert_equal ['cityscape'], response_json['tags']
   end
 
   test 'create attaches uploaded media and returns an image URL' do
@@ -275,6 +283,7 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_equal %w[sunset travel], @viewer_post.reload.tags.order(:name).pluck(:name)
+    assert_equal %w[sunset travel], response_json['tags']
   end
 
   test 'update removes all tags when given an empty array' do
