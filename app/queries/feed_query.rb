@@ -31,8 +31,11 @@ class FeedQuery
   def feed_posts
     Post.where(author_id: user.id)
         .or(Post.where(author_id: followed_author_ids))
-        .includes({ image_attachment: :blob },
-                  author: { avatar_attachment: :blob })
+        .includes(
+          :tags,
+          { image_attachment: :blob },
+          author: { avatar_attachment: :blob }
+        )
         .order(created_at: :desc, id: :desc)
   end
 
