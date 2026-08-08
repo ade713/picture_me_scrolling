@@ -98,12 +98,31 @@ with `Password reset link has expired`. Password validation errors also return
 `422 Unprocessable Entity` without consuming the valid token.
 
 ### Posts
-- `GET /api/posts`
-- `POST /api/posts`
-- `GET /api/posts/:id`
-- `PATCH /api/posts/:id`
-- `PUT /api/posts/:id`
+- `GET /api/posts` - return the authenticated user's paginated followed-user
+  feed
+- `POST /api/posts` - create a post, optionally including up to five tag names
+  using `post[tags][]`
+- `GET /api/posts/:id` - return one post
+- `PATCH /api/posts/:id` - update an owned post and optionally replace its tags
+- `PUT /api/posts/:id` - update an owned post and optionally replace its tags
 - `DELETE /api/posts/:id`
+
+Post payloads include `tags` as an alphabetized array of normalized tag names.
+For example, a post payload contains:
+
+```json
+{
+  "id": 42,
+  "title": "Evening light",
+  "tags": ["photography", "sunset"]
+}
+```
+
+Tag names are trimmed, lowercased, and deduplicated. Omitting `tags` while
+updating preserves the existing associations; sending an empty array removes
+all tags. Invalid tags and requests containing more than five unique tags
+return `422 Unprocessable Entity` without partially changing the post or its
+tags.
 
 ### Follows
 - `POST /api/users/:user_id/follow`
