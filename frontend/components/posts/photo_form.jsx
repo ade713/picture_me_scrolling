@@ -3,16 +3,24 @@ import Modal from 'react-modal';
 
 import { postTypeLabels, postTypes } from '../../config/post_types';
 import { useCreateMediaPost } from '../../query/post_hooks';
+import buildMediaPostFormData from './media_post_form_data';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
 import { usePostFormProps } from './post_form_hooks';
+import TagInput from './tag_input';
+import useTagInput from './use_tag_input';
 
 const PhotoForm = () => {
   const createMediaPostMutation = useCreateMediaPost();
-  const { clearErrors, createMediaPost, currentUser, errors, isSubmitting } = usePostFormProps(createMediaPostMutation);
+  const {
+    clearErrors,
+    createMediaPost,
+    currentUser,
+    errors,
+    isSubmitting
+  } = usePostFormProps(createMediaPostMutation);
+  const tagInput = useTagInput();
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
-  const [url, setUrl] = useState('');
   const [imageFile, setImageFile] = useState(null);
   const [imageUrl, setImageUrl] = useState(null);
 
@@ -23,10 +31,9 @@ const PhotoForm = () => {
   const closeModal = () => {
     setShowModal(false);
     setTitle('');
-    setBody('');
-    setUrl('');
     setImageFile(null);
     setImageUrl(null);
+    tagInput.reset();
     clearErrors();
   };
 
@@ -47,13 +54,15 @@ const PhotoForm = () => {
   const handleSubmit = e => {
     e.preventDefault();
     if (!imageFile) return;
+    const tags = tagInput.commitDraft();
+    if (!tags) return;
 
-    const formData = new FormData();
-    formData.append('post[url]', url);
-    formData.append('post[title]', title);
-    formData.append('post[post_type]', postTypes.photo);
-    formData.append('post[body]', body);
-    formData.append('post[image]', imageFile);
+    const formData = buildMediaPostFormData({
+      file: imageFile,
+      postType: postTypes.photo,
+      tags,
+      title
+    });
 
     createMediaPost(formData).then(result => {
       if (result) closeModal();
@@ -105,10 +114,15 @@ const PhotoForm = () => {
                              onChange={ e => setTitle(e.currentTarget.value) } />
                  </div>
 
+                 <TagInput
+                   disabled={isSubmitting}
+                   {...tagInput.inputProps}
+                 />
+
                  <div className="submit-form">
                    <FormErrors errors={ errors } />
                    <ModalButtonFooter
-                     disabled={ !imageFile || isSubmitting }
+                     disabled={ !imageFile || tagInput.hasError || isSubmitting }
                      onClose={ closeModal }
                      onSubmit={ handleSubmit }
                    />

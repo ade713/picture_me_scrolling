@@ -3,16 +3,24 @@ import Modal from 'react-modal';
 
 import { postTypeLabels, postTypes } from '../../config/post_types';
 import { useCreateMediaPost } from '../../query/post_hooks';
+import buildMediaPostFormData from './media_post_form_data';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
 import { usePostFormProps } from './post_form_hooks';
+import TagInput from './tag_input';
+import useTagInput from './use_tag_input';
 
 const VideoForm = () => {
   const createMediaPostMutation = useCreateMediaPost();
-  const { clearErrors, createMediaPost, currentUser, errors, isSubmitting } = usePostFormProps(createMediaPostMutation);
+  const {
+    clearErrors,
+    createMediaPost,
+    currentUser,
+    errors,
+    isSubmitting
+  } = usePostFormProps(createMediaPostMutation);
+  const tagInput = useTagInput();
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState('');
-  const [body, setBody] = useState('');
-  const [url, setUrl] = useState('');
   const [videoFile, setVideoFile] = useState(null);
   const [videoUrl, setVideoUrl] = useState(null);
 
@@ -23,10 +31,9 @@ const VideoForm = () => {
   const closeModal = () => {
     setShowModal(false);
     setTitle('');
-    setBody('');
-    setUrl('');
     setVideoFile(null);
     setVideoUrl(null);
+    tagInput.reset();
     clearErrors();
   };
 
@@ -47,13 +54,15 @@ const VideoForm = () => {
   const handleSubmit = e => {
     e.preventDefault();
     if (!videoFile) return;
+    const tags = tagInput.commitDraft();
+    if (!tags) return;
 
-    const formData = new FormData();
-    formData.append('post[url]', url);
-    formData.append('post[title]', title);
-    formData.append('post[post_type]', postTypes.video);
-    formData.append('post[body]', body);
-    formData.append('post[image]', videoFile);
+    const formData = buildMediaPostFormData({
+      file: videoFile,
+      postType: postTypes.video,
+      tags,
+      title
+    });
 
     createMediaPost(formData).then(result => {
       if (result) closeModal();
@@ -110,10 +119,15 @@ const VideoForm = () => {
                    </video>
                  ) }
 
+                 <TagInput
+                   disabled={isSubmitting}
+                   {...tagInput.inputProps}
+                 />
+
                  <div className="submit-form">
                    <FormErrors errors={ errors } />
                    <ModalButtonFooter
-                     disabled={ !videoFile || isSubmitting }
+                     disabled={ !videoFile || tagInput.hasError || isSubmitting }
                      onClose={ closeModal }
                      onSubmit={ handleSubmit }
                    />
