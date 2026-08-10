@@ -33,6 +33,7 @@ export const usePostFormProps = mutation => {
     createMediaPost: submitPost,
     currentUser: currentUser.data,
     errors,
-    isSubmitting: isSubmitting || mutationIsSubmitting
+    isSubmitting: isSubmitting || mutationIsSubmitting,
+    submitPost
   };
 };

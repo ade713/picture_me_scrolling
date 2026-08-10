@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-modal';
 
 import { buttonLabels } from '../../config/button_labels';
@@ -6,6 +6,9 @@ import { mediaPostTypes, postTypes } from '../../config/post_types';
 import { useUpdatePost } from '../../query/post_hooks';
 import { INVALID_LINK_URL_ERROR, validateLinkUrl } from '../../util/link_url_validation';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
+import { usePostFormProps } from './post_form_hooks';
+import TagInput from './tag_input';
+import useTagInput from './use_tag_input';
 
 const quoteText = title => (title || '').replace(/^"|"$/g, '');
 const quoteSource = body => (body || '').replace(/^-\s?/, '');
@@ -29,13 +32,14 @@ const initialFields = post => {
   };
 };
 
-const buildPostPayload = ({ body, post, title, url }) => {
+const buildPostPayload = ({ body, post, tags, title, url }) => {
   if (isQuotePost(post)) {
     return {
       title: `"${title}"`,
       body: `- ${body}`,
       url,
-      post_type: post.post_type
+      post_type: post.post_type,
+      tags
     };
   }
 
@@ -43,7 +47,8 @@ const buildPostPayload = ({ body, post, title, url }) => {
     title,
     body,
     url,
-    post_type: post.post_type
+    post_type: post.post_type,
+    tags
   };
 };
 
@@ -60,27 +65,30 @@ const disableSubmit = ({ post, title, url }) => (
 
 const EditPostForm = ({ isOpen, onClose, post }) => {
   const updatePost = useUpdatePost();
-  const submittingRef = useRef(false);
+  const {
+    clearErrors,
+    errors: mutationErrors,
+    isSubmitting,
+    submitPost
+  } = usePostFormProps(updatePost);
+  const tagInput = useTagInput(post.tags || []);
   const fields = initialFields(post);
   const [body, setBody] = useState(fields.body);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [title, setTitle] = useState(fields.title);
   const [url, setUrl] = useState(fields.url);
   const [linkErrors, setLinkErrors] = useState([]);
-  const mutationIsSubmitting = updatePost.isPending || updatePost.isLoading;
-  const mutationErrors = updatePost.error
-    ? updatePost.error.errors || [updatePost.error.message]
-    : [];
 
   const closeModal = () => {
-    updatePost.reset();
+    clearErrors();
     setLinkErrors([]);
     onClose();
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (submittingRef.current || mutationIsSubmitting) return;
+    if (isSubmitting) return;
+    const tags = tagInput.commitDraft();
+    if (!tags) return;
 
     const normalizedUrl = url.trim();
 
@@ -90,20 +98,18 @@ const EditPostForm = ({ isOpen, onClose, post }) => {
     }
 
     setLinkErrors([]);
-    submittingRef.current = true;
-    setIsSubmitting(true);
 
-    updatePost.mutateAsync({
+    submitPost({
       id: post.id,
       post: buildPostPayload({
         body,
         post,
+        tags,
         title,
         url: normalizedUrl
       })
-    }).then(closeModal).finally(() => {
-      submittingRef.current = false;
-      setIsSubmitting(false);
+    }).then(result => {
+      if (result) closeModal();
     });
   };
 
@@ -150,13 +156,17 @@ const EditPostForm = ({ isOpen, onClose, post }) => {
               onChange={ e => setBody(e.currentTarget.value) } />
           </div>
         ) }
+        <TagInput
+          disabled={isSubmitting}
+          {...tagInput.inputProps}
+        />
         <div className="submit-form">
           <FormErrors errors={ [...linkErrors, ...mutationErrors] } />
           <ModalButtonFooter
             disabled={
               disableSubmit({ post, title, url }) ||
-              isSubmitting ||
-              mutationIsSubmitting
+              tagInput.hasError ||
+              isSubmitting
             }
             onClose={ closeModal }
             onSubmit={ handleSubmit }
