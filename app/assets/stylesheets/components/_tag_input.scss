@@ -1,0 +1,88 @@
+.tag-input {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  label {
+    font-weight: bold;
+  }
+
+  input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 9px 10px;
+    border: 1px solid black;
+    border-radius: 3px;
+    font: inherit;
+  }
+
+  input:focus-visible {
+    outline: 2px solid black;
+    outline-offset: 2px;
+  }
+
+  input:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.tag-input-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tag-input-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border: 1px solid black;
+  border-radius: 3px;
+  background-color: white;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    border: 0;
+    border-radius: 3px;
+    color: white;
+    background-color: black;
+    font-size: 18px;
+    line-height: 1;
+  }
+
+  button:not(:disabled):hover {
+    color: black;
+    background-color: white;
+    box-shadow: 0 0 0 1px black;
+  }
+
+  button:focus-visible {
+    outline: 2px solid black;
+    outline-offset: 2px;
+  }
+
+  button:disabled {
+    background-color: lightslategrey;
+    cursor: not-allowed;
+  }
+}
+
+.tag-input-count,
+.tag-input-error {
+  margin: 0;
+  font-size: 14px;
+}
+
+.tag-input-error {
+  color: red;
+  font-weight: bold;
+}
