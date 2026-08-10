@@ -5,10 +5,19 @@ import { postTypeLabels, postTypes } from '../../config/post_types';
 import { useCreatePost } from '../../query/post_hooks';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
 import { usePostFormProps } from './post_form_hooks';
+import TagInput from './tag_input';
+import useTagInput from './use_tag_input';
 
 const QuoteForm = () => {
   const createPostMutation = useCreatePost();
-  const { clearErrors, createPost, currentUser, errors, isSubmitting } = usePostFormProps(createPostMutation);
+  const {
+    clearErrors,
+    createPost,
+    currentUser,
+    errors,
+    isSubmitting
+  } = usePostFormProps(createPostMutation);
+  const tagInput = useTagInput();
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -23,16 +32,21 @@ const QuoteForm = () => {
     setTitle('');
     setBody('');
     setUrl('');
+    tagInput.reset();
     clearErrors();
   };
 
   const handleSubmit = e => {
     e.preventDefault();
+    const tags = tagInput.commitDraft();
+    if (!tags) return;
+
     const post = {
       title: `"${title}"`,
       body: `- ${body}`,
       url,
-      post_type: postTypes.quote
+      post_type: postTypes.quote,
+      tags
     };
 
     createPost(post).then(result => {
@@ -79,10 +93,14 @@ const QuoteForm = () => {
                      value={ body }
                      onChange={ e => setBody(e.currentTarget.value) } />
                  </div>
+                 <TagInput
+                   disabled={isSubmitting}
+                   {...tagInput.inputProps}
+                 />
                  <div className="submit-form">
                    <FormErrors errors={ errors } />
                    <ModalButtonFooter
-                     disabled={ !title || isSubmitting }
+                     disabled={ !title || tagInput.hasError || isSubmitting }
                      onClose={ closeModal }
                      onSubmit={ handleSubmit }
                    />
