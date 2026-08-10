@@ -3,7 +3,9 @@ import React, { useId } from 'react';
 import {
   SELECTED_TAGS_LABEL,
   TAG_INPUT_LABEL,
+  TAG_INPUT_MAXIMUM_PLACEHOLDER,
   TAG_INPUT_PLACEHOLDER,
+  tagSettings,
   tagMessages
 } from '../../config/tags';
 
@@ -20,6 +22,7 @@ const TagInput = ({
   const tagCountId = `${inputId}-tag-count`;
   const errorId = `${inputId}-error`;
   const describedBy = error ? `${tagCountId} ${errorId}` : tagCountId;
+  const maximumReached = tags.length >= tagSettings.maximumCount;
 
   const handleChange = event => {
     const nextDraft = event.target.value;
@@ -41,7 +44,9 @@ const TagInput = ({
 
   return (
     <div className="tag-input">
-      <label htmlFor={inputId}>{TAG_INPUT_LABEL}</label>
+      <label className="tag-input-label" htmlFor={inputId}>
+        {TAG_INPUT_LABEL}
+      </label>
 
       {tags.length > 0 && (
         <ul className="tag-input-chips" aria-label={SELECTED_TAGS_LABEL}>
@@ -69,7 +74,10 @@ const TagInput = ({
         onBlur={() => onCommit()}
         onChange={handleChange}
         onKeyDown={handleKeyDown}
-        placeholder={TAG_INPUT_PLACEHOLDER}
+        placeholder={maximumReached
+          ? TAG_INPUT_MAXIMUM_PLACEHOLDER
+          : TAG_INPUT_PLACEHOLDER}
+        readOnly={maximumReached}
         type="text"
         value={draft}
       />
