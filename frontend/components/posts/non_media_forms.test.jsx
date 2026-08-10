@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
+import { TAG_FORMAT_ERROR } from '../../config/tags';
 import { useCreatePost } from '../../query/post_hooks';
 import { useCurrentUser } from '../../query/session_hooks';
 import { currentUser } from '../../test/fixtures';
@@ -37,7 +38,8 @@ const nonMediaFormCases = [
       title: 'A small thought',
       body: 'This is the post body.',
       url: '',
-      post_type: 'text'
+      post_type: 'text',
+      tags: ['photography']
     }
   },
   {
@@ -57,7 +59,8 @@ const nonMediaFormCases = [
       title: 'Project notes',
       body: '',
       url: 'https://example.com/notes',
-      post_type: 'link'
+      post_type: 'link',
+      tags: ['photography']
     }
   },
   {
@@ -77,7 +80,8 @@ const nonMediaFormCases = [
       title: '"One for all"',
       body: '- The Musketeers',
       url: '',
-      post_type: 'quote'
+      post_type: 'quote',
+      tags: ['photography']
     }
   }
 ];
@@ -118,9 +122,18 @@ describe('non-media post forms', () => {
         await user.type(screen.getByPlaceholderText(placeholder), value);
       }
 
+      await user.type(screen.getByRole('textbox', { name: 'Tags' }), ' Photography ');
       await user.click(screen.getByRole('button', { name: 'Post' }));
 
       expect(createPostMutation.mutateAsync).toHaveBeenCalledWith(expectedPayload);
+
+      await waitFor(() => (
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+      ));
+      await user.click(screen.getByRole('button', { name: buttonName }));
+
+      expect(screen.getByRole('textbox', { name: 'Tags' })).toHaveValue('');
+      expect(screen.queryByText('#photography')).not.toBeInTheDocument();
     });
   });
 
@@ -142,11 +155,12 @@ describe('non-media post forms', () => {
 
     expect(createPostMutation.mutateAsync).toHaveBeenCalledTimes(1);
     expect(postButton).toBeDisabled();
+    expect(screen.getByRole('textbox', { name: 'Tags' })).toBeDisabled();
 
     resolveCreatePost({ id: 1 });
   });
 
-  it('clears text form state and errors when closed', async () => {
+  it('clears text and tag state and errors when closed', async () => {
     const user = userEvent.setup();
     createPostMutation.error = {
       errors: ['Title cannot be blank']
@@ -156,8 +170,10 @@ describe('non-media post forms', () => {
 
     await user.click(screen.getByRole('button', { name: 'Text' }));
     await user.type(screen.getByPlaceholderText('Title'), 'Draft title');
+    await user.type(screen.getByRole('textbox', { name: 'Tags' }), 'photography{Enter}');
 
     expect(screen.getByDisplayValue('Draft title')).toBeInTheDocument();
+    expect(screen.getByText('#photography')).toBeInTheDocument();
     expect(screen.getByText('Title cannot be blank')).toBeInTheDocument();
 
     await user.click(screen.getByRole('button', { name: 'Close' }));
@@ -167,6 +183,36 @@ describe('non-media post forms', () => {
     await user.click(screen.getByRole('button', { name: 'Text' }));
 
     expect(screen.getByPlaceholderText('Title')).toHaveValue('');
+    expect(screen.getByRole('textbox', { name: 'Tags' })).toHaveValue('');
+    expect(screen.queryByText('#photography')).not.toBeInTheDocument();
+  });
+
+  it('preserves tags when post creation does not succeed', async () => {
+    const user = userEvent.setup();
+    createPostMutation.mutateAsync.mockRejectedValue(new Error('Request failed'));
+
+    render(<TextForm />);
+
+    await user.click(screen.getByRole('button', { name: 'Text' }));
+    await user.type(screen.getByPlaceholderText('Title'), 'Draft title');
+    await user.type(screen.getByRole('textbox', { name: 'Tags' }), 'photography{Enter}');
+    await user.click(screen.getByRole('button', { name: 'Post' }));
+
+    expect(screen.getByRole('dialog', { name: 'Text post form' })).toBeInTheDocument();
+    expect(screen.getByText('#photography')).toBeInTheDocument();
+  });
+
+  it('blocks submission while the tag draft is invalid', async () => {
+    const user = userEvent.setup();
+    render(<TextForm />);
+
+    await user.click(screen.getByRole('button', { name: 'Text' }));
+    await user.type(screen.getByPlaceholderText('Title'), 'Draft title');
+    await user.type(screen.getByRole('textbox', { name: 'Tags' }), 'invalid-tag');
+
+    expect(screen.getByText(TAG_FORMAT_ERROR)).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Post' })).toBeDisabled();
+    expect(createPostMutation.mutateAsync).not.toHaveBeenCalled();
   });
 
   it('closes a post modal with Escape and returns focus to its trigger', async () => {
@@ -191,7 +237,10 @@ describe('non-media post forms', () => {
 
     await user.click(screen.getByRole('button', { name: 'Link' }));
     await user.type(screen.getByPlaceholderText('Name/describe link here'), 'Project notes');
-    await user.type(screen.getByPlaceholderText('Type or paste Link URL here'), 'example.com/notes');
+    await user.type(
+      screen.getByPlaceholderText('Type or paste Link URL here'),
+      'example.com/notes'
+    );
     await user.click(screen.getByRole('button', { name: 'Post' }));
 
     expect(screen.getByText(INVALID_LINK_URL_ERROR)).toBeInTheDocument();
@@ -204,14 +253,18 @@ describe('non-media post forms', () => {
 
     await user.click(screen.getByRole('button', { name: 'Link' }));
     await user.type(screen.getByPlaceholderText('Name/describe link here'), 'Project notes');
-    await user.type(screen.getByPlaceholderText('Type or paste Link URL here'), ' https://example.com/notes ');
+    await user.type(
+      screen.getByPlaceholderText('Type or paste Link URL here'),
+      ' https://example.com/notes '
+    );
     await user.click(screen.getByRole('button', { name: 'Post' }));
 
     expect(createPostMutation.mutateAsync).toHaveBeenCalledWith({
       title: 'Project notes',
       body: '',
       url: 'https://example.com/notes',
-      post_type: 'link'
+      post_type: 'link',
+      tags: []
     });
   });
 });

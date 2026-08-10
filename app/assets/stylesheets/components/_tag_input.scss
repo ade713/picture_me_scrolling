@@ -3,10 +3,6 @@
   flex-direction: column;
   gap: 8px;
 
-  label {
-    font-weight: bold;
-  }
-
   input {
     box-sizing: border-box;
     width: 100%;
@@ -24,6 +20,24 @@
   input:disabled {
     cursor: not-allowed;
   }
+
+  input:read-only:not(:disabled) {
+    background-color: whitesmoke;
+    cursor: not-allowed;
+  }
+}
+
+.tag-input-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  border: 0;
+  white-space: nowrap;
 }
 
 .tag-input-chips {

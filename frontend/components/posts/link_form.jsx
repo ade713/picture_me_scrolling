@@ -6,10 +6,19 @@ import { useCreatePost } from '../../query/post_hooks';
 import { INVALID_LINK_URL_ERROR, validateLinkUrl } from '../../util/link_url_validation';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
 import { usePostFormProps } from './post_form_hooks';
+import TagInput from './tag_input';
+import useTagInput from './use_tag_input';
 
 const LinkForm = () => {
   const createPostMutation = useCreatePost();
-  const { clearErrors, createPost, currentUser, errors, isSubmitting } = usePostFormProps(createPostMutation);
+  const {
+    clearErrors,
+    createPost,
+    currentUser,
+    errors,
+    isSubmitting
+  } = usePostFormProps(createPostMutation);
+  const tagInput = useTagInput();
   const [showModal, setShowModal] = useState(false);
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -26,11 +35,15 @@ const LinkForm = () => {
     setBody('');
     setUrl('');
     setLinkErrors([]);
+    tagInput.reset();
     clearErrors();
   };
 
   const handleSubmit = e => {
     e.preventDefault();
+    const tags = tagInput.commitDraft();
+    if (!tags) return;
+
     const normalizedUrl = url.trim();
 
     if (!validateLinkUrl(normalizedUrl)) {
@@ -44,7 +57,8 @@ const LinkForm = () => {
       title,
       body,
       url: normalizedUrl,
-      post_type: postTypes.link
+      post_type: postTypes.link,
+      tags
     };
 
     createPost(post).then(result => {
@@ -97,10 +111,15 @@ const LinkForm = () => {
                      } } />
                  </div>
 
+                 <TagInput
+                   disabled={isSubmitting}
+                   {...tagInput.inputProps}
+                 />
+
                  <div className="submit-form">
                    <FormErrors errors={ [...linkErrors, ...errors] } />
                    <ModalButtonFooter
-                     disabled={ !url || isSubmitting }
+                     disabled={ !url || tagInput.hasError || isSubmitting }
                      onClose={ closeModal }
                      onSubmit={ handleSubmit }
                    />

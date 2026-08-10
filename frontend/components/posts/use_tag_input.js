@@ -59,6 +59,7 @@ const useTagInput = (initialTags = []) => {
   return {
     tags,
     commitDraft,
+    hasError: Boolean(error),
     reset,
     inputProps: {
       draft,

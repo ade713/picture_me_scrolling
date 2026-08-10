@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import {
-  TAG_COUNT_ERROR,
   TAG_DUPLICATE_ERROR,
   TAG_FORMAT_ERROR,
   TAG_LENGTH_ERROR
@@ -99,7 +98,7 @@ describe('TagInput', () => {
     const user = userEvent.setup();
     render(
       <TagInputHarness
-        initialTags={['photography', 'sunset', 'travel', 'cityscape', 'film']}
+        initialTags={['photography', 'sunset', 'travel', 'cityscape']}
       />
     );
 
@@ -111,16 +110,20 @@ describe('TagInput', () => {
     expect(screen.getAllByText('#photography')).toHaveLength(1);
   });
 
-  it('rejects tags after the maximum count is reached', async () => {
+  it('prevents additional entry until a tag is removed at the maximum count', async () => {
     const user = userEvent.setup();
     render(<TagInputHarness initialTags={['one', 'two', 'three', 'four', 'five']} />);
 
     const input = screen.getByRole('textbox', { name: 'Tags' });
-    await user.type(input, 'six');
+    expect(input).toHaveAttribute('readonly');
+    expect(input).toHaveAttribute('placeholder', 'Maximum tags added');
+    expect(input).not.toBeDisabled();
+    expect(input).toHaveAccessibleDescription('5 of 5 tags');
 
-    expect(screen.getByRole('alert')).toHaveTextContent(TAG_COUNT_ERROR);
-    await user.keyboard('{Enter}');
-    expect(screen.queryByText('#six')).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Remove five tag' }));
+
+    expect(input).not.toHaveAttribute('readonly');
+    expect(input).toHaveAttribute('placeholder', 'Add tags');
   });
 
   it('provides accessible controls for removing tags', async () => {
