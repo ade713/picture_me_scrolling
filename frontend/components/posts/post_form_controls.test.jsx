@@ -5,6 +5,12 @@ import userEvent from '@testing-library/user-event';
 import { FormErrors, ModalButtonFooter } from './post_form_controls';
 
 describe('FormErrors', () => {
+  it('does not reserve space when there are no errors', () => {
+    const { container } = render(<FormErrors errors={[]} />);
+
+    expect(container).toBeEmptyDOMElement();
+  });
+
   it('renders each form error', () => {
     render(<FormErrors errors={['Title cannot be blank', 'Body cannot be blank']} />);
 

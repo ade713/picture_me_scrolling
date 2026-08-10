@@ -19,10 +19,12 @@ export const usePostFormProps = mutation => {
     submittingRef.current = true;
     setIsSubmitting(true);
 
-    return mutation.mutateAsync(post).finally(() => {
-      submittingRef.current = false;
-      setIsSubmitting(false);
-    });
+    return mutation.mutateAsync(post)
+      .catch(() => null)
+      .finally(() => {
+        submittingRef.current = false;
+        setIsSubmitting(false);
+      });
   };
 
   return {
