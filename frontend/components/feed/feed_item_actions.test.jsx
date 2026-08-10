@@ -182,11 +182,17 @@ describe('FeedItem actions', () => {
 
     const titleInput = screen.getByPlaceholderText('Title');
     const bodyInput = screen.getByPlaceholderText('Your text here');
+    const tagInput = screen.getByRole('textbox', { name: 'Tags' });
+
+    expect(screen.getByText('#photography')).toBeInTheDocument();
+    expect(screen.getByText('#sunset')).toBeInTheDocument();
 
     await user.clear(titleInput);
     await user.type(titleInput, 'Updated title');
     await user.clear(bodyInput);
     await user.type(bodyInput, 'Updated body');
+    await user.click(screen.getByRole('button', { name: 'Remove photography tag' }));
+    await user.type(tagInput, ' Travel ');
     await user.click(screen.getByRole('button', { name: 'Save' }));
 
     expect(updatePost.mutateAsync).toHaveBeenCalledWith({
@@ -195,7 +201,8 @@ describe('FeedItem actions', () => {
         title: 'Updated title',
         body: 'Updated body',
         url: authoredPost.url,
-        post_type: 'text'
+        post_type: 'text',
+        tags: ['sunset', 'travel']
       }
     });
   });
@@ -226,6 +233,7 @@ describe('FeedItem actions', () => {
 
     expect(updatePost.mutateAsync).toHaveBeenCalledTimes(1);
     expect(saveButton).toBeDisabled();
+    expect(screen.getByRole('textbox', { name: 'Tags' })).toBeDisabled();
 
     resolveUpdatePost({ ...authoredPost, title: 'Updated title' });
   });
@@ -257,8 +265,31 @@ describe('FeedItem actions', () => {
         title: 'Updated photo caption',
         body: authoredMediaPost.body,
         url: authoredMediaPost.url,
-        post_type: 'photo'
+        post_type: 'photo',
+        tags: authoredMediaPost.tags
       }
     });
+  });
+
+  it('preserves edited tags after an update request fails', async () => {
+    const user = userEvent.setup();
+    updatePost.mutateAsync.mockRejectedValue(new Error('Request failed'));
+    const authoredPost = {
+      ...basePost,
+      author_id: currentUser.id
+    };
+
+    renderFeedItem(authoredPost);
+
+    await user.click(screen.getByRole('button', { name: editPostButtonName }));
+    await user.click(screen.getByRole('button', { name: 'Remove photography tag' }));
+    await user.type(screen.getByRole('textbox', { name: 'Tags' }), 'travel{Enter}');
+    await user.click(screen.getByRole('button', { name: 'Save' }));
+
+    expect(screen.getByRole('dialog', { name: editPostButtonName })).toBeInTheDocument();
+    expect(screen.queryByText('#photography')).not.toBeInTheDocument();
+    expect(screen.getByText('#sunset')).toBeInTheDocument();
+    expect(screen.getByText('#travel')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Save' })).not.toBeDisabled();
   });
 });

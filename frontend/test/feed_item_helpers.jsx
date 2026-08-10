@@ -14,6 +14,7 @@ export const basePost = {
   liked: false,
   likes: 4,
   post_type: 'text',
+  tags: ['photography', 'sunset'],
   title: 'All for one',
   url: 'https://example.com'
 };
