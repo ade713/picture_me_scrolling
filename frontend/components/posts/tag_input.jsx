@@ -1,4 +1,4 @@
-import React, { useId } from 'react';
+import React, { useId, useRef } from 'react';
 
 import {
   SELECTED_TAGS_LABEL,
@@ -19,6 +19,7 @@ const TagInput = ({
   tags
 }) => {
   const inputId = useId();
+  const inputRef = useRef(null);
   const tagCountId = `${inputId}-tag-count`;
   const errorId = `${inputId}-error`;
   const describedBy = error ? `${tagCountId} ${errorId}` : tagCountId;
@@ -42,6 +43,11 @@ const TagInput = ({
     onCommit();
   };
 
+  const handleRemove = tag => {
+    onRemove(tag);
+    inputRef.current?.focus();
+  };
+
   return (
     <div className="tag-input">
       <label className="tag-input-label" htmlFor={inputId}>
@@ -56,7 +62,7 @@ const TagInput = ({
               <button
                 aria-label={tagMessages.remove(tag)}
                 disabled={disabled}
-                onClick={() => onRemove(tag)}
+                onClick={() => handleRemove(tag)}
                 type="button"
               >
                 <span aria-hidden="true">×</span>
@@ -78,11 +84,17 @@ const TagInput = ({
           ? TAG_INPUT_MAXIMUM_PLACEHOLDER
           : TAG_INPUT_PLACEHOLDER}
         readOnly={maximumReached}
+        ref={inputRef}
         type="text"
         value={draft}
       />
 
-      <p className="tag-input-count" id={tagCountId}>
+      <p
+        aria-atomic="true"
+        aria-live="polite"
+        className="tag-input-count"
+        id={tagCountId}
+      >
         {tagMessages.count(tags.length)}
       </p>
 

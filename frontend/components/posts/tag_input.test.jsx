@@ -38,6 +38,8 @@ describe('TagInput', () => {
 
     expect(input).toHaveAccessibleDescription('0 of 5 tags');
     expect(input).toHaveAttribute('aria-invalid', 'false');
+    expect(screen.getByText('0 of 5 tags')).toHaveAttribute('aria-live', 'polite');
+    expect(screen.getByText('0 of 5 tags')).toHaveAttribute('aria-atomic', 'true');
   });
 
   it('normalizes and commits a draft with Enter', async () => {
@@ -133,8 +135,10 @@ describe('TagInput', () => {
     await user.click(screen.getByRole('button', { name: 'Remove photography tag' }));
 
     expect(screen.queryByText('#photography')).not.toBeInTheDocument();
-    expect(screen.getByRole('textbox', { name: 'Tags' }))
-      .toHaveAccessibleDescription('0 of 5 tags');
+    const input = screen.getByRole('textbox', { name: 'Tags' });
+
+    expect(input).toHaveAccessibleDescription('0 of 5 tags');
+    expect(input).toHaveFocus();
   });
 
   it('disables the input and remove controls while pending', () => {
