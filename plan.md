@@ -981,6 +981,23 @@ Vite is still the preferred long-term direction for a small modern React app,
 but the current Webpack/Babel setup is now documented and stable enough to keep
 using while higher-priority behavior and backend work continues.
 
+## Planned Test Suite Optimization: BCrypt Cost
+
+Status: technical-debt follow-up.
+
+The Rails test suite currently hashes test passwords with BCrypt's production
+cost. User creation therefore takes roughly 0.22 seconds in many tests and is a
+significant part of the suite's runtime. A focused follow-up should configure
+BCrypt's minimum cost only in the test environment while preserving the normal
+cost in development and production.
+
+Keep this separate from feature PRs. Before merging, compare full-suite timing,
+confirm password authentication and validation coverage still pass, and verify
+that the lower cost cannot be enabled outside the test environment. The Phase
+4-2 tag-filtering investigation completed 190 tests and 893 assertions locally
+in about 91 seconds; its one GitHub Actions timeout was caused by an anomalous
+runner stall rather than expected suite duration.
+
 ## Planned Feature: Post Tags
 
 Status: planned.
