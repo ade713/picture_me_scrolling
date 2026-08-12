@@ -7,8 +7,8 @@ import PostBar from '../posts/post_bar';
 
 const PRIORITY_MEDIA_POST_COUNT = 3;
 
-const Feed = () => {
-  const posts = usePosts();
+const Feed = ({ tag }) => {
+  const posts = usePosts(tag);
   const loadedPosts = posts.data?.posts;
   const feedItems = useMemo(() => (loadedPosts || []).map((post, index) =>
     <FeedItem
