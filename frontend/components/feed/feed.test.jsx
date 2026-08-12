@@ -40,7 +40,9 @@ describe('Feed', () => {
       isLoading: false
     });
 
-    render(<Feed />);
+    render(<Feed tag="photography" />);
+
+    expect(usePosts).toHaveBeenCalledWith('photography');
 
     const feedItems = screen.getAllByTestId('feed-item');
 

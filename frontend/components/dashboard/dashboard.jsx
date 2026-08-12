@@ -1,10 +1,16 @@
 import React from 'react';
+import { useSearchParams } from 'react-router-dom';
 
+import { normalizeTag } from '../../config/tags';
 import Feed from '../feed/feed';
 import RecommendedUsers from '../users/recommended_users';
 import AccountMenu from './account_menu';
 
 const Dashboard = () => {
+  const [searchParams] = useSearchParams();
+  const tagParam = searchParams.get('tag');
+  const activeTag = tagParam ? normalizeTag(tagParam) : undefined;
+
   return (
     <div className="dash-page">
       <header className="dash-nav">
@@ -15,7 +21,7 @@ const Dashboard = () => {
       </header>
       <div className="dash-main">
         <div className="dash-feed">
-          <Feed />
+          <Feed tag={activeTag} />
         </div>
         <div className="dash-right-column">
           <RecommendedUsers />

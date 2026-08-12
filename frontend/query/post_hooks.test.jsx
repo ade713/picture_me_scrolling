@@ -1,9 +1,9 @@
 import React from 'react';
-import { act, renderHook } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { patch } from '../util/api_client';
-import { useUpdatePost } from './post_hooks';
+import { get, patch } from '../util/api_client';
+import { usePosts, useUpdatePost } from './post_hooks';
 import { queryKeys } from './query_keys';
 
 vi.mock('../util/api_client', () => ({
@@ -34,6 +34,67 @@ describe('post hooks', () => {
   afterEach(() => {
     queryClient.clear();
     vi.clearAllMocks();
+  });
+
+  it('requests the unfiltered first page without a tag parameter', async () => {
+    get.mockResolvedValue({
+      pagination: { has_more: false, page: 1 },
+      post_ids: [],
+      posts: {}
+    });
+
+    const { result } = renderHook(() => usePosts(), { wrapper });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(get).toHaveBeenCalledWith('/api/posts?page=1&per_page=10');
+  });
+
+  it('uses separate paginated caches when the active tag changes', async () => {
+    get.mockImplementation(async endpoint => {
+      const params = new URL(endpoint, 'http://localhost').searchParams;
+      const page = Number(params.get('page'));
+      const tag = params.get('tag');
+
+      return {
+        pagination: {
+          has_more: tag === 'photography' && page === 1,
+          page
+        },
+        post_ids: [],
+        posts: {}
+      };
+    });
+
+    const { result, rerender } = renderHook(
+      ({ tag }) => usePosts(tag),
+      { initialProps: { tag: 'photography' }, wrapper }
+    );
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await result.current.fetchNextPage();
+
+    expect(get).toHaveBeenNthCalledWith(
+      1,
+      '/api/posts?page=1&per_page=10&tag=photography'
+    );
+    expect(get).toHaveBeenNthCalledWith(
+      2,
+      '/api/posts?page=2&per_page=10&tag=photography'
+    );
+
+    rerender({ tag: 'sunset' });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(get).toHaveBeenNthCalledWith(
+      3,
+      '/api/posts?page=1&per_page=10&tag=sunset'
+    );
+    expect(queryClient.getQueryData(queryKeys.postsFeed('photography')).pages)
+      .toHaveLength(2);
+    expect(queryClient.getQueryData(queryKeys.postsFeed('sunset')).pages)
+      .toHaveLength(1);
   });
 
   it('updates cached post tags with the API response', async () => {

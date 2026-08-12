@@ -87,13 +87,14 @@ const removePostFromCache = (feed, deletedPost) => {
   };
 };
 
-export const usePosts = () => (
+export const usePosts = tag => (
   useInfiniteQuery({
-    queryKey: queryKeys.posts,
+    queryKey: queryKeys.postsFeed(tag),
     initialPageParam: INITIAL_POSTS_PAGE,
     queryFn: ({ pageParam }) => get(apiEndpoints.posts.feed({
       page: pageParam,
-      perPage: POSTS_PER_PAGE
+      perPage: POSTS_PER_PAGE,
+      tag
     })),
     getNextPageParam: lastPage => (
       lastPage.pagination.has_more ? lastPage.pagination.page + 1 : undefined
