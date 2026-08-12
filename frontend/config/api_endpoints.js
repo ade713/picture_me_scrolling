@@ -9,7 +9,16 @@ export const apiEndpoints = Object.freeze({
   posts: Object.freeze({
     collection: '/api/posts',
     detail: id => `/api/posts/${id}`,
-    feed: ({ page, perPage }) => `/api/posts?page=${page}&per_page=${perPage}`,
+    feed: ({ page, perPage, tag }) => {
+      const searchParams = new URLSearchParams({
+        page,
+        per_page: perPage
+      });
+
+      if (tag) searchParams.set('tag', tag);
+
+      return `/api/posts?${searchParams.toString()}`;
+    },
     like: id => `/api/posts/${id}/like`
   }),
   session: '/api/session',

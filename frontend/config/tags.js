@@ -4,6 +4,8 @@ export const tagSettings = Object.freeze({
   namePattern: /^[a-z0-9]+(?:_[a-z0-9]+)*$/
 });
 
+export const normalizeTag = tag => tag.trim().toLowerCase();
+
 export const TAG_COUNT_ERROR =
   `Posts can have up to ${tagSettings.maximumCount} tags`;
 export const TAG_DUPLICATE_ERROR = 'That tag has already been added';

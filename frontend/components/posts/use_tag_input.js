@@ -1,14 +1,13 @@
 import { useState } from 'react';
 
 import {
+  normalizeTag,
   TAG_COUNT_ERROR,
   TAG_DUPLICATE_ERROR,
   TAG_FORMAT_ERROR,
   TAG_LENGTH_ERROR,
   tagSettings
 } from '../../config/tags';
-
-export const normalizeTag = tag => tag.trim().toLowerCase();
 
 export const validateTagDraft = (draft, tags) => {
   const normalizedTag = normalizeTag(draft);
