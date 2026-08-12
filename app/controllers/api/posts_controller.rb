@@ -53,9 +53,12 @@ class Api::PostsController < ApplicationController
     @posts, @pagination = FeedQuery.call(
       user: current_user,
       page: params[:page],
-      per_page: params[:per_page]
+      per_page: params[:per_page],
+      tag: params[:tag]
     )
     prepare_post_rendering_context(@posts)
+  rescue FeedQuery::InvalidTagError => error
+    render json: [error.message], status: :unprocessable_entity
   end
 
   def post_params

@@ -114,6 +114,39 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_equal false, response_pagination['has_more']
   end
 
+  test 'index filters accessible posts by tag before pagination' do
+    @viewer_post.tags << tags(:photography)
+    @followed_post.tags << tags(:sunset)
+    @unrelated_post.tags << tags(:photography)
+
+    get api_posts_url, params: { tag: ' Photography ', per_page: 1 }
+
+    assert_response :success
+    assert_equal [@viewer_post.id], response_post_ids
+    assert_equal [@viewer_post.id.to_s], response_posts.keys
+    assert_equal 1, response_pagination['total_count']
+    assert_equal 1, response_pagination['total_pages']
+    assert_equal false, response_pagination['has_more']
+  end
+
+  test 'index returns an empty paginated feed for a nonexistent tag' do
+    get api_posts_url, params: { tag: 'nonexistent' }
+
+    assert_response :success
+    assert_empty response_post_ids
+    assert_equal({}, response_posts)
+    assert_equal 0, response_pagination['total_count']
+    assert_equal 0, response_pagination['total_pages']
+    assert_equal false, response_pagination['has_more']
+  end
+
+  test 'index rejects a malformed tag filter' do
+    get api_posts_url, params: { tag: 'invalid-tag' }
+
+    assert_response :unprocessable_entity
+    assert_equal [FeedQuery::INVALID_TAG_ERROR], response_json
+  end
+
   test 'show returns the requested post payload' do
     @followed_post.tags << tags(:sunset)
     @followed_post.tags << tags(:photography)
