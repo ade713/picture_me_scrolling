@@ -93,6 +93,59 @@ class FeedQueryTest < ActiveSupport::TestCase
     assert_equal false, second_page[:has_more]
   end
 
+  test 'filters accessible posts by normalized tag' do
+    @viewer_post.tags << tags(:photography)
+    @viewer_post.tags << tags(:sunset)
+    @followed_post.tags << tags(:photography)
+    @unrelated_post.tags << tags(:photography)
+
+    posts, pagination = FeedQuery.call(user: @viewer, tag: ' Photography ')
+
+    assert_equal [@followed_post.id, @viewer_post.id], posts.map(&:id)
+    assert_equal 2, pagination[:total_count]
+    assert_equal %w[photography sunset], posts.last.tags.map(&:name).sort
+    assert_predicate posts.last.association(:tags), :loaded?
+  end
+
+  test 'calculates pagination after filtering by tag' do
+    @viewer_post.tags << tags(:photography)
+
+    posts, pagination = FeedQuery.call(
+      user: @viewer,
+      tag: 'photography',
+      page: 1,
+      per_page: 1
+    )
+
+    assert_equal [@viewer_post.id], posts.map(&:id)
+    assert_equal 1, pagination[:total_count]
+    assert_equal 1, pagination[:total_pages]
+    assert_equal false, pagination[:has_more]
+  end
+
+  test 'returns an empty paginated feed for a nonexistent tag' do
+    posts, pagination = FeedQuery.call(user: @viewer, tag: 'nonexistent')
+
+    assert_empty posts
+    assert_equal 0, pagination[:total_count]
+    assert_equal 0, pagination[:total_pages]
+    assert_equal false, pagination[:has_more]
+  end
+
+  test 'rejects malformed tag filters' do
+    error = assert_raises(FeedQuery::InvalidTagError) do
+      FeedQuery.call(user: @viewer, tag: 'invalid-tag')
+    end
+
+    assert_equal FeedQuery::INVALID_TAG_ERROR, error.message
+  end
+
+  test 'rejects a blank tag filter' do
+    assert_raises(FeedQuery::InvalidTagError) do
+      FeedQuery.call(user: @viewer, tag: ' ')
+    end
+  end
+
   test 'normalizes invalid pagination params' do
     _posts, pagination = FeedQuery.call(user: @viewer, page: 0, per_page: 100)
 

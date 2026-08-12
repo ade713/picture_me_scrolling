@@ -1,7 +1,11 @@
-json.posts do
-  @posts.each do |post|
-    json.set! post.id do
-      json.partial! 'api/posts/post', post: post
+if @posts.empty?
+  json.posts({})
+else
+  json.posts do
+    @posts.each do |post|
+      json.set! post.id do
+        json.partial! 'api/posts/post', post: post
+      end
     end
   end
 end
