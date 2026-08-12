@@ -101,6 +101,15 @@ img.author-avatar {
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.08);
 }
 
+ul.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 12px 20px 8px;
+}
+
 div.post-footer {
   display: flex;
   box-sizing: border-box;
@@ -288,7 +297,8 @@ button.load-more-posts:disabled {
 
 @include mobile {
   div.post-header,
-  div.post-footer {
+  div.post-footer,
+  ul.post-tags {
     padding-left: 14px;
     padding-right: 14px;
   }

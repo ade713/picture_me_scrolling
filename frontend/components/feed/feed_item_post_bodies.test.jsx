@@ -100,4 +100,19 @@ describe('FeedItem post bodies', () => {
       assertions(container);
     });
   });
+
+  it('displays tags between post content and the footer', () => {
+    const { container } = renderFeedItem();
+    const tags = screen.getByRole('list', { name: 'Tags' });
+
+    expect(tags).toHaveTextContent('#photography');
+    expect(tags).toHaveTextContent('#sunset');
+    expect(container.querySelector('.post-tags + .post-footer')).toBeInTheDocument();
+  });
+
+  it('omits the tag list when a post has no tags', () => {
+    renderFeedItem({ tags: [] });
+
+    expect(screen.queryByRole('list', { name: 'Tags' })).not.toBeInTheDocument();
+  });
 });

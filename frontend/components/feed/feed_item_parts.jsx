@@ -84,6 +84,20 @@ export const PostHeader = ({ isAuthor, onFollow, onUnfollow, post }) => (
   </div>
 );
 
+export const PostTags = ({ tags = [] }) => {
+  if (tags.length === 0) {
+    return null;
+  }
+
+  return (
+    <ul aria-label="Tags" className="post-tags">
+      { tags.map(tag => (
+        <li key={ tag }>#{ tag }</li>
+      )) }
+    </ul>
+  );
+};
+
 export const AuthorControls = ({ isAuthor, onDelete, onEdit, post }) => {
   if (!isAuthor) {
     return null;
@@ -113,29 +127,32 @@ export const AuthorControls = ({ isAuthor, onDelete, onEdit, post }) => {
 };
 
 export const PostFooter = ({ isAuthor, onDelete, onEdit, onLike, onUnlike, post }) => (
-  <div className="post-footer">
-    <div className="post-likes">
-      Likes: { post.likes }
-    </div>
-    <div className="post-options">
-      <div className="like-post-btn">
-        <LikeButton
-          isAuthor={ isAuthor }
-          onLike={ onLike }
-          onUnlike={ onUnlike }
-          post={ post }
-        />
+  <>
+    <PostTags tags={ post.tags } />
+    <div className="post-footer">
+      <div className="post-likes">
+        Likes: { post.likes }
       </div>
-      <div className="post-btns">
-        <AuthorControls
-          isAuthor={ isAuthor }
-          onDelete={ onDelete }
-          onEdit={ onEdit }
-          post={ post }
-        />
+      <div className="post-options">
+        <div className="like-post-btn">
+          <LikeButton
+            isAuthor={ isAuthor }
+            onLike={ onLike }
+            onUnlike={ onUnlike }
+            post={ post }
+          />
+        </div>
+        <div className="post-btns">
+          <AuthorControls
+            isAuthor={ isAuthor }
+            onDelete={ onDelete }
+            onEdit={ onEdit }
+            post={ post }
+          />
+        </div>
       </div>
     </div>
-  </div>
+  </>
 );
 
 export const DeletePostConfirmation = ({ onCancel, onConfirm, post }) => {

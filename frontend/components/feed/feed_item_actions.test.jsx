@@ -1,4 +1,4 @@
-import { screen, waitFor } from '@testing-library/react';
+import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { useDeletePost, useLikePost, useUnlikePost, useUpdatePost } from '../../query/post_hooks';
@@ -183,9 +183,10 @@ describe('FeedItem actions', () => {
     const titleInput = screen.getByPlaceholderText('Title');
     const bodyInput = screen.getByPlaceholderText('Your text here');
     const tagInput = screen.getByRole('textbox', { name: 'Tags' });
+    const selectedTags = screen.getByRole('list', { name: 'Selected tags' });
 
-    expect(screen.getByText('#photography')).toBeInTheDocument();
-    expect(screen.getByText('#sunset')).toBeInTheDocument();
+    expect(within(selectedTags).getByText('#photography')).toBeInTheDocument();
+    expect(within(selectedTags).getByText('#sunset')).toBeInTheDocument();
 
     await user.clear(titleInput);
     await user.type(titleInput, 'Updated title');
@@ -287,9 +288,11 @@ describe('FeedItem actions', () => {
     await user.click(screen.getByRole('button', { name: 'Save' }));
 
     expect(screen.getByRole('dialog', { name: editPostButtonName })).toBeInTheDocument();
-    expect(screen.queryByText('#photography')).not.toBeInTheDocument();
-    expect(screen.getByText('#sunset')).toBeInTheDocument();
-    expect(screen.getByText('#travel')).toBeInTheDocument();
+    const selectedTags = screen.getByRole('list', { name: 'Selected tags' });
+
+    expect(within(selectedTags).queryByText('#photography')).not.toBeInTheDocument();
+    expect(within(selectedTags).getByText('#sunset')).toBeInTheDocument();
+    expect(within(selectedTags).getByText('#travel')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Save' })).not.toBeDisabled();
   });
 });
