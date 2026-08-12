@@ -99,7 +99,8 @@ with `Password reset link has expired`. Password validation errors also return
 
 ### Posts
 - `GET /api/posts` - return the authenticated user's paginated followed-user
-  feed
+  feed; optionally filter accessible posts with a normalized `tag` query
+  parameter, such as `GET /api/posts?tag=photography&page=1&per_page=20`
 - `POST /api/posts` - create a post, optionally including up to five tag names
   using `post[tags][]`
 - `GET /api/posts/:id` - return one post
@@ -123,6 +124,12 @@ updating preserves the existing associations; sending an empty array removes
 all tags. Invalid tags and requests containing more than five unique tags
 return `422 Unprocessable Entity` without partially changing the post or its
 tags.
+
+Feed tag filtering is limited to the authenticated user's posts and posts from
+followed users. Pagination metadata describes the filtered result. A valid tag
+with no accessible matches returns `200 OK` with an empty paginated feed;
+malformed or blank tag filters return `422 Unprocessable Entity` with `Tag
+filter is invalid`.
 
 ### Follows
 - `POST /api/users/:user_id/follow`
