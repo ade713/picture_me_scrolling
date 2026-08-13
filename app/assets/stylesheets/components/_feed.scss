@@ -182,14 +182,15 @@ ul.post-tags {
   padding: 12px 20px 8px;
 
   a {
+    color: rgba(0, 0, 0, 0.68);
     cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: 3px;
   }
 
   a:hover,
   a:focus-visible {
-    font-weight: bold;
+    color: black;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 }
 
