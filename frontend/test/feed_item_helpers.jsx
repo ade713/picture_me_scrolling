@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 
 import FeedItem from '../components/feed/feed_item';
 
@@ -33,9 +34,11 @@ export const createFeedItemMutations = () => ({
 });
 
 export const feedItemElement = post => (
-  <ul>
-    <FeedItem post={{ ...basePost, ...post }} />
-  </ul>
+  <MemoryRouter>
+    <ul>
+      <FeedItem post={{ ...basePost, ...post }} />
+    </ul>
+  </MemoryRouter>
 );
 
 export const renderFeedItem = post => render(feedItemElement(post));

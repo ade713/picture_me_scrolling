@@ -107,6 +107,10 @@ describe('FeedItem post bodies', () => {
 
     expect(tags).toHaveTextContent('#photography');
     expect(tags).toHaveTextContent('#sunset');
+    expect(screen.getByRole('link', { name: '#photography' })).toHaveAttribute(
+      'href',
+      '/dashboard?tag=photography'
+    );
     expect(container.querySelector('.post-tags + .post-footer')).toBeInTheDocument();
   });
 
