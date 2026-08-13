@@ -1,7 +1,9 @@
 import React, { useRef } from 'react';
 import Modal from 'react-modal';
+import { Link } from 'react-router-dom';
 
 import { buttonActionLabels, buttonLabels } from '../../config/button_labels';
+import { routes } from '../../config/routes';
 import { imageLoadingProps } from '../../util/media_loading_util';
 
 const postActionLabel = post => post.title || `post by ${post.author}`;
@@ -92,7 +94,11 @@ export const PostTags = ({ tags = [] }) => {
   return (
     <ul aria-label="Tags" className="post-tags">
       { tags.map(tag => (
-        <li key={ tag }>#{ tag }</li>
+        <li key={ tag }>
+          <Link to={`${routes.dashboard}?tag=${encodeURIComponent(tag)}`}>
+            #{ tag }
+          </Link>
+        </li>
       )) }
     </ul>
   );
