@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 
 import { usePosts } from '../../query/post_hooks';
 import Feed from './feed';
@@ -27,6 +28,12 @@ const posts = [
   { id: 4, title: 'Fourth post' }
 ];
 
+const renderFeed = (props = {}) => render(
+  <MemoryRouter>
+    <Feed {...props} />
+  </MemoryRouter>
+);
+
 describe('Feed', () => {
   afterEach(() => {
     vi.clearAllMocks();
@@ -40,7 +47,7 @@ describe('Feed', () => {
       isLoading: false
     });
 
-    render(<Feed tag="photography" />);
+    renderFeed({ tag: 'photography' });
 
     expect(usePosts).toHaveBeenCalledWith('photography');
 
@@ -66,10 +73,104 @@ describe('Feed', () => {
       isLoading: false
     });
 
-    render(<Feed />);
+    renderFeed();
 
     await user.click(screen.getByRole('button', { name: 'Load more posts' }));
 
     expect(fetchNextPage).toHaveBeenCalled();
+  });
+
+  it('renders the filtered heading and keyboard-accessible clear action', async () => {
+    const user = userEvent.setup();
+    usePosts.mockReturnValue({
+      data: { posts: [] },
+      error: null,
+      hasNextPage: false,
+      isLoading: false
+    });
+
+    renderFeed({ tag: 'film_photography' });
+
+    expect(screen.getByRole('heading', { name: 'Posts tagged #film_photography' }))
+      .toHaveFocus();
+    const clearFilter = screen.getByRole('link', { name: 'Clear tag filter' });
+    expect(clearFilter).toHaveAttribute('href', '/dashboard');
+    expect(clearFilter).toHaveAttribute('title', 'Clear tag filter');
+    expect(clearFilter).toHaveTextContent('× Clear');
+
+    await user.tab();
+    expect(clearFilter).toHaveFocus();
+    expect(screen.getByRole('heading', { name: 'No posts found' })).toBeInTheDocument();
+  });
+
+  it('moves focus to the ordinary feed heading when the filter clears', () => {
+    usePosts.mockReturnValue({
+      data: { posts },
+      error: null,
+      hasNextPage: false,
+      isLoading: false
+    });
+
+    const { rerender } = render(
+      <MemoryRouter>
+        <Feed tag="photography" />
+      </MemoryRouter>
+    );
+
+    rerender(
+      <MemoryRouter>
+        <Feed />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole('heading', { name: 'Posts' })).toHaveFocus();
+  });
+
+  it('moves focus when the active tag changes', () => {
+    usePosts.mockReturnValue({
+      data: { posts },
+      error: null,
+      hasNextPage: false,
+      isLoading: false
+    });
+
+    const { rerender } = render(
+      <MemoryRouter>
+        <Feed tag="photography" />
+      </MemoryRouter>
+    );
+    screen.getByRole('heading', { name: 'Posts tagged #photography' }).blur();
+
+    rerender(
+      <MemoryRouter>
+        <Feed tag="sunset" />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole('heading', { name: 'Posts tagged #sunset' })).toHaveFocus();
+  });
+
+  it('announces the loading state', () => {
+    usePosts.mockReturnValue({ isLoading: true });
+
+    renderFeed({ tag: 'photography' });
+
+    expect(screen.getByRole('status')).toHaveTextContent('Loading posts…');
+  });
+
+  it('renders an error with a retry action', async () => {
+    const user = userEvent.setup();
+    const refetch = vi.fn();
+    usePosts.mockReturnValue({
+      error: new Error('Request failed'),
+      isLoading: false,
+      refetch
+    });
+
+    renderFeed({ tag: 'photography' });
+    await user.click(screen.getByRole('button', { name: 'Try again' }));
+
+    expect(screen.getByRole('alert')).toHaveTextContent('Unable to load posts.');
+    expect(refetch).toHaveBeenCalled();
   });
 });

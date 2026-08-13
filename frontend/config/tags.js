@@ -18,6 +18,15 @@ export const TAG_INPUT_MAXIMUM_PLACEHOLDER = 'Maximum tags added';
 export const TAG_INPUT_PLACEHOLDER = 'Add tags';
 export const SELECTED_TAGS_LABEL = 'Selected tags';
 
+export const tagFilterMessages = Object.freeze({
+  clear: 'Clear',
+  clearLabel: 'Clear tag filter',
+  heading: tag => tag ? `Posts tagged #${tag}` : 'Posts',
+  loadError: 'Unable to load posts.',
+  loading: 'Loading posts…',
+  noPosts: 'No posts found'
+});
+
 export const tagMessages = Object.freeze({
   count: count => `${count} of ${tagSettings.maximumCount} tags`,
   remove: tag => `Remove ${tag} tag`
