@@ -17,6 +17,8 @@ class DemoSeedTest < ActiveSupport::TestCase
                  Follow.where(follower_id: guest.id, followee_id: followed_users.select(:id)).count
     assert_equal 22, demo_posts.count
     assert_equal 8, demo_posts.where(post_type: 'link').count
+    assert_equal 18, demo_posts.joins(:tags).where(tags: { name: 'demo_feed' }).count
+    assert_equal %w[demo_feed text], demo_posts.find_by!(title: 'Demo feed text 01').tags.order(:name).pluck(:name)
   end
 
   test 'can run repeatedly without duplicating demo records' do
@@ -27,7 +29,8 @@ class DemoSeedTest < ActiveSupport::TestCase
     initial_counts = {
       users: demo_users.count,
       posts: Post.where(author_id: demo_users.select(:id)).count,
-      follows: Follow.where(follower_id: guest.id).count
+      follows: Follow.where(follower_id: guest.id).count,
+      post_tags: PostTag.joins(:post).where(posts: { author_id: demo_users.select(:id) }).count
     }
 
     DemoSeed.run
@@ -37,6 +40,8 @@ class DemoSeedTest < ActiveSupport::TestCase
     assert_equal initial_counts[:users], demo_users.count
     assert_equal initial_counts[:posts], Post.where(author_id: demo_users.select(:id)).count
     assert_equal initial_counts[:follows], Follow.where(follower_id: guest.id).count
+    assert_equal initial_counts[:post_tags],
+                 PostTag.joins(:post).where(posts: { author_id: demo_users.select(:id) }).count
   end
 
   test 'keeps unrelated records intact' do

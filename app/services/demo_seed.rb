@@ -72,6 +72,7 @@ module DemoSeed
           title: format('Demo feed text %02d', sequence),
           body: TEXT_BODIES[index % TEXT_BODIES.length],
           post_type: Post::TYPES.fetch(:text),
+          tags: %w[demo_feed text],
           created_at: seeded_at - (sequence + 10).minutes
         )
       when 1
@@ -80,6 +81,7 @@ module DemoSeed
           title: format('Demo feed quote %02d', sequence),
           body: "- #{QUOTE_SOURCES[index % QUOTE_SOURCES.length]}",
           post_type: Post::TYPES.fetch(:quote),
+          tags: %w[demo_feed quotes],
           created_at: seeded_at - (sequence + 10).minutes
         )
       else
@@ -88,6 +90,7 @@ module DemoSeed
           title: format('Demo feed link %02d', sequence),
           url: LINK_URLS[index % LINK_URLS.length],
           post_type: Post::TYPES.fetch(:link),
+          tags: %w[demo_feed links],
           created_at: seeded_at - (sequence + 10).minutes
         )
       end
@@ -101,6 +104,7 @@ module DemoSeed
         title: "Recommended demo text #{index + 1}",
         body: 'Follow this demo user to confirm the feed updates without a refresh.',
         post_type: Post::TYPES.fetch(:text),
+        tags: %w[recommended text],
         created_at: seeded_at - index.minutes
       )
 
@@ -109,18 +113,20 @@ module DemoSeed
         title: "Recommended demo link #{index + 1}",
         url: LINK_URLS[index % LINK_URLS.length],
         post_type: Post::TYPES.fetch(:link),
+        tags: %w[links recommended],
         created_at: seeded_at - (index + users.length).minutes
       )
     end
   end
 
-  def upsert_post(author:, title:, post_type:, body: nil, url: nil, created_at: nil)
+  def upsert_post(author:, title:, post_type:, tags:, body: nil, url: nil, created_at: nil)
     post = Post.find_or_initialize_by(author_id: author.id, title: title, post_type: post_type)
-    post.body = body
-    post.url = url
-    post.created_at = created_at if created_at
-    post.save!
-    post
+    attributes = { body: body, url: url }
+    attributes[:created_at] = created_at if created_at
+    result = PostWriter.new(post: post, attributes: attributes, tag_names: tags).call
+    raise "Demo post seed failed: #{result.errors.join(', ')}" unless result.success?
+
+    result.post
   end
 
   def ensure_follow(follower:, followee:)
