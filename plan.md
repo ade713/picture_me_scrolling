@@ -1000,7 +1000,9 @@ runner stall rather than expected suite duration.
 
 ## Planned Feature: Post Tags
 
-Status: planned.
+Status: implementation and live browser verification complete; physical
+keyboard activation verification pending. Delivered behavior and deferred
+follow-ups are recorded in [`docs/tags-closeout.md`](./docs/tags-closeout.md).
 
 Goal: let users add explicit tags to posts and filter the posts already
 available in their followed-user dashboard feed.
