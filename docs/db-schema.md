@@ -49,7 +49,8 @@ post_id     | integer   | not null, foreign key, indexed, cascades on post delet
 tag_id      | bigint    | not null, foreign key, indexed, cascades on tag deletion
 
 Each post/tag pair is unique. The database removes the corresponding join rows
-when a post or tag is deleted.
+when a post or tag is deleted. Tags may be shared by many posts, and unused tag
+rows are intentionally retained in this version for future reuse.
 
 ## follows
 column name | data type | details

@@ -1,6 +1,7 @@
 # Tags Design and Implementation Plan
 
-Status: planned.
+Status: complete and verified. See [`tags-closeout.md`](./tags-closeout.md) for
+delivered behavior, verification, and deferred work.
 
 ## Goal
 
@@ -142,11 +143,13 @@ The filtered dashboard displays:
 Posts tagged #photography
 ```
 
-The filter-removal action is:
+The compact filter-removal action is:
 
 ```text
-× Clear tag filter
+× Clear
 ```
+
+Its accessible name remains `Clear tag filter`.
 
 The action removes the `tag` search parameter and returns to:
 
@@ -158,8 +161,6 @@ The empty state is:
 
 ```text
 No posts found
-
-No posts tagged #film_photography
 ```
 
 The filtered feed preserves existing loading, error, retry, and infinite-
@@ -353,8 +354,9 @@ manually predicting every tag cache affected by a mutation.
 
 - existing posts remain valid without tags
 - no production backfill is required
-- representative tags should be added to several demo-seed posts once tag
-  display and filtering are available
+- representative tags are included in development and production-safe demo
+  seeds; the shared `demo_feed` and `performance` tags provide enough matches
+  to exercise filtered pagination
 - production migrations remain safe to deploy before application behavior uses
   the new tables
 

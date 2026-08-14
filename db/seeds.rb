@@ -34,7 +34,11 @@ end
 
 def create_post!(attributes)
   image_url = attributes.delete(:image)
-  post = Post.create!(attributes)
+  tag_names = attributes.delete(:tags)
+  result = PostWriter.new(post: Post.new, attributes: attributes, tag_names: tag_names).call
+  raise "Post seed failed: #{result.errors.join(', ')}" unless result.success?
+
+  post = result.post
   attach_remote_file(post, :image, image_url)
   post
 end
@@ -71,11 +75,11 @@ fozzie = create_user!(username: 'FozzieBear', password: 'pass123', avatar: 'http
 miles = create_user!(username: 'CoffeeSpidey', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/miles_morales.jpg')
 silky = create_user!(username: 'SilkyJ02', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/silky_johnson1_avatar.jpg')
 dbz = create_user!(username: 'SonGohan', password: 'pass123', avatar: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/gohan_ssj2.jpg')
-create_post!(author_id: guest_user1.id, title: "Welcome to PicMeS", body: "Use the recommended users list to test follow and feed updates.", post_type: 'text')
-create_post!(author_id: starwars.id, title: "That moment when he tells you he's your daddy", post_type: "photo", image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/Darth+Vader+Father.jpg')
-create_post!(author_id: miles.id, title: "With great power, comes great responsibilities", body: "Ben Parker", post_type: 'quote')
+create_post!(author_id: guest_user1.id, title: "Welcome to PicMeS", body: "Use the recommended users list to test follow and feed updates.", post_type: 'text', tags: %w[community welcome])
+create_post!(author_id: starwars.id, title: "That moment when he tells you he's your daddy", post_type: "photo", image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/Darth+Vader+Father.jpg', tags: %w[movies star_wars])
+create_post!(author_id: miles.id, title: "With great power, comes great responsibilities", body: "Ben Parker", post_type: 'quote', tags: %w[comics inspiration])
 create_post!(author_id: silky.id, title: "I will be the player hater of the year again!", body: "No one can beat me!!!", post_type: 'text')
-create_post!(author_id: starks.id, title: "Winter... Is... Here", post_type: 'text')
+create_post!(author_id: starks.id, title: "Winter... Is... Here", post_type: 'text', tags: %w[fantasy winter])
 create_post!(author_id: guile1.id, title: "Stepping back in the ring!", post_type: 'video', image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/guile+sfv+trailer.mp4')
 create_post!(author_id: dbz.id, title: "Even MJ had the power insideh home", post_type: "photo", image: 'https://s3.us-east-2.amazonaws.com/picmes-dev/dev-seeds/mj_ssj.gif')
 create_post!(author_id: jerome.id, title: "Jerome is king of da playas!", body: 'Silky never had a chance', post_type: 'text')
@@ -144,21 +148,24 @@ performance_users.each_with_index do |user, user_index|
         author_id: user.id,
         title: "Performance text post #{sequence}",
         body: performance_text_bodies[sequence % performance_text_bodies.length],
-        post_type: 'text'
+        post_type: 'text',
+        tags: %w[performance text]
       )
     when 1
       create_post!(
         author_id: user.id,
         title: "Quote seed #{sequence}",
         body: "- #{performance_quote_sources[sequence % performance_quote_sources.length]}",
-        post_type: 'quote'
+        post_type: 'quote',
+        tags: %w[performance quotes]
       )
     else
       create_post!(
         author_id: user.id,
         title: "Useful reference #{sequence}",
         url: performance_links[sequence % performance_links.length],
-        post_type: 'link'
+        post_type: 'link',
+        tags: %w[links performance]
       )
     end
   end

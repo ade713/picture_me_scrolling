@@ -26,6 +26,8 @@ The automated tests cover:
 - user recommendations and user show payloads
 - follow/unfollow feed behavior
 - posts feed and CRUD behavior
+- tag normalization, atomic post writes, serialization, and accessible-feed
+  filtering with pagination
 - Active Storage-backed post uploads
 - like/unlike behavior
 - profile/settings behavior
@@ -52,6 +54,7 @@ The seed data intentionally includes:
 - guest follows for `eps4thru6` and `Direwolf Family`
 - recommended users with posts, such as `DarkHadouMaster`
 - recommended users without posts, such as `Ryu`
+- tagged posts, including more than one accessible page under `performance`
 
 ## Manual Dashboard Checks
 
@@ -107,6 +110,20 @@ Post behavior:
   - Expected: the new post appears and the uploaded media renders.
 - Delete one of the current user's posts.
   - Expected: the deleted post disappears from the feed without refreshing.
+
+Tag behavior:
+
+- Create and edit posts with tags across all six post types.
+  - Expected: tags normalize, render alphabetically, and persist atomically with
+    the post.
+- Select the seeded `performance` tag and load another page.
+  - Expected: only matching accessible posts render and pagination continues
+    within the filtered result.
+- Reload the filtered URL, use Back and Forward, then activate `× Clear`.
+  - Expected: URL state, results, focus, and full-feed restoration stay in sync.
+- Complete tag entry, removal, selection, and clearing with only the keyboard at
+  narrow and wide viewport sizes.
+  - Expected: focus indicators remain visible and content does not overflow.
 
 Like behavior:
 

@@ -102,7 +102,8 @@ with `Password reset link has expired`. Password validation errors also return
   feed; optionally filter accessible posts with a normalized `tag` query
   parameter, such as `GET /api/posts?tag=photography&page=1&per_page=20`
 - `POST /api/posts` - create a post, optionally including up to five tag names
-  using `post[tags][]`
+  using repeated `post[tags][]` fields for multipart requests or a `tags` array
+  in JSON requests
 - `GET /api/posts/:id` - return one post
 - `PATCH /api/posts/:id` - update an owned post and optionally replace its tags
 - `PUT /api/posts/:id` - update an owned post and optionally replace its tags

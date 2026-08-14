@@ -152,13 +152,45 @@ Use the seeded guest account:
 
 ## Post Smoke
 
-- Create a text post.
-  - Expected: the new post appears in the feed without a manual refresh.
-- Create a photo/media post with a local file.
-  - Expected: the new post appears in the feed and media renders.
+- Create text, quote, link, photo, video, and audio posts with one or more tags.
+  - Expected: each new post appears without a manual refresh and displays its
+    normalized tags alphabetically.
+- Enter tags with uppercase letters or surrounding spaces, then try duplicate,
+  malformed, and sixth-tag input.
+  - Expected: valid tags normalize, duplicates are not added, invalid input is
+    announced, and no more than five tags can be selected.
+- Add and remove tags using only the keyboard.
+  - Expected: Enter or comma commits a valid draft; each remove control has a
+    visible focus indicator and an accessible name.
+- Edit an owned post to add, replace, and remove tags.
+  - Expected: saved tags update without a manual refresh; a failed edit retains
+    the form values and existing stored tags.
 - Delete one of the current user's posts.
   - Expected: the deleted post disappears from the feed without a manual
     refresh.
+
+## Tag Filter Smoke
+
+- Select a displayed tag.
+  - Expected: the URL becomes `#/dashboard?tag=<tag>`, focus moves to the
+    filtered heading, and only matching accessible posts render.
+- Filter by the seeded `performance` tag and continue scrolling.
+  - Expected: subsequent pages load without duplicates and the filtered result
+    remains active.
+- Reload the filtered URL, then use browser Back and Forward.
+  - Expected: the URL, heading, query results, and pagination reset remain in
+    sync with browser history.
+- Activate `× Clear` using the keyboard.
+  - Expected: the tag parameter is removed, focus moves to the full-feed
+    heading, and the unfiltered feed returns.
+- Visit a valid tag with no accessible posts.
+  - Expected: the centered `No posts found` state renders.
+- Exercise a failed filtered request and retry it.
+  - Expected: the error is announced and retry keeps the active tag.
+- Repeat the filtered loading, results, empty, and clear states at narrow and
+  wide viewport sizes.
+  - Expected: tag links wrap, text does not overflow, and controls remain
+    visible and keyboard accessible.
 
 ## API Coverage Backstop
 
