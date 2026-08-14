@@ -1,7 +1,6 @@
 # Tags Closeout
 
-Status: implementation and live browser smoke checks complete; a physical
-keyboard activation check remains before merge.
+Status: complete and verified.
 
 ## Delivered Scope
 
@@ -64,11 +63,10 @@ Live browser checks completed on August 13, 2026:
 - 375-by-812 and 1440-by-900 viewport checks showed no horizontal overflow;
   tag links wrapped and filter controls remained visible
 
-Keyboard entry with Enter and visible focus placement were verified through the
-browser controller. Its synthetic Enter and Space events focused native links
-and buttons but did not activate them, so physical-keyboard activation of tag
-removal and `Clear tag filter` remains a manual check rather than being marked
-as passed.
+The physical keyboard-only pass was completed manually. Displayed tags received
+a visible black, underlined focus state and Enter activated their filters.
+Enter activated `Clear tag filter`, and Enter or Space removed selected tags
+from the post form.
 
 ## Deferred Work
 

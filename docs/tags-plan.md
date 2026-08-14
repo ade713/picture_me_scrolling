@@ -1,9 +1,7 @@
 # Tags Design and Implementation Plan
 
-Status: implementation and live browser verification complete; physical
-keyboard activation verification pending. See
-[`tags-closeout.md`](./tags-closeout.md) for delivered behavior, verification,
-and deferred work.
+Status: complete and verified. See [`tags-closeout.md`](./tags-closeout.md) for
+delivered behavior, verification, and deferred work.
 
 ## Goal
 
