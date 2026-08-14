@@ -1016,6 +1016,22 @@ for filtered infinite pagination, and Rails for authoritative validation and
 access-scoped filtering. It does not introduce global discovery, hashtag
 parsing, autocomplete, or Zustand state.
 
+## Planned Feature: User Profile Pages
+
+Status: planned.
+
+Goal: add authenticated user profile pages with identity, follower/following
+counts, authored posts, Followers and Following views, and profile-scoped tag
+filtering.
+
+The agreed product behavior, URL and API contracts, cache ownership,
+accessibility requirements, deferred scope, and reviewable PR sequence live in
+[`docs/user-profile-plan.md`](./docs/user-profile-plan.md).
+
+The initial version uses the existing username, avatar, posts, follows, likes,
+and tags. It does not add profile fields, private accounts, counter caches,
+optimistic relationship updates, or a second post-creation surface.
+
 ## Guardrails
 
 - Keep the app working after each chunk.
