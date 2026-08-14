@@ -28,11 +28,13 @@ const posts = [
   { id: 4, title: 'Fourth post' }
 ];
 
-const renderFeed = (props = {}) => render(
+const feedElement = (props = {}) => (
   <MemoryRouter>
     <Feed {...props} />
   </MemoryRouter>
 );
+
+const renderFeed = (props = {}) => render(feedElement(props));
 
 describe('Feed', () => {
   afterEach(() => {
@@ -111,17 +113,9 @@ describe('Feed', () => {
       isLoading: false
     });
 
-    const { rerender } = render(
-      <MemoryRouter>
-        <Feed tag="photography" />
-      </MemoryRouter>
-    );
+    const { rerender } = renderFeed({ tag: 'photography' });
 
-    rerender(
-      <MemoryRouter>
-        <Feed />
-      </MemoryRouter>
-    );
+    rerender(feedElement());
 
     expect(screen.getByRole('heading', { name: 'Posts' })).toHaveFocus();
   });
@@ -134,18 +128,10 @@ describe('Feed', () => {
       isLoading: false
     });
 
-    const { rerender } = render(
-      <MemoryRouter>
-        <Feed tag="photography" />
-      </MemoryRouter>
-    );
+    const { rerender } = renderFeed({ tag: 'photography' });
     screen.getByRole('heading', { name: 'Posts tagged #photography' }).blur();
 
-    rerender(
-      <MemoryRouter>
-        <Feed tag="sunset" />
-      </MemoryRouter>
-    );
+    rerender(feedElement({ tag: 'sunset' }));
 
     expect(screen.getByRole('heading', { name: 'Posts tagged #sunset' })).toHaveFocus();
   });
@@ -156,6 +142,7 @@ describe('Feed', () => {
     renderFeed({ tag: 'photography' });
 
     expect(screen.getByRole('status')).toHaveTextContent('Loading posts…');
+    expect(screen.queryByRole('list')).not.toBeInTheDocument();
   });
 
   it('renders an error with a retry action', async () => {
@@ -171,6 +158,7 @@ describe('Feed', () => {
     await user.click(screen.getByRole('button', { name: 'Try again' }));
 
     expect(screen.getByRole('alert')).toHaveTextContent('Unable to load posts.');
+    expect(screen.queryByRole('list')).not.toBeInTheDocument();
     expect(refetch).toHaveBeenCalled();
   });
 });

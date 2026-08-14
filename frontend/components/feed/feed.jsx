@@ -51,39 +51,46 @@ const Feed = ({ tag }) => {
     </header>
   );
 
-  if (posts.isLoading) {
-    return (
-      <div className="feed-posts">
-        <div className="new-post-container">
-          <PostBar />
-        </div>
-        {feedHeader}
+  const renderFeedContent = () => {
+    if (posts.isLoading) {
+      return (
         <p className="feed-status" role="status">{tagFilterMessages.loading}</p>
-        <ul className="feed-list"></ul>
-      </div>
-    );
-  }
+      );
+    }
 
-  if (posts.error) {
-    return (
-      <div className="feed-posts">
-        <div className="new-post-container">
-          <PostBar />
+    if (posts.error) {
+      return (
+        <div className="feed-state" role="alert">
+          <p>{tagFilterMessages.loadError}</p>
+          <button onClick={() => posts.refetch()} type="button">
+            {buttonLabels.retry}
+          </button>
         </div>
-        {feedHeader}
+      );
+    }
+
+    return (
+      <>
         <ul className="feed-list">
-          <li className="feed-post">
-            <div className="feed-state" role="alert">
-              <p>{tagFilterMessages.loadError}</p>
-              <button onClick={() => posts.refetch()} type="button">
-                {buttonLabels.retry}
-              </button>
-            </div>
-          </li>
+          {feedItems.length > 0 ? feedItems : (
+            <li className="feed-state feed-empty-state">
+              <h3>{tagFilterMessages.noPosts}</h3>
+            </li>
+          )}
         </ul>
-      </div>
+        {posts.hasNextPage && (
+          <button
+            className="load-more-posts"
+            disabled={posts.isFetchingNextPage}
+            onClick={() => posts.fetchNextPage()}>
+            {posts.isFetchingNextPage
+              ? buttonLabels.loadingPosts
+              : buttonLabels.loadMorePosts}
+          </button>
+        )}
+      </>
     );
-  }
+  };
 
   return (
     <div className="feed-posts">
@@ -91,21 +98,7 @@ const Feed = ({ tag }) => {
         <PostBar />
       </div>
       {feedHeader}
-      <ul className="feed-list">
-        {feedItems.length > 0 ? feedItems : (
-          <li className="feed-state feed-empty-state">
-            <h3>{tagFilterMessages.noPosts}</h3>
-          </li>
-        )}
-      </ul>
-      { posts.hasNextPage && (
-        <button
-          className="load-more-posts"
-          disabled={ posts.isFetchingNextPage }
-          onClick={ () => posts.fetchNextPage() }>
-          { posts.isFetchingNextPage ? buttonLabels.loadingPosts : buttonLabels.loadMorePosts }
-        </button>
-      ) }
+      {renderFeedContent()}
     </div>
   );
 };
