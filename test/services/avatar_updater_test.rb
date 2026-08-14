@@ -3,12 +3,23 @@ require 'minitest/mock'
 
 class AvatarUpdaterTest < ActiveSupport::TestCase
   setup do
+    @uploads = []
     User.delete_all
     ActiveStorage::Attachment.delete_all
     ActiveStorage::Blob.delete_all
 
     @user = User.create!(username: 'avatar_service_user', password: 'password')
     @user.avatar.attach(valid_avatar)
+  end
+
+  teardown do
+    ActiveStorage::Blob.find_each do |blob|
+      blob.service.delete(blob.key)
+    end
+  ensure
+    @uploads.each do |upload|
+      upload.tempfile.close!
+    end
   end
 
   test 'cleanup failure keeps the successful replacement and logs the stale blob' do
@@ -54,9 +65,11 @@ class AvatarUpdaterTest < ActiveSupport::TestCase
   private
 
   def valid_avatar
-    Rack::Test::UploadedFile.new(
+    upload = Rack::Test::UploadedFile.new(
       Rails.root.join('app/assets/images/profile_blue_150x150.png'),
       'image/png'
     )
+    @uploads << upload
+    upload
   end
 end
