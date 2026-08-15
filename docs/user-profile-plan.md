@@ -620,6 +620,9 @@ Scope:
 - follower/following search or sorting controls
 - manual retry buttons for transient profile/view failures
 - relationship counter-cache columns without measured need
+- consider renaming the existing `followers` and `followees` associations to
+  clarify that they return `Follow` records rather than `User` records; defer
+  this cross-cutting model refactor until it provides enough value on its own
 
 ## Definition of Done
 

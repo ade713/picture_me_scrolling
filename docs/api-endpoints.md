@@ -8,7 +8,9 @@
   `user[email]`, and `user[password]`; successful signup initiates email
   verification without failing account creation when delivery is unavailable
 - `GET /api/users`
-- `GET /api/users/:id`
+- `GET /api/users/:id` - return public profile identity, exact follower and
+  following counts, and whether the current user follows the profile; unknown
+  IDs return JSON `404 Not Found`
 
 ### Session
 - `POST /api/session`
@@ -29,7 +31,7 @@ All account endpoints return `401` when no authenticated session exists and
 `422` for account-policy or validation errors. Successful responses use the
 private current-user payload, including `email`, `email_verified_at`,
 `avatar_url`, and `account_settings_enabled`. User index and show payloads do
-not expose email fields.
+not expose email fields or account-settings availability.
 
 ### Email Verification
 
