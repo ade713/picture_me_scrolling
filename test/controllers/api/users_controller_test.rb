@@ -160,6 +160,7 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
       response_json.dig(recommended_user.id.to_s, 'avatar_url'),
       default_avatar_name
     )
+    refute response_json.dig(recommended_user.id.to_s).key?('account_settings_enabled')
   end
 
   test 'show requires login' do
@@ -171,9 +172,14 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal ['You must be logged in'], response_json
   end
 
-  test 'show returns the requested user payload' do
+  test 'show returns public profile identity counts and viewer relationship state' do
     viewer = create_user('viewer')
     user = create_user('visible_user')
+    another_follower = create_user('another_follower')
+    followed_user = create_user('followed_user')
+    Follow.create!(follower: viewer, followee: user)
+    Follow.create!(follower: another_follower, followee: user)
+    Follow.create!(follower: user, followee: followed_user)
 
     login_as(viewer)
     get api_user_url(user)
@@ -182,8 +188,31 @@ class Api::UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal user.id, response_json['id']
     assert_equal user.username, response_json['username']
     assert_includes response_json['avatar_url'], default_avatar_name
+    assert_equal 2, response_json['follower_count']
+    assert_equal 1, response_json['following_count']
+    assert response_json['followed_by_current_user']
     refute response_json.key?('email')
     refute response_json.key?('email_verified_at')
+    refute response_json.key?('account_settings_enabled')
+  end
+
+  test 'show reports that the current user does not follow themselves' do
+    user = create_user('current_user')
+
+    login_as(user)
+    get api_user_url(user)
+
+    assert_response :success
+    refute response_json['followed_by_current_user']
+  end
+
+  test 'show returns JSON not found for an unknown user' do
+    login_as(create_user('viewer'))
+
+    get api_user_url(id: User.maximum(:id) + 1)
+
+    assert_response :not_found
+    assert_equal ['User not found'], response_json
   end
 
   test 'show prefers an attached avatar over the default profile image' do
