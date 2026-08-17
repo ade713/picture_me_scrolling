@@ -11,6 +11,10 @@
 - `GET /api/users/:id` - return public profile identity, exact follower and
   following counts, and whether the current user follows the profile; unknown
   IDs return JSON `404 Not Found`
+- `GET /api/users/:user_id/posts` - return posts authored by the requested user
+  with stable newest-first ordering and pagination; optionally filter that
+  user's posts using `tag`, such as
+  `GET /api/users/42/posts?tag=photography&page=1&per_page=20`
 
 ### Session
 - `POST /api/session`
@@ -133,6 +137,12 @@ followed users. Pagination metadata describes the filtered result. A valid tag
 with no accessible matches returns `200 OK` with an empty paginated feed;
 malformed or blank tag filters return `422 Unprocessable Entity` with `Tag
 filter is invalid`.
+
+User-post filtering applies only to posts authored by the requested profile
+user and does not require the viewer to follow that user. Unknown users return
+JSON `404 Not Found`. A valid tag without matches returns the same empty
+paginated shape as the dashboard feed, while malformed or blank tag filters
+return `422 Unprocessable Entity`.
 
 ### Follows
 - `POST /api/users/:user_id/follow`
