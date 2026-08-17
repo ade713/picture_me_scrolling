@@ -8,6 +8,9 @@ Rails.application.routes.draw do
       resources :followers, only: [:index], controller: 'user_followers'
       resources :posts, only: [:index], controller: 'user_posts'
     end
+    get 'users/:user_id/following',
+        to: 'user_following#index',
+        as: :user_following
     resource :account, only: [] do
       patch :avatar
       patch :email

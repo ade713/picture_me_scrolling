@@ -1,4 +1,4 @@
-class Api::UserFollowersController < ApplicationController
+class Api::UserFollowingController < ApplicationController
   include UserRelationshipRendering
 
   before_action :require_logged_in
@@ -7,7 +7,7 @@ class Api::UserFollowersController < ApplicationController
     user = User.find_by(id: params[:user_id])
     return render json: [User::NOT_FOUND_ERROR], status: :not_found unless user
 
-    @users, @pagination = UserFollowersQuery.call(
+    @users, @pagination = UserFollowingQuery.call(
       user: user,
       page: params[:page],
       per_page: params[:per_page]
