@@ -19,7 +19,7 @@ class Api::UsersController < ApplicationController
 
   def show
     @user = User.find_by(id: params[:id])
-    return render json: ['User not found'], status: :not_found unless @user
+    return render json: [User::NOT_FOUND_ERROR], status: :not_found unless @user
 
     @follower_count = @user.followers.count
     @following_count = @user.followees.count

@@ -13,6 +13,7 @@
 #
 
 class User < ApplicationRecord
+  NOT_FOUND_ERROR = 'User not found'.freeze
   DEFAULT_AVATAR_IMAGE = 'profile_blue_150x150.png'.freeze
   DEFAULT_RECOMMENDED_FOLLOW_LIMIT = 6
   MAXIMUM_EMAIL_LENGTH = 254
