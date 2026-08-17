@@ -15,6 +15,8 @@
   with stable newest-first ordering and pagination; optionally filter that
   user's posts using `tag`, such as
   `GET /api/users/42/posts?tag=photography&page=1&per_page=20`
+- `GET /api/users/:user_id/followers` - return the requested user's followers
+  with stable newest-relationship-first ordering and pagination
 
 ### Session
 - `POST /api/session`
@@ -147,6 +149,12 @@ return `422 Unprocessable Entity`.
 ### Follows
 - `POST /api/users/:user_id/follow`
 - `DELETE /api/users/:user_id/follow`
+
+Follower collection payloads contain a `users` object keyed by user ID, an
+ordered `user_ids` array, and standard pagination metadata. Each public user
+payload includes `followed_by_current_user` so relationship controls can render
+without additional requests. The current user's own entry always reports
+`false`. Unknown profile users return JSON `404 Not Found`.
 
 ### Likes
 - `POST /api/posts/:post_id/like`
