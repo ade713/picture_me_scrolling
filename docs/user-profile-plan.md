@@ -1,6 +1,16 @@
 # User Profile Page Plan
 
-Status: planned.
+Status: in progress. Phase 1 data APIs are complete; Phase 2-1 is next.
+
+## Implementation Progress
+
+Phase 1 was completed across PRs #154–#157. The backend now provides profile
+identity and relationship counts, paginated profile posts with optional tag
+filtering, and paginated Followers and Following collections. All collection
+endpoints share pagination bounds and public relationship-user serialization.
+
+The next checkpoint is Phase 2-1: add the profile route, identity query, page
+shell, and loading, error, not-found, and Back states.
 
 ## Goal
 
@@ -477,9 +487,9 @@ Verification includes:
 Keep each PR independently reviewable. Reassess and split before a PR approaches
 10–15 files or 400–500 net lines.
 
-### Phase 1: Add Profile Data APIs
+### Phase 1: Add Profile Data APIs — Complete
 
-#### Phase 1-1: Add Profile Identity and Counts
+#### Phase 1-1: Add Profile Identity and Counts — Complete
 
 Scope:
 
@@ -488,7 +498,7 @@ Scope:
 - protect private account fields
 - add controller/model/query tests and API documentation
 
-#### Phase 1-2: Add Paginated User Posts
+#### Phase 1-2: Add Paginated User Posts — Complete
 
 Scope:
 
@@ -497,7 +507,7 @@ Scope:
 - add optional user-scoped tag filtering
 - cover missing users, invalid tags, empty results, and pagination
 
-#### Phase 1-3: Add Paginated Followers
+#### Phase 1-3: Add Paginated Followers — Complete
 
 Scope:
 
@@ -506,7 +516,7 @@ Scope:
 - order relationships newest first with a stable tie-breaker
 - add query/controller tests and documentation
 
-#### Phase 1-4: Add Paginated Following
+#### Phase 1-4: Add Paginated Following — Complete
 
 Scope:
 
