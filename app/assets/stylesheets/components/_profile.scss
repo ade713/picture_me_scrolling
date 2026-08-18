@@ -1,0 +1,96 @@
+.profile-page {
+  box-sizing: border-box;
+  min-height: 100vh;
+  color: black;
+  background-color: white;
+  font-family: 'Muli', sans-serif;
+}
+
+.profile-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  min-height: 52px;
+  padding-left: 16px;
+  color: white;
+  background-color: black;
+  border-bottom: 1px solid black;
+}
+
+.profile-brand {
+  border-radius: 3px;
+  font-family: 'Mogra', cursive;
+  font-size: 25px;
+  line-height: 1;
+}
+
+.profile-brand:hover {
+  color: #DE0F01;
+}
+
+.profile-main {
+  box-sizing: border-box;
+  width: min(100%, 1000px);
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.profile-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid currentColor;
+  font-weight: 700;
+}
+
+.profile-back-link:hover {
+  color: #CE0063;
+}
+
+.profile-brand:focus-visible,
+.profile-back-link:focus-visible {
+  outline: 3px solid #CE0063;
+  outline-offset: 3px;
+}
+
+.profile-state,
+.profile-identity {
+  box-sizing: border-box;
+  margin-top: 28px;
+  padding: 48px 24px;
+  border: 2px solid black;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.profile-state h1,
+.profile-identity h1 {
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-size: 38px;
+  line-height: 1.1;
+}
+
+.profile-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.profile-avatar {
+  @include avatar-frame(112px);
+  flex: 0 0 112px;
+  background-color: white;
+}
+
+@include mobile {
+  .profile-main {
+    padding: 28px 12px;
+  }
+
+  .profile-state,
+  .profile-identity {
+    padding: 36px 16px;
+  }
+}
