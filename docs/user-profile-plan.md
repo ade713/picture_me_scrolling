@@ -1,6 +1,7 @@
 # User Profile Page Plan
 
-Status: in progress. Phase 1 and Phase 2-1 are complete; Phase 2-2 is next.
+Status: in progress. Phase 1 and Phase 2 are complete through Phase 2-2;
+Phase 2-3 is next.
 
 ## Implementation Progress
 
@@ -13,8 +14,13 @@ Phase 2-1 was completed in PR #158. The frontend now provides the protected
 profile route, identity query integration, initial responsive page shell, and
 loading, not-found, generic error, and Back states.
 
-The next checkpoint is Phase 2-2: add the complete profile header, compact and
-accessibly exact relationship counts, and self/other-user actions.
+Phase 2-2 was completed in PR #159. The frontend now provides the responsive
+profile header, compact relationship counts with accessible exact values,
+Settings for the current user's profile, Follow/Unfollow actions for other
+profiles, and post/user query refreshes after relationship mutations.
+
+The next checkpoint is Phase 2-3: add URL-owned Posts, Followers, and Following
+navigation with normalized parameters and browser-history coverage.
 
 ## Goal
 
@@ -548,7 +554,7 @@ Scope:
 - add loading, error, not-found, and Back behavior
 - add route and component tests
 
-#### Phase 2-2: Add Profile Header and Actions
+#### Phase 2-2: Add Profile Header and Actions — Complete
 
 Scope:
 
