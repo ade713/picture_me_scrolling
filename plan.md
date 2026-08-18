@@ -983,14 +983,13 @@ using while higher-priority behavior and backend work continues.
 
 ## Planned Repository Cleanup: Webpack License Artifact
 
-Status: technical-debt follow-up.
+Status: complete in User Profile Phase 2-2.
 
 Production Webpack builds generate
 `app/assets/javascripts/bundle.js.LICENSE.txt`. The compiled bundle is already
-ignored, but its generated license companion is not. Add
-`app/assets/javascripts/*.LICENSE.txt` to `.gitignore` after the current user
-profile PR, or include it in the next focused build-tooling or repository
-cleanup PR. Keep generated output out of feature commits.
+ignored, and `.gitignore` now also excludes its generated license companion
+through `app/assets/javascripts/*.LICENSE.txt`. Generated Webpack output stays
+out of feature commits.
 
 ## Planned Test Suite Optimization: BCrypt Cost
 

@@ -4,12 +4,17 @@ import { Link, useParams } from 'react-router-dom';
 import { APP_NAME, BACK_TO_DASHBOARD_LABEL } from '../../config/app';
 import { profileMessages } from '../../config/user_profile';
 import { routes } from '../../config/routes';
-import { useUser } from '../../query/user_hooks';
+import { useCurrentUser } from '../../query/session_hooks';
+import { useFollowUser, useUnfollowUser, useUser } from '../../query/user_hooks';
 import AccountMenu from '../dashboard/account_menu';
+import ProfileHeader from './profile_header';
 
 const ProfilePage = () => {
   const { id } = useParams();
+  const currentUser = useCurrentUser().data;
+  const followUser = useFollowUser();
   const profileQuery = useUser(id);
+  const unfollowUser = useUnfollowUser();
 
   const renderProfileState = () => {
     if (profileQuery.isPending) {
@@ -29,14 +34,13 @@ const ProfilePage = () => {
     }
 
     return (
-      <section className="profile-identity" aria-labelledby="profile-heading">
-        <img
-          alt={`${profileQuery.data.username} avatar`}
-          className="profile-avatar"
-          src={profileQuery.data.avatar_url}
-        />
-        <h1 id="profile-heading">{profileQuery.data.username}</h1>
-      </section>
+      <ProfileHeader
+        currentUserId={currentUser.id}
+        onFollow={() => followUser.mutate(profileQuery.data.id)}
+        onUnfollow={() => unfollowUser.mutate(profileQuery.data.id)}
+        profile={profileQuery.data}
+        relationshipPending={followUser.isPending || unfollowUser.isPending}
+      />
     );
   };
 
