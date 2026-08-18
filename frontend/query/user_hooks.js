@@ -4,8 +4,9 @@ import { createFollow, deleteFollow, fetchUser, fetchUsers } from '../util/user_
 import { feedCacheFromPage } from './post_hooks';
 import { queryKeys } from './query_keys';
 
-const updatePostsAndRefreshUsers = queryClient => firstPage => {
+const updateFeedAndRefreshUserData = queryClient => firstPage => {
   queryClient.setQueryData(queryKeys.posts, feedCacheFromPage(firstPage));
+  queryClient.invalidateQueries({ queryKey: queryKeys.posts });
   queryClient.invalidateQueries({ queryKey: queryKeys.users });
 };
 
@@ -30,7 +31,7 @@ export const useFollowUser = () => {
 
   return useMutation({
     mutationFn: id => createFollow(id),
-    onSuccess: updatePostsAndRefreshUsers(queryClient)
+    onSuccess: updateFeedAndRefreshUserData(queryClient)
   });
 };
 
@@ -39,6 +40,6 @@ export const useUnfollowUser = () => {
 
   return useMutation({
     mutationFn: id => deleteFollow(id),
-    onSuccess: updatePostsAndRefreshUsers(queryClient)
+    onSuccess: updateFeedAndRefreshUserData(queryClient)
   });
 };
