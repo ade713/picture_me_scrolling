@@ -471,8 +471,17 @@ Demo data should provide:
 - more than one page of posts for one profile
 - more than one page of followers or following for a stable relationship-list
   pagination scenario
+- at least one profile with 1,000 or more followers or followed users so compact
+  relationship-count formatting and overflow behavior are visible
 - profile posts with shared tags for filtered pagination
 - at least one profile with no posts, no followers, or no followed users
+
+Seed updates should intentionally represent distinct frontend states and display
+thresholds instead of only providing enough records for backend behavior.
+Defer these updates until Phase 5-2, after the functional profile work is
+complete, so all representative profile states can be added and verified
+together. Use PicMeS Guest as the primary portfolio showcase profile for the
+1,000-or-more follower scenario.
 
 Verification includes:
 
@@ -618,7 +627,12 @@ Scope:
 
 Scope:
 
+- update seeds at this closeout checkpoint, after all functional profile phases
+  are complete
 - add representative profile and relationship seeds
+- include frontend-focused seed scenarios such as relationship counts above the
+  1,000-count compact-formatting threshold, using PicMeS Guest as the primary
+  portfolio example
 - run full automated verification and production build
 - complete keyboard-only, responsive, history, and pagination smoke passes
 - update API, component, smoke-check, and closeout documentation
