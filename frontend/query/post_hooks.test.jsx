@@ -2,8 +2,8 @@ import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { get, patch } from '../util/api_client';
-import { usePosts, useUpdatePost } from './post_hooks';
+import { get, patch, post } from '../util/api_client';
+import { useLikePost, usePosts, useUpdatePost, useUserPosts } from './post_hooks';
 import { queryKeys } from './query_keys';
 
 vi.mock('../util/api_client', () => ({
@@ -95,6 +95,68 @@ describe('post hooks', () => {
       .toHaveLength(2);
     expect(queryClient.getQueryData(queryKeys.postsFeed('sunset')).pages)
       .toHaveLength(1);
+  });
+
+  it('requests and paginates posts for one profile', async () => {
+    get.mockImplementation(async endpoint => {
+      const params = new URL(endpoint, 'http://localhost').searchParams;
+      const page = Number(params.get('page'));
+
+      return {
+        pagination: { has_more: page === 1, page },
+        post_ids: [page],
+        posts: { [page]: { id: page, title: `Post ${page}` } }
+      };
+    });
+
+    const { result } = renderHook(() => useUserPosts(42), { wrapper });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await act(async () => {
+      await result.current.fetchNextPage();
+    });
+
+    expect(get).toHaveBeenNthCalledWith(
+      1,
+      '/api/users/42/posts?page=1&per_page=10'
+    );
+    expect(get).toHaveBeenNthCalledWith(
+      2,
+      '/api/users/42/posts?page=2&per_page=10'
+    );
+    const cachedProfilePosts = queryClient.getQueryData(queryKeys.userPosts(42));
+    expect(cachedProfilePosts.pages).toHaveLength(2);
+    expect(cachedProfilePosts.pages[1].posts[2]).toEqual({
+      id: 2,
+      title: 'Post 2'
+    });
+  });
+
+  it('updates a liked post in dashboard and profile post collections', async () => {
+    const originalPost = { id: 10, liked: false };
+    const updatedPost = { id: 10, liked: true };
+    const page = {
+      pagination: { has_more: false, page: 1 },
+      post_ids: [originalPost.id],
+      posts: { [originalPost.id]: originalPost }
+    };
+    const feed = { pageParams: [1], pages: [page] };
+    queryClient.setQueryData(queryKeys.posts, feed);
+    queryClient.setQueryData(queryKeys.userPosts(42), feed);
+    post.mockResolvedValue(updatedPost);
+
+    const { result } = renderHook(() => useLikePost(), { wrapper });
+
+    await act(async () => {
+      await result.current.mutateAsync(originalPost.id);
+    });
+
+    expect(
+      queryClient.getQueryData(queryKeys.posts).pages[0].posts[originalPost.id]
+    ).toEqual(updatedPost);
+    expect(
+      queryClient.getQueryData(queryKeys.userPosts(42)).pages[0].posts[originalPost.id]
+    ).toEqual(updatedPost);
   });
 
   it('updates cached post tags with the API response', async () => {
