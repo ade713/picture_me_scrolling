@@ -1028,8 +1028,8 @@ parsing, autocomplete, or Zustand state.
 
 ## Planned Feature: User Profile Pages
 
-Status: in progress. Backend Phase 1 and frontend Phase 2 are complete through
-Phase 2-2; Phase 2-3 URL-owned profile navigation is next.
+Status: in progress. Backend Phase 1 and frontend Phase 2 are complete;
+Phase 3-1 paginated profile posts are next.
 
 Goal: add authenticated user profile pages with identity, follower/following
 counts, authored posts, Followers and Following views, and profile-scoped tag

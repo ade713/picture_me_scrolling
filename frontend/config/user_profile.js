@@ -4,6 +4,24 @@ export const profileMessages = Object.freeze({
   notFound: 'User not found'
 });
 
+export const profileViews = Object.freeze({
+  followers: 'followers',
+  following: 'following',
+  posts: 'posts'
+});
+
+export const profileViewLabels = Object.freeze({
+  [profileViews.followers]: 'Followers',
+  [profileViews.following]: 'Following',
+  [profileViews.posts]: 'Posts'
+});
+
+export const profileViewFromParam = viewParam => (
+  viewParam === profileViews.followers || viewParam === profileViews.following
+    ? viewParam
+    : profileViews.posts
+);
+
 const compactCountFormatter = new Intl.NumberFormat('en', {
   maximumFractionDigits: 1,
   notation: 'compact'

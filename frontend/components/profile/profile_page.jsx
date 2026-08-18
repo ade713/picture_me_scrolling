@@ -1,20 +1,42 @@
-import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 
 import { APP_NAME, BACK_TO_DASHBOARD_LABEL } from '../../config/app';
-import { profileMessages } from '../../config/user_profile';
+import {
+  profileMessages,
+  profileViewFromParam,
+  profileViews
+} from '../../config/user_profile';
 import { routes } from '../../config/routes';
 import { useCurrentUser } from '../../query/session_hooks';
 import { useFollowUser, useUnfollowUser, useUser } from '../../query/user_hooks';
 import AccountMenu from '../dashboard/account_menu';
 import ProfileHeader from './profile_header';
+import ProfileNavigation from './profile_navigation';
 
 const ProfilePage = () => {
   const { id } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedView = searchParams.get('view');
+  const activeView = profileViewFromParam(requestedView);
   const currentUser = useCurrentUser().data;
   const followUser = useFollowUser();
   const profileQuery = useUser(id);
   const unfollowUser = useUnfollowUser();
+
+  useEffect(() => {
+    const normalizedParams = new URLSearchParams(searchParams);
+
+    if (activeView === profileViews.posts) {
+      normalizedParams.delete('view');
+    } else {
+      normalizedParams.delete('tag');
+    }
+
+    if (normalizedParams.toString() !== searchParams.toString()) {
+      setSearchParams(normalizedParams, { replace: true });
+    }
+  }, [activeView, searchParams, setSearchParams]);
 
   const renderProfileState = () => {
     if (profileQuery.isPending) {
@@ -34,13 +56,16 @@ const ProfilePage = () => {
     }
 
     return (
-      <ProfileHeader
-        currentUserId={currentUser.id}
-        onFollow={() => followUser.mutate(profileQuery.data.id)}
-        onUnfollow={() => unfollowUser.mutate(profileQuery.data.id)}
-        profile={profileQuery.data}
-        relationshipPending={followUser.isPending || unfollowUser.isPending}
-      />
+      <>
+        <ProfileHeader
+          currentUserId={currentUser.id}
+          onFollow={() => followUser.mutate(profileQuery.data.id)}
+          onUnfollow={() => unfollowUser.mutate(profileQuery.data.id)}
+          profile={profileQuery.data}
+          relationshipPending={followUser.isPending || unfollowUser.isPending}
+        />
+        <ProfileNavigation activeView={activeView} profileId={profileQuery.data.id} />
+      </>
     );
   };
 

@@ -1,7 +1,13 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
+import {
+  MemoryRouter,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate
+} from 'react-router-dom';
 
 import { routes } from '../../config/routes';
 import { useCurrentUser } from '../../query/session_hooks';
@@ -50,7 +56,22 @@ const buildProfile = (overrides = {}) => ({
 const LocationPath = () => {
   const location = useLocation();
 
-  return <span data-testid="location-path">{location.pathname}</span>;
+  return (
+    <span data-testid="location-path">
+      {location.pathname}{location.search}
+    </span>
+  );
+};
+
+const HistoryControls = () => {
+  const navigate = useNavigate();
+
+  return (
+    <>
+      <button onClick={() => navigate(-1)} type="button">History back</button>
+      <button onClick={() => navigate(1)} type="button">History forward</button>
+    </>
+  );
 };
 
 const renderProfileRoute = (path = routes.userProfile(42)) => render(
@@ -68,6 +89,7 @@ const renderProfileRoute = (path = routes.userProfile(42)) => render(
       <Route path={routes.dashboard} element={<p>Dashboard</p>} />
     </Routes>
     <LocationPath />
+    <HistoryControls />
   </MemoryRouter>
 );
 
@@ -109,6 +131,124 @@ describe('ProfilePage', () => {
       routes.dashboard
     );
     expect(screen.getByRole('button', { name: 'Follow Athos' })).toBeEnabled();
+    expect(screen.getByRole('navigation', { name: 'Profile views' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Posts' })).toHaveAttribute(
+      'aria-current',
+      'page'
+    );
+  });
+
+  it('provides canonical links for each profile view', () => {
+    useUser.mockReturnValue(buildProfileQuery({ data: buildProfile() }));
+
+    renderProfileRoute();
+
+    expect(screen.getByRole('link', { name: 'Posts' })).toHaveAttribute(
+      'href',
+      routes.userProfile(42)
+    );
+    expect(screen.getByRole('link', { name: 'Followers' })).toHaveAttribute(
+      'href',
+      routes.userProfileView(42, 'followers')
+    );
+    expect(screen.getByRole('link', { name: 'Following' })).toHaveAttribute(
+      'href',
+      routes.userProfileView(42, 'following')
+    );
+  });
+
+  it('restores a direct Followers URL while preserving the profile header', () => {
+    useUser.mockReturnValue(buildProfileQuery({ data: buildProfile() }));
+
+    renderProfileRoute('/users/42?view=followers');
+
+    expect(screen.getByRole('heading', { name: 'Athos' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Followers' })).toHaveAttribute(
+      'aria-current',
+      'page'
+    );
+    expect(screen.getByTestId('location-path')).toHaveTextContent(
+      '/users/42?view=followers'
+    );
+  });
+
+  it('switches views through ordinary links and returns to canonical Posts', async () => {
+    const user = userEvent.setup();
+    useUser.mockReturnValue(buildProfileQuery({ data: buildProfile() }));
+
+    renderProfileRoute('/users/42?tag=photography');
+    await user.click(screen.getByRole('link', { name: 'Following' }));
+
+    expect(screen.getByTestId('location-path')).toHaveTextContent(
+      '/users/42?view=following'
+    );
+    expect(screen.getByRole('link', { name: 'Following' })).toHaveAttribute(
+      'aria-current',
+      'page'
+    );
+
+    await user.click(screen.getByRole('link', { name: 'Posts' }));
+
+    expect(screen.getByTestId('location-path')).toHaveTextContent('/users/42');
+    expect(screen.getByRole('link', { name: 'Posts' })).toHaveAttribute(
+      'aria-current',
+      'page'
+    );
+  });
+
+  it('restores profile views with browser Back and Forward navigation', async () => {
+    const user = userEvent.setup();
+    useUser.mockReturnValue(buildProfileQuery({ data: buildProfile() }));
+
+    renderProfileRoute();
+    await user.click(screen.getByRole('link', { name: 'Followers' }));
+    expect(screen.getByTestId('location-path')).toHaveTextContent(
+      '/users/42?view=followers'
+    );
+
+    await user.click(screen.getByRole('button', { name: 'History back' }));
+    expect(screen.getByTestId('location-path')).toHaveTextContent('/users/42');
+    expect(screen.getByRole('link', { name: 'Posts' })).toHaveAttribute(
+      'aria-current',
+      'page'
+    );
+
+    await user.click(screen.getByRole('button', { name: 'History forward' }));
+    expect(screen.getByTestId('location-path')).toHaveTextContent(
+      '/users/42?view=followers'
+    );
+    expect(screen.getByRole('link', { name: 'Followers' })).toHaveAttribute(
+      'aria-current',
+      'page'
+    );
+  });
+
+  it('removes a conflicting tag from non-Posts view URLs', async () => {
+    useUser.mockReturnValue(buildProfileQuery({ data: buildProfile() }));
+
+    renderProfileRoute('/users/42?view=followers&tag=photography');
+
+    await waitFor(() => {
+      expect(screen.getByTestId('location-path')).toHaveTextContent(
+        '/users/42?view=followers'
+      );
+    });
+  });
+
+  it('normalizes unsupported views to Posts while retaining its tag', async () => {
+    useUser.mockReturnValue(buildProfileQuery({ data: buildProfile() }));
+
+    renderProfileRoute('/users/42?view=unknown&tag=photography');
+
+    await waitFor(() => {
+      expect(screen.getByTestId('location-path')).toHaveTextContent(
+        '/users/42?tag=photography'
+      );
+    });
+    expect(screen.getByRole('link', { name: 'Posts' })).toHaveAttribute(
+      'aria-current',
+      'page'
+    );
   });
 
   it('shows compact counts while preserving exact accessible labels', () => {
