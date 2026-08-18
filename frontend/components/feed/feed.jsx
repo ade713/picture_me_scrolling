@@ -2,13 +2,12 @@ import React, { useEffect, useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import { buttonLabels } from '../../config/button_labels';
+import { PRIORITY_MEDIA_POST_COUNT } from '../../config/post_display';
 import { routes } from '../../config/routes';
 import { tagFilterMessages } from '../../config/tags';
 import { usePosts } from '../../query/post_hooks';
 import FeedItem from './feed_item';
 import PostBar from '../posts/post_bar';
-
-const PRIORITY_MEDIA_POST_COUNT = 3;
 
 const Feed = ({ tag }) => {
   const posts = usePosts(tag);

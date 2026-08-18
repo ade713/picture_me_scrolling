@@ -120,21 +120,13 @@ div.follow-hdr {
 
   button.follow-btn,
   button.unfollow-btn {
+    color: black;
     border-radius: 3px;
     padding: 4px 6px;
   }
 
-  button.follow-btn {
-    color: blue;
-  }
-
   button.follow-btn:hover,
-  button.follow-btn:focus-visible {
-    background-color: rgba(0, 0, 0, 0.01);
-    box-shadow: 1px 1px 3px lightblue;
-    transform: scale(1.08);
-  }
-
+  button.follow-btn:focus-visible,
   button.unfollow-btn:hover,
   button.unfollow-btn:focus-visible {
     background-color: rgba(0, 0, 0, 0.01);
