@@ -1,6 +1,6 @@
 # User Profile Page Plan
 
-Status: in progress. Phase 1 data APIs are complete; Phase 2-1 is next.
+Status: in progress. Phase 1 and Phase 2-1 are complete; Phase 2-2 is next.
 
 ## Implementation Progress
 
@@ -9,8 +9,12 @@ identity and relationship counts, paginated profile posts with optional tag
 filtering, and paginated Followers and Following collections. All collection
 endpoints share pagination bounds and public relationship-user serialization.
 
-The next checkpoint is Phase 2-1: add the profile route, identity query, page
-shell, and loading, error, not-found, and Back states.
+Phase 2-1 was completed in PR #158. The frontend now provides the protected
+profile route, identity query integration, initial responsive page shell, and
+loading, not-found, generic error, and Back states.
+
+The next checkpoint is Phase 2-2: add the complete profile header, compact and
+accessibly exact relationship counts, and self/other-user actions.
 
 ## Goal
 
@@ -526,7 +530,7 @@ Scope:
 
 ### Phase 2: Build the Profile Page Foundation
 
-#### Phase 2-1: Add Profile Route and Identity States
+#### Phase 2-1: Add Profile Route and Identity States — Complete
 
 Scope:
 
