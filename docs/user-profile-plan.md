@@ -18,8 +18,8 @@ profile header, compact relationship counts with accessible exact values,
 Settings for the current user's profile, Follow/Unfollow actions for other
 profiles, and post/user query refreshes after relationship mutations.
 
-Phase 2-3 implementation is complete. The frontend now provides URL-owned
-Posts, Followers, and Following navigation, canonical view links, conflicting
+Phase 2-3 was completed in PR #160. The frontend now provides URL-owned Posts,
+Followers, and Following navigation, canonical view links, conflicting
 parameter normalization, persistent profile identity across views, and direct
 URL and browser-history coverage.
 
@@ -546,7 +546,7 @@ Scope:
 - reuse shared relationship pagination/serialization where readable
 - add query/controller tests and documentation
 
-### Phase 2: Build the Profile Page Foundation
+### Phase 2: Build the Profile Page Foundation — Complete
 
 #### Phase 2-1: Add Profile Route and Identity States — Complete
 
