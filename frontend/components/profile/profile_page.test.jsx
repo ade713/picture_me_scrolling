@@ -29,6 +29,10 @@ vi.mock('../dashboard/account_menu', () => ({
   default: () => <div>Account menu</div>
 }));
 
+vi.mock('./profile_posts', () => ({
+  default: ({ profileId }) => <div>Posts for profile {profileId}</div>
+}));
+
 const buildProfileQuery = (overrides = {}) => ({
   data: null,
   error: null,
@@ -136,6 +140,7 @@ describe('ProfilePage', () => {
       'aria-current',
       'page'
     );
+    expect(screen.getByText('Posts for profile 42')).toBeInTheDocument();
   });
 
   it('provides canonical links for each profile view', () => {
@@ -170,6 +175,7 @@ describe('ProfilePage', () => {
     expect(screen.getByTestId('location-path')).toHaveTextContent(
       '/users/42?view=followers'
     );
+    expect(screen.queryByText('Posts for profile 42')).not.toBeInTheDocument();
   });
 
   it('switches views through ordinary links and returns to canonical Posts', async () => {
