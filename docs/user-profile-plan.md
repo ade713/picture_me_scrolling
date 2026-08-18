@@ -1,7 +1,6 @@
 # User Profile Page Plan
 
-Status: in progress. Phase 1 and Phase 2 are complete through Phase 2-2;
-Phase 2-3 is next.
+Status: in progress. Phase 1 and Phase 2 are complete; Phase 3-1 is next.
 
 ## Implementation Progress
 
@@ -19,8 +18,12 @@ profile header, compact relationship counts with accessible exact values,
 Settings for the current user's profile, Follow/Unfollow actions for other
 profiles, and post/user query refreshes after relationship mutations.
 
-The next checkpoint is Phase 2-3: add URL-owned Posts, Followers, and Following
-navigation with normalized parameters and browser-history coverage.
+Phase 2-3 implementation is complete. The frontend now provides URL-owned
+Posts, Followers, and Following navigation, canonical view links, conflicting
+parameter normalization, persistent profile identity across views, and direct
+URL and browser-history coverage.
+
+The next checkpoint is Phase 3-1: add the paginated profile Posts view.
 
 ## Goal
 
@@ -563,7 +566,7 @@ Scope:
 - invalidate profile and relationship caches after successful mutations
 - add responsive and accessibility coverage
 
-#### Phase 2-3: Add URL-Owned Profile Navigation
+#### Phase 2-3: Add URL-Owned Profile Navigation — Complete
 
 Scope:
 
@@ -591,6 +594,9 @@ Scope:
 - add profile-scoped filter header and clear action
 - reset pagination and focus when tags change
 - cover profile switching and URL/history behavior
+- reassess extracting the combined view/tag URL ownership and normalization
+  from `ProfilePage` into a `useProfileNavigation` hook once the complete logic
+  is visible; keep it inline if extraction would not improve readability
 
 ### Phase 4: Add Relationship Views
 
