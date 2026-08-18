@@ -54,8 +54,7 @@
   outline-offset: 3px;
 }
 
-.profile-state,
-.profile-identity {
+.profile-state {
   box-sizing: border-box;
   margin-top: 28px;
   padding: 48px 24px;
@@ -65,22 +64,88 @@
 }
 
 .profile-state h1,
-.profile-identity h1 {
+.profile-header h1 {
   font-family: 'Yanone Kaffeesatz', sans-serif;
   font-size: 38px;
   line-height: 1.1;
 }
 
-.profile-identity {
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-top: 40px;
+  padding-bottom: 36px;
+  border-bottom: 2px solid black;
+}
+
+.profile-header-details {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.profile-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 18px;
+}
+
+.profile-count {
+  white-space: nowrap;
+}
+
+.profile-count-exact {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.profile-action {
+  display: inline-flex;
   align-items: center;
-  gap: 18px;
+  justify-content: center;
+  min-height: 42px;
+  margin-top: 20px;
+  padding: 8px 18px;
+  color: white;
+  background-color: black;
+  border: 2px solid black;
+  border-radius: 3px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.profile-action:not(:disabled):hover {
+  color: black;
+  background-color: white;
+  box-shadow: 2px 2px 4px lightslategrey;
+}
+
+.profile-action:focus-visible {
+  outline: 3px solid #CE0063;
+  outline-offset: 3px;
+}
+
+.profile-action:disabled {
+  color: white;
+  background-color: lightslategrey;
+  border-color: lightslategrey;
+  cursor: not-allowed;
+  opacity: 0.55;
 }
 
 .profile-avatar {
-  @include avatar-frame(112px);
-  flex: 0 0 112px;
+  @include avatar-frame(144px);
+  flex: 0 0 144px;
   background-color: white;
 }
 
@@ -90,7 +155,22 @@
   }
 
   .profile-state,
-  .profile-identity {
+  .profile-header {
     padding: 36px 16px;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 28px;
+    text-align: center;
+  }
+
+  .profile-header-details {
+    align-items: center;
+  }
+
+  .profile-counts {
+    justify-content: center;
   }
 }
