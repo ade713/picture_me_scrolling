@@ -4,5 +4,5 @@ export const queryKeys = {
   postsFeed: tag => tag ? [...queryKeys.posts, { tag }] : queryKeys.posts,
   post: id => ['posts', id],
   users: ['users'],
-  user: id => ['users', id]
+  user: id => [...queryKeys.users, 'detail', String(id)]
 };

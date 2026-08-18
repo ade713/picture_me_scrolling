@@ -5,6 +5,7 @@ import Dashboard from "./dashboard/dashboard";
 import AuthForm from "./auth_form/auth_form";
 import EmailVerificationPage from "./email_verification/email_verification_page";
 import ForgotPasswordPage from "./password_reset/forgot_password_page";
+import ProfilePage from "./profile/profile_page";
 import ResetPasswordPage from "./password_reset/reset_password_page";
 import SettingsPage from "./settings/settings_page";
 import { routes } from "../config/routes";
@@ -18,6 +19,14 @@ const App = () => (
         element={
           <ProtectedRoute>
             <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path={routes.profile}
+        element={
+          <ProtectedRoute>
+            <ProfilePage />
           </ProtectedRoute>
         }
       />

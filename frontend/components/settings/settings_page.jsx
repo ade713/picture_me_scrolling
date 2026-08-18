@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+import { APP_NAME, BACK_TO_DASHBOARD_LABEL } from "../../config/app";
 import { avatarSettings } from "../../config/account_settings";
 import { routes } from "../../config/routes";
 import { useCurrentUser } from "../../query/session_hooks";
@@ -17,7 +18,7 @@ const SettingsPage = () => {
     <div className='settings-page'>
       <header className='settings-nav'>
         <Link className='settings-brand' to={routes.dashboard}>
-          PicMeS
+          {APP_NAME}
         </Link>
       </header>
 
@@ -25,7 +26,7 @@ const SettingsPage = () => {
         <div className='settings-panel'>
           <Link className='settings-back-link' to={routes.dashboard}>
             <span aria-hidden='true'>←</span>
-            Back to dashboard
+            {BACK_TO_DASHBOARD_LABEL}
           </Link>
 
           <div className='settings-content'>

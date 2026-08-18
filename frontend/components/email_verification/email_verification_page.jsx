@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
+import { APP_NAME } from '../../config/app';
 import {
   EMAIL_VERIFICATION_ERROR_HEADING,
   EMAIL_VERIFICATION_INVALID_LINK_MESSAGE,
@@ -85,7 +86,7 @@ const EmailVerificationPage = () => {
   return (
     <div className="email-verification-page">
       <header className="email-verification-nav">
-        <Link to={routes.home}>PicMeS</Link>
+        <Link to={routes.home}>{APP_NAME}</Link>
       </header>
 
       <main>
