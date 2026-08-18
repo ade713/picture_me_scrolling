@@ -75,8 +75,7 @@
   align-items: center;
   gap: 28px;
   margin-top: 40px;
-  padding-bottom: 36px;
-  border-bottom: 2px solid black;
+  padding-bottom: 24px;
 }
 
 .profile-header-details {
@@ -147,6 +146,42 @@
   @include avatar-frame(144px);
   flex: 0 0 144px;
   background-color: white;
+}
+
+.profile-view-navigation {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 12px;
+  margin-top: 20px;
+  border-bottom: 2px solid black;
+}
+
+.profile-view-link {
+  padding: 14px 12px;
+  border: 2px solid transparent;
+  border-bottom: 0;
+  border-radius: 3px 3px 0 0;
+  font-weight: 700;
+  text-align: center;
+}
+
+.profile-view-link:not([aria-current='page']):hover {
+  color: black;
+  background-color: white;
+  border-color: black;
+  box-shadow: 2px 2px 4px lightslategrey;
+}
+
+.profile-view-link[aria-current='page'] {
+  color: white;
+  background-color: black;
+  border-color: black;
+}
+
+.profile-view-link:focus-visible {
+  position: relative;
+  outline: 3px solid #CE0063;
+  outline-offset: 2px;
 }
 
 @include mobile {
