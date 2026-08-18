@@ -1,6 +1,7 @@
 # User Profile Page Plan
 
-Status: in progress. Phase 1 and Phase 2 are complete; Phase 3-1 is next.
+Status: in progress. Phase 1, Phase 2, and Phase 3-1 are complete; Phase 3-2 is
+next.
 
 ## Implementation Progress
 
@@ -23,7 +24,14 @@ Followers, and Following navigation, canonical view links, conflicting
 parameter normalization, persistent profile identity across views, and direct
 URL and browser-history coverage.
 
-The next checkpoint is Phase 3-1: add the paginated profile Posts view.
+Phase 3-1 implementation is complete. The frontend now provides a paginated
+profile Posts view using the user-post infinite query and existing `FeedItem`
+presentation without the dashboard PostBar. It includes loading, error, empty,
+and next-page states; preserves like and owner-only Edit/Delete behavior; and
+keeps like results synchronized across dashboard and profile-post caches.
+
+The next checkpoint is Phase 3-2: add profile-scoped tag filtering and
+context-aware post-tag destinations.
 
 ## Goal
 
@@ -577,7 +585,7 @@ Scope:
 
 ### Phase 3: Add Profile Posts
 
-#### Phase 3-1: Add Paginated Posts View
+#### Phase 3-1: Add Paginated Posts View — Complete
 
 Scope:
 

@@ -13,6 +13,7 @@ import { useFollowUser, useUnfollowUser, useUser } from '../../query/user_hooks'
 import AccountMenu from '../dashboard/account_menu';
 import ProfileHeader from './profile_header';
 import ProfileNavigation from './profile_navigation';
+import ProfilePosts from './profile_posts';
 
 const ProfilePage = () => {
   const { id } = useParams();
@@ -65,6 +66,9 @@ const ProfilePage = () => {
           relationshipPending={followUser.isPending || unfollowUser.isPending}
         />
         <ProfileNavigation activeView={activeView} profileId={profileQuery.data.id} />
+        {activeView === profileViews.posts && (
+          <ProfilePosts profileId={profileQuery.data.id} />
+        )}
       </>
     );
   };

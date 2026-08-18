@@ -184,6 +184,31 @@
   outline-offset: 2px;
 }
 
+.profile-posts {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 621px;
+  margin: 24px auto 0;
+}
+
+.profile-view-state {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 112px;
+  padding: 32px 20px;
+  border: 1px solid black;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.profile-empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @include mobile {
   .profile-main {
     padding: 28px 12px;

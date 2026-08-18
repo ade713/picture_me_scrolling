@@ -1,0 +1,1 @@
+export const PRIORITY_MEDIA_POST_COUNT = 3;

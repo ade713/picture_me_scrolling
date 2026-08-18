@@ -5,6 +5,7 @@ import { destroy, get, patch, post } from '../util/api_client';
 import { queryKeys } from './query_keys';
 
 export const POSTS_PER_PAGE = 10;
+export const USER_POSTS_PER_PAGE = 10;
 const INITIAL_POSTS_PAGE = 1;
 
 export const feedCacheFromPage = page => ({
@@ -15,6 +16,21 @@ export const feedCacheFromPage = page => ({
 const postsFromPage = page => (
   (page.post_ids || []).map(id => page.posts[id])
 );
+
+const infinitePostsOptions = ({ enabled = true, queryFn, queryKey }) => ({
+  enabled,
+  getNextPageParam: lastPage => (
+    lastPage.pagination.has_more ? lastPage.pagination.page + 1 : undefined
+  ),
+  initialPageParam: INITIAL_POSTS_PAGE,
+  queryFn,
+  queryKey,
+  select: data => ({
+    ...data,
+    pagination: data.pages[data.pages.length - 1]?.pagination,
+    posts: data.pages.flatMap(postsFromPage)
+  })
+});
 
 const updatePagePosts = (page, updater) => ({
   ...page,
@@ -57,6 +73,13 @@ const updatePostInCache = (feed, updatedPost) => {
   };
 };
 
+const updatePostCollections = (queryClient, updatedPost) => {
+  queryClient.setQueriesData(
+    { queryKey: queryKeys.posts },
+    posts => updatePostInCache(posts, updatedPost)
+  );
+};
+
 const postRequestBody = updatedPost => (
   typeof FormData !== 'undefined' && updatedPost instanceof FormData
     ? updatedPost
@@ -88,23 +111,27 @@ const removePostFromCache = (feed, deletedPost) => {
 };
 
 export const usePosts = tag => (
-  useInfiniteQuery({
+  useInfiniteQuery(infinitePostsOptions({
     queryKey: queryKeys.postsFeed(tag),
-    initialPageParam: INITIAL_POSTS_PAGE,
     queryFn: ({ pageParam }) => get(apiEndpoints.posts.feed({
       page: pageParam,
       perPage: POSTS_PER_PAGE,
       tag
-    })),
-    getNextPageParam: lastPage => (
-      lastPage.pagination.has_more ? lastPage.pagination.page + 1 : undefined
-    ),
-    select: data => ({
-      ...data,
-      pagination: data.pages[data.pages.length - 1]?.pagination,
-      posts: data.pages.flatMap(postsFromPage)
-    })
-  })
+    }))
+  }))
+);
+
+export const useUserPosts = (userId, tag) => (
+  useInfiniteQuery(infinitePostsOptions({
+    enabled: Boolean(userId),
+    queryKey: queryKeys.userPosts(userId, tag),
+    queryFn: ({ pageParam }) => get(apiEndpoints.users.posts({
+      id: userId,
+      page: pageParam,
+      perPage: USER_POSTS_PER_PAGE,
+      tag
+    }))
+  }))
 );
 
 export const useCreatePost = () => {
@@ -172,9 +199,7 @@ export const useLikePost = () => {
   return useMutation({
     mutationFn: id => post(apiEndpoints.posts.like(id)),
     onSuccess: updatedPost => {
-      queryClient.setQueryData(queryKeys.posts, posts => (
-        updatePostInCache(posts, updatedPost)
-      ));
+      updatePostCollections(queryClient, updatedPost);
       queryClient.setQueryData(queryKeys.post(updatedPost.id), updatedPost);
     }
   });
@@ -186,9 +211,7 @@ export const useUnlikePost = () => {
   return useMutation({
     mutationFn: id => destroy(apiEndpoints.posts.like(id)),
     onSuccess: updatedPost => {
-      queryClient.setQueryData(queryKeys.posts, posts => (
-        updatePostInCache(posts, updatedPost)
-      ));
+      updatePostCollections(queryClient, updatedPost);
       queryClient.setQueryData(queryKeys.post(updatedPost.id), updatedPost);
     }
   });
