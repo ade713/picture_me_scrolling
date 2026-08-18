@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
 
+import { APP_NAME } from '../../config/app';
 import { normalizeTag } from '../../config/tags';
 import Feed from '../feed/feed';
 import RecommendedUsers from '../users/recommended_users';
@@ -15,7 +16,7 @@ const Dashboard = () => {
     <div className="dash-page">
       <header className="dash-nav">
         <h1 className="dash-title">
-          PicMeS
+          {APP_NAME}
         </h1>
         <AccountMenu />
       </header>
