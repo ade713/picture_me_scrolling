@@ -2,9 +2,7 @@ export const profileMessages = Object.freeze({
   loadError: 'Unable to load profile.',
   loading: 'Loading profile…',
   noPosts: 'No posts yet',
-  notFound: 'User not found',
-  postsLoadError: 'Unable to load posts.',
-  postsLoading: 'Loading posts…'
+  notFound: 'User not found'
 });
 
 export const profileViews = Object.freeze({
