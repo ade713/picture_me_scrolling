@@ -62,6 +62,20 @@ describe('Feed', () => {
     expect(feedItems[3]).toHaveAttribute('data-priority-media', 'false');
   });
 
+  it('visually hides the unfiltered Posts heading', () => {
+    usePosts.mockReturnValue({
+      data: { posts },
+      error: null,
+      hasNextPage: false,
+      isLoading: false
+    });
+
+    renderFeed();
+
+    expect(screen.getByRole('heading', { name: 'Posts' }))
+      .toHaveClass('feed-filter-heading-hidden');
+  });
+
   it('loads the next posts page when more posts are available', async () => {
     const user = userEvent.setup();
     const fetchNextPage = vi.fn();
