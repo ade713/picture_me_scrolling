@@ -1,6 +1,6 @@
 # User Profile Page Plan
 
-Status: in progress. Phase 1, Phase 2, and Phase 3-1 are complete; Phase 3-2 is
+Status: in progress. Phase 1, Phase 2, and Phase 3 are complete; Phase 4-1 is
 next.
 
 ## Implementation Progress
@@ -30,8 +30,14 @@ presentation without the dashboard PostBar. It includes loading, error, empty,
 and next-page states; preserves like and owner-only Edit/Delete behavior; and
 keeps like results synchronized across dashboard and profile-post caches.
 
-The next checkpoint is Phase 3-2: add profile-scoped tag filtering and
-context-aware post-tag destinations.
+Phase 3-2 was split into two focused parts. Part 1 was completed in PR #162 and
+added URL-owned profile tag state, canonical view/tag normalization,
+profile-scoped post queries, and context-aware post-tag destinations. Part 2
+adds the shared accessible filter header, profile loading/error/empty filtered
+states, clear-filter behavior, and focus management when filters change.
+
+The next checkpoint is Phase 4-1: build the shared profile user cards used by
+the Followers and Following views.
 
 ## Goal
 
@@ -583,7 +589,7 @@ Scope:
 - preserve header/navigation across view states
 - cover reload, Back, Forward, and direct URLs
 
-### Phase 3: Add Profile Posts
+### Phase 3: Add Profile Posts — Complete
 
 #### Phase 3-1: Add Paginated Posts View — Complete
 
@@ -594,17 +600,30 @@ Scope:
 - preserve likes and owner-only edit/delete behavior
 - add loading, error, empty, and pagination states
 
-#### Phase 3-2: Add Profile Tag Filtering
+#### Phase 3-2: Add Profile Tag Filtering — Complete
+
+This checkpoint was divided into two reviewable PRs.
+
+##### Phase 3-2-1: Add Profile Tag Routing — Complete
 
 Scope:
 
 - make post-tag destinations context-aware
-- add profile-scoped filter header and clear action
-- reset pagination and focus when tags change
-- cover profile switching and URL/history behavior
-- reassess extracting the combined view/tag URL ownership and normalization
-  from `ProfilePage` into a `useProfileNavigation` hook once the complete logic
-  is visible; keep it inline if extraction would not improve readability
+- extract profile view/tag URL ownership and normalization into
+  `useProfileNavigation`
+- pass the normalized tag to profile-post queries
+- preserve direct URL, reload, Back, Forward, and profile-switching behavior
+
+##### Phase 3-2-2: Add Filtered Profile Post UI — Complete
+
+Scope:
+
+- extract and reuse the accessible tag-filter header
+- add the profile-scoped filter heading and clear action
+- hide the unfiltered Posts heading visually while retaining its focus target
+- add filtered loading, error, empty, and pagination states
+- move focus when the active tag changes or clears
+- add component coverage for profile-scoped tag destinations and filter states
 
 ### Phase 4: Add Relationship Views
 
