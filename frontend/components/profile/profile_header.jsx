@@ -8,7 +8,7 @@ import { profileCountLabels } from '../../config/user_profile';
 const ProfileCount = ({ compactLabel, exactLabel }) => (
   <span className="profile-count" title={exactLabel}>
     <span aria-hidden="true">{compactLabel}</span>
-    <span className="profile-count-exact">{exactLabel}</span>
+    <span className="profile-count-exact visually-hidden">{exactLabel}</span>
   </span>
 );
 
@@ -49,7 +49,7 @@ const ProfileHeader = ({
             exactLabel={exactFollowers}
           />
           <span aria-hidden="true">·</span>
-          <span className="profile-count-exact">, </span>
+          <span className="profile-count-exact visually-hidden">, </span>
           <ProfileCount
             compactLabel={profileCountLabels.compactFollowing(profile.following_count)}
             exactLabel={exactFollowing}

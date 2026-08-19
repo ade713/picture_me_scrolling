@@ -50,7 +50,7 @@ const TagInput = ({
 
   return (
     <div className="tag-input">
-      <label className="tag-input-label" htmlFor={inputId}>
+      <label className="tag-input-label visually-hidden" htmlFor={inputId}>
         {TAG_INPUT_LABEL}
       </label>
 

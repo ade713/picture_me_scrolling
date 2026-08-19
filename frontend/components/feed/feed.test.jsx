@@ -73,7 +73,7 @@ describe('Feed', () => {
     renderFeed();
 
     expect(screen.getByRole('heading', { name: 'Posts' }))
-      .toHaveClass('feed-filter-heading-hidden');
+      .toHaveClass('visually-hidden');
   });
 
   it('loads the next posts page when more posts are available', async () => {
