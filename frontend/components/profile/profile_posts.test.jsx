@@ -59,7 +59,7 @@ describe('ProfilePosts', () => {
     expect(screen.getAllByRole('link', { name: 'Photography tag' })[0])
       .toHaveAttribute('href', '/users/42?tag=photography');
     expect(screen.getByRole('heading', { name: 'Posts' }))
-      .toHaveClass('feed-filter-heading-hidden');
+      .toHaveClass('visually-hidden');
   });
 
   it('announces the loading state', () => {
@@ -176,7 +176,7 @@ describe('ProfilePosts', () => {
     rerender(profilePostsElement());
 
     expect(screen.getByRole('heading', { name: 'Posts' })).toHaveClass(
-      'feed-filter-heading-hidden'
+      'visually-hidden'
     );
     expect(screen.getByRole('heading', { name: 'Posts' })).toHaveFocus();
   });

@@ -22,7 +22,7 @@ const TagFilterHeader = ({ clearDestination, tag }) => {
   return (
     <header className="feed-filter-header">
       <h2
-        className={!tag ? 'feed-filter-heading-hidden' : undefined}
+        className={!tag ? 'visually-hidden' : undefined}
         ref={headingRef}
         tabIndex="-1"
       >
