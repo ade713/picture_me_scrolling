@@ -1,5 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useMemo } from 'react';
 
 import { buttonLabels } from '../../config/button_labels';
 import { PRIORITY_MEDIA_POST_COUNT } from '../../config/post_display';
@@ -7,12 +6,11 @@ import { routes } from '../../config/routes';
 import { tagFilterMessages } from '../../config/tags';
 import { usePosts } from '../../query/post_hooks';
 import FeedItem from './feed_item';
+import TagFilterHeader from './tag_filter_header';
 import PostBar from '../posts/post_bar';
 
 const Feed = ({ tag }) => {
   const posts = usePosts(tag);
-  const headingRef = useRef(null);
-  const previousTag = useRef(undefined);
   const loadedPosts = posts.data?.posts;
   const feedItems = useMemo(() => (loadedPosts || []).map((post, index) =>
     <FeedItem
@@ -20,35 +18,6 @@ const Feed = ({ tag }) => {
       post={ post }
       priorityMedia={ index < PRIORITY_MEDIA_POST_COUNT } />
   ), [loadedPosts]);
-
-  useEffect(() => {
-    const filterChanged = previousTag.current !== tag;
-    const shouldAnnounce = Boolean(tag) || Boolean(previousTag.current);
-
-    if (filterChanged && shouldAnnounce) {
-      headingRef.current?.focus();
-      headingRef.current?.scrollIntoView?.({ block: 'start' });
-    }
-
-    previousTag.current = tag;
-  }, [tag]);
-
-  const feedHeader = (
-    <header className="feed-filter-header">
-      <h2 ref={headingRef} tabIndex="-1">
-        {tagFilterMessages.heading(tag)}
-      </h2>
-      {tag && (
-        <Link
-          aria-label={tagFilterMessages.clearLabel}
-          className="clear-tag-filter"
-          title={tagFilterMessages.clearLabel}
-          to={routes.dashboard}>
-          <span aria-hidden="true">×</span> {tagFilterMessages.clear}
-        </Link>
-      )}
-    </header>
-  );
 
   const renderFeedContent = () => {
     if (posts.isLoading) {
@@ -96,7 +65,10 @@ const Feed = ({ tag }) => {
       <div className="new-post-container">
         <PostBar />
       </div>
-      {feedHeader}
+      <TagFilterHeader
+        clearDestination={routes.dashboard}
+        tag={tag}
+      />
       {renderFeedContent()}
     </div>
   );

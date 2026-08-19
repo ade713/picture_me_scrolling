@@ -39,6 +39,17 @@ div.new-post-container {
   }
 }
 
+.feed-filter-heading-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .clear-tag-filter,
 .feed-state button {
   border: 1px solid black;
