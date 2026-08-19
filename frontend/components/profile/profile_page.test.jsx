@@ -30,7 +30,12 @@ vi.mock('../dashboard/account_menu', () => ({
 }));
 
 vi.mock('./profile_posts', () => ({
-  default: ({ profileId }) => <div>Posts for profile {profileId}</div>
+  default: ({ profileId, tag }) => (
+    <>
+      <div>Posts for profile {profileId}</div>
+      <div data-testid="profile-posts-tag">{tag || 'unfiltered'}</div>
+    </>
+  )
 }));
 
 const buildProfileQuery = (overrides = {}) => ({
@@ -72,6 +77,12 @@ const HistoryControls = () => {
 
   return (
     <>
+      <button
+        onClick={() => navigate('/users/42?tag=photography')}
+        type="button"
+      >
+        Select photography tag
+      </button>
       <button onClick={() => navigate(-1)} type="button">History back</button>
       <button onClick={() => navigate(1)} type="button">History forward</button>
     </>
@@ -229,6 +240,28 @@ describe('ProfilePage', () => {
     );
   });
 
+  it('restores profile tag filters with browser Back and Forward navigation', async () => {
+    const user = userEvent.setup();
+    useUser.mockReturnValue(buildProfileQuery({ data: buildProfile() }));
+
+    renderProfileRoute();
+    await user.click(screen.getByRole('button', { name: 'Select photography tag' }));
+    expect(screen.getByTestId('location-path')).toHaveTextContent(
+      '/users/42?tag=photography'
+    );
+    expect(screen.getByTestId('profile-posts-tag')).toHaveTextContent('photography');
+
+    await user.click(screen.getByRole('button', { name: 'History back' }));
+    expect(screen.getByTestId('location-path')).toHaveTextContent('/users/42');
+    expect(screen.getByTestId('profile-posts-tag')).toHaveTextContent('unfiltered');
+
+    await user.click(screen.getByRole('button', { name: 'History forward' }));
+    expect(screen.getByTestId('location-path')).toHaveTextContent(
+      '/users/42?tag=photography'
+    );
+    expect(screen.getByTestId('profile-posts-tag')).toHaveTextContent('photography');
+  });
+
   it('removes a conflicting tag from non-Posts view URLs', async () => {
     useUser.mockReturnValue(buildProfileQuery({ data: buildProfile() }));
 
@@ -254,6 +287,22 @@ describe('ProfilePage', () => {
     expect(screen.getByRole('link', { name: 'Posts' })).toHaveAttribute(
       'aria-current',
       'page'
+    );
+    expect(screen.getByTestId('profile-posts-tag')).toHaveTextContent('photography');
+  });
+
+  it('normalizes a profile tag before loading filtered posts', async () => {
+    useUser.mockReturnValue(buildProfileQuery({ data: buildProfile() }));
+
+    renderProfileRoute('/users/42?tag=%20Film_Photography%20');
+
+    await waitFor(() => {
+      expect(screen.getByTestId('location-path')).toHaveTextContent(
+        '/users/42?tag=film_photography'
+      );
+    });
+    expect(screen.getByTestId('profile-posts-tag')).toHaveTextContent(
+      'film_photography'
     );
   });
 

@@ -132,6 +132,28 @@ describe('post hooks', () => {
     });
   });
 
+  it('uses a separate profile-post cache for each tag', async () => {
+    get.mockResolvedValue({
+      pagination: { has_more: false, page: 1 },
+      post_ids: [],
+      posts: {}
+    });
+
+    const { result } = renderHook(
+      () => useUserPosts(42, 'photography'),
+      { wrapper }
+    );
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+
+    expect(get).toHaveBeenCalledWith(
+      '/api/users/42/posts?page=1&per_page=10&tag=photography'
+    );
+    expect(queryClient.getQueryData(queryKeys.userPosts(42, 'photography')))
+      .toBeDefined();
+    expect(queryClient.getQueryData(queryKeys.userPosts(42))).toBeUndefined();
+  });
+
   it('updates a liked post in dashboard and profile post collections', async () => {
     const originalPost = { id: 10, liked: false };
     const updatedPost = { id: 10, liked: true };
