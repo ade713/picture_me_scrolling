@@ -660,6 +660,13 @@ Scope:
 
 ## Deferred Work
 
+- remove the `tagDestination` prop-drilling chain from `ProfilePosts` through
+  `FeedItem` and `PostFooter` to `PostTags`; first evaluate a narrowly scoped
+  React context or component composition, and use Zustand only if tag
+  navigation becomes broader shared client state; scan the rest of the app for
+  similar values passed through three or more component levels and address
+  excessive prop drilling consistently where a clearer ownership boundary is
+  available
 - profile-based post creation
 - multi-cache optimistic follow/unfollow updates and rollback
 - bio, separate display name, website, location, or other profile fields
