@@ -119,4 +119,19 @@ describe('FeedItem post bodies', () => {
 
     expect(screen.queryByRole('list', { name: 'Tags' })).not.toBeInTheDocument();
   });
+
+  it('uses a provided tag destination without changing tag rendering', () => {
+    renderFeedItem({}, {
+      tagDestination: tag => `/users/42?tag=${tag}`
+    });
+
+    expect(screen.getByRole('link', { name: '#photography' })).toHaveAttribute(
+      'href',
+      '/users/42?tag=photography'
+    );
+    expect(screen.getByRole('link', { name: '#sunset' })).toHaveAttribute(
+      'href',
+      '/users/42?tag=sunset'
+    );
+  });
 });

@@ -28,7 +28,7 @@ const POST_BODY_COMPONENTS = {
   [postTypes.video]: VideoPost
 };
 
-const FeedItem = ({ post, priorityMedia = false }) => {
+const FeedItem = ({ post, priorityMedia = false, tagDestination }) => {
   const currentUser = useCurrentUser();
   const deletePost = useDeletePost();
   const followUser = useFollowUser();
@@ -63,6 +63,7 @@ const FeedItem = ({ post, priorityMedia = false }) => {
       onLike={ id => likePost.mutate(id) }
       onUnlike={ id => unlikePost.mutate(id) }
       post={ post }
+      tagDestination={tagDestination}
     />
   );
   const PostBody = POST_BODY_COMPONENTS[post.post_type] || TextPost;

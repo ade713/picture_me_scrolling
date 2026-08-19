@@ -86,7 +86,7 @@ export const PostHeader = ({ isAuthor, onFollow, onUnfollow, post }) => (
   </div>
 );
 
-export const PostTags = ({ tags = [] }) => {
+export const PostTags = ({ tagDestination = routes.dashboardTag, tags = [] }) => {
   if (tags.length === 0) {
     return null;
   }
@@ -95,7 +95,7 @@ export const PostTags = ({ tags = [] }) => {
     <ul aria-label="Tags" className="post-tags">
       { tags.map(tag => (
         <li key={ tag }>
-          <Link to={`${routes.dashboard}?tag=${encodeURIComponent(tag)}`}>
+          <Link to={tagDestination(tag)}>
             #{ tag }
           </Link>
         </li>
@@ -132,9 +132,17 @@ export const AuthorControls = ({ isAuthor, onDelete, onEdit, post }) => {
   );
 };
 
-export const PostFooter = ({ isAuthor, onDelete, onEdit, onLike, onUnlike, post }) => (
+export const PostFooter = ({
+  isAuthor,
+  onDelete,
+  onEdit,
+  onLike,
+  onUnlike,
+  post,
+  tagDestination
+}) => (
   <>
-    <PostTags tags={ post.tags } />
+    <PostTags tagDestination={tagDestination} tags={post.tags} />
     <div className="post-footer">
       <div className="post-likes">
         Likes: { post.likes }

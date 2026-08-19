@@ -33,12 +33,12 @@ export const createFeedItemMutations = () => ({
   }
 });
 
-export const feedItemElement = post => (
+export const feedItemElement = (post, props = {}) => (
   <MemoryRouter>
     <ul>
-      <FeedItem post={{ ...basePost, ...post }} />
+      <FeedItem post={{ ...basePost, ...post }} {...props} />
     </ul>
   </MemoryRouter>
 );
 
-export const renderFeedItem = post => render(feedItemElement(post));
+export const renderFeedItem = (post, props) => render(feedItemElement(post, props));
