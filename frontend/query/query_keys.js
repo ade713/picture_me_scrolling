@@ -10,5 +10,6 @@ export const queryKeys = {
     ...(tag ? [{ tag }] : [])
   ],
   users: ['users'],
-  user: id => [...queryKeys.users, 'detail', String(id)]
+  user: id => [...queryKeys.users, 'detail', String(id)],
+  userFollowers: id => [...queryKeys.user(id), 'followers']
 };

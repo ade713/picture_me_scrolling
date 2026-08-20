@@ -9,6 +9,10 @@ export const fetchUser = id => (
   get(apiEndpoints.users.detail(id))
 );
 
+export const fetchUserFollowers = ({ id, page, perPage }) => (
+  get(apiEndpoints.users.followers({ id, page, perPage }))
+);
+
 export const createFollow = id => (
   post(apiEndpoints.users.follow(id))
 );
