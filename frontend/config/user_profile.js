@@ -1,9 +1,12 @@
 export const profileMessages = Object.freeze({
   followersLoadError: 'Unable to load followers.',
   followersLoading: 'Loading followers…',
+  followingLoadError: 'Unable to load following.',
+  followingLoading: 'Loading following…',
   loadError: 'Unable to load profile.',
   loading: 'Loading profile…',
   noFollowers: 'No followers yet',
+  noFollowing: 'Not following anyone yet',
   noPosts: 'No posts yet',
   notFound: 'User not found'
 });

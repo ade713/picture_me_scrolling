@@ -11,6 +11,7 @@ import { useCurrentUser } from '../../query/session_hooks';
 import { useFollowUser, useUnfollowUser, useUser } from '../../query/user_hooks';
 import AccountMenu from '../dashboard/account_menu';
 import ProfileFollowers from './profile_followers';
+import ProfileFollowing from './profile_following';
 import ProfileHeader from './profile_header';
 import ProfileNavigation from './profile_navigation';
 import ProfilePosts from './profile_posts';
@@ -56,6 +57,12 @@ const ProfilePage = () => {
         )}
         {activeView === profileViews.followers && (
           <ProfileFollowers
+            currentUserId={currentUser.id}
+            profileId={profileQuery.data.id}
+          />
+        )}
+        {activeView === profileViews.following && (
+          <ProfileFollowing
             currentUserId={currentUser.id}
             profileId={profileQuery.data.id}
           />
