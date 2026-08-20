@@ -26,6 +26,14 @@ export const apiEndpoints = Object.freeze({
     collection: '/api/users',
     detail: id => `/api/users/${id}`,
     follow: id => `/api/users/${id}/follow`,
+    followers: ({ id, page, perPage }) => {
+      const searchParams = new URLSearchParams({
+        page,
+        per_page: perPage
+      });
+
+      return `/api/users/${id}/followers?${searchParams.toString()}`;
+    },
     posts: ({ id, page, perPage, tag }) => {
       const searchParams = new URLSearchParams({
         page,
