@@ -38,6 +38,14 @@ vi.mock('./profile_posts', () => ({
   )
 }));
 
+vi.mock('./profile_followers', () => ({
+  default: ({ currentUserId, profileId }) => (
+    <div data-testid="profile-followers">
+      Followers for profile {profileId}; viewer {currentUserId}
+    </div>
+  )
+}));
+
 const buildProfileQuery = (overrides = {}) => ({
   data: null,
   error: null,
@@ -185,6 +193,9 @@ describe('ProfilePage', () => {
     );
     expect(screen.getByTestId('location-path')).toHaveTextContent(
       '/users/42?view=followers'
+    );
+    expect(screen.getByTestId('profile-followers')).toHaveTextContent(
+      'Followers for profile 42; viewer 1'
     );
     expect(screen.queryByText('Posts for profile 42')).not.toBeInTheDocument();
   });
