@@ -6,14 +6,16 @@ import {
   createFollow,
   deleteFollow,
   fetchUser,
-  fetchUserFollowers
+  fetchUserFollowers,
+  fetchUserFollowing
 } from '../util/user_api_util';
 import { queryKeys } from './query_keys';
 import {
   useFollowUser,
   useUnfollowUser,
   useUser,
-  useUserFollowers
+  useUserFollowers,
+  useUserFollowing
 } from './user_hooks';
 
 vi.mock('../util/user_api_util', () => ({
@@ -21,6 +23,7 @@ vi.mock('../util/user_api_util', () => ({
   deleteFollow: vi.fn(),
   fetchUser: vi.fn(),
   fetchUserFollowers: vi.fn(),
+  fetchUserFollowing: vi.fn(),
   fetchUsers: vi.fn()
 }));
 
@@ -100,6 +103,45 @@ describe('user hooks', () => {
       .toHaveLength(2);
   });
 
+  it('requests and combines paginated followed users for one profile', async () => {
+    fetchUserFollowing.mockImplementation(async ({ page }) => ({
+      pagination: { has_more: page === 1, page },
+      user_ids: [page],
+      users: {
+        [page]: {
+          id: page,
+          username: `Followed user ${page}`
+        }
+      }
+    }));
+
+    const { result } = renderHook(() => useUserFollowing(42), { wrapper });
+
+    await waitFor(() => expect(result.current.isSuccess).toBe(true));
+    await waitFor(() => expect(result.current.hasNextPage).toBe(true));
+    await act(async () => {
+      await result.current.fetchNextPage();
+    });
+    await waitFor(() => expect(result.current.data.users).toHaveLength(2));
+
+    expect(fetchUserFollowing).toHaveBeenNthCalledWith(1, {
+      id: 42,
+      page: 1,
+      perPage: 10
+    });
+    expect(fetchUserFollowing).toHaveBeenNthCalledWith(2, {
+      id: 42,
+      page: 2,
+      perPage: 10
+    });
+    expect(result.current.data.users).toEqual([
+      { id: 1, username: 'Followed user 1' },
+      { id: 2, username: 'Followed user 2' }
+    ]);
+    expect(queryClient.getQueryData(queryKeys.userFollowing(42)).pages)
+      .toHaveLength(2);
+  });
+
   it('updates the base feed and refreshes post and user queries after following', async () => {
     const firstPage = {
       pagination: { page: 1, total_count: 1 },
@@ -108,7 +150,9 @@ describe('user hooks', () => {
     };
     const invalidateQueries = vi.spyOn(queryClient, 'invalidateQueries');
     const followersKey = queryKeys.userFollowers(42);
+    const followingKey = queryKeys.userFollowing(42);
     queryClient.setQueryData(followersKey, { pages: [] });
+    queryClient.setQueryData(followingKey, { pages: [] });
     createFollow.mockResolvedValue(firstPage);
     const { result } = renderHook(() => useFollowUser(), { wrapper });
 
@@ -124,6 +168,7 @@ describe('user hooks', () => {
     expect(invalidateQueries).toHaveBeenCalledWith({ queryKey: queryKeys.posts });
     expect(invalidateQueries).toHaveBeenCalledWith({ queryKey: queryKeys.users });
     expect(queryClient.getQueryState(followersKey).isInvalidated).toBe(true);
+    expect(queryClient.getQueryState(followingKey).isInvalidated).toBe(true);
   });
 
   it('refreshes post and user queries after unfollowing', async () => {

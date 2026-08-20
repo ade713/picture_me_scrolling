@@ -11,5 +11,6 @@ export const queryKeys = {
   ],
   users: ['users'],
   user: id => [...queryKeys.users, 'detail', String(id)],
-  userFollowers: id => [...queryKeys.user(id), 'followers']
+  userFollowers: id => [...queryKeys.user(id), 'followers'],
+  userFollowing: id => [...queryKeys.user(id), 'following']
 };
