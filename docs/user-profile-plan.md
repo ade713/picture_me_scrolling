@@ -1,7 +1,7 @@
 # User Profile Page Plan
 
-Status: in progress. Phase 1, Phase 2, and Phase 3 are complete; Phase 4-1 is
-next.
+Status: in progress. Phase 1, Phase 2, Phase 3, and Phase 4-1 are complete;
+Phase 4-2 is next.
 
 ## Implementation Progress
 
@@ -33,11 +33,20 @@ keeps like results synchronized across dashboard and profile-post caches.
 Phase 3-2 was split into two focused parts. Part 1 was completed in PR #162 and
 added URL-owned profile tag state, canonical view/tag normalization,
 profile-scoped post queries, and context-aware post-tag destinations. Part 2
-adds the shared accessible filter header, profile loading/error/empty filtered
-states, clear-filter behavior, and focus management when filters change.
+was completed in PR #163 and added the shared accessible filter header, profile
+loading/error/empty filtered states, clear-filter behavior, and focus
+management when filters change.
 
-The next checkpoint is Phase 4-1: build the shared profile user cards used by
-the Followers and Following views.
+Phase 4-1 implementation is complete. The frontend now provides a reusable
+relationship user card with canonical avatar and username links, current-user
+action suppression, Follow/Unfollow and pending behavior, keyboard focus
+styles, long-username wrapping, and responsive layout. A shared relationship
+button keeps the profile header and user cards aligned on labels, callbacks,
+accessible descriptions, and disabled behavior, while card-specific styles
+remain in their own component stylesheet.
+
+The next checkpoint is Phase 4-2: integrate the paginated Followers view using
+the shared relationship user card.
 
 ## Goal
 
@@ -627,13 +636,16 @@ Scope:
 
 ### Phase 4: Add Relationship Views
 
-#### Phase 4-1: Build Shared Profile User Cards
+#### Phase 4-1: Build Shared Profile User Cards — Complete
 
 Scope:
 
 - add reusable linked avatar/username cards
 - add self and other-user relationship actions
 - add pending, wrapping, keyboard, and responsive behavior
+- extract shared Follow/Unfollow behavior into a relationship button used by
+  both the profile header and relationship user cards
+- keep card-specific layout and responsive styles in a dedicated stylesheet
 
 #### Phase 4-2: Add Followers View
 
