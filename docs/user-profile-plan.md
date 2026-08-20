@@ -1,7 +1,7 @@
 # User Profile Page Plan
 
-Status: in progress. Phase 1, Phase 2, Phase 3, and Phase 4-1 are complete;
-Phase 4-2 is next.
+Status: in progress. Phase 1, Phase 2, Phase 3, Phase 4-1, and Phase 4-2 are
+complete; Phase 4-3 is next.
 
 ## Implementation Progress
 
@@ -37,7 +37,7 @@ was completed in PR #163 and added the shared accessible filter header, profile
 loading/error/empty filtered states, clear-filter behavior, and focus
 management when filters change.
 
-Phase 4-1 implementation is complete. The frontend now provides a reusable
+Phase 4-1 was completed in PR #165. The frontend now provides a reusable
 relationship user card with canonical avatar and username links, current-user
 action suppression, Follow/Unfollow and pending behavior, keyboard focus
 styles, long-username wrapping, and responsive layout. A shared relationship
@@ -45,8 +45,17 @@ button keeps the profile header and user cards aligned on labels, callbacks,
 accessible descriptions, and disabled behavior, while card-specific styles
 remain in their own component stylesheet.
 
-The next checkpoint is Phase 4-2: integrate the paginated Followers view using
-the shared relationship user card.
+Phase 4-2 was split into two focused parts. Part 1 was completed in PR #166 and
+added the Followers endpoint configuration, API utility, query key, reusable
+relationship pagination options, and `useUserFollowers` infinite query. Part 2
+adds the visible Followers view using the shared relationship cards, with
+loading, error, empty, pagination, focus-management, and per-user pending
+states. Existing user-family invalidation refreshes the profile counts and
+Followers collection after successful relationship mutations.
+
+The next checkpoint is Phase 4-3: add the paginated Following view and then
+consolidate the shared relationship-list behavior now visible across both
+views.
 
 ## Goal
 
@@ -647,13 +656,27 @@ Scope:
   both the profile header and relationship user cards
 - keep card-specific layout and responsive styles in a dedicated stylesheet
 
-#### Phase 4-2: Add Followers View
+#### Phase 4-2: Add Followers View — Complete
+
+This checkpoint was divided into two reviewable PRs.
+
+##### Phase 4-2-1: Add Followers Query Integration — Complete
 
 Scope:
 
 - integrate the Followers infinite query
+- add profile-specific query ownership and relationship pagination helpers
+- verify page aggregation and mutation-driven cache invalidation
+
+##### Phase 4-2-2: Add Followers Profile View — Complete
+
+Scope:
+
+- integrate shared relationship user cards into the Followers view
 - add loading, error, empty, and pagination states
 - refresh counts/lists after mutations
+- move focus to the Followers heading when the view opens
+- disable only the relationship action associated with the pending user
 
 #### Phase 4-3: Add Following View
 
@@ -662,6 +685,12 @@ Scope:
 - integrate the Following infinite query
 - reuse shared states and cards
 - verify cache synchronization across both relationship views
+- after both relationship views are visible, extract their shared list-state
+  rendering where doing so removes actual duplication without obscuring the
+  Followers and Following copy and empty-state differences
+- move generic load-more action styles out of `_feed.scss` into an
+  appropriately shared stylesheet so relationship pagination does not depend
+  on feed-owned styling
 
 ### Phase 5: Add Entry Points and Close Out
 
