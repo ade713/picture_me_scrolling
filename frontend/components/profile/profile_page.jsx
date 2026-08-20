@@ -44,8 +44,8 @@ const ProfilePage = () => {
       <>
         <ProfileHeader
           currentUserId={currentUser.id}
-          onFollow={() => followUser.mutate(profileQuery.data.id)}
-          onUnfollow={() => unfollowUser.mutate(profileQuery.data.id)}
+          onFollow={followUser.mutate}
+          onUnfollow={unfollowUser.mutate}
           profile={profileQuery.data}
           relationshipPending={followUser.isPending || unfollowUser.isPending}
         />

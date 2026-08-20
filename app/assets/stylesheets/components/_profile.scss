@@ -97,12 +97,12 @@
   white-space: nowrap;
 }
 
+.profile-relationship-action,
 .profile-action {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   min-height: 42px;
-  margin-top: 20px;
   padding: 8px 18px;
   color: white;
   background-color: black;
@@ -112,17 +112,24 @@
   cursor: pointer;
 }
 
+.profile-action {
+  margin-top: 20px;
+}
+
+.profile-relationship-action:not(:disabled):hover,
 .profile-action:not(:disabled):hover {
   color: black;
   background-color: white;
   box-shadow: 2px 2px 4px lightslategrey;
 }
 
+.profile-relationship-action:focus-visible,
 .profile-action:focus-visible {
   outline: 3px solid #CE0063;
   outline-offset: 3px;
 }
 
+.profile-relationship-action:disabled,
 .profile-action:disabled {
   color: white;
   background-color: lightslategrey;
