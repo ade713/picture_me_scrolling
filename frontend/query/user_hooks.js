@@ -10,6 +10,7 @@ import {
   deleteFollow,
   fetchUser,
   fetchUserFollowers,
+  fetchUserFollowing,
   fetchUsers
 } from '../util/user_api_util';
 import { feedCacheFromPage } from './post_hooks';
@@ -63,16 +64,32 @@ export const useUser = id => (
   })
 );
 
-export const useUserFollowers = userId => (
+const useRelationshipUsers = ({ queryKey, request, userId }) => (
   useInfiniteQuery(infiniteRelationshipUsersOptions({
     enabled: Boolean(userId),
-    queryKey: queryKeys.userFollowers(userId),
-    queryFn: ({ pageParam }) => fetchUserFollowers({
+    queryKey,
+    queryFn: ({ pageParam }) => request({
       id: userId,
       page: pageParam,
       perPage: RELATIONSHIP_USERS_PER_PAGE
     })
   }))
+);
+
+export const useUserFollowers = userId => (
+  useRelationshipUsers({
+    queryKey: queryKeys.userFollowers(userId),
+    request: fetchUserFollowers,
+    userId
+  })
+);
+
+export const useUserFollowing = userId => (
+  useRelationshipUsers({
+    queryKey: queryKeys.userFollowing(userId),
+    request: fetchUserFollowing,
+    userId
+  })
 );
 
 export const useFollowUser = () => {

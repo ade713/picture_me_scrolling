@@ -1,7 +1,7 @@
 # User Profile Page Plan
 
 Status: in progress. Phase 1, Phase 2, Phase 3, Phase 4-1, and Phase 4-2 are
-complete; Phase 4-3 is next.
+complete. Phase 4-3-1 implementation is complete; Phase 4-3-2 is next.
 
 ## Implementation Progress
 
@@ -48,14 +48,21 @@ remain in their own component stylesheet.
 Phase 4-2 was split into two focused parts. Part 1 was completed in PR #166 and
 added the Followers endpoint configuration, API utility, query key, reusable
 relationship pagination options, and `useUserFollowers` infinite query. Part 2
-adds the visible Followers view using the shared relationship cards, with
+was completed in PR #167 and added the visible Followers view using the shared
+relationship cards, with
 loading, error, empty, pagination, focus-management, and per-user pending
 states. Existing user-family invalidation refreshes the profile counts and
 Followers collection after successful relationship mutations.
 
-The next checkpoint is Phase 4-3: add the paginated Following view and then
-consolidate the shared relationship-list behavior now visible across both
-views.
+Phase 4-3 is split into two focused parts. Phase 4-3-1 implementation is
+complete and adds the Following endpoint configuration, API utility, query
+key, `useUserFollowing` infinite query, shared relationship-query ownership,
+pagination coverage, and cross-list invalidation. Phase 4-3-2 will add the
+visible Following view and consolidate shared relationship-list behavior and
+styling now visible across both relationship views.
+
+The next checkpoint is Phase 4-3-2: add the Following profile view and complete
+the shared relationship UI cleanup.
 
 ## Goal
 
@@ -680,11 +687,27 @@ Scope:
 
 #### Phase 4-3: Add Following View
 
+This checkpoint is divided into two reviewable PRs.
+
+##### Phase 4-3-1: Add Following Query Integration — Complete
+
 Scope:
 
-- integrate the Following infinite query
-- reuse shared states and cards
-- verify cache synchronization across both relationship views
+- add the Following endpoint configuration, API utility, and query key
+- add `useUserFollowing` using the shared relationship pagination behavior
+- verify page aggregation and cache ownership
+- verify successful Follow and Unfollow mutations invalidate both the
+  Followers and Following collections
+
+##### Phase 4-3-2: Add Following Profile View and Consolidate Relationship UI
+
+Scope:
+
+- integrate the Following infinite query into the visible profile view
+- reuse shared relationship user cards and loading, error, empty, pagination,
+  focus-management, and per-user pending behavior
+- verify profile counts and both relationship views remain synchronized after
+  mutations
 - after both relationship views are visible, extract their shared list-state
   rendering where doing so removes actual duplication without obscuring the
   Followers and Following copy and empty-state differences
