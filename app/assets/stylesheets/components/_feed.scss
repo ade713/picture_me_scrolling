@@ -111,6 +111,15 @@ div.post-header {
   .post-user {
     margin-right: 15px;
     font-weight: bold;
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    a:focus-visible {
+      outline: 2px solid black;
+      outline-offset: 2px;
+    }
   }
 }
 
@@ -141,12 +150,19 @@ div.follow-hdr {
   border-radius: 3px;
 }
 
-img.author-avatar {
+.author-avatar-link {
   display: flex;
   flex: 0 0 64px;
-  @include avatar-frame(64px, $flex-basis: 64px);
-
   margin-right: 16px;
+}
+
+.author-avatar-link:focus-visible {
+  outline: 2px solid black;
+  outline-offset: 2px;
+}
+
+img.author-avatar {
+  @include avatar-frame(64px, $flex-basis: 64px);
 }
 
 .feed-item {
@@ -357,9 +373,12 @@ ul.feed-list:last-child {
     align-items: flex-start;
   }
 
+  .author-avatar-link,
   img.author-avatar {
     @include avatar-size(48px, 48px);
+  }
 
+  .author-avatar-link {
     margin-right: 10px;
   }
 
@@ -374,7 +393,7 @@ ul.feed-list:last-child {
     flex-direction: column;
   }
 
-  img.author-avatar {
+  .author-avatar-link {
     margin-right: 0;
     margin-bottom: 8px;
   }
