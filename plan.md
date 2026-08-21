@@ -1008,7 +1008,7 @@ that the lower cost cannot be enabled outside the test environment. The Phase
 in about 91 seconds; its one GitHub Actions timeout was caused by an anomalous
 runner stall rather than expected suite duration.
 
-## Planned Feature: Post Tags
+## Completed Feature: Post Tags
 
 Status: complete and verified. Delivered behavior and deferred follow-ups are
 recorded in [`docs/tags-closeout.md`](./docs/tags-closeout.md).
@@ -1026,22 +1026,22 @@ for filtered infinite pagination, and Rails for authoritative validation and
 access-scoped filtering. It does not introduce global discovery, hashtag
 parsing, autocomplete, or Zustand state.
 
-## Planned Feature: User Profile Pages
+## Completed Feature: User Profile Pages
 
-Status: in progress. Backend Phase 1 and frontend Phase 2 are complete;
-Phase 3-1 paginated profile posts are next.
+Status: complete and verified. Delivered behavior and deferred follow-ups are
+recorded in [`docs/user-profile-closeout.md`](./docs/user-profile-closeout.md).
 
-Goal: add authenticated user profile pages with identity, follower/following
-counts, authored posts, Followers and Following views, and profile-scoped tag
-filtering.
+The delivered feature adds authenticated user profile pages with identity,
+follower and following counts, authored posts, paginated Followers and
+Following views, relationship actions, and profile-scoped tag filtering.
 
 The agreed product behavior, URL and API contracts, cache ownership,
 accessibility requirements, deferred scope, and reviewable PR sequence live in
 [`docs/user-profile-plan.md`](./docs/user-profile-plan.md).
 
-The initial version uses the existing username, avatar, posts, follows, likes,
-and tags. It does not add profile fields, private accounts, counter caches,
-optimistic relationship updates, or a second post-creation surface.
+The completed MVP uses the existing username, avatar, posts, follows, likes,
+and tags. Profile fields, private accounts, counter caches, optimistic
+relationship updates, and a second post-creation surface remain deferred.
 
 ## Guardrails
 

@@ -57,8 +57,11 @@ the local development configuration.
 + Secured website use via front-end and back-end authentication.
 + Verified email identity and single-use, expiring password recovery.
 + Profile settings for avatar, email, and authenticated password changes.
++ Authenticated user profiles with posts, follower and following lists, and
+  relationship actions.
 + Blog posts of various types that include text, links, music/audio and videos.
   + a preview of video and images are displayed for the users
++ Explicit post tags with dashboard and profile-scoped feed filtering.
 + Follow and unfollow users to control the feed.
 + Like and unlike posts.
 

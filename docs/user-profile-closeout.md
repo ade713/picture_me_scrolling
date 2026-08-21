@@ -1,7 +1,9 @@
 # User Profile Page Closeout
 
-Status: implementation, automated verification, and live browser smoke checks
-complete; physical keyboard-only tab-order confirmation remains.
+Status: complete and verified.
+
+The Phase 5-2 implementation and automated/live browser closeout work was
+merged in PR #171.
 
 ## Delivered Scope
 
@@ -79,10 +81,9 @@ Live browser checks completed on August 21, 2026. They confirmed:
 - access to posts and relationship views for an unfollowed user
 - the `No posts yet` state for a profile-only user
 - no horizontal overflow at 375-pixel and 1,440-pixel viewport widths
-
-The in-app browser runtime could not synthesize a trustworthy physical Tab
-sequence, so the keyboard-only tab-order item in
-`docs/frontend-smoke-checklist.md` still requires a short manual confirmation.
+- logical keyboard-only tab order, visible focus, and native Enter/Space
+  activation across profile entry points, tabs, tag controls, relationship
+  actions, and pagination
 
 ## Deferred Work
 
