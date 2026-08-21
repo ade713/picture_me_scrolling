@@ -1,8 +1,6 @@
 # User Profile Page Plan
 
-Status: in progress. Phase 1 through Phase 5-1 are complete. Phase 5-2
-implementation, automated verification, and live browser smoke checks are
-complete; physical keyboard-only tab-order confirmation remains.
+Status: complete and verified.
 
 ## Implementation Progress
 
@@ -58,23 +56,22 @@ mutations.
 Phase 4-3 was split into two focused parts. Part 1 was completed in PR #168 and
 added the Following endpoint configuration, API utility, query key,
 `useUserFollowing` infinite query, shared relationship-query ownership,
-pagination coverage, and cross-list invalidation. Part 2 implementation is
-complete and adds the visible Following view using a shared relationship-list
+pagination coverage, and cross-list invalidation. Part 2 was completed in PR
+#169 and added the visible Following view using a shared relationship-list
 component, with view-specific copy, loading, error, empty, pagination,
 focus-management, and per-user pending behavior. Generic load-more action
 styles now have shared ownership outside the feed stylesheet.
 
-Phase 5-1 implementation is complete. Feed-author avatars and usernames, the
+Phase 5-1 was completed in PR #170. Feed-author avatars and usernames, the
 current user's post-form avatar, recommended-user cards, relationship-list
 cards, and the dashboard account menu now provide canonical profile entry
 points.
 
-Phase 5-2 implementation and automated verification are complete. The
-production-safe seed now provides PicMeS Guest with reciprocal relationships
-to 1,001 deterministic profile users, and the component, smoke-check, and
-closeout documentation reflects the delivered feature. Live responsive,
-filtering, relationship-refresh, empty-state, and pagination checks passed.
-Physical keyboard-only tab-order confirmation remains before final closeout.
+Phase 5-2 was completed in PR #171. The production-safe seed now provides
+PicMeS Guest with reciprocal relationships to 1,001 deterministic profile
+users, and the component, smoke-check, and closeout documentation reflects the
+delivered feature. Automated verification and the live browser, responsive,
+and keyboard-only smoke passes are complete.
 
 ## Goal
 
@@ -524,7 +521,7 @@ only if measured production query volume demonstrates a need.
 
 ## Seeds and Verification
 
-Demo data should provide:
+Demo data provides:
 
 - a current-user profile with owned posts
 - followed and unfollowed profiles with posts
@@ -536,12 +533,11 @@ Demo data should provide:
 - profile posts with shared tags for filtered pagination
 - at least one profile with no posts, no followers, or no followed users
 
-Seed updates should intentionally represent distinct frontend states and display
-thresholds instead of only providing enough records for backend behavior.
-Defer these updates until Phase 5-2, after the functional profile work is
-complete, so all representative profile states can be added and verified
-together. Use PicMeS Guest as the primary portfolio showcase profile for the
-1,000-or-more follower scenario.
+The production-safe seed intentionally represents distinct frontend states and
+display thresholds instead of only providing enough records for backend
+behavior. PicMeS Guest is the primary portfolio showcase profile and has 1,001
+reciprocal showcase relationships, while a followed demo author has enough
+posts for profile pagination.
 
 Verification includes:
 
@@ -727,7 +723,7 @@ Scope:
   appropriately shared stylesheet so relationship pagination does not depend
   on feed-owned styling
 
-### Phase 5: Add Entry Points and Close Out
+### Phase 5: Add Entry Points and Close Out — Complete
 
 #### Phase 5-1: Add Profile Navigation Entry Points — Complete
 
@@ -739,7 +735,7 @@ Scope:
 - link relationship-list cards
 - add Profile to the dashboard account menu
 
-#### Phase 5-2: Verify and Document Profiles — Keyboard Confirmation Pending
+#### Phase 5-2: Verify and Document Profiles — Complete
 
 Scope:
 
