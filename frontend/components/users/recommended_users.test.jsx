@@ -1,6 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { MemoryRouter } from 'react-router-dom';
 
 import { useFollowUser, useUsers } from '../../query/user_hooks';
 import RecommendedUsers from './recommended_users';
@@ -37,30 +38,35 @@ describe('RecommendedUsers', () => {
     vi.clearAllMocks();
   });
 
+  const renderRecommendedUsers = () => render(
+    <MemoryRouter>
+      <RecommendedUsers />
+    </MemoryRouter>
+  );
+
   it('renders an empty recommended users list gracefully', () => {
     useUsers.mockReturnValue({ data: [] });
 
-    const { container } = render(<RecommendedUsers />);
+    const { container } = renderRecommendedUsers();
 
     expect(screen.getByText('Recommended Users')).toBeInTheDocument();
     expect(container.querySelectorAll('.rec-user-item')).toHaveLength(0);
   });
 
   it('renders recommended users with avatars and usernames', () => {
-    render(<RecommendedUsers />);
+    renderRecommendedUsers();
 
     recommendedUsers.forEach(user => {
-      expect(screen.getByText(user.username)).toBeInTheDocument();
-      expect(screen.getByAltText(`${user.username} avatar`)).toHaveAttribute(
-        'src',
-        user.avatar_url
-      );
+      const profileLink = screen.getByRole('link', { name: user.username });
+
+      expect(profileLink).toHaveAttribute('href', `/users/${user.id}`);
+      expect(profileLink.querySelector('img')).toHaveAttribute('src', user.avatar_url);
     });
   });
 
   it('calls follow mutation with the selected user id', async () => {
     const user = userEvent.setup();
-    render(<RecommendedUsers />);
+    renderRecommendedUsers();
 
     const followButton = screen.getByRole('button', { name: `Follow ${recommendedUsers[1].username}` });
 

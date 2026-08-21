@@ -32,12 +32,21 @@ li.rec-user-item {
   border: black solid 1px;
   border-radius: 3px;
 
-  div.rec-user-block {
+  a.rec-user-block {
     display: flex;
     flex-direction: row;
     align-items: center;
     flex: 1 1 auto;
     min-width: 0;
+  }
+
+  a.rec-user-block:hover .rec-username {
+    text-decoration: underline;
+  }
+
+  a.rec-user-block:focus-visible {
+    outline: 2px solid black;
+    outline-offset: 2px;
   }
 
   i.fa-plus-square:before {
