@@ -1,7 +1,8 @@
 # User Profile Page Plan
 
-Status: in progress. Phase 1 through Phase 4 are complete. Phase 5-1
-implementation is complete; Phase 5-2 is next.
+Status: in progress. Phase 1 through Phase 5-1 are complete. Phase 5-2
+implementation, automated verification, and live browser smoke checks are
+complete; physical keyboard-only tab-order confirmation remains.
 
 ## Implementation Progress
 
@@ -68,8 +69,12 @@ current user's post-form avatar, recommended-user cards, relationship-list
 cards, and the dashboard account menu now provide canonical profile entry
 points.
 
-The next checkpoint is Phase 5-2: verify, seed, and document the completed
-profile feature.
+Phase 5-2 implementation and automated verification are complete. The
+production-safe seed now provides PicMeS Guest with reciprocal relationships
+to 1,001 deterministic profile users, and the component, smoke-check, and
+closeout documentation reflects the delivered feature. Live responsive,
+filtering, relationship-refresh, empty-state, and pagination checks passed.
+Physical keyboard-only tab-order confirmation remains before final closeout.
 
 ## Goal
 
@@ -734,7 +739,7 @@ Scope:
 - link relationship-list cards
 - add Profile to the dashboard account menu
 
-#### Phase 5-2: Verify and Document Profiles
+#### Phase 5-2: Verify and Document Profiles — Keyboard Confirmation Pending
 
 Scope:
 
