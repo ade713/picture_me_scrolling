@@ -60,6 +60,7 @@ NB: All feature MVPs will have the following:
 * [Phase 7 Verification Closeout][phase7-verification-closeout]
 * [Profile and Settings Closeout][profile-settings-closeout]
 * [User Profile Page Plan][user-profile-plan]
+* [User Profile Page Closeout][user-profile-closeout]
 
 [api-endpoints]: ./api-endpoints.md
 [backend-production-readiness]: ./backend-production-readiness.md
@@ -73,6 +74,7 @@ NB: All feature MVPs will have the following:
 [phase11-backend-closeout]: ./phase11-backend-closeout.md
 [profile-settings-closeout]: ./profile-settings-closeout.md
 [user-profile-plan]: ./user-profile-plan.md
+[user-profile-closeout]: ./user-profile-closeout.md
 [render-production-setup]: ./render-production-setup.md
 [phase7-verification-closeout]: ./phase7-verification-closeout.md
 [sample-state]: ./sample-state.md

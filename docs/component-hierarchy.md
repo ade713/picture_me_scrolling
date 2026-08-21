@@ -10,6 +10,17 @@
   - `Feed`
     - `FeedItem` and post-type bodies
   - `RecommendedUsers`
+- `ProfilePage`
+  - `ProfileHeader`
+  - `ProfileNavigation`
+  - `ProfilePosts`
+    - `FeedItem` and post-type bodies
+  - `ProfileFollowers`
+    - `ProfileRelationshipUsers`
+    - `ProfileUserCard`
+  - `ProfileFollowing`
+    - `ProfileRelationshipUsers`
+    - `ProfileUserCard`
 - `SettingsPage`
   - `AvatarSettingsForm`
   - `EmailSettingsForm`
@@ -33,6 +44,7 @@ Path                       | Component                  | Access
 `/`                        | `AuthForm`                 | logged out
 `/signup`                  | `AuthForm`                 | logged out
 `/dashboard`               | `Dashboard`                | authenticated
+`/users/:id`               | `ProfilePage`              | authenticated
 `/settings`                | `SettingsPage`             | authenticated
 `/verify-email/:token`     | `EmailVerificationPage`    | public
 `/forgot-password`         | `ForgotPasswordPage`       | logged out

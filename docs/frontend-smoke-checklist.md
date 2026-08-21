@@ -28,6 +28,12 @@ export PATH="$HOME/.asdf/bin:$HOME/.asdf/shims:$PATH"
 DISABLE_SPRING=1 bin/rails server
 ```
 
+Refresh the repeatable portfolio scenarios without deleting unrelated records:
+
+```sh
+DISABLE_SPRING=1 bin/rails runner 'DemoSeed.run'
+```
+
 Open the app in a browser at `http://localhost:3000`.
 
 ## Seed Account
@@ -190,7 +196,40 @@ Use the seeded guest account:
 - Repeat the filtered loading, results, empty, and clear states at narrow and
   wide viewport sizes.
   - Expected: tag links wrap, text does not overflow, and controls remain
-    visible and keyboard accessible.
+  visible and keyboard accessible.
+
+## User Profile Smoke
+
+- Open the PicMeS Guest profile from the dashboard account menu and from the
+  post-form avatar.
+  - Expected: both entry points open the same canonical profile URL.
+- Open another user's profile from a feed author and a recommended-user card.
+  - Expected: the selected user's identity, counts, posts, and relationship
+    action render without requiring an existing follow.
+- Reload a profile URL, switch among Posts, Followers, and Following, then use
+  browser Back and Forward.
+  - Expected: the profile identity remains present and the URL-owned view is
+    restored.
+- Load another page in Posts, Followers, and Following where available.
+  - Expected: new records append without duplicates and the active view remains
+    selected.
+- Select and clear a profile-post tag.
+  - Expected: filtering remains scoped to that profile; selecting another
+    profile returns to its canonical unfiltered Posts view.
+- Follow and unfollow users from the profile header and relationship cards.
+  - Expected: relationship actions, profile counts, both relationship lists,
+    dashboard posts, and recommendations refresh after successful mutations.
+- Open the PicMeS Guest profile after running the production-safe demo seed.
+  - Expected: follower and following counts use compact visual formatting while
+    their accessible labels expose the exact values.
+- Complete the profile entry points, view navigation, tag controls,
+  relationship actions, and pagination using only the keyboard.
+  - Expected: focus follows document order, visible focus indicators remain,
+    and each view heading receives focus when its view opens.
+- Repeat the profile header, navigation, cards, state messages, and pagination
+  at narrow and wide viewport sizes.
+  - Expected: usernames wrap, counts and controls remain visible, and no
+    horizontal overflow appears.
 
 ## API Coverage Backstop
 

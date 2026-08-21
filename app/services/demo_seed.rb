@@ -5,6 +5,8 @@ module DemoSeed
   GUEST_USERNAME = User::SHARED_GUEST_USERNAME
   DEFAULT_PASSWORD = '1Welcome2To3PicMeS'.freeze
   DEMO_PASSWORD = 'pass123'.freeze
+  PROFILE_RELATIONSHIP_COUNT = 1_001
+  PROFILE_USER_PREFIX = 'Demo Profile User'.freeze
 
   FOLLOWED_USERS = [
     'Demo Feed Writer',
@@ -47,10 +49,14 @@ module DemoSeed
       ensure_follow(follower: guest, followee: followee)
     end
 
+    create_profile_relationships(guest, seeded_at: seeded_at)
+
     create_feed_posts(followed_users, seeded_at: seeded_at)
+    create_profile_posts(followed_users.first, seeded_at: seeded_at)
     create_recommended_user_posts(recommended_users, seeded_at: seeded_at)
 
-    puts "Demo seed complete: #{User.where(username: demo_usernames).count} demo users available."
+    puts "Demo seed complete: #{User.where(username: demo_usernames).count} content users " \
+         "and #{User.where(username: profile_usernames).count} profile users available."
   end
 
   def upsert_user(username:, password: DEMO_PASSWORD)
@@ -119,6 +125,66 @@ module DemoSeed
     end
   end
 
+  def create_profile_posts(author, seeded_at:)
+    3.times do |index|
+      sequence = index + 1
+      upsert_post(
+        author: author,
+        title: format('Profile showcase text %02d', sequence),
+        body: 'This post keeps profile pagination available for portfolio review.',
+        post_type: Post::TYPES.fetch(:text),
+        tags: %w[profile_showcase text],
+        created_at: seeded_at - (sequence + 40).minutes
+      )
+    end
+  end
+
+  def create_profile_relationships(guest, seeded_at:)
+    profile_user_ids = upsert_profile_users(guest, seeded_at: seeded_at)
+    relationship_rows = profile_user_ids.flat_map do |user_id|
+      [
+        follow_attributes(follower_id: user_id, followee_id: guest.id, seeded_at: seeded_at),
+        follow_attributes(follower_id: guest.id, followee_id: user_id, seeded_at: seeded_at)
+      ]
+    end
+    Follow.insert_all(
+      relationship_rows,
+      unique_by: :index_follows_on_follower_id_and_followee_id
+    )
+  end
+
+  def upsert_profile_users(guest, seeded_at:)
+    usernames = profile_usernames
+    missing_users = usernames - User.where(username: usernames).pluck(:username)
+
+    if missing_users.any?
+      # One unknown digest keeps showcase users inaccessible without performing
+      # 1,001 BCrypt operations.
+      password_digest = BCrypt::Password.create(SecureRandom.urlsafe_base64(32)).to_s
+      user_rows = missing_users.map do |username|
+        {
+          username: username,
+          password_digest: password_digest,
+          session_token: SecureRandom.urlsafe_base64,
+          created_at: seeded_at,
+          updated_at: seeded_at
+        }
+      end
+      User.insert_all(user_rows, unique_by: :index_users_on_username)
+    end
+
+    User.where(username: usernames).pluck(:id)
+  end
+
+  def follow_attributes(follower_id:, followee_id:, seeded_at:)
+    {
+      follower_id: follower_id,
+      followee_id: followee_id,
+      created_at: seeded_at,
+      updated_at: seeded_at
+    }
+  end
+
   def upsert_post(author:, title:, post_type:, tags:, body: nil, url: nil, created_at: nil)
     post = Post.find_or_initialize_by(author_id: author.id, title: title, post_type: post_type)
     attributes = { body: body, url: url }
@@ -135,5 +201,11 @@ module DemoSeed
 
   def demo_usernames
     [GUEST_USERNAME] + FOLLOWED_USERS + RECOMMENDED_USERS
+  end
+
+  def profile_usernames
+    @profile_usernames ||= Array.new(PROFILE_RELATIONSHIP_COUNT) do |index|
+      format('%s %04d', PROFILE_USER_PREFIX, index + 1)
+    end.freeze
   end
 end

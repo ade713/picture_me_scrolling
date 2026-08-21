@@ -8,16 +8,25 @@ class DemoSeedTest < ActiveSupport::TestCase
     demo_users = User.where(username: DemoSeed.demo_usernames)
     followed_users = User.where(username: DemoSeed::FOLLOWED_USERS)
     recommended_users = User.where(username: DemoSeed::RECOMMENDED_USERS)
+    profile_users = User.where(username: DemoSeed.profile_usernames)
+    profile_post_author = followed_users.find_by!(username: DemoSeed::FOLLOWED_USERS.first)
     demo_posts = Post.where(author_id: demo_users.select(:id))
 
     assert_equal DemoSeed.demo_usernames.length, demo_users.count
     assert_equal DemoSeed::FOLLOWED_USERS.length, followed_users.count
     assert_equal DemoSeed::RECOMMENDED_USERS.length, recommended_users.count
+    assert_equal DemoSeed::PROFILE_RELATIONSHIP_COUNT, profile_users.count
+    refute profile_users.where(password_digest: guest.password_digest).exists?
     assert_equal DemoSeed::FOLLOWED_USERS.length,
                  Follow.where(follower_id: guest.id, followee_id: followed_users.select(:id)).count
-    assert_equal 22, demo_posts.count
+    assert_equal DemoSeed::PROFILE_RELATIONSHIP_COUNT,
+                 Follow.where(follower_id: profile_users.select(:id), followee_id: guest.id).count
+    assert_equal DemoSeed::PROFILE_RELATIONSHIP_COUNT,
+                 Follow.where(follower_id: guest.id, followee_id: profile_users.select(:id)).count
+    assert_equal 25, demo_posts.count
     assert_equal 8, demo_posts.where(post_type: 'link').count
     assert_equal 18, demo_posts.joins(:tags).where(tags: { name: 'demo_feed' }).count
+    assert_equal 12, Post.where(author_id: profile_post_author.id).count
     assert_equal %w[demo_feed text], demo_posts.find_by!(title: 'Demo feed text 01').tags.order(:name).pluck(:name)
   end
 
@@ -25,21 +34,34 @@ class DemoSeedTest < ActiveSupport::TestCase
     DemoSeed.run
 
     demo_users = User.where(username: DemoSeed.demo_usernames)
+    profile_users = User.where(username: DemoSeed.profile_usernames)
     guest = User.find_by!(username: DemoSeed::GUEST_USERNAME)
     initial_counts = {
       users: demo_users.count,
+      profile_users: profile_users.count,
       posts: Post.where(author_id: demo_users.select(:id)).count,
       follows: Follow.where(follower_id: guest.id).count,
+      profile_relationships: Follow.where(
+        follower_id: profile_users.select(:id),
+        followee_id: guest.id
+      ).count,
       post_tags: PostTag.joins(:post).where(posts: { author_id: demo_users.select(:id) }).count
     }
 
     DemoSeed.run
 
     demo_users = User.where(username: DemoSeed.demo_usernames)
+    profile_users = User.where(username: DemoSeed.profile_usernames)
     guest = User.find_by!(username: DemoSeed::GUEST_USERNAME)
     assert_equal initial_counts[:users], demo_users.count
+    assert_equal initial_counts[:profile_users], profile_users.count
     assert_equal initial_counts[:posts], Post.where(author_id: demo_users.select(:id)).count
     assert_equal initial_counts[:follows], Follow.where(follower_id: guest.id).count
+    assert_equal initial_counts[:profile_relationships],
+                 Follow.where(
+                   follower_id: profile_users.select(:id),
+                   followee_id: guest.id
+                 ).count
     assert_equal initial_counts[:post_tags],
                  PostTag.joins(:post).where(posts: { author_id: demo_users.select(:id) }).count
   end
