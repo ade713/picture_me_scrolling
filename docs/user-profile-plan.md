@@ -1,6 +1,7 @@
 # User Profile Page Plan
 
-Status: in progress. Phase 1 through Phase 4 are complete; Phase 5-1 is next.
+Status: in progress. Phase 1 through Phase 4 are complete. Phase 5-1
+implementation is complete; Phase 5-2 is next.
 
 ## Implementation Progress
 
@@ -62,8 +63,13 @@ component, with view-specific copy, loading, error, empty, pagination,
 focus-management, and per-user pending behavior. Generic load-more action
 styles now have shared ownership outside the feed stylesheet.
 
-The next checkpoint is Phase 5-1: add profile navigation entry points across
-the application.
+Phase 5-1 implementation is complete. Feed-author avatars and usernames, the
+current user's post-form avatar, recommended-user cards, relationship-list
+cards, and the dashboard account menu now provide canonical profile entry
+points.
+
+The next checkpoint is Phase 5-2: verify, seed, and document the completed
+profile feature.
 
 ## Goal
 
@@ -718,11 +724,12 @@ Scope:
 
 ### Phase 5: Add Entry Points and Close Out
 
-#### Phase 5-1: Add Profile Navigation Entry Points
+#### Phase 5-1: Add Profile Navigation Entry Points — Complete
 
 Scope:
 
 - link feed author avatars and usernames
+- link the current user's post-form avatar
 - link recommended-user avatars and usernames
 - link relationship-list cards
 - add Profile to the dashboard account menu
