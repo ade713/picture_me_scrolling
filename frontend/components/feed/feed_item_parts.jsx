@@ -73,7 +73,9 @@ export const LikeButton = ({ isAuthor, onLike, onUnlike, post }) => {
 export const PostHeader = ({ isAuthor, onFollow, onUnfollow, post }) => (
   <div className="post-header">
     <div className="post-user">
-      { post.author }
+      <Link to={routes.userProfile(post.author_id)}>
+        { post.author }
+      </Link>
     </div>
     <div className="follow-hdr">
       <FollowButton
@@ -206,11 +208,16 @@ export const DeletePostConfirmation = ({ onCancel, onConfirm, post }) => {
 
 export const PostFrame = ({ children, post, priorityMedia = false }) => (
   <li className="feed-post">
-    <img
-      alt={ `${post.author} avatar` }
-      className="author-avatar"
-      { ...imageLoadingProps(priorityMedia) }
-      src={ post.author_avatar } />
+    <Link
+      aria-label={`View ${post.author}'s profile`}
+      className="author-avatar-link"
+      to={routes.userProfile(post.author_id)}>
+      <img
+        alt=""
+        className="author-avatar"
+        { ...imageLoadingProps(priorityMedia) }
+        src={ post.author_avatar } />
+    </Link>
     <div className="feed-item">
       { children }
     </div>

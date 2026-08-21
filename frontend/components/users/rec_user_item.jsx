@@ -1,20 +1,22 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { buttonActionLabels } from '../../config/button_labels';
+import { routes } from '../../config/routes';
 
 const followActionLabel = user => buttonActionLabels.followUser(user.username);
 
 const RecUserItem = ({ followUser, user }) => (
   <li className="rec-user-item">
-    <div className="rec-user-block">
+    <Link className="rec-user-block" to={routes.userProfile(user.id)}>
       <img
-        alt={ `${user.username} avatar` }
+        alt=""
         className="rec-user-avatar"
         src={ user.avatar_url } />
       <span className="rec-username">
         { user.username }
       </span>
-    </div>
+    </Link>
     <button
       aria-label={ followActionLabel(user) }
       className="follow-user"

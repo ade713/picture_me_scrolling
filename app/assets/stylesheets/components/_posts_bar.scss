@@ -8,12 +8,19 @@ div.post-bar {
   font-family: 'Muli', sans-serif;
 }
 
-img.user-avatar {
+.post-bar-avatar-link {
   display: flex;
   flex: 0 0 64px;
-  @include avatar-frame(64px, $flex-basis: 64px);
-
   margin-right: 16px;
+}
+
+.post-bar-avatar-link:focus-visible {
+  outline: 2px solid black;
+  outline-offset: 2px;
+}
+
+img.user-avatar {
+  @include avatar-frame(64px, $flex-basis: 64px);
 }
 
 div.post-form-links {
@@ -96,9 +103,12 @@ div.button-icon i {
     height: auto;
   }
 
+  .post-bar-avatar-link,
   img.user-avatar {
     @include avatar-size(48px, 48px);
+  }
 
+  .post-bar-avatar-link {
     margin-right: 10px;
   }
 

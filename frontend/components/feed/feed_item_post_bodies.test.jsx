@@ -94,8 +94,14 @@ describe('FeedItem post bodies', () => {
     it(`renders ${post.post_type} post content`, () => {
       const { container } = renderFeedItem(post);
 
-      expect(screen.getByText('Athos')).toBeInTheDocument();
-      expect(screen.getByAltText('Athos avatar')).toHaveAttribute('src', '/avatars/athos.png');
+      expect(screen.getByRole('link', { name: 'Athos' })).toHaveAttribute(
+        'href',
+        '/users/2'
+      );
+      expect(screen.getByRole('link', { name: "View Athos's profile" }))
+        .toHaveAttribute('href', '/users/2');
+      expect(screen.getByRole('link', { name: "View Athos's profile" })
+        .querySelector('img')).toHaveAttribute('src', '/avatars/athos.png');
       expect(screen.getByText(`Likes: ${basePost.likes}`)).toBeInTheDocument();
       assertions(container);
     });

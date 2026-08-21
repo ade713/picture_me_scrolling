@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import { PROFILE_LABEL, SETTINGS_LABEL } from '../../config/app';
 import { buttonLabels } from '../../config/button_labels';
 import { routes } from '../../config/routes';
 import { useCurrentUser, useLogout } from '../../query/session_hooks';
@@ -68,8 +69,13 @@ const AccountMenu = () => {
         className="account-menu-popup"
         hidden={ !isOpen }
         id={ ACCOUNT_MENU_ID }>
+        <Link
+          to={routes.userProfile(currentUser.id)}
+          onClick={() => setIsOpen(false)}>
+          {PROFILE_LABEL}
+        </Link>
         <Link to={ routes.settings } onClick={ () => setIsOpen(false) }>
-          Settings
+          {SETTINGS_LABEL}
         </Link>
         <button
           disabled={ logout.isPending }
