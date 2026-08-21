@@ -1,7 +1,6 @@
 # User Profile Page Plan
 
-Status: in progress. Phase 1, Phase 2, Phase 3, Phase 4-1, and Phase 4-2 are
-complete. Phase 4-3-1 implementation is complete; Phase 4-3-2 is next.
+Status: in progress. Phase 1 through Phase 4 are complete; Phase 5-1 is next.
 
 ## Implementation Progress
 
@@ -49,20 +48,22 @@ Phase 4-2 was split into two focused parts. Part 1 was completed in PR #166 and
 added the Followers endpoint configuration, API utility, query key, reusable
 relationship pagination options, and `useUserFollowers` infinite query. Part 2
 was completed in PR #167 and added the visible Followers view using the shared
-relationship cards, with
-loading, error, empty, pagination, focus-management, and per-user pending
-states. Existing user-family invalidation refreshes the profile counts and
-Followers collection after successful relationship mutations.
+relationship cards, with loading, error, empty, pagination, focus-management,
+and per-user pending states. Existing user-family invalidation refreshes the
+profile counts and Followers collection after successful relationship
+mutations.
 
-Phase 4-3 is split into two focused parts. Phase 4-3-1 implementation is
-complete and adds the Following endpoint configuration, API utility, query
-key, `useUserFollowing` infinite query, shared relationship-query ownership,
-pagination coverage, and cross-list invalidation. Phase 4-3-2 will add the
-visible Following view and consolidate shared relationship-list behavior and
-styling now visible across both relationship views.
+Phase 4-3 was split into two focused parts. Part 1 was completed in PR #168 and
+added the Following endpoint configuration, API utility, query key,
+`useUserFollowing` infinite query, shared relationship-query ownership,
+pagination coverage, and cross-list invalidation. Part 2 implementation is
+complete and adds the visible Following view using a shared relationship-list
+component, with view-specific copy, loading, error, empty, pagination,
+focus-management, and per-user pending behavior. Generic load-more action
+styles now have shared ownership outside the feed stylesheet.
 
-The next checkpoint is Phase 4-3-2: add the Following profile view and complete
-the shared relationship UI cleanup.
+The next checkpoint is Phase 5-1: add profile navigation entry points across
+the application.
 
 ## Goal
 
@@ -650,7 +651,7 @@ Scope:
 - move focus when the active tag changes or clears
 - add component coverage for profile-scoped tag destinations and filter states
 
-### Phase 4: Add Relationship Views
+### Phase 4: Add Relationship Views — Complete
 
 #### Phase 4-1: Build Shared Profile User Cards — Complete
 
@@ -685,7 +686,7 @@ Scope:
 - move focus to the Followers heading when the view opens
 - disable only the relationship action associated with the pending user
 
-#### Phase 4-3: Add Following View
+#### Phase 4-3: Add Following View — Complete
 
 This checkpoint is divided into two reviewable PRs.
 
@@ -699,7 +700,7 @@ Scope:
 - verify successful Follow and Unfollow mutations invalidate both the
   Followers and Following collections
 
-##### Phase 4-3-2: Add Following Profile View and Consolidate Relationship UI
+##### Phase 4-3-2: Add Following Profile View and Consolidate Relationship UI — Complete
 
 Scope:
 

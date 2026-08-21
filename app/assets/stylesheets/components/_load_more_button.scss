@@ -1,0 +1,37 @@
+button.load-more-items,
+button.load-more-posts {
+  display: flex;
+  align-self: center;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  min-height: 40px;
+  padding-left: 18px;
+  padding-right: 18px;
+  margin: 0;
+  border: 1px solid black;
+  border-radius: 3px;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+}
+
+button.load-more-items:hover,
+button.load-more-posts:hover {
+  background-color: black;
+  box-shadow: 2px 2px 4px lightslategrey;
+  font-size: 1.1em;
+}
+
+button.load-more-items:focus-visible,
+button.load-more-posts:focus-visible {
+  outline: 2px solid black;
+  outline-offset: 2px;
+}
+
+button.load-more-items:disabled,
+button.load-more-posts:disabled {
+  background-color: rgba(0, 0, 0, 0.55);
+  color: white;
+  cursor: wait;
+}

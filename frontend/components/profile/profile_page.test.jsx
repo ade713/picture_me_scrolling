@@ -46,6 +46,14 @@ vi.mock('./profile_followers', () => ({
   )
 }));
 
+vi.mock('./profile_following', () => ({
+  default: ({ currentUserId, profileId }) => (
+    <div data-testid="profile-following">
+      Following for profile {profileId}; viewer {currentUserId}
+    </div>
+  )
+}));
+
 const buildProfileQuery = (overrides = {}) => ({
   data: null,
   error: null,
@@ -196,6 +204,25 @@ describe('ProfilePage', () => {
     );
     expect(screen.getByTestId('profile-followers')).toHaveTextContent(
       'Followers for profile 42; viewer 1'
+    );
+    expect(screen.queryByText('Posts for profile 42')).not.toBeInTheDocument();
+  });
+
+  it('restores a direct Following URL while preserving the profile header', () => {
+    useUser.mockReturnValue(buildProfileQuery({ data: buildProfile() }));
+
+    renderProfileRoute('/users/42?view=following');
+
+    expect(screen.getByRole('heading', { name: 'Athos' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Following' })).toHaveAttribute(
+      'aria-current',
+      'page'
+    );
+    expect(screen.getByTestId('location-path')).toHaveTextContent(
+      '/users/42?view=following'
+    );
+    expect(screen.getByTestId('profile-following')).toHaveTextContent(
+      'Following for profile 42; viewer 1'
     );
     expect(screen.queryByText('Posts for profile 42')).not.toBeInTheDocument();
   });
