@@ -35,6 +35,8 @@ The automated tests cover:
 - password-reset delivery, rate limiting, expiration, replacement, and
   single-use behavior
 - recovery-page validation, accessibility, and focus behavior
+- profile identity, pagination, tag filtering, relationship views, cache
+  invalidation, navigation entry points, and accessible state handling
 
 ## Local Seed Setup
 
@@ -55,6 +57,8 @@ The seed data intentionally includes:
 - recommended users with posts, such as `DarkHadouMaster`
 - recommended users without posts, such as `Ryu`
 - tagged posts, including more than one accessible page under `performance`
+- reciprocal PicMeS Guest relationships with 1,001 deterministic profile users
+  for compact counts and multi-page Followers/Following checks
 
 ## Manual Dashboard Checks
 
@@ -124,6 +128,25 @@ Tag behavior:
 - Complete tag entry, removal, selection, and clearing with only the keyboard at
   narrow and wide viewport sizes.
   - Expected: focus indicators remain visible and content does not overflow.
+
+Profile behavior:
+
+- Open PicMeS Guest from the account menu and post-form avatar, then open other
+  profiles from feed authors, recommendations, and relationship cards.
+  - Expected: every entry point opens the canonical selected-user profile.
+- Switch among Posts, Followers, and Following; reload; and use Back and
+  Forward.
+  - Expected: URL-owned view state and profile identity remain synchronized.
+- Load subsequent pages in each profile collection and exercise profile-scoped
+  tag filtering.
+  - Expected: results append without duplicates and filters remain scoped to
+  the selected profile.
+- Follow and unfollow from profile headers and relationship cards.
+  - Expected: profile counts, relationship lists, feed posts, and
+  recommendations refresh after successful mutations.
+- Check PicMeS Guest at narrow and wide viewport sizes using only the keyboard.
+  - Expected: compact counts expose exact accessible values, all controls have
+  visible focus, and profile content does not overflow.
 
 Like behavior:
 
