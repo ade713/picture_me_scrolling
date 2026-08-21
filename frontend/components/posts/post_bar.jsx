@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
+import { routes } from '../../config/routes';
 import { useCurrentUser } from '../../query/session_hooks';
 import AudioForm from './audio_form';
 import LinkForm from './link_form';
@@ -13,10 +15,15 @@ const PostBar = () => {
 
   return (
     <div className="post-bar">
-      <img
-        alt={ `${currentUser.data.username} avatar` }
-        className="user-avatar"
-        src={ currentUser.data.avatar_url } />
+      <Link
+        aria-label={`View ${currentUser.data.username}'s profile`}
+        className="post-bar-avatar-link"
+        to={routes.userProfile(currentUser.data.id)}>
+        <img
+          alt=""
+          className="user-avatar"
+          src={ currentUser.data.avatar_url } />
+      </Link>
       <div className="post-form-links">
         <div className="bar-form-button">
           <TextForm />
