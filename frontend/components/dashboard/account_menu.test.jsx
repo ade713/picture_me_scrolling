@@ -60,10 +60,11 @@ describe('AccountMenu', () => {
     expect(trigger).toHaveClass('account-menu-trigger');
     expect(popup).toHaveClass('account-menu-popup');
     expect(popup).toHaveAttribute('hidden');
+    expect(screen.queryByRole('link', { name: 'Profile' })).not.toBeInTheDocument();
     expect(screen.queryByRole('link', { name: 'Settings' })).not.toBeInTheDocument();
   });
 
-  it('opens the account controls and links to settings', async () => {
+  it('opens the account controls and links to profile and settings', async () => {
     const user = userEvent.setup();
     renderMenu();
 
@@ -72,6 +73,10 @@ describe('AccountMenu', () => {
 
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
     expect(document.getElementById('dashboard-account-menu')).not.toHaveAttribute('hidden');
+    expect(screen.getByRole('link', { name: 'Profile' })).toHaveAttribute(
+      'href',
+      '/users/1'
+    );
     const settingsLink = screen.getByRole('link', { name: 'Settings' });
     expect(settingsLink).toHaveAttribute(
       'href',
@@ -108,11 +113,14 @@ describe('AccountMenu', () => {
     expect(screen.getByRole('link', { name: 'Settings' })).toBeInTheDocument();
   });
 
-  it('tabs through Settings and Log Out in document order', async () => {
+  it('tabs through Profile, Settings, and Log Out in document order', async () => {
     const user = userEvent.setup();
     renderMenu({ withOutsideControl: true });
 
     await user.click(screen.getByRole('button', { name: 'Athos' }));
+    await user.tab();
+    expect(screen.getByRole('link', { name: 'Profile' })).toHaveFocus();
+
     await user.tab();
     expect(screen.getByRole('link', { name: 'Settings' })).toHaveFocus();
 
@@ -132,7 +140,7 @@ describe('AccountMenu', () => {
     const trigger = screen.getByRole('button', { name: 'Athos' });
     await user.click(trigger);
     await user.tab();
-    expect(screen.getByRole('link', { name: 'Settings' })).toHaveFocus();
+    expect(screen.getByRole('link', { name: 'Profile' })).toHaveFocus();
 
     await user.keyboard('{Escape}');
 
