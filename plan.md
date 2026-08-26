@@ -1043,6 +1043,20 @@ The completed MVP uses the existing username, avatar, posts, follows, likes,
 and tags. Profile fields, private accounts, counter caches, optimistic
 relationship updates, and a second post-creation surface remain deferred.
 
+## Completed Technical Debt: Frontend Prop Ownership
+
+Status: complete.
+
+Post tag navigation now uses a narrowly scoped React context instead of passing
+`tagDestination` through `ProfilePosts`, `FeedItem`, and `PostFooter`.
+Relationship-list rendering now reads the cached current-user query at its
+ownership boundary instead of forwarding `currentUserId` through both view
+wrappers.
+
+The accompanying frontend scan found no other configuration value passed unused
+through three or more component levels. Immediate component data and event
+callbacks remain explicit props, and broader Zustand state was not introduced.
+
 ## Guardrails
 
 - Keep the app working after each chunk.

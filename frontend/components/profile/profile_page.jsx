@@ -56,16 +56,10 @@ const ProfilePage = () => {
           <ProfilePosts profileId={profileQuery.data.id} tag={activeTag} />
         )}
         {activeView === profileViews.followers && (
-          <ProfileFollowers
-            currentUserId={currentUser.id}
-            profileId={profileQuery.data.id}
-          />
+          <ProfileFollowers profileId={profileQuery.data.id} />
         )}
         {activeView === profileViews.following && (
-          <ProfileFollowing
-            currentUserId={currentUser.id}
-            profileId={profileQuery.data.id}
-          />
+          <ProfileFollowing profileId={profileQuery.data.id} />
         )}
       </>
     );

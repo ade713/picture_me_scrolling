@@ -8,7 +8,12 @@ import {
   useUnfollowUser,
   useUserFollowers
 } from '../../query/user_hooks';
+import { useCurrentUser } from '../../query/session_hooks';
 import ProfileFollowers from './profile_followers';
+
+vi.mock('../../query/session_hooks', () => ({
+  useCurrentUser: vi.fn()
+}));
 
 vi.mock('../../query/user_hooks', () => ({
   useFollowUser: vi.fn(),
@@ -40,7 +45,7 @@ const buildMutation = (overrides = {}) => ({
 
 const renderFollowers = () => render(
   <MemoryRouter>
-    <ProfileFollowers currentUserId={1} profileId={42} />
+    <ProfileFollowers profileId={42} />
   </MemoryRouter>
 );
 
@@ -52,6 +57,7 @@ describe('ProfileFollowers', () => {
     followUser = buildMutation();
     unfollowUser = buildMutation();
     useFollowUser.mockReturnValue(followUser);
+    useCurrentUser.mockReturnValue({ data: { id: 1, username: 'Viewer' } });
     useUnfollowUser.mockReturnValue(unfollowUser);
     useUserFollowers.mockReturnValue({
       data: { users: followers },

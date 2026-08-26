@@ -132,7 +132,7 @@ describe('FeedItem post bodies', () => {
     expect(screen.queryByRole('list', { name: 'Tags' })).not.toBeInTheDocument();
   });
 
-  it('uses a provided tag destination without changing tag rendering', () => {
+  it('uses the tag destination from navigation context', () => {
     render(
       <PostTagNavigationProvider destination={tag => `/users/42?tag=${tag}`}>
         {feedItemElement()}

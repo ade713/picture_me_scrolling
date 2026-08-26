@@ -7,7 +7,12 @@ import {
   useUnfollowUser,
   useUserFollowing
 } from '../../query/user_hooks';
+import { useCurrentUser } from '../../query/session_hooks';
 import ProfileFollowing from './profile_following';
+
+vi.mock('../../query/session_hooks', () => ({
+  useCurrentUser: vi.fn()
+}));
 
 vi.mock('../../query/user_hooks', () => ({
   useFollowUser: vi.fn(),
@@ -23,12 +28,13 @@ const buildMutation = () => ({
 
 const renderFollowing = () => render(
   <MemoryRouter>
-    <ProfileFollowing currentUserId={1} profileId={42} />
+    <ProfileFollowing profileId={42} />
   </MemoryRouter>
 );
 
 describe('ProfileFollowing', () => {
   beforeEach(() => {
+    useCurrentUser.mockReturnValue({ data: { id: 1, username: 'Viewer' } });
     useFollowUser.mockReturnValue(buildMutation());
     useUnfollowUser.mockReturnValue(buildMutation());
   });
@@ -74,7 +80,7 @@ describe('ProfileFollowing', () => {
     useUserFollowing.mockReturnValue({ isError: true, isLoading: false });
     rerender(
       <MemoryRouter>
-        <ProfileFollowing currentUserId={1} profileId={42} />
+        <ProfileFollowing profileId={42} />
       </MemoryRouter>
     );
     expect(screen.getByRole('alert')).toHaveTextContent(
@@ -90,7 +96,7 @@ describe('ProfileFollowing', () => {
     });
     rerender(
       <MemoryRouter>
-        <ProfileFollowing currentUserId={1} profileId={42} />
+        <ProfileFollowing profileId={42} />
       </MemoryRouter>
     );
     expect(screen.getByRole('heading', { name: 'Not following anyone yet' }))

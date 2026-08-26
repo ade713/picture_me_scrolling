@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
+import { useCurrentUser } from '../../query/session_hooks';
 import {
   useFollowUser,
   useUnfollowUser
@@ -12,7 +13,6 @@ const sameUser = (firstId, secondId) => String(firstId) === String(secondId);
 
 const ProfileRelationshipUsers = ({
   buttonLabel,
-  currentUserId,
   emptyMessage,
   heading,
   headingId,
@@ -22,6 +22,7 @@ const ProfileRelationshipUsers = ({
   profileId,
   relationshipQuery
 }) => {
+  const currentUserId = useCurrentUser().data?.id;
   const followUser = useFollowUser();
   const headingRef = useRef(null);
   const unfollowUser = useUnfollowUser();

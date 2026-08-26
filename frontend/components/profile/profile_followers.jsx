@@ -9,13 +9,12 @@ import {
 import { useUserFollowers } from '../../query/user_hooks';
 import ProfileRelationshipUsers from './profile_relationship_users';
 
-const ProfileFollowers = ({ currentUserId, profileId }) => {
+const ProfileFollowers = ({ profileId }) => {
   const followers = useUserFollowers(profileId);
 
   return (
     <ProfileRelationshipUsers
       buttonLabel={buttonLabels.loadMoreFollowers}
-      currentUserId={currentUserId}
       emptyMessage={profileMessages.noFollowers}
       heading={profileViewLabels[profileViews.followers]}
       headingId="profile-followers-heading"
