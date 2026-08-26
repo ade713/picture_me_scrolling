@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { buttonActionLabels, buttonLabels } from '../../config/button_labels';
 import { routes } from '../../config/routes';
 import { imageLoadingProps } from '../../util/media_loading_util';
+import { usePostTagDestination } from './post_tag_navigation_context';
 
 const postActionLabel = post => post.title || `post by ${post.author}`;
 const followActionLabel = post => buttonActionLabels.followUser(post.author);
@@ -88,7 +89,9 @@ export const PostHeader = ({ isAuthor, onFollow, onUnfollow, post }) => (
   </div>
 );
 
-export const PostTags = ({ tagDestination = routes.dashboardTag, tags = [] }) => {
+export const PostTags = ({ tags = [] }) => {
+  const tagDestination = usePostTagDestination();
+
   if (tags.length === 0) {
     return null;
   }
@@ -140,11 +143,10 @@ export const PostFooter = ({
   onEdit,
   onLike,
   onUnlike,
-  post,
-  tagDestination
+  post
 }) => (
   <>
-    <PostTags tagDestination={tagDestination} tags={post.tags} />
+    <PostTags tags={post.tags} />
     <div className="post-footer">
       <div className="post-likes">
         Likes: { post.likes }

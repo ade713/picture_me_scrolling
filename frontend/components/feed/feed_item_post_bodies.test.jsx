@@ -1,10 +1,16 @@
-import { screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 
 import { useDeletePost, useLikePost, useUnlikePost } from '../../query/post_hooks';
 import { useCurrentUser } from '../../query/session_hooks';
-import { basePost, createFeedItemMutations, renderFeedItem } from '../../test/feed_item_helpers';
+import {
+  basePost,
+  createFeedItemMutations,
+  feedItemElement,
+  renderFeedItem
+} from '../../test/feed_item_helpers';
 import { currentUser } from '../../test/fixtures';
 import { useFollowUser, useUnfollowUser } from '../../query/user_hooks';
+import { PostTagNavigationProvider } from './post_tag_navigation_context';
 
 vi.mock('../../query/session_hooks', () => ({
   useCurrentUser: vi.fn()
@@ -126,10 +132,12 @@ describe('FeedItem post bodies', () => {
     expect(screen.queryByRole('list', { name: 'Tags' })).not.toBeInTheDocument();
   });
 
-  it('uses a provided tag destination without changing tag rendering', () => {
-    renderFeedItem({}, {
-      tagDestination: tag => `/users/42?tag=${tag}`
-    });
+  it('uses the tag destination from navigation context', () => {
+    render(
+      <PostTagNavigationProvider destination={tag => `/users/42?tag=${tag}`}>
+        {feedItemElement()}
+      </PostTagNavigationProvider>
+    );
 
     expect(screen.getByRole('link', { name: '#photography' })).toHaveAttribute(
       'href',

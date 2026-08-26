@@ -39,17 +39,17 @@ vi.mock('./profile_posts', () => ({
 }));
 
 vi.mock('./profile_followers', () => ({
-  default: ({ currentUserId, profileId }) => (
+  default: ({ profileId }) => (
     <div data-testid="profile-followers">
-      Followers for profile {profileId}; viewer {currentUserId}
+      Followers for profile {profileId}
     </div>
   )
 }));
 
 vi.mock('./profile_following', () => ({
-  default: ({ currentUserId, profileId }) => (
+  default: ({ profileId }) => (
     <div data-testid="profile-following">
-      Following for profile {profileId}; viewer {currentUserId}
+      Following for profile {profileId}
     </div>
   )
 }));
@@ -203,7 +203,7 @@ describe('ProfilePage', () => {
       '/users/42?view=followers'
     );
     expect(screen.getByTestId('profile-followers')).toHaveTextContent(
-      'Followers for profile 42; viewer 1'
+      'Followers for profile 42'
     );
     expect(screen.queryByText('Posts for profile 42')).not.toBeInTheDocument();
   });
@@ -222,7 +222,7 @@ describe('ProfilePage', () => {
       '/users/42?view=following'
     );
     expect(screen.getByTestId('profile-following')).toHaveTextContent(
-      'Following for profile 42; viewer 1'
+      'Following for profile 42'
     );
     expect(screen.queryByText('Posts for profile 42')).not.toBeInTheDocument();
   });

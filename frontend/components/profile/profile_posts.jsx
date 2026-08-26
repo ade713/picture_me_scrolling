@@ -7,6 +7,7 @@ import { tagFilterMessages } from '../../config/tags';
 import { profileMessages } from '../../config/user_profile';
 import { useUserPosts } from '../../query/post_hooks';
 import FeedItem from '../feed/feed_item';
+import { PostTagNavigationProvider } from '../feed/post_tag_navigation_context';
 import TagFilterHeader from '../feed/tag_filter_header';
 
 const ProfilePosts = ({ profileId, tag }) => {
@@ -21,9 +22,8 @@ const ProfilePosts = ({ profileId, tag }) => {
       key={post.id}
       post={post}
       priorityMedia={index < PRIORITY_MEDIA_POST_COUNT}
-      tagDestination={tagDestination}
     />
-  )), [loadedPosts, tagDestination]);
+  )), [loadedPosts]);
 
   const renderPosts = () => {
     if (posts.isLoading) {
@@ -74,7 +74,9 @@ const ProfilePosts = ({ profileId, tag }) => {
         clearDestination={routes.userProfile(profileId)}
         tag={tag}
       />
-      {renderPosts()}
+      <PostTagNavigationProvider destination={tagDestination}>
+        {renderPosts()}
+      </PostTagNavigationProvider>
     </section>
   );
 };

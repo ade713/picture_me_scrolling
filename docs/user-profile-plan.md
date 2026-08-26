@@ -750,15 +750,21 @@ Scope:
 - update API, component, smoke-check, and closeout documentation
 - record deferred work
 
+## Completed Technical-Debt Follow-Up
+
+- replaced the `tagDestination` chain through `ProfilePosts`, `FeedItem`, and
+  `PostFooter` with a narrowly scoped post-tag navigation context consumed by
+  `PostTags`
+- retained dashboard tag routing as the context default and profile route
+  ownership in `ProfilePosts`
+- moved current-viewer query ownership into `ProfileRelationshipUsers`,
+  removing the `currentUserId` pass-through from both relationship-view wrappers
+- scanned the remaining frontend component props; configuration values are no
+  longer passed unused through three or more levels, while immediate data and
+  event callbacks remain explicit props
+
 ## Deferred Work
 
-- remove the `tagDestination` prop-drilling chain from `ProfilePosts` through
-  `FeedItem` and `PostFooter` to `PostTags`; first evaluate a narrowly scoped
-  React context or component composition, and use Zustand only if tag
-  navigation becomes broader shared client state; scan the rest of the app for
-  similar values passed through three or more component levels and address
-  excessive prop drilling consistently where a clearer ownership boundary is
-  available
 - profile-based post creation
 - multi-cache optimistic follow/unfollow updates and rollback
 - bio, separate display name, website, location, or other profile fields

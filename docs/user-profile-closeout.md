@@ -85,6 +85,19 @@ Live browser checks completed on August 21, 2026. They confirmed:
   activation across profile entry points, tabs, tag controls, relationship
   actions, and pagination
 
+## Completed Technical-Debt Follow-Up
+
+Profile-scoped post tag navigation now uses a narrowly scoped React context.
+`ProfilePosts` owns the profile destination while `PostTags` consumes it at the
+point of use, removing the `tagDestination` chain through `FeedItem` and
+`PostFooter`. Dashboard tags retain their existing destination through the
+context's default value.
+
+`ProfileRelationshipUsers` now reads the cached current-user query where the
+viewer ID is needed, removing its pass-through from `ProfilePage` and the
+Followers and Following wrappers. An app-wide frontend scan found no other
+configuration value passed unused through three or more component levels.
+
 ## Deferred Work
 
 - optimistic multi-cache Follow/Unfollow updates with rollback
@@ -95,5 +108,4 @@ Live browser checks completed on August 21, 2026. They confirmed:
 - follower/following search and sorting
 - manual retry actions for transient profile-view failures
 - relationship counter caches only if measured production load warrants them
-- reassess deep `tagDestination` prop drilling and similar chains across the app
 - reconsider relationship-association naming in a dedicated model refactor
