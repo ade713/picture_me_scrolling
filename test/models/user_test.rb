@@ -76,6 +76,13 @@ class UserTest < ActiveSupport::TestCase
                     "Password is too long (maximum is #{User::MAXIMUM_PASSWORD_BYTES} bytes)"
   end
 
+  test "password hashing uses the minimum bcrypt cost in tests" do
+    user = build_user("test_cost_user")
+
+    assert_equal BCrypt::Engine::MIN_COST,
+                 BCrypt::Password.new(user.password_digest).cost
+  end
+
   test "password validation rejects values beyond the character limit" do
     user = User.new(
       username: "long_password_user",
