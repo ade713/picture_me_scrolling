@@ -10,14 +10,23 @@ vi.mock('../../query/post_hooks', () => ({
   useUserPosts: vi.fn()
 }));
 
-vi.mock('../feed/feed_item', () => ({
-  default: ({ post, priorityMedia, tagDestination }) => (
-    <li data-priority-media={priorityMedia} data-testid="profile-post">
-      {post.title}
-      <a href={tagDestination('photography')}>Photography tag</a>
-    </li>
-  )
-}));
+vi.mock('../feed/feed_item', async () => {
+  const { usePostTagDestination } = await import(
+    '../feed/post_tag_navigation_context'
+  );
+  const MockFeedItem = ({ post, priorityMedia }) => {
+    const tagDestination = usePostTagDestination();
+
+    return (
+      <li data-priority-media={priorityMedia} data-testid="profile-post">
+        {post.title}
+        <a href={tagDestination('photography')}>Photography tag</a>
+      </li>
+    );
+  };
+
+  return { default: MockFeedItem };
+});
 
 const posts = [
   { id: 1, title: 'First post' },
