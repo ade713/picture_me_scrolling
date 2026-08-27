@@ -1,0 +1,136 @@
+.automatic-pagination {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.automatic-pagination-sentinel {
+  width: 100%;
+  height: 1px;
+}
+
+.pagination-loading-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  animation: pagination-loader-appear 0s linear 150ms backwards;
+}
+
+.pagination-loading-indicator--initial {
+  min-height: 120px;
+  font-size: 1.15em;
+}
+
+.pagination-loading-label {
+  animation: pagination-loading-breathe 1.1s ease-in-out infinite;
+}
+
+.pagination-loading-dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  width: 43px;
+  height: 16px;
+}
+
+.pagination-loading-dot {
+  display: block;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: black;
+  opacity: 0.3;
+  transform: scale(0.75);
+}
+
+.pagination-loading-dot:nth-child(1) {
+  animation: pagination-loading-dot-left 1.1s ease-in-out infinite;
+}
+
+.pagination-loading-dot:nth-child(2) {
+  animation: pagination-loading-dot-middle 1.1s ease-in-out infinite;
+}
+
+.pagination-loading-dot:nth-child(3) {
+  animation: pagination-loading-dot-right 1.1s ease-in-out infinite;
+}
+
+@keyframes pagination-loader-appear {
+  from {
+    visibility: hidden;
+  }
+}
+
+@keyframes pagination-loading-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(0.98);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes pagination-loading-dot-left {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+
+  25%,
+  75% {
+    opacity: 0.3;
+    transform: scale(0.75);
+  }
+}
+
+@keyframes pagination-loading-dot-middle {
+  0%,
+  50%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.75);
+  }
+
+  25%,
+  75% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes pagination-loading-dot-right {
+  0%,
+  25%,
+  75%,
+  100% {
+    opacity: 0.3;
+    transform: scale(0.75);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pagination-loading-indicator,
+  .pagination-loading-label,
+  .pagination-loading-dot {
+    animation: none;
+  }
+
+  .pagination-loading-label,
+  .pagination-loading-dot {
+    opacity: 1;
+    transform: none;
+  }
+}
