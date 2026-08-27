@@ -1057,6 +1057,21 @@ The accompanying frontend scan found no other configuration value passed unused
 through three or more component levels. Immediate component data and event
 callbacks remain explicit props, and broader Zustand state was not introduced.
 
+## Planned Feature: Automatic Pagination
+
+Status: planned.
+
+Replace the dashboard and profile Load More controls with reusable
+observer-backed automatic pagination. The proposed behavior includes an
+approximately 10%-of-viewport preload boundary, end-of-list sentinels, shared
+three-dot loading indicators, next-page retry behavior, an accessible Load More
+fallback when `IntersectionObserver` is unavailable, and cached scroll-position
+verification.
+
+The complete scope, accessibility decisions, failure behavior, test strategy,
+deferred work, and two-part PR sequence live in
+[`docs/automatic-pagination-plan.md`](./docs/automatic-pagination-plan.md).
+
 ## Guardrails
 
 - Keep the app working after each chunk.
