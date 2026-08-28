@@ -14,7 +14,7 @@ import PaginationLoadingIndicator, {
   loadingIndicatorVariants
 } from '../pagination/pagination_loading_indicator';
 
-const ProfilePosts = ({ profileId, tag }) => {
+const ProfilePosts = ({ profileId, shouldFocusHeading = true, tag }) => {
   const posts = useUserPosts(profileId, tag);
   const loadedPosts = posts.data?.posts;
   const tagDestination = useCallback(
@@ -39,7 +39,7 @@ const ProfilePosts = ({ profileId, tag }) => {
       );
     }
 
-    if (posts.isError) {
+    if (posts.isError && !posts.isFetchNextPageError) {
       return (
         <p className="profile-view-state" role="alert">
           {tagFilterMessages.loadError}
@@ -63,7 +63,9 @@ const ProfilePosts = ({ profileId, tag }) => {
           hasNextPage={posts.hasNextPage}
           isFetchingNextPage={posts.isFetchingNextPage}
           loadingLabel={buttonLabels.loadingMorePosts}
+          isNextPageError={posts.isFetchNextPageError}
           onLoadNextPage={posts.fetchNextPage}
+          retryLabel={buttonLabels.retryLoading}
         />
       </>
     );
@@ -73,6 +75,7 @@ const ProfilePosts = ({ profileId, tag }) => {
     <section aria-label="Profile posts" className="profile-posts">
       <TagFilterHeader
         clearDestination={routes.userProfile(profileId)}
+        shouldFocusHeading={shouldFocusHeading}
         tag={tag}
       />
       <PostTagNavigationProvider destination={tagDestination}>

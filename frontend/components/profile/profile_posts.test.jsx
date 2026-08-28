@@ -138,6 +138,27 @@ describe('ProfilePosts', () => {
       .toBeDisabled();
   });
 
+  it('keeps posts visible and retries a failed next page', async () => {
+    const user = userEvent.setup();
+    const fetchNextPage = vi.fn();
+    useUserPosts.mockReturnValue({
+      data: { posts: posts.slice(0, 2) },
+      fetchNextPage,
+      hasNextPage: true,
+      isError: true,
+      isFetchNextPageError: true,
+      isFetchingNextPage: false,
+      isLoading: false
+    });
+
+    renderProfilePosts();
+
+    expect(screen.getAllByTestId('profile-post')).toHaveLength(2);
+    await user.click(screen.getByRole('button', { name: 'Retry loading' }));
+
+    expect(fetchNextPage).toHaveBeenCalledTimes(1);
+  });
+
   it('renders and focuses the profile-scoped filter state', () => {
     useUserPosts.mockReturnValue({
       data: { posts: [] },
@@ -157,6 +178,24 @@ describe('ProfilePosts', () => {
       'href',
       '/users/42'
     );
+  });
+
+  it('does not move filter focus while restoring profile history', () => {
+    useUserPosts.mockReturnValue({
+      data: { posts: [] },
+      hasNextPage: false,
+      isError: false,
+      isLoading: false
+    });
+
+    renderProfilePosts({
+      shouldFocusHeading: false,
+      tag: 'film_photography'
+    });
+
+    expect(screen.getByRole('heading', {
+      name: 'Posts tagged #film_photography'
+    })).not.toHaveFocus();
   });
 
   it('moves focus when the active profile tag changes', () => {

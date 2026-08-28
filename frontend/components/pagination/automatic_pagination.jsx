@@ -18,14 +18,21 @@ const AutomaticPagination = ({
   hasNextPage,
   isFetchingNextPage,
   loadingLabel,
-  onLoadNextPage
+  isNextPageError,
+  onLoadNextPage,
+  retryLabel
 }) => {
   const loadRequestedRef = useRef(false);
   const sentinelRef = useRef(null);
   const supportsObserver = observerSupported();
 
   useEffect(() => {
-    if (!supportsObserver || !hasNextPage || isFetchingNextPage) return undefined;
+    if (
+      !supportsObserver ||
+      !hasNextPage ||
+      isFetchingNextPage ||
+      isNextPageError
+    ) return undefined;
 
     loadRequestedRef.current = false;
     const observer = new IntersectionObserver(entries => {
@@ -45,9 +52,27 @@ const AutomaticPagination = ({
     observer.observe(sentinelRef.current);
 
     return () => observer.disconnect();
-  }, [hasNextPage, isFetchingNextPage, onLoadNextPage, supportsObserver]);
+  }, [
+    hasNextPage,
+    isFetchingNextPage,
+    isNextPageError,
+    onLoadNextPage,
+    supportsObserver
+  ]);
 
   if (!hasNextPage) return null;
+
+  if (isNextPageError) {
+    return (
+      <button
+        className={fallbackClassName}
+        onClick={onLoadNextPage}
+        type="button"
+      >
+        {retryLabel}
+      </button>
+    );
+  }
 
   if (!supportsObserver) {
     return (

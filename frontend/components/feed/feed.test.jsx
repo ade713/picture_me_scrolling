@@ -177,6 +177,27 @@ describe('Feed', () => {
       .toBeDisabled();
   });
 
+  it('keeps posts visible and retries a failed next page', async () => {
+    const user = userEvent.setup();
+    const fetchNextPage = vi.fn();
+    usePosts.mockReturnValue({
+      data: { posts: posts.slice(0, 2) },
+      error: new Error('Next page failed'),
+      fetchNextPage,
+      hasNextPage: true,
+      isFetchNextPageError: true,
+      isFetchingNextPage: false,
+      isLoading: false
+    });
+
+    renderFeed();
+
+    expect(screen.getAllByTestId('feed-item')).toHaveLength(2);
+    await user.click(screen.getByRole('button', { name: 'Retry loading' }));
+
+    expect(fetchNextPage).toHaveBeenCalledTimes(1);
+  });
+
   it('renders an error with a retry action', async () => {
     const user = userEvent.setup();
     const refetch = vi.fn();

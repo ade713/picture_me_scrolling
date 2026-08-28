@@ -75,6 +75,9 @@ describe('ProfileFollowing', () => {
     const { rerender } = renderFollowing();
 
     expect(screen.getByRole('status')).toHaveTextContent('Loading following…');
+    expect(screen.getByRole('status')).toHaveClass(
+      'pagination-loading-indicator--initial'
+    );
 
     // Replace the loading state with the view-specific request error.
     useUserFollowing.mockReturnValue({ isError: true, isLoading: false });

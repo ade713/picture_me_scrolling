@@ -9,20 +9,22 @@ import {
 import { useUserFollowers } from '../../query/user_hooks';
 import ProfileRelationshipUsers from './profile_relationship_users';
 
-const ProfileFollowers = ({ profileId }) => {
+const ProfileFollowers = ({ profileId, shouldFocusHeading = true }) => {
   const followers = useUserFollowers(profileId);
 
   return (
     <ProfileRelationshipUsers
-      buttonLabel={buttonLabels.loadMoreFollowers}
       emptyMessage={profileMessages.noFollowers}
+      fallbackLabel={buttonLabels.loadMoreFollowers}
       heading={profileViewLabels[profileViews.followers]}
       headingId="profile-followers-heading"
+      initialLoadingLabel={profileMessages.followersLoading}
       loadErrorMessage={profileMessages.followersLoadError}
-      loadingButtonLabel={buttonLabels.loadingFollowers}
-      loadingMessage={profileMessages.followersLoading}
+      nextPageLoadingLabel={buttonLabels.loadingMoreFollowers}
       profileId={profileId}
       relationshipQuery={followers}
+      retryLabel={buttonLabels.retryLoading}
+      shouldFocusHeading={shouldFocusHeading}
     />
   );
 };

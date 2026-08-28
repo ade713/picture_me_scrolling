@@ -33,7 +33,7 @@ const Feed = ({ tag }) => {
       );
     }
 
-    if (posts.error) {
+    if (posts.error && !posts.isFetchNextPageError) {
       return (
         <div className="feed-state" role="alert">
           <p>{tagFilterMessages.loadError}</p>
@@ -59,7 +59,9 @@ const Feed = ({ tag }) => {
           hasNextPage={posts.hasNextPage}
           isFetchingNextPage={posts.isFetchingNextPage}
           loadingLabel={buttonLabels.loadingMorePosts}
+          isNextPageError={posts.isFetchNextPageError}
           onLoadNextPage={posts.fetchNextPage}
+          retryLabel={buttonLabels.retryLoading}
         />
       </>
     );
