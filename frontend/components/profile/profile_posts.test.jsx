@@ -138,6 +138,27 @@ describe('ProfilePosts', () => {
       .toBeDisabled();
   });
 
+  it('keeps posts visible and retries a failed next page', async () => {
+    const user = userEvent.setup();
+    const fetchNextPage = vi.fn();
+    useUserPosts.mockReturnValue({
+      data: { posts: posts.slice(0, 2) },
+      fetchNextPage,
+      hasNextPage: true,
+      isError: true,
+      isFetchNextPageError: true,
+      isFetchingNextPage: false,
+      isLoading: false
+    });
+
+    renderProfilePosts();
+
+    expect(screen.getAllByTestId('profile-post')).toHaveLength(2);
+    await user.click(screen.getByRole('button', { name: 'Retry loading' }));
+
+    expect(fetchNextPage).toHaveBeenCalledTimes(1);
+  });
+
   it('renders and focuses the profile-scoped filter state', () => {
     useUserPosts.mockReturnValue({
       data: { posts: [] },

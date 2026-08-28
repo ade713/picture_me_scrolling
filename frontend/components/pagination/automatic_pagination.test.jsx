@@ -13,7 +13,9 @@ const buildProps = (overrides = {}) => ({
   hasNextPage: true,
   isFetchingNextPage: false,
   loadingLabel: 'Loading more posts…',
+  isNextPageError: false,
   onLoadNextPage: vi.fn(),
+  retryLabel: 'Retry loading',
   ...overrides
 });
 
@@ -100,6 +102,34 @@ describe('AutomaticPagination', () => {
 
     expect(observerConstructor).not.toHaveBeenCalled();
     expect(screen.getByRole('status')).toHaveTextContent('Loading more posts…');
+  });
+
+  it('disconnects observation and retries after a next-page error', async () => {
+    const browserUser = userEvent.setup();
+    const { rerender } = render(<AutomaticPagination {...props} />);
+
+    rerender(<AutomaticPagination {...props} isNextPageError />);
+
+    expect(observer.disconnect).toHaveBeenCalled();
+    expect(observerConstructor).toHaveBeenCalledTimes(1);
+
+    await browserUser.click(screen.getByRole('button', {
+      name: 'Retry loading'
+    }));
+
+    expect(props.onLoadNextPage).toHaveBeenCalledTimes(1);
+  });
+
+  it('resumes observation after a successful retry', () => {
+    const { rerender } = render(
+      <AutomaticPagination {...props} isNextPageError />
+    );
+
+    rerender(<AutomaticPagination {...props} isFetchingNextPage />);
+    rerender(<AutomaticPagination {...props} />);
+
+    expect(observerConstructor).toHaveBeenCalledTimes(1);
+    expect(observer.observe).toHaveBeenCalledTimes(1);
   });
 
   it('disconnects the observer during cleanup', () => {

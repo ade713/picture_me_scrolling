@@ -39,7 +39,7 @@ const ProfilePosts = ({ profileId, tag }) => {
       );
     }
 
-    if (posts.isError) {
+    if (posts.isError && !posts.isFetchNextPageError) {
       return (
         <p className="profile-view-state" role="alert">
           {tagFilterMessages.loadError}
@@ -63,7 +63,9 @@ const ProfilePosts = ({ profileId, tag }) => {
           hasNextPage={posts.hasNextPage}
           isFetchingNextPage={posts.isFetchingNextPage}
           loadingLabel={buttonLabels.loadingMorePosts}
+          isNextPageError={posts.isFetchNextPageError}
           onLoadNextPage={posts.fetchNextPage}
+          retryLabel={buttonLabels.retryLoading}
         />
       </>
     );

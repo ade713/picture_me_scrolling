@@ -17,6 +17,7 @@ export const buttonLabels = Object.freeze({
   post: 'Post',
   resendVerificationEmail: 'Resend verification email',
   retry: 'Try again',
+  retryLoading: 'Retry loading',
   resendingVerificationEmail: 'Sending verification email…',
   resetPassword: 'Reset password',
   resettingPassword: 'Resetting password…',
