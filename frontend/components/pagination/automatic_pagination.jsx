@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 
-import PaginationLoadingIndicator from './pagination_loading_indicator';
+import LoadingIndicator from '../loading/loading_indicator';
 
 const VIEWPORT_PRELOAD_RATIO = 0.1;
 
@@ -95,7 +95,7 @@ const AutomaticPagination = ({
         ref={sentinelRef}
       ></span>
       {isFetchingNextPage && (
-        <PaginationLoadingIndicator label={loadingLabel} />
+        <LoadingIndicator label={loadingLabel} />
       )}
     </div>
   );

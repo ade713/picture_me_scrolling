@@ -3,9 +3,6 @@ import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import AutomaticPagination from './automatic_pagination';
-import PaginationLoadingIndicator, {
-  loadingIndicatorVariants
-} from './pagination_loading_indicator';
 
 const buildProps = (overrides = {}) => ({
   fallbackClassName: 'load-more-posts',
@@ -168,25 +165,5 @@ describe('AutomaticPagination', () => {
 
     expect(screen.getByRole('button', { name: 'Loading more posts…' }))
       .toBeDisabled();
-  });
-});
-
-describe('PaginationLoadingIndicator', () => {
-  it('renders the initial variant with decorative dots', () => {
-    const { container } = render(
-      <PaginationLoadingIndicator
-        label="Loading posts…"
-        variant={loadingIndicatorVariants.initial}
-      />
-    );
-
-    expect(screen.getByRole('status')).toHaveTextContent('Loading posts…');
-    expect(screen.getByText('Loading posts…')).toHaveClass('visually-hidden');
-    expect(screen.getByRole('status')).toHaveClass(
-      'pagination-loading-indicator--initial'
-    );
-    expect(container.querySelector('.pagination-loading-dots'))
-      .toHaveAttribute('aria-hidden', 'true');
-    expect(container.querySelectorAll('.pagination-loading-dot')).toHaveLength(3);
   });
 });

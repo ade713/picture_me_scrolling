@@ -103,7 +103,7 @@ describe('ProfileFollowers', () => {
 
     expect(screen.getByRole('status')).toHaveTextContent('Loading followers…');
     expect(screen.getByRole('status')).toHaveClass(
-      'pagination-loading-indicator--initial'
+      'loading-indicator--large'
     );
     expect(screen.queryByRole('list')).not.toBeInTheDocument();
   });
