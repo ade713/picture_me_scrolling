@@ -156,7 +156,25 @@ describe('Feed', () => {
     renderFeed({ tag: 'photography' });
 
     expect(screen.getByRole('status')).toHaveTextContent('Loading posts…');
+    expect(screen.getByRole('status')).toHaveClass(
+      'pagination-loading-indicator--initial'
+    );
     expect(screen.queryByRole('list')).not.toBeInTheDocument();
+  });
+
+  it('disables the pagination fallback while the next page loads', () => {
+    usePosts.mockReturnValue({
+      data: { posts: posts.slice(0, 2) },
+      error: null,
+      hasNextPage: true,
+      isFetchingNextPage: true,
+      isLoading: false
+    });
+
+    renderFeed();
+
+    expect(screen.getByRole('button', { name: 'Loading more posts…' }))
+      .toBeDisabled();
   });
 
   it('renders an error with a retry action', async () => {

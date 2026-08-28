@@ -10,7 +10,7 @@ export const buttonLabels = Object.freeze({
   loadMorePosts: 'Load more posts',
   loadingFollowers: 'Loading followers...',
   loadingFollowing: 'Loading following...',
-  loadingPosts: 'Loading posts...',
+  loadingMorePosts: 'Loading more posts…',
   logIn: 'Log In',
   loggingOut: 'Logging out…',
   logOut: 'Log Out',
