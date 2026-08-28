@@ -324,6 +324,52 @@ describe('ProfilePage', () => {
     scrollY.mockRestore();
   });
 
+  it('updates the latest position each time a profile view is left', async () => {
+    const user = userEvent.setup();
+    let currentScrollY = 0;
+    const scrollY = vi.spyOn(window, 'scrollY', 'get').mockImplementation(
+      () => currentScrollY
+    );
+    useUser.mockReturnValue(buildProfileQuery({ data: buildProfile() }));
+
+    renderProfileRoute();
+
+    currentScrollY = 480;
+    await user.click(screen.getByRole('link', { name: 'Followers' }));
+    currentScrollY = 920;
+    await user.click(screen.getByRole('link', { name: 'Posts' }));
+    expect(scrollTo).toHaveBeenLastCalledWith({
+      behavior: 'auto',
+      left: 0,
+      top: 480
+    });
+
+    currentScrollY = 700;
+    await user.click(screen.getByRole('link', { name: 'Followers' }));
+    expect(scrollTo).toHaveBeenLastCalledWith({
+      behavior: 'auto',
+      left: 0,
+      top: 920
+    });
+
+    currentScrollY = 1100;
+    await user.click(screen.getByRole('link', { name: 'Posts' }));
+    expect(scrollTo).toHaveBeenLastCalledWith({
+      behavior: 'auto',
+      left: 0,
+      top: 700
+    });
+
+    await user.click(screen.getByRole('link', { name: 'Followers' }));
+    expect(scrollTo).toHaveBeenLastCalledWith({
+      behavior: 'auto',
+      left: 0,
+      top: 1100
+    });
+
+    scrollY.mockRestore();
+  });
+
   it('restores profile tag filters with browser Back and Forward navigation', async () => {
     const user = userEvent.setup();
     useUser.mockReturnValue(buildProfileQuery({ data: buildProfile() }));

@@ -24,7 +24,9 @@ const ProfilePage = () => {
   const currentUser = useCurrentUser().data;
   const followUser = useFollowUser();
   const profileQuery = useUser(id);
-  const shouldFocusNavigationTarget = useScrollRestoration();
+  const shouldFocusNavigationTarget = useScrollRestoration({
+    restoreByRoute: true
+  });
   const unfollowUser = useUnfollowUser();
 
   const renderProfileState = () => {
