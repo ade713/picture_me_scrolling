@@ -3,6 +3,12 @@
 Phase 9-5 replaces all-at-once dashboard feed loading with an explicit
 paginated feed contract and a frontend "Load more posts" control.
 
+> Historical note: this document records the initial explicit-pagination
+> rollout. Automatic pagination later replaced the visible Load more control,
+> while retaining it as the accessible compatibility fallback when
+> `IntersectionObserver` is unavailable. See
+> [`automatic-pagination-plan.md`](./automatic-pagination-plan.md).
+
 ## Backend Contract
 
 `GET /api/posts` accepts:
@@ -53,5 +59,5 @@ or virtualization.
 ## Deferred Work
 
 - SQL-level feed query optimization remains future backend performance work.
-- Infinite scroll remains optional future UX work.
+- Automatic pagination was completed in PRs #175–#178.
 - Viewport-aware media priority remains tied to later feed/render tuning.

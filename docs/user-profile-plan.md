@@ -440,7 +440,7 @@ Not following anyone yet
 `No posts found` applies only to an active tag filter and keeps `× Clear`
 available.
 
-Pagination actions are:
+The completed profile MVP initially used these pagination actions:
 
 ```text
 Load more posts
@@ -449,6 +449,11 @@ Load more following
 ```
 
 Their pending labels use the corresponding `Loading …` copy.
+
+Automatic pagination later replaced the visible actions across profile posts,
+Followers, and Following. These labels remain the accessible compatibility
+fallback when `IntersectionObserver` is unavailable. See
+[`automatic-pagination-plan.md`](./automatic-pagination-plan.md).
 
 ## TanStack Query Ownership
 

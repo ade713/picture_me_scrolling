@@ -1,6 +1,7 @@
 # Automatic Pagination Plan
 
-Status: implementation complete. Parts 1–3 were merged in PRs #175–#177.
+Status: complete. Parts 1–3 were merged in PRs #175–#177, and shared
+dashboard/profile scroll restoration was completed in PR #178.
 
 ## Implementation Progress
 
@@ -16,7 +17,7 @@ empty states, initial errors, page sizes, and TanStack Query ownership.
 
 Part 3 was completed in PR #177. Followers and Following now load subsequent
 pages automatically and all paginated collections retain their rendered
-content and expose `Retry loading` after a next-page failure. A follow-up
+content and expose `Retry loading` after a next-page failure. PR #178
 generalized scroll restoration across the dashboard and profile feeds. The
 fallback is keyed by React Router history entries and avoids moving heading
 focus while restoring a previous viewport position.

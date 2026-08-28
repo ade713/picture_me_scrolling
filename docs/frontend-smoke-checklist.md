@@ -186,6 +186,11 @@ Use the seeded guest account:
 - Reload the filtered URL, then use browser Back and Forward.
   - Expected: the URL, heading, query results, and pagination reset remain in
     sync with browser history.
+- Scroll down the dashboard, open a profile, then return with browser Back.
+  - Expected: cached feed pages remain rendered and the dashboard restores its
+    previous position in the desktop or responsive scroll container.
+- Open a profile and activate Back to dashboard.
+  - Expected: a new dashboard history entry opens at the top of the full feed.
 - Activate `× Clear` using the keyboard.
   - Expected: the tag parameter is removed, focus moves to the full-feed
     heading, and the unfiltered feed returns.

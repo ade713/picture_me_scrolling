@@ -126,6 +126,12 @@ Tag behavior:
     loads automatically.
 - Reload the filtered URL, use Back and Forward, then activate `× Clear`.
   - Expected: URL state, results, focus, and full-feed restoration stay in sync.
+- Scroll down the dashboard, open a profile, and return with browser Back.
+  - Expected: cached feed pages remain rendered and the existing dashboard
+    history entry restores its previous responsive scroll-container position.
+- Activate Back to dashboard from a profile.
+  - Expected: the new dashboard history entry opens at the top of the full
+    feed.
 - Complete tag entry, removal, selection, and clearing with only the keyboard at
   narrow and wide viewport sizes.
   - Expected: focus indicators remain visible and content does not overflow.
