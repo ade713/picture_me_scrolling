@@ -1059,7 +1059,8 @@ callbacks remain explicit props, and broader Zustand state was not introduced.
 
 ## Planned Feature: Automatic Pagination
 
-Status: planned.
+Status: in progress. Shared infrastructure is complete and post-feed
+integration is in progress.
 
 Replace the dashboard and profile Load More controls with reusable
 observer-backed automatic pagination. The proposed behavior includes an
@@ -1069,7 +1070,7 @@ fallback when `IntersectionObserver` is unavailable, and cached scroll-position
 verification.
 
 The complete scope, accessibility decisions, failure behavior, test strategy,
-deferred work, and two-part PR sequence live in
+deferred work, and three-part PR sequence live in
 [`docs/automatic-pagination-plan.md`](./docs/automatic-pagination-plan.md).
 
 ## Guardrails
