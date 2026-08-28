@@ -9,6 +9,10 @@ import { useUserPosts } from '../../query/post_hooks';
 import FeedItem from '../feed/feed_item';
 import { PostTagNavigationProvider } from '../feed/post_tag_navigation_context';
 import TagFilterHeader from '../feed/tag_filter_header';
+import AutomaticPagination from '../pagination/automatic_pagination';
+import PaginationLoadingIndicator, {
+  loadingIndicatorVariants
+} from '../pagination/pagination_loading_indicator';
 
 const ProfilePosts = ({ profileId, tag }) => {
   const posts = useUserPosts(profileId, tag);
@@ -28,9 +32,10 @@ const ProfilePosts = ({ profileId, tag }) => {
   const renderPosts = () => {
     if (posts.isLoading) {
       return (
-        <p className="profile-view-state" role="status">
-          {tagFilterMessages.loading}
-        </p>
+        <PaginationLoadingIndicator
+          label={tagFilterMessages.loading}
+          variant={loadingIndicatorVariants.initial}
+        />
       );
     }
 
@@ -52,18 +57,14 @@ const ProfilePosts = ({ profileId, tag }) => {
           )}
         </ul>
 
-        {posts.hasNextPage && (
-          <button
-            className="load-more-posts"
-            disabled={posts.isFetchingNextPage}
-            onClick={() => posts.fetchNextPage()}
-            type="button"
-          >
-            {posts.isFetchingNextPage
-              ? buttonLabels.loadingPosts
-              : buttonLabels.loadMorePosts}
-          </button>
-        )}
+        <AutomaticPagination
+          fallbackClassName="load-more-posts"
+          fallbackLabel={buttonLabels.loadMorePosts}
+          hasNextPage={posts.hasNextPage}
+          isFetchingNextPage={posts.isFetchingNextPage}
+          loadingLabel={buttonLabels.loadingMorePosts}
+          onLoadNextPage={posts.fetchNextPage}
+        />
       </>
     );
   };

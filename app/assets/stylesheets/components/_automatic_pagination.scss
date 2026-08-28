@@ -14,18 +14,17 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
   min-height: 48px;
   animation: pagination-loader-appear 0s linear 150ms backwards;
 }
 
 .pagination-loading-indicator--initial {
   min-height: 120px;
-  font-size: 1.15em;
 }
 
-.pagination-loading-label {
-  animation: pagination-loading-breathe 1.1s ease-in-out infinite;
+.pagination-loading-indicator--initial .pagination-loading-dot {
+  width: 11px;
+  height: 11px;
 }
 
 .pagination-loading-dots {
@@ -61,19 +60,6 @@
 @keyframes pagination-loader-appear {
   from {
     visibility: hidden;
-  }
-}
-
-@keyframes pagination-loading-breathe {
-  0%,
-  100% {
-    opacity: 0.55;
-    transform: scale(0.98);
-  }
-
-  50% {
-    opacity: 1;
-    transform: scale(1.02);
   }
 }
 
@@ -123,12 +109,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   .pagination-loading-indicator,
-  .pagination-loading-label,
   .pagination-loading-dot {
     animation: none;
   }
 
-  .pagination-loading-label,
   .pagination-loading-dot {
     opacity: 1;
     transform: none;

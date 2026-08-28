@@ -151,6 +151,7 @@ describe('PaginationLoadingIndicator', () => {
     );
 
     expect(screen.getByRole('status')).toHaveTextContent('Loading posts…');
+    expect(screen.getByText('Loading posts…')).toHaveClass('visually-hidden');
     expect(screen.getByRole('status')).toHaveClass(
       'pagination-loading-indicator--initial'
     );

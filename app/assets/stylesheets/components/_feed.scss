@@ -76,7 +76,6 @@ div.new-post-container {
   color: black;
 }
 
-.feed-status,
 .feed-state {
   box-sizing: border-box;
   width: 100%;
@@ -84,10 +83,6 @@ div.new-post-container {
   border-radius: 3px;
   padding: 20px;
   background-color: white;
-}
-
-.feed-status {
-  text-align: center;
 }
 
 .feed-empty-state {

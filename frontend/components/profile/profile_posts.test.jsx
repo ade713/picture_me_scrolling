@@ -77,6 +77,9 @@ describe('ProfilePosts', () => {
     renderProfilePosts();
 
     expect(screen.getByRole('status')).toHaveTextContent('Loading posts…');
+    expect(screen.getByRole('status')).toHaveClass(
+      'pagination-loading-indicator--initial'
+    );
     expect(screen.queryByRole('list')).not.toBeInTheDocument();
   });
 
@@ -131,7 +134,8 @@ describe('ProfilePosts', () => {
 
     renderProfilePosts();
 
-    expect(screen.getByRole('button', { name: 'Loading posts...' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Loading more posts…' }))
+      .toBeDisabled();
   });
 
   it('renders and focuses the profile-scoped filter state', () => {

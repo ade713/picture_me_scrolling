@@ -5,6 +5,10 @@ import { PRIORITY_MEDIA_POST_COUNT } from '../../config/post_display';
 import { routes } from '../../config/routes';
 import { tagFilterMessages } from '../../config/tags';
 import { usePosts } from '../../query/post_hooks';
+import AutomaticPagination from '../pagination/automatic_pagination';
+import PaginationLoadingIndicator, {
+  loadingIndicatorVariants
+} from '../pagination/pagination_loading_indicator';
 import FeedItem from './feed_item';
 import TagFilterHeader from './tag_filter_header';
 import PostBar from '../posts/post_bar';
@@ -22,7 +26,10 @@ const Feed = ({ tag }) => {
   const renderFeedContent = () => {
     if (posts.isLoading) {
       return (
-        <p className="feed-status" role="status">{tagFilterMessages.loading}</p>
+        <PaginationLoadingIndicator
+          label={tagFilterMessages.loading}
+          variant={loadingIndicatorVariants.initial}
+        />
       );
     }
 
@@ -46,16 +53,14 @@ const Feed = ({ tag }) => {
             </li>
           )}
         </ul>
-        {posts.hasNextPage && (
-          <button
-            className="load-more-posts"
-            disabled={posts.isFetchingNextPage}
-            onClick={() => posts.fetchNextPage()}>
-            {posts.isFetchingNextPage
-              ? buttonLabels.loadingPosts
-              : buttonLabels.loadMorePosts}
-          </button>
-        )}
+        <AutomaticPagination
+          fallbackClassName="load-more-posts"
+          fallbackLabel={buttonLabels.loadMorePosts}
+          hasNextPage={posts.hasNextPage}
+          isFetchingNextPage={posts.isFetchingNextPage}
+          loadingLabel={buttonLabels.loadingMorePosts}
+          onLoadNextPage={posts.fetchNextPage}
+        />
       </>
     );
   };

@@ -1,6 +1,18 @@
 # Automatic Pagination Plan
 
-Status: planned.
+Status: in progress. Part 1 is complete and Part 2 is in progress.
+
+## Implementation Progress
+
+Part 1 was completed in PR #175. The frontend now provides a reusable
+IntersectionObserver trigger, a 10%-of-viewport preload boundary, duplicate
+request protection, observer cleanup and reconnection, an accessible Load More
+fallback, shared initial and next-page loading indicators, reduced-motion
+styling, and focused infrastructure coverage.
+
+Part 2 is in progress. Dashboard and profile post feeds now use the shared
+trigger and loading presentation while retaining their existing tag filters,
+empty states, initial errors, page sizes, and TanStack Query ownership.
 
 ## Goal
 
@@ -87,17 +99,14 @@ non-list element is never inserted among posts or user cards.
 
 ## Loading Presentation
 
-The recommended starting direction combines one shared three-dot animation
-with subtle loading-text animation. It has two layout variants:
+Use one shared three-dot loading animation with two layout variants:
 
 - initial loading: larger dots centered in the empty collection area
 - next-page loading: smaller dots centered beneath the existing items
 
-Keep the dots as the primary motion. Visible `Loading posts…`,
-`Loading followers…`, or `Loading following…` copy may use a restrained
-opacity-and-scale breathing effect. Use `transform: scale()` rather than
-changing `font-size` so the animation does not cause layout movement. Suggested
-text values are approximately `0.55` to `1` opacity and `0.98` to `1.02` scale.
+Do not display loading text alongside the dots. `Loading posts…`,
+`Loading followers…`, or `Loading following…` remains available to assistive
+technology through a visually hidden polite status region.
 
 The dots animate sequentially from left to right and then right to left. Each
 dot becomes slightly larger and less transparent at its active point while
@@ -114,18 +123,8 @@ Consider an approximately 150-millisecond visual appearance delay. Fast
 requests can then finish before the loader appears, avoiding a brief flash. The
 request and screen-reader announcement must not be delayed.
 
-When `prefers-reduced-motion: reduce` is active, show the dots and loading copy
-without animated scale or opacity changes.
-
-Alternative visual directions remain available before implementation:
-
-- animate only the sequential dots and keep the text static
-- use calmer synchronized breathing dots
-- use vertically bouncing dots for a more playful presentation
-- use short expanding bars that echo the application's rectangular controls
-
-The final animation combination and appearance delay should be confirmed before
-implementation after comparing the options against the existing interface.
+When `prefers-reduced-motion: reduce` is active, show the dots without animated
+scale or opacity changes.
 
 ## Accessible Status Copy
 
@@ -136,8 +135,8 @@ Use different screen-reader messages for initial and pagination loading:
 - `Loading following…` and `Loading more following…`
 
 The visual dots are decorative and hidden from assistive technology. The
-loading copy supplies the polite live-region message. Appending new records
-must not move keyboard focus or announce every newly rendered item.
+visually hidden loading copy supplies the polite live-region message. Appending
+new records must not move keyboard focus or announce every newly rendered item.
 
 No end-of-results message is required. When no page remains, remove the
 sentinel and loader.
@@ -227,16 +226,20 @@ Live smoke coverage should include:
 
 ## Suggested PR Sequence
 
-### Automatic Pagination Part 1: Add Shared Infrastructure and Post Feeds
+### Automatic Pagination Part 1: Add Shared Infrastructure — Complete
 
 - add the observer-backed shared trigger
 - add the initial and next-page loader variants using the selected animation
 - add the selected appearance delay and reduced-motion behavior
+- add observer, loader, and compatibility-fallback tests
+
+### Automatic Pagination Part 2: Integrate Post Feeds
+
 - integrate dashboard posts and profile posts
 - preserve tag-filter behavior
-- add observer, loader, post-feed, and compatibility-fallback tests
+- update post-feed loading and fallback coverage
 
-### Automatic Pagination Part 2: Integrate Relationship Views and Close Out
+### Automatic Pagination Part 3: Integrate Relationship Views and Close Out
 
 - integrate the shared trigger with Followers and Following
 - add next-page failure and Retry loading behavior across all collections

@@ -13,7 +13,7 @@ const PaginationLoadingIndicator = ({
     className={`pagination-loading-indicator pagination-loading-indicator--${variant}`}
     role="status"
   >
-    <span className="pagination-loading-label">{label}</span>
+    <span className="visually-hidden">{label}</span>
     <span aria-hidden="true" className="pagination-loading-dots">
       <span className="pagination-loading-dot"></span>
       <span className="pagination-loading-dot"></span>
