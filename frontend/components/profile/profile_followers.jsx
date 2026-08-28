@@ -14,15 +14,16 @@ const ProfileFollowers = ({ profileId }) => {
 
   return (
     <ProfileRelationshipUsers
-      buttonLabel={buttonLabels.loadMoreFollowers}
       emptyMessage={profileMessages.noFollowers}
+      fallbackLabel={buttonLabels.loadMoreFollowers}
       heading={profileViewLabels[profileViews.followers]}
       headingId="profile-followers-heading"
+      initialLoadingLabel={profileMessages.followersLoading}
       loadErrorMessage={profileMessages.followersLoadError}
-      loadingButtonLabel={buttonLabels.loadingFollowers}
-      loadingMessage={profileMessages.followersLoading}
+      nextPageLoadingLabel={buttonLabels.loadingMoreFollowers}
       profileId={profileId}
       relationshipQuery={followers}
+      retryLabel={buttonLabels.retryLoading}
     />
   );
 };

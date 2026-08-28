@@ -5,6 +5,10 @@ import {
   useFollowUser,
   useUnfollowUser
 } from '../../query/user_hooks';
+import AutomaticPagination from '../pagination/automatic_pagination';
+import PaginationLoadingIndicator, {
+  loadingIndicatorVariants
+} from '../pagination/pagination_loading_indicator';
 import ProfileUserCard from './profile_user_card';
 
 const EMPTY_USERS = [];
@@ -12,15 +16,16 @@ const EMPTY_USERS = [];
 const sameUser = (firstId, secondId) => String(firstId) === String(secondId);
 
 const ProfileRelationshipUsers = ({
-  buttonLabel,
   emptyMessage,
+  fallbackLabel,
   heading,
   headingId,
+  initialLoadingLabel,
   loadErrorMessage,
-  loadingButtonLabel,
-  loadingMessage,
+  nextPageLoadingLabel,
   profileId,
-  relationshipQuery
+  relationshipQuery,
+  retryLabel
 }) => {
   const currentUserId = useCurrentUser().data?.id;
   const followUser = useFollowUser();
@@ -52,13 +57,17 @@ const ProfileRelationshipUsers = ({
   const renderRelationshipUsers = () => {
     if (relationshipQuery.isLoading) {
       return (
-        <p className="profile-view-state" role="status">
-          {loadingMessage}
-        </p>
+        <PaginationLoadingIndicator
+          label={initialLoadingLabel}
+          variant={loadingIndicatorVariants.initial}
+        />
       );
     }
 
-    if (relationshipQuery.isError) {
+    if (
+      relationshipQuery.isError &&
+      !relationshipQuery.isFetchNextPageError
+    ) {
       return (
         <p className="profile-view-state" role="alert">
           {loadErrorMessage}
@@ -78,18 +87,16 @@ const ProfileRelationshipUsers = ({
       <>
         <ul className="profile-user-list">{userCards}</ul>
 
-        {relationshipQuery.hasNextPage && (
-          <button
-            className="load-more-items"
-            disabled={relationshipQuery.isFetchingNextPage}
-            onClick={() => relationshipQuery.fetchNextPage()}
-            type="button"
-          >
-            {relationshipQuery.isFetchingNextPage
-              ? loadingButtonLabel
-              : buttonLabel}
-          </button>
-        )}
+        <AutomaticPagination
+          fallbackClassName="load-more-items"
+          fallbackLabel={fallbackLabel}
+          hasNextPage={relationshipQuery.hasNextPage}
+          isFetchingNextPage={relationshipQuery.isFetchingNextPage}
+          isNextPageError={relationshipQuery.isFetchNextPageError}
+          loadingLabel={nextPageLoadingLabel}
+          onLoadNextPage={relationshipQuery.fetchNextPage}
+          retryLabel={retryLabel}
+        />
       </>
     );
   };

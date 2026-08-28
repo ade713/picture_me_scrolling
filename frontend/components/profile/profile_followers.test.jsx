@@ -91,6 +91,9 @@ describe('ProfileFollowers', () => {
     renderFollowers();
 
     expect(screen.getByRole('status')).toHaveTextContent('Loading followers…');
+    expect(screen.getByRole('status')).toHaveClass(
+      'pagination-loading-indicator--initial'
+    );
     expect(screen.queryByRole('list')).not.toBeInTheDocument();
   });
 
@@ -150,8 +153,31 @@ describe('ProfileFollowers', () => {
 
     renderFollowers();
 
-    expect(screen.getByRole('button', { name: 'Loading followers...' }))
+    expect(screen.getByRole('button', { name: 'Loading more followers…' }))
       .toBeDisabled();
+  });
+
+  it('keeps followers visible and retries a failed next page', async () => {
+    const browserUser = userEvent.setup();
+    const fetchNextPage = vi.fn();
+    useUserFollowers.mockReturnValue({
+      data: { users: followers },
+      fetchNextPage,
+      hasNextPage: true,
+      isError: true,
+      isFetchNextPageError: true,
+      isFetchingNextPage: false,
+      isLoading: false
+    });
+
+    renderFollowers();
+
+    expect(screen.getByRole('link', { name: 'Athos' })).toBeInTheDocument();
+    await browserUser.click(screen.getByRole('button', {
+      name: 'Retry loading'
+    }));
+
+    expect(fetchNextPage).toHaveBeenCalledTimes(1);
   });
 
   it('disables the relationship action for the pending user', () => {
