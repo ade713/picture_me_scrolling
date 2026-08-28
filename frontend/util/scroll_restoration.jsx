@@ -19,7 +19,10 @@ const restoreWindowScrollPosition = position => {
 };
 
 export const ScrollRestorationProvider = ({ children }) => {
-  const scrollPositions = useRef(new Map());
+  const scrollPositions = useRef({
+    historyEntries: new Map(),
+    routes: new Map()
+  });
 
   return (
     <ScrollRestorationContext.Provider value={scrollPositions}>
@@ -30,16 +33,25 @@ export const ScrollRestorationProvider = ({ children }) => {
 
 export const useScrollRestoration = ({
   getScrollPosition = getWindowScrollPosition,
+  restoreByRoute = false,
   restoreScrollPosition = restoreWindowScrollPosition
 } = {}) => {
-  const localScrollPositions = useRef(new Map());
+  const localScrollPositions = useRef({
+    historyEntries: new Map(),
+    routes: new Map()
+  });
   const sharedScrollPositions = useContext(ScrollRestorationContext);
   const scrollPositions = sharedScrollPositions || localScrollPositions;
   const location = useLocation();
   const navigationType = useNavigationType();
-  const savedPosition = navigationType === 'POP'
-    ? scrollPositions.current.get(location.key)
+  const routeKey = `${location.pathname}${location.search}`;
+  const routePosition = restoreByRoute
+    ? scrollPositions.current.routes.get(routeKey)
     : undefined;
+  const historyPosition = navigationType === 'POP'
+    ? scrollPositions.current.historyEntries.get(location.key)
+    : undefined;
+  const savedPosition = routePosition ?? historyPosition;
 
   useLayoutEffect(() => {
     if (savedPosition !== undefined) {
@@ -47,12 +59,17 @@ export const useScrollRestoration = ({
     }
 
     return () => {
-      scrollPositions.current.set(location.key, getScrollPosition());
+      const position = getScrollPosition();
+
+      scrollPositions.current.historyEntries.set(location.key, position);
+      scrollPositions.current.routes.set(routeKey, position);
     };
   }, [
     getScrollPosition,
     location.key,
+    restoreByRoute,
     restoreScrollPosition,
+    routeKey,
     savedPosition,
     scrollPositions
   ]);

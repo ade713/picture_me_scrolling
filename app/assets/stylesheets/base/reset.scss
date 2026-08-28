@@ -39,9 +39,30 @@ button {
   appearance: none;
 }
 
-button,
-input[type="submit"] {
+a[href],
+a[href] *,
+button:not(:disabled),
+button:not(:disabled) *,
+input[type="submit"]:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+[role="button"]:not([aria-disabled="true"]) * {
   cursor: pointer;
+}
+
+a[href]::before,
+a[href]::after,
+button:not(:disabled)::before,
+button:not(:disabled)::after,
+[role="button"]:not([aria-disabled="true"])::before,
+[role="button"]:not([aria-disabled="true"])::after {
+  cursor: pointer;
+}
+
+button:disabled,
+button:disabled *,
+[role="button"][aria-disabled="true"],
+[role="button"][aria-disabled="true"] * {
+  cursor: not-allowed;
 }
 
 /* Clearfix */
