@@ -96,6 +96,9 @@ describe('ResetPasswordPage', () => {
     expect(screen.getByLabelText('Confirm new password')).toBeDisabled();
     expect(screen.getByRole('button', { name: 'Resetting password…' })).toBeDisabled();
     expect(screen.getByRole('status')).toHaveTextContent('Resetting your password…');
+    expect(screen.getByRole('status')).toHaveClass(
+      'loading-indicator--compact'
+    );
   });
 
   it('announces backend password validation errors in the form', () => {

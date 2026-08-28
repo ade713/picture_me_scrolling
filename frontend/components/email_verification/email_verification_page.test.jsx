@@ -47,8 +47,10 @@ describe('EmailVerificationPage', () => {
     await waitFor(() => {
       expect(verifyEmail.mutate).toHaveBeenCalledWith('raw-token');
     });
-    expect(screen.getByRole('status')).toHaveTextContent(
-      'Verifying your email address…'
+    expect(screen.getByRole('status'))
+      .toHaveTextContent('Verifying your email address…');
+    expect(screen.getByRole('status')).toHaveClass(
+      'loading-indicator--large'
     );
   });
 

@@ -457,6 +457,9 @@ describe('ProfilePage', () => {
     renderProfileRoute();
 
     expect(screen.getByRole('status')).toHaveTextContent('Loading profile…');
+    expect(screen.getByRole('status')).toHaveClass(
+      'loading-indicator--large'
+    );
     expect(screen.queryByRole('heading')).not.toBeInTheDocument();
   });
 

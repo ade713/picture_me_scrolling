@@ -7,6 +7,7 @@ import {
 } from '../../config/account_settings';
 import { buttonLabels } from '../../config/button_labels';
 import { RESET_PASSWORD_PENDING_MESSAGE } from '../../config/password_recovery';
+import LoadingIndicator from '../loading/loading_indicator';
 
 const EMPTY_PASSWORDS = {
   password: '',
@@ -93,9 +94,7 @@ const ResetPasswordForm = ({ resetPassword, token }) => {
       )}
 
       {resetPassword.isPending && (
-        <p aria-live="polite" role="status">
-          {RESET_PASSWORD_PENDING_MESSAGE}
-        </p>
+        <LoadingIndicator label={RESET_PASSWORD_PENDING_MESSAGE} />
       )}
 
       <button disabled={submitDisabled} type="submit">

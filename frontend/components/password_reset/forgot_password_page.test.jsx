@@ -76,6 +76,9 @@ describe('ForgotPasswordPage', () => {
     expect(screen.getByRole('status')).toHaveTextContent(
       'Requesting a password reset link…'
     );
+    expect(screen.getByRole('status')).toHaveClass(
+      'loading-indicator--compact'
+    );
   });
 
   it('shows the uniform success response and focuses its heading', () => {
