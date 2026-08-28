@@ -30,25 +30,36 @@ vi.mock('../dashboard/account_menu', () => ({
 }));
 
 vi.mock('./profile_posts', () => ({
-  default: ({ profileId, tag }) => (
+  default: ({ profileId, shouldFocusHeading, tag }) => (
     <>
-      <div>Posts for profile {profileId}</div>
+      <div
+        data-should-focus-heading={shouldFocusHeading}
+        data-testid="profile-posts"
+      >
+        Posts for profile {profileId}
+      </div>
       <div data-testid="profile-posts-tag">{tag || 'unfiltered'}</div>
     </>
   )
 }));
 
 vi.mock('./profile_followers', () => ({
-  default: ({ profileId }) => (
-    <div data-testid="profile-followers">
+  default: ({ profileId, shouldFocusHeading }) => (
+    <div
+      data-should-focus-heading={shouldFocusHeading}
+      data-testid="profile-followers"
+    >
       Followers for profile {profileId}
     </div>
   )
 }));
 
 vi.mock('./profile_following', () => ({
-  default: ({ profileId }) => (
-    <div data-testid="profile-following">
+  default: ({ profileId, shouldFocusHeading }) => (
+    <div
+      data-should-focus-heading={shouldFocusHeading}
+      data-testid="profile-following"
+    >
       Following for profile {profileId}
     </div>
   )
@@ -126,10 +137,12 @@ const renderProfileRoute = (path = routes.userProfile(42)) => render(
 
 describe('ProfilePage', () => {
   let followUser;
+  let scrollTo;
   let unfollowUser;
 
   beforeEach(() => {
     followUser = buildMutation();
+    scrollTo = vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
     unfollowUser = buildMutation();
     useCurrentUser.mockReturnValue({ data: { id: 1, username: 'Viewer' } });
     useFollowUser.mockReturnValue(followUser);
@@ -138,6 +151,7 @@ describe('ProfilePage', () => {
 
   afterEach(() => {
     vi.clearAllMocks();
+    scrollTo.mockRestore();
   });
 
   it('loads and renders identity for the route user', () => {
@@ -276,6 +290,38 @@ describe('ProfilePage', () => {
       'aria-current',
       'page'
     );
+  });
+
+  it('restores a profile view scroll position without moving heading focus', async () => {
+    const user = userEvent.setup();
+    let currentScrollY = 0;
+    const scrollY = vi.spyOn(window, 'scrollY', 'get').mockImplementation(
+      () => currentScrollY
+    );
+    useUser.mockReturnValue(buildProfileQuery({ data: buildProfile() }));
+
+    renderProfileRoute();
+
+    currentScrollY = 480;
+    await user.click(screen.getByRole('link', { name: 'Followers' }));
+    currentScrollY = 920;
+    await user.click(screen.getByRole('link', { name: 'Following' }));
+    currentScrollY = 1320;
+    await user.click(screen.getByRole('button', { name: 'History back' }));
+
+    await waitFor(() => {
+      expect(scrollTo).toHaveBeenLastCalledWith({
+        behavior: 'auto',
+        left: 0,
+        top: 920
+      });
+    });
+    expect(screen.getByTestId('profile-followers')).toHaveAttribute(
+      'data-should-focus-heading',
+      'false'
+    );
+
+    scrollY.mockRestore();
   });
 
   it('restores profile tag filters with browser Back and Forward navigation', async () => {

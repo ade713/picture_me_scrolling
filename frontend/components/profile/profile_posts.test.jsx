@@ -180,6 +180,24 @@ describe('ProfilePosts', () => {
     );
   });
 
+  it('does not move filter focus while restoring profile history', () => {
+    useUserPosts.mockReturnValue({
+      data: { posts: [] },
+      hasNextPage: false,
+      isError: false,
+      isLoading: false
+    });
+
+    renderProfilePosts({
+      shouldFocusHeading: false,
+      tag: 'film_photography'
+    });
+
+    expect(screen.getByRole('heading', {
+      name: 'Posts tagged #film_photography'
+    })).not.toHaveFocus();
+  });
+
   it('moves focus when the active profile tag changes', () => {
     useUserPosts.mockReturnValue({
       data: { posts },

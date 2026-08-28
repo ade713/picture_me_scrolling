@@ -85,6 +85,17 @@ describe('ProfileFollowers', () => {
     expect(screen.getByRole('button', { name: 'Follow Athos' })).toBeEnabled();
   });
 
+  it('does not move view focus while restoring profile history', () => {
+    render(
+      <MemoryRouter>
+        <ProfileFollowers profileId={42} shouldFocusHeading={false} />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole('heading', { name: 'Followers' }))
+      .not.toHaveFocus();
+  });
+
   it('announces the loading state', () => {
     useUserFollowers.mockReturnValue({ isLoading: true });
 
