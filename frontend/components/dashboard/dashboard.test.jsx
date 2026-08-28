@@ -76,8 +76,6 @@ describe('Dashboard tag routing', () => {
 
   it('restores feed scroll position when returning through browser history', async () => {
     const user = userEvent.setup();
-    let dashboardFeed;
-    let dashboardMain;
 
     render(
       <MemoryRouter initialEntries={['/dashboard?tag=photography']}>
@@ -91,8 +89,8 @@ describe('Dashboard tag routing', () => {
       </MemoryRouter>
     );
 
-    dashboardFeed = document.querySelector('.dash-feed');
-    dashboardMain = document.querySelector('.dash-main');
+    const dashboardFeed = document.querySelector('.dash-feed');
+    const dashboardMain = document.querySelector('.dash-main');
     dashboardFeed.scrollTop = 920;
     dashboardMain.scrollTop = 480;
     await user.click(screen.getByRole('link', { name: 'Visit profile' }));
