@@ -6,9 +6,9 @@ import { routes } from '../../config/routes';
 import { tagFilterMessages } from '../../config/tags';
 import { usePosts } from '../../query/post_hooks';
 import AutomaticPagination from '../pagination/automatic_pagination';
-import PaginationLoadingIndicator, {
+import LoadingIndicator, {
   loadingIndicatorVariants
-} from '../pagination/pagination_loading_indicator';
+} from '../loading/loading_indicator';
 import FeedItem from './feed_item';
 import TagFilterHeader from './tag_filter_header';
 import PostBar from '../posts/post_bar';
@@ -26,9 +26,9 @@ const Feed = ({ shouldFocusHeading = true, tag }) => {
   const renderFeedContent = () => {
     if (posts.isLoading) {
       return (
-        <PaginationLoadingIndicator
+        <LoadingIndicator
           label={tagFilterMessages.loading}
-          variant={loadingIndicatorVariants.initial}
+          variant={loadingIndicatorVariants.large}
         />
       );
     }

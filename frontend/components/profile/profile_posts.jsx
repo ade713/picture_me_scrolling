@@ -10,9 +10,9 @@ import FeedItem from '../feed/feed_item';
 import { PostTagNavigationProvider } from '../feed/post_tag_navigation_context';
 import TagFilterHeader from '../feed/tag_filter_header';
 import AutomaticPagination from '../pagination/automatic_pagination';
-import PaginationLoadingIndicator, {
+import LoadingIndicator, {
   loadingIndicatorVariants
-} from '../pagination/pagination_loading_indicator';
+} from '../loading/loading_indicator';
 
 const ProfilePosts = ({ profileId, shouldFocusHeading = true, tag }) => {
   const posts = useUserPosts(profileId, tag);
@@ -32,9 +32,9 @@ const ProfilePosts = ({ profileId, shouldFocusHeading = true, tag }) => {
   const renderPosts = () => {
     if (posts.isLoading) {
       return (
-        <PaginationLoadingIndicator
+        <LoadingIndicator
           label={tagFilterMessages.loading}
-          variant={loadingIndicatorVariants.initial}
+          variant={loadingIndicatorVariants.large}
         />
       );
     }

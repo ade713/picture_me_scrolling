@@ -6,9 +6,9 @@ import {
   useUnfollowUser
 } from '../../query/user_hooks';
 import AutomaticPagination from '../pagination/automatic_pagination';
-import PaginationLoadingIndicator, {
+import LoadingIndicator, {
   loadingIndicatorVariants
-} from '../pagination/pagination_loading_indicator';
+} from '../loading/loading_indicator';
 import ProfileUserCard from './profile_user_card';
 
 const EMPTY_USERS = [];
@@ -60,9 +60,9 @@ const ProfileRelationshipUsers = ({
   const renderRelationshipUsers = () => {
     if (relationshipQuery.isLoading) {
       return (
-        <PaginationLoadingIndicator
+        <LoadingIndicator
           label={initialLoadingLabel}
-          variant={loadingIndicatorVariants.initial}
+          variant={loadingIndicatorVariants.large}
         />
       );
     }

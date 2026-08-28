@@ -175,7 +175,7 @@ describe('Feed', () => {
 
     expect(screen.getByRole('status')).toHaveTextContent('Loading posts…');
     expect(screen.getByRole('status')).toHaveClass(
-      'pagination-loading-indicator--initial'
+      'loading-indicator--large'
     );
     expect(screen.queryByRole('list')).not.toBeInTheDocument();
   });
