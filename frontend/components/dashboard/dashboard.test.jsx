@@ -1,11 +1,25 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { MemoryRouter, useNavigate } from 'react-router-dom';
+import {
+  Link,
+  MemoryRouter,
+  Route,
+  Routes,
+  useNavigate
+} from 'react-router-dom';
 
+import { ScrollRestorationProvider } from '../../util/scroll_restoration';
 import Dashboard from './dashboard';
 
 vi.mock('../feed/feed', () => ({
-  default: ({ tag }) => <p>Active tag: {tag || 'none'}</p>
+  default: ({ shouldFocusHeading, tag }) => (
+    <p
+      data-should-focus-heading={shouldFocusHeading}
+      data-testid="dashboard-feed"
+    >
+      Active tag: {tag || 'none'}
+    </p>
+  )
 }));
 
 vi.mock('../users/recommended_users', () => ({
@@ -22,6 +36,9 @@ const HistoryControls = () => {
   return (
     <>
       <button onClick={() => navigate('/dashboard?tag=sunset')}>Show sunset</button>
+      <Link to="/users/42">
+        Visit profile
+      </Link>
       <button onClick={() => navigate(-1)}>Back</button>
     </>
   );
@@ -55,5 +72,39 @@ describe('Dashboard tag routing', () => {
 
     await user.click(screen.getByRole('button', { name: 'Back' }));
     expect(screen.getByText('Active tag: photography')).toBeInTheDocument();
+  });
+
+  it('restores feed scroll position when returning through browser history', async () => {
+    const user = userEvent.setup();
+    let dashboardFeed;
+    let dashboardMain;
+
+    render(
+      <MemoryRouter initialEntries={['/dashboard?tag=photography']}>
+        <ScrollRestorationProvider>
+          <HistoryControls />
+          <Routes>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/users/:id" element={<p>Profile page</p>} />
+          </Routes>
+        </ScrollRestorationProvider>
+      </MemoryRouter>
+    );
+
+    dashboardFeed = document.querySelector('.dash-feed');
+    dashboardMain = document.querySelector('.dash-main');
+    dashboardFeed.scrollTop = 920;
+    dashboardMain.scrollTop = 480;
+    await user.click(screen.getByRole('link', { name: 'Visit profile' }));
+    await user.click(screen.getByRole('button', { name: 'Back' }));
+
+    await waitFor(() => {
+      expect(document.querySelector('.dash-feed').scrollTop).toBe(920);
+      expect(document.querySelector('.dash-main').scrollTop).toBe(480);
+    });
+    expect(screen.getByTestId('dashboard-feed')).toHaveAttribute(
+      'data-should-focus-heading',
+      'false'
+    );
   });
 });
