@@ -13,7 +13,7 @@ broader release.
 - Follow and unfollow users work.
 - Recommended users update after follow/unfollow actions.
 - Feed updates after follow/unfollow actions.
-- Load more posts pagination works.
+- Automatic post pagination loads the next page near the end of the feed.
 - Logout and session persistence after refresh work.
 - Link post validation and rendering work in production.
 - Video posts create and play through S3.

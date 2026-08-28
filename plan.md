@@ -1057,17 +1057,16 @@ The accompanying frontend scan found no other configuration value passed unused
 through three or more component levels. Immediate component data and event
 callbacks remain explicit props, and broader Zustand state was not introduced.
 
-## Planned Feature: Automatic Pagination
+## Completed Feature: Automatic Pagination
 
-Status: in progress. Shared infrastructure is complete and post-feed
-integration is in progress.
+Status: implementation complete. Parts 1–3 were merged in PRs #175–#177.
 
-Replace the dashboard and profile Load More controls with reusable
-observer-backed automatic pagination. The proposed behavior includes an
-approximately 10%-of-viewport preload boundary, end-of-list sentinels, shared
-three-dot loading indicators, next-page retry behavior, an accessible Load More
-fallback when `IntersectionObserver` is unavailable, and cached scroll-position
-verification.
+The dashboard, profile post, Followers, and Following collections now use
+reusable observer-backed automatic pagination. The completed behavior includes
+an approximately 10%-of-viewport preload boundary, end-of-list sentinels,
+shared three-dot loading indicators, next-page retry behavior, an accessible
+Load More fallback when `IntersectionObserver` is unavailable, and
+profile-history scroll restoration keyed by browser history entries.
 
 The complete scope, accessibility decisions, failure behavior, test strategy,
 deferred work, and three-part PR sequence live in

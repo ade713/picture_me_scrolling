@@ -210,9 +210,14 @@ Use the seeded guest account:
   browser Back and Forward.
   - Expected: the profile identity remains present and the URL-owned view is
     restored.
-- Load another page in Posts, Followers, and Following where available.
-  - Expected: new records append without duplicates and the active view remains
-    selected.
+- Scroll near the end of Posts, Followers, and Following where another page is
+  available.
+  - Expected: the next page loads automatically, new records append without
+    duplicates, and the active view remains selected.
+- After loading another profile page, navigate to another profile view and use
+  browser Back and Forward.
+  - Expected: cached records remain rendered and each history entry restores
+    its previous scroll position without heading focus moving the viewport.
 - Select and clear a profile-post tag.
   - Expected: filtering remains scoped to that profile; selecting another
     profile returns to its canonical unfiltered Posts view.
@@ -223,9 +228,11 @@ Use the seeded guest account:
   - Expected: follower and following counts use compact visual formatting while
     their accessible labels expose the exact values.
 - Complete the profile entry points, view navigation, tag controls,
-  relationship actions, and pagination using only the keyboard.
+  relationship actions, Retry loading, and pagination fallback using only the
+  keyboard.
   - Expected: focus follows document order, visible focus indicators remain,
-    and each view heading receives focus when its view opens.
+    and each view heading receives focus when opened normally without
+    overriding a restored Back/Forward scroll position.
 - Repeat the profile header, navigation, cards, state messages, and pagination
   at narrow and wide viewport sizes.
   - Expected: usernames wrap, counts and controls remain visible, and no

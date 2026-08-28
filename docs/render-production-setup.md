@@ -133,7 +133,8 @@ needs. Before launch, confirm:
 Run these against `https://picturemescrolling.com`:
 
 - Sign up, log in, log out, and guest log in.
-- Confirm dashboard feed loads newest-first and paginates with Load more posts.
+- Confirm the dashboard feed loads newest-first and automatically loads the
+  next page near the end of the rendered posts.
 - Follow and unfollow a recommended user; confirm the feed updates.
 - Like and unlike a post; confirm counts and icon state update.
 - Create text, quote, link, photo, audio, and video posts.

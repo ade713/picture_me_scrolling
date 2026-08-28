@@ -1,6 +1,6 @@
 # Automatic Pagination Plan
 
-Status: in progress. Part 1 is complete and Part 2 is in progress.
+Status: implementation complete. Parts 1–3 were merged in PRs #175–#177.
 
 ## Implementation Progress
 
@@ -10,9 +10,23 @@ request protection, observer cleanup and reconnection, an accessible Load More
 fallback, shared initial and next-page loading indicators, reduced-motion
 styling, and focused infrastructure coverage.
 
-Part 2 is in progress. Dashboard and profile post feeds now use the shared
+Part 2 was completed in PR #176. Dashboard and profile post feeds use the shared
 trigger and loading presentation while retaining their existing tag filters,
 empty states, initial errors, page sizes, and TanStack Query ownership.
+
+Part 3 was completed in PR #177. Followers and Following now load subsequent
+pages automatically, all paginated collections retain their rendered content
+and expose `Retry loading` after a next-page failure, and profile history
+entries preserve their cached pages and scroll positions. The narrow profile
+scroll-restoration fallback is keyed by React Router history entries and avoids
+moving heading focus while restoring a previous viewport position.
+
+Focused frontend coverage, the complete frontend suite, and the production
+Webpack build pass. Live smoke coverage confirmed automatic loading for the
+dashboard, a filtered dashboard feed, Followers, and Following at wide and
+narrow viewport sizes without console errors or horizontal overflow. A final
+live Back/Forward check remains useful after the scroll-restoration fallback;
+its regression behavior is covered by component tests.
 
 ## Goal
 
@@ -233,13 +247,13 @@ Live smoke coverage should include:
 - add the selected appearance delay and reduced-motion behavior
 - add observer, loader, and compatibility-fallback tests
 
-### Automatic Pagination Part 2: Integrate Post Feeds
+### Automatic Pagination Part 2: Integrate Post Feeds — Complete
 
 - integrate dashboard posts and profile posts
 - preserve tag-filter behavior
 - update post-feed loading and fallback coverage
 
-### Automatic Pagination Part 3: Integrate Relationship Views and Close Out
+### Automatic Pagination Part 3: Integrate Relationship Views and Close Out — Complete
 
 - integrate the shared trigger with Followers and Following
 - add next-page failure and Retry loading behavior across all collections

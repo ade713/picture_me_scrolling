@@ -120,9 +120,10 @@ Tag behavior:
 - Create and edit posts with tags across all six post types.
   - Expected: tags normalize, render alphabetically, and persist atomically with
     the post.
-- Select the seeded `performance` tag and load another page.
-  - Expected: only matching accessible posts render and pagination continues
-    within the filtered result.
+- Select the seeded `performance` tag and scroll near the end of the rendered
+  posts.
+  - Expected: only matching accessible posts render and the next filtered page
+    loads automatically.
 - Reload the filtered URL, use Back and Forward, then activate `× Clear`.
   - Expected: URL state, results, focus, and full-feed restoration stay in sync.
 - Complete tag entry, removal, selection, and clearing with only the keyboard at
@@ -137,10 +138,14 @@ Profile behavior:
 - Switch among Posts, Followers, and Following; reload; and use Back and
   Forward.
   - Expected: URL-owned view state and profile identity remain synchronized.
-- Load subsequent pages in each profile collection and exercise profile-scoped
+- Scroll near the end of each profile collection and exercise profile-scoped
   tag filtering.
-  - Expected: results append without duplicates and filters remain scoped to
-  the selected profile.
+  - Expected: subsequent pages load automatically, results append without
+    duplicates, and filters remain scoped to the selected profile.
+- After loading a subsequent profile page, change views and use browser Back
+  and Forward.
+  - Expected: cached pages and the previous scroll position are restored for
+    each history entry.
 - Follow and unfollow from profile headers and relationship cards.
   - Expected: profile counts, relationship lists, feed posts, and
   recommendations refresh after successful mutations.
