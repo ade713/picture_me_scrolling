@@ -9,6 +9,7 @@ import {
 import { routes } from '../../config/routes';
 import { useCurrentUser } from '../../query/session_hooks';
 import { useFollowUser, useUnfollowUser, useUser } from '../../query/user_hooks';
+import { useScrollRestoration } from '../../util/scroll_restoration';
 import AccountMenu from '../dashboard/account_menu';
 import ProfileFollowers from './profile_followers';
 import ProfileFollowing from './profile_following';
@@ -16,7 +17,6 @@ import ProfileHeader from './profile_header';
 import ProfileNavigation from './profile_navigation';
 import ProfilePosts from './profile_posts';
 import useProfileNavigation from './use_profile_navigation';
-import useProfileScrollRestoration from './use_profile_scroll_restoration';
 
 const ProfilePage = () => {
   const { id } = useParams();
@@ -24,7 +24,7 @@ const ProfilePage = () => {
   const currentUser = useCurrentUser().data;
   const followUser = useFollowUser();
   const profileQuery = useUser(id);
-  const shouldFocusNavigationTarget = useProfileScrollRestoration();
+  const shouldFocusNavigationTarget = useScrollRestoration();
   const unfollowUser = useUnfollowUser();
 
   const renderProfileState = () => {

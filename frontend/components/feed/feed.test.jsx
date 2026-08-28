@@ -150,6 +150,24 @@ describe('Feed', () => {
     expect(screen.getByRole('heading', { name: 'Posts tagged #sunset' })).toHaveFocus();
   });
 
+  it('does not move filter focus while restoring dashboard history', () => {
+    usePosts.mockReturnValue({
+      data: { posts },
+      error: null,
+      hasNextPage: false,
+      isLoading: false
+    });
+
+    renderFeed({
+      shouldFocusHeading: false,
+      tag: 'photography'
+    });
+
+    expect(screen.getByRole('heading', {
+      name: 'Posts tagged #photography'
+    })).not.toHaveFocus();
+  });
+
   it('announces the loading state', () => {
     usePosts.mockReturnValue({ isLoading: true });
 

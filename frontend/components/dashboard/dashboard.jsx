@@ -1,16 +1,35 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { APP_NAME } from '../../config/app';
 import { normalizeTag } from '../../config/tags';
+import { useScrollRestoration } from '../../util/scroll_restoration';
 import Feed from '../feed/feed';
 import RecommendedUsers from '../users/recommended_users';
 import AccountMenu from './account_menu';
 
 const Dashboard = () => {
+  const feedScrollContainerRef = useRef(null);
+  const mainScrollContainerRef = useRef(null);
   const [searchParams] = useSearchParams();
   const tagParam = searchParams.get('tag');
   const activeTag = tagParam ? normalizeTag(tagParam) : undefined;
+  const getScrollPosition = useCallback(() => ({
+    feed: feedScrollContainerRef.current?.scrollTop || 0,
+    main: mainScrollContainerRef.current?.scrollTop || 0
+  }), []);
+  const restoreScrollPosition = useCallback(position => {
+    if (feedScrollContainerRef.current) {
+      feedScrollContainerRef.current.scrollTop = position.feed;
+    }
+    if (mainScrollContainerRef.current) {
+      mainScrollContainerRef.current.scrollTop = position.main;
+    }
+  }, []);
+  const shouldFocusFeedHeading = useScrollRestoration({
+    getScrollPosition,
+    restoreScrollPosition
+  });
 
   return (
     <div className="dash-page">
@@ -20,9 +39,12 @@ const Dashboard = () => {
         </h1>
         <AccountMenu />
       </header>
-      <div className="dash-main">
-        <div className="dash-feed">
-          <Feed tag={activeTag} />
+      <div className="dash-main" ref={mainScrollContainerRef}>
+        <div className="dash-feed" ref={feedScrollContainerRef}>
+          <Feed
+            shouldFocusHeading={shouldFocusFeedHeading}
+            tag={activeTag}
+          />
         </div>
         <div className="dash-right-column">
           <RecommendedUsers />

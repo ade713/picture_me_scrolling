@@ -15,11 +15,11 @@ trigger and loading presentation while retaining their existing tag filters,
 empty states, initial errors, page sizes, and TanStack Query ownership.
 
 Part 3 was completed in PR #177. Followers and Following now load subsequent
-pages automatically, all paginated collections retain their rendered content
-and expose `Retry loading` after a next-page failure, and profile history
-entries preserve their cached pages and scroll positions. The narrow profile
-scroll-restoration fallback is keyed by React Router history entries and avoids
-moving heading focus while restoring a previous viewport position.
+pages automatically and all paginated collections retain their rendered
+content and expose `Retry loading` after a next-page failure. A follow-up
+generalized scroll restoration across the dashboard and profile feeds. The
+fallback is keyed by React Router history entries and avoids moving heading
+focus while restoring a previous viewport position.
 
 Focused frontend coverage, the complete frontend suite, and the production
 Webpack build pass. Live smoke coverage confirmed automatic loading for the
@@ -184,11 +184,15 @@ from different collections from mixing.
 Appending a page naturally preserves the current scroll position because
 existing items remain in place and new items are added after them.
 
-Browser Back and Forward behavior must also preserve loaded query pages and the
-user's previous scroll position when returning to a cached collection. First
-verify the browser's native restoration after React has rendered the cached
-pages. If that proves unreliable, add narrowly scoped restoration keyed by the
-history entry rather than introducing broad application state.
+Browser Back and Forward behavior preserves loaded query pages and the user's
+previous scroll position when returning to a cached collection. Shared
+routing-level storage retains positions while the dashboard or profile page is
+unmounted. The restoration hook retrieves them by history entry during browser
+Back/Forward navigation without introducing broad application state. A new
+dashboard navigation, including the Back to dashboard link, starts at the top
+as a new history entry. The dashboard records its responsive element-level
+scroll containers (`dash-feed` on desktop and `dash-main` at narrower widths),
+while profile pages record the browser-window position.
 
 Changing to a different tag, profile, or profile view intentionally retains the
 existing focus-management behavior and moves to the new view or filter heading

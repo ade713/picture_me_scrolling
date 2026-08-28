@@ -13,7 +13,7 @@ import FeedItem from './feed_item';
 import TagFilterHeader from './tag_filter_header';
 import PostBar from '../posts/post_bar';
 
-const Feed = ({ tag }) => {
+const Feed = ({ shouldFocusHeading = true, tag }) => {
   const posts = usePosts(tag);
   const loadedPosts = posts.data?.posts;
   const feedItems = useMemo(() => (loadedPosts || []).map((post, index) =>
@@ -74,6 +74,7 @@ const Feed = ({ tag }) => {
       </div>
       <TagFilterHeader
         clearDestination={routes.dashboard}
+        shouldFocusHeading={shouldFocusHeading}
         tag={tag}
       />
       {renderFeedContent()}
