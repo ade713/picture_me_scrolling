@@ -1066,7 +1066,7 @@ reusable observer-backed automatic pagination. The completed behavior includes
 an approximately 10%-of-viewport preload boundary, end-of-list sentinels,
 shared three-dot loading indicators, next-page retry behavior, an accessible
 Load More fallback when `IntersectionObserver` is unavailable, and
-profile-history scroll restoration keyed by browser history entries.
+dashboard/profile scroll restoration keyed by browser history entries.
 
 The complete scope, accessibility decisions, failure behavior, test strategy,
 deferred work, and three-part PR sequence live in
