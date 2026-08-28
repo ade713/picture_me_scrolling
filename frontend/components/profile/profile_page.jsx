@@ -16,6 +16,7 @@ import ProfileHeader from './profile_header';
 import ProfileNavigation from './profile_navigation';
 import ProfilePosts from './profile_posts';
 import useProfileNavigation from './use_profile_navigation';
+import useProfileScrollRestoration from './use_profile_scroll_restoration';
 
 const ProfilePage = () => {
   const { id } = useParams();
@@ -23,6 +24,7 @@ const ProfilePage = () => {
   const currentUser = useCurrentUser().data;
   const followUser = useFollowUser();
   const profileQuery = useUser(id);
+  const shouldFocusNavigationTarget = useProfileScrollRestoration();
   const unfollowUser = useUnfollowUser();
 
   const renderProfileState = () => {
@@ -53,13 +55,23 @@ const ProfilePage = () => {
         />
         <ProfileNavigation activeView={activeView} profileId={profileQuery.data.id} />
         {activeView === profileViews.posts && (
-          <ProfilePosts profileId={profileQuery.data.id} tag={activeTag} />
+          <ProfilePosts
+            profileId={profileQuery.data.id}
+            shouldFocusHeading={shouldFocusNavigationTarget}
+            tag={activeTag}
+          />
         )}
         {activeView === profileViews.followers && (
-          <ProfileFollowers profileId={profileQuery.data.id} />
+          <ProfileFollowers
+            profileId={profileQuery.data.id}
+            shouldFocusHeading={shouldFocusNavigationTarget}
+          />
         )}
         {activeView === profileViews.following && (
-          <ProfileFollowing profileId={profileQuery.data.id} />
+          <ProfileFollowing
+            profileId={profileQuery.data.id}
+            shouldFocusHeading={shouldFocusNavigationTarget}
+          />
         )}
       </>
     );

@@ -25,7 +25,8 @@ const ProfileRelationshipUsers = ({
   nextPageLoadingLabel,
   profileId,
   relationshipQuery,
-  retryLabel
+  retryLabel,
+  shouldFocusHeading = true
 }) => {
   const currentUserId = useCurrentUser().data?.id;
   const followUser = useFollowUser();
@@ -34,9 +35,11 @@ const ProfileRelationshipUsers = ({
   const loadedUsers = relationshipQuery.data?.users || EMPTY_USERS;
 
   useEffect(() => {
+    if (!shouldFocusHeading) return;
+
     headingRef.current?.focus();
     headingRef.current?.scrollIntoView?.({ block: 'start' });
-  }, [profileId]);
+  }, [profileId, shouldFocusHeading]);
 
   const relationshipPendingFor = userId => (
     (followUser.isPending && sameUser(followUser.variables, userId)) ||

@@ -3,7 +3,11 @@ import { Link } from 'react-router-dom';
 
 import { tagFilterMessages } from '../../config/tags';
 
-const TagFilterHeader = ({ clearDestination, tag }) => {
+const TagFilterHeader = ({
+  clearDestination,
+  shouldFocusHeading = true,
+  tag
+}) => {
   const headingRef = useRef(null);
   const previousTag = useRef(undefined);
 
@@ -11,13 +15,13 @@ const TagFilterHeader = ({ clearDestination, tag }) => {
     const filterChanged = previousTag.current !== tag;
     const shouldAnnounce = Boolean(tag) || Boolean(previousTag.current);
 
-    if (filterChanged && shouldAnnounce) {
+    if (filterChanged && shouldAnnounce && shouldFocusHeading) {
       headingRef.current?.focus();
       headingRef.current?.scrollIntoView?.({ block: 'start' });
     }
 
     previousTag.current = tag;
-  }, [tag]);
+  }, [shouldFocusHeading, tag]);
 
   return (
     <header className="feed-filter-header">

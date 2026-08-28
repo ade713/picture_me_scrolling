@@ -14,7 +14,7 @@ import PaginationLoadingIndicator, {
   loadingIndicatorVariants
 } from '../pagination/pagination_loading_indicator';
 
-const ProfilePosts = ({ profileId, tag }) => {
+const ProfilePosts = ({ profileId, shouldFocusHeading = true, tag }) => {
   const posts = useUserPosts(profileId, tag);
   const loadedPosts = posts.data?.posts;
   const tagDestination = useCallback(
@@ -75,6 +75,7 @@ const ProfilePosts = ({ profileId, tag }) => {
     <section aria-label="Profile posts" className="profile-posts">
       <TagFilterHeader
         clearDestination={routes.userProfile(profileId)}
+        shouldFocusHeading={shouldFocusHeading}
         tag={tag}
       />
       <PostTagNavigationProvider destination={tagDestination}>

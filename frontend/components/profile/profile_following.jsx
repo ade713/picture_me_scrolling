@@ -9,7 +9,7 @@ import {
 import { useUserFollowing } from '../../query/user_hooks';
 import ProfileRelationshipUsers from './profile_relationship_users';
 
-const ProfileFollowing = ({ profileId }) => {
+const ProfileFollowing = ({ profileId, shouldFocusHeading = true }) => {
   const following = useUserFollowing(profileId);
 
   return (
@@ -24,6 +24,7 @@ const ProfileFollowing = ({ profileId }) => {
       profileId={profileId}
       relationshipQuery={following}
       retryLabel={buttonLabels.retryLoading}
+      shouldFocusHeading={shouldFocusHeading}
     />
   );
 };
