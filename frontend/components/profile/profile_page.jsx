@@ -35,12 +35,10 @@ const ProfilePage = () => {
   const renderProfileState = () => {
     if (profileQuery.isPending) {
       return (
-        <div className="profile-state">
-          <LoadingIndicator
-            label={profileMessages.loading}
-            variant={loadingIndicatorVariants.large}
-          />
-        </div>
+        <LoadingIndicator
+          label={profileMessages.loading}
+          variant={loadingIndicatorVariants.large}
+        />
       );
     }
 

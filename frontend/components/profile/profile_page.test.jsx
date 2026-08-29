@@ -506,6 +506,7 @@ describe('ProfilePage', () => {
     expect(screen.getByRole('status')).toHaveClass(
       'loading-indicator--large'
     );
+    expect(screen.getByRole('status').closest('.profile-state')).toBeNull();
     expect(screen.queryByRole('heading')).not.toBeInTheDocument();
   });
 
