@@ -16,6 +16,9 @@ import {
 import { routes } from '../../config/routes';
 import { useVerifyEmail } from '../../query/email_verification_hooks';
 import { useCurrentUser } from '../../query/session_hooks';
+import LoadingIndicator, {
+  loadingIndicatorVariants
+} from '../loading/loading_indicator';
 
 const EmailVerificationPage = () => {
   const { token } = useParams();
@@ -76,9 +79,10 @@ const EmailVerificationPage = () => {
         <h1 id="email-verification-heading">
           {EMAIL_VERIFICATION_PENDING_HEADING}
         </h1>
-        <p aria-live="polite" role="status">
-          {EMAIL_VERIFICATION_PENDING_MESSAGE}
-        </p>
+        <LoadingIndicator
+          label={EMAIL_VERIFICATION_PENDING_MESSAGE}
+          variant={loadingIndicatorVariants.large}
+        />
       </>
     );
   };

@@ -13,6 +13,7 @@ import {
 } from '../../config/password_recovery';
 import { routes } from '../../config/routes';
 import { useRequestPasswordReset } from '../../query/password_reset_hooks';
+import LoadingIndicator from '../loading/loading_indicator';
 import PasswordRecoveryLayout from './password_recovery_layout';
 
 const ForgotPasswordPage = () => {
@@ -88,9 +89,7 @@ const ForgotPasswordPage = () => {
           )}
 
           {requestPasswordReset.isPending && (
-            <p aria-live="polite" role="status">
-              {FORGOT_PASSWORD_PENDING_MESSAGE}
-            </p>
+            <LoadingIndicator label={FORGOT_PASSWORD_PENDING_MESSAGE} />
           )}
 
           <button disabled={submitDisabled} type="submit">

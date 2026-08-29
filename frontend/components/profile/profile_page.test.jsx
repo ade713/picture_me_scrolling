@@ -503,6 +503,10 @@ describe('ProfilePage', () => {
     renderProfileRoute();
 
     expect(screen.getByRole('status')).toHaveTextContent('Loading profile…');
+    expect(screen.getByRole('status')).toHaveClass(
+      'loading-indicator--large'
+    );
+    expect(screen.getByRole('status').closest('.profile-state')).toBeNull();
     expect(screen.queryByRole('heading')).not.toBeInTheDocument();
   });
 

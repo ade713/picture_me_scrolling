@@ -11,6 +11,9 @@ import { useCurrentUser } from '../../query/session_hooks';
 import { useFollowUser, useUnfollowUser, useUser } from '../../query/user_hooks';
 import { useScrollRestoration } from '../../util/scroll_restoration';
 import AccountMenu from '../dashboard/account_menu';
+import LoadingIndicator, {
+  loadingIndicatorVariants
+} from '../loading/loading_indicator';
 import ProfileFollowers from './profile_followers';
 import ProfileFollowing from './profile_following';
 import ProfileHeader from './profile_header';
@@ -31,7 +34,12 @@ const ProfilePage = () => {
 
   const renderProfileState = () => {
     if (profileQuery.isPending) {
-      return <p className="profile-state" role="status">{profileMessages.loading}</p>;
+      return (
+        <LoadingIndicator
+          label={profileMessages.loading}
+          variant={loadingIndicatorVariants.large}
+        />
+      );
     }
 
     if (profileQuery.isError) {
