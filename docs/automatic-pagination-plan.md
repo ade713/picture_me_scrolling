@@ -1,7 +1,9 @@
 # Automatic Pagination Plan
 
-Status: complete. Parts 1–3 were merged in PRs #175–#177, and shared
-dashboard/profile scroll restoration was completed in PR #178.
+Status: complete. Parts 1–3 were merged in PRs #175–#177, shared
+dashboard/profile scroll restoration was completed in PRs #178 and #181, and
+shared loading-indicator extraction and adoption were completed in PRs #179
+and #180.
 
 ## Implementation Progress
 
@@ -20,14 +22,17 @@ pages automatically and all paginated collections retain their rendered
 content and expose `Retry loading` after a next-page failure. PR #178
 generalized scroll restoration across the dashboard and profile feeds. The
 fallback is keyed by React Router history entries and avoids moving heading
-focus while restoring a previous viewport position.
+focus while restoring a previous viewport position. PR #181 fixed the
+remaining navigation regressions so dashboard history entries and the latest
+profile-view positions restore consistently.
 
 Focused frontend coverage, the complete frontend suite, and the production
 Webpack build pass. Live smoke coverage confirmed automatic loading for the
 dashboard, a filtered dashboard feed, Followers, and Following at wide and
-narrow viewport sizes without console errors or horizontal overflow. A final
-live Back/Forward check remains useful after the scroll-restoration fallback;
-its regression behavior is covered by component tests.
+narrow viewport sizes without console errors or horizontal overflow. Live
+navigation checks and regression coverage confirm Back/Forward restoration
+with cached pages without overriding the restored position through heading
+focus.
 
 ## Goal
 
