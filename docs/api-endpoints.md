@@ -114,7 +114,9 @@ with `Password reset link has expired`. Password validation errors also return
 - `POST /api/posts` - create a post, optionally including up to five tag names
   using repeated `post[tags][]` fields for multipart requests or a `tags` array
   in JSON requests
-- `GET /api/posts/:id` - return one post
+- `GET /api/posts/:id` - return one post for an authenticated user, including
+  author/media/tag and viewer like/follow details; following its author is not
+  required. Unknown posts return `404` with `["Post not found"]`.
 - `PATCH /api/posts/:id` - update an owned post and optionally replace its tags
 - `PUT /api/posts/:id` - update an owned post and optionally replace its tags
 - `DELETE /api/posts/:id`
