@@ -13,6 +13,8 @@
 #
 
 class Post < ApplicationRecord
+  NOT_FOUND_ERROR = 'Post not found'.freeze
+
   TYPES = {
     audio: 'audio',
     link: 'link',

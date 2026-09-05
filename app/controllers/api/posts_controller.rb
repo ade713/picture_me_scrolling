@@ -18,6 +18,7 @@ class Api::PostsController < ApplicationController
 
   def show
     @post = Post.find_by(id: params[:id])
+    render json: [Post::NOT_FOUND_ERROR], status: :not_found unless @post
   end
 
   def update

@@ -46,6 +46,39 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_equal ['You must be logged in'], response_json
   end
 
+  test 'show requires login' do
+    delete api_session_url
+    get api_post_url(@viewer_post)
+
+    assert_response :unauthorized
+  end
+
+  test 'show returns an unfollowed authors post with rendering details' do
+    @unrelated_post.tags << tags(:photography)
+    Like.create!(user: @viewer, post: @unrelated_post)
+
+    get api_post_url(@unrelated_post)
+
+    assert_response :success
+    assert_equal @unrelated_post.id, response_json['id']
+    assert_equal @unrelated_post.title, response_json['title']
+    assert_equal @unrelated_post.body, response_json['body']
+    assert_equal @unrelated_author.id, response_json['author_id']
+    assert_equal @unrelated_author.username, response_json['author']
+    assert response_json['author_avatar'].present?
+    assert_equal ['photography'], response_json['tags']
+    assert_equal false, response_json['followed']
+    assert_equal true, response_json['liked']
+    assert_equal 1, response_json['likes']
+  end
+
+  test 'show returns JSON not found for an unknown post' do
+    get api_post_url(id: Post.maximum(:id) + 1)
+
+    assert_response :not_found
+    assert_equal ['Post not found'], response_json
+  end
+
   test 'index returns current user and followed user posts' do
     @viewer_post.tags << tags(:photography)
     Like.create!(
