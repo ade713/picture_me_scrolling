@@ -1,6 +1,21 @@
 # Dedicated Post Page Plan
 
-Status: planned; implementation has not started.
+Status: phase 1-1 implemented; focused tests passed. Page implementation has
+not started.
+
+## Implementation Progress
+
+Phase 1-1 adds `usePost` using the existing detail endpoint and shared API client.
+Detail query keys normalize IDs so route strings and numeric mutation IDs share
+one cache. Missing IDs disable requests; API errors remain available to page
+consumers. The existing authenticated show response supports unfollowed authors;
+missing posts now return JSON 404 instead of attempting to render a nil post.
+Focused hook/controller tests cover requests, cache isolation, and errors.
+
+Verification: 11 post-hook tests and 29 post-controller tests (169 assertions)
+passed. The full frontend suite did not complete locally: the default run
+reported failures in form/tag tests, and a two-worker retry stalled.
+Both runs were stopped; full-suite verification remains outstanding.
 
 ## Goal and Sequence
 
@@ -47,8 +62,9 @@ dashboard-only assumptions.
 
 ## Delivery Structure
 
-All parts below are planned. Keep PRs focused and use logical review checkpoints
-and commits. Split a part before implementation if it becomes unexpectedly large.
+Phase 1-1 is implemented; remaining parts are planned. Keep PRs focused and use
+logical review checkpoints and commits. Split a part before implementation if
+it becomes unexpectedly large.
 
 | PR | Scope |
 | --- | --- |

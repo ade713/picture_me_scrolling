@@ -2,7 +2,7 @@ export const queryKeys = {
   currentUser: ['currentUser'],
   posts: ['posts'],
   postsFeed: tag => tag ? [...queryKeys.posts, { tag }] : queryKeys.posts,
-  post: id => ['posts', id],
+  post: id => [...queryKeys.posts, 'detail', String(id)],
   userPosts: (id, tag) => [
     ...queryKeys.posts,
     'user',

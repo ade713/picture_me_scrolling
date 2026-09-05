@@ -2,11 +2,18 @@ import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { get, patch, post } from '../util/api_client';
-import { useLikePost, usePosts, useUpdatePost, useUserPosts } from './post_hooks';
+import { ApiError, get, patch, post } from '../util/api_client';
+import {
+  useLikePost,
+  usePost,
+  usePosts,
+  useUpdatePost,
+  useUserPosts
+} from './post_hooks';
 import { queryKeys } from './query_keys';
 
-vi.mock('../util/api_client', () => ({
+vi.mock('../util/api_client', async importOriginal => ({
+  ...await importOriginal(),
   destroy: vi.fn(),
   get: vi.fn(),
   patch: vi.fn(),
@@ -48,6 +55,46 @@ describe('post hooks', () => {
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
     expect(get).toHaveBeenCalledWith('/api/posts?page=1&per_page=10');
+  });
+
+  it('requests a single post and keeps different post caches separate', async () => {
+    get.mockResolvedValueOnce({ id: 10, title: 'First post' })
+      .mockResolvedValueOnce({ id: 20, title: 'Second post' });
+
+    const { result, rerender } = renderHook(({ id }) => usePost(id), {
+      initialProps: { id: '10' },
+      wrapper
+    });
+
+    await waitFor(() => expect(result.current.data?.id).toBe(10));
+    expect(get).toHaveBeenNthCalledWith(1, '/api/posts/10');
+    expect(queryClient.getQueryData(queryKeys.post(10)))
+      .toEqual(result.current.data);
+
+    rerender({ id: '20' });
+
+    await waitFor(() => expect(result.current.data?.id).toBe(20));
+    expect(get).toHaveBeenNthCalledWith(2, '/api/posts/20');
+    expect(queryClient.getQueryData(queryKeys.post(10)).title).toBe('First post');
+    expect(queryClient.getQueryData(queryKeys.posts)).toBeUndefined();
+  });
+
+  it('does not request a post without an ID', () => {
+    const { result } = renderHook(() => usePost(), { wrapper });
+
+    expect(result.current.fetchStatus).toBe('idle');
+    expect(get).not.toHaveBeenCalled();
+  });
+
+  it.each([401, 404, 500])('preserves API errors with status %s', async status => {
+    const error = new ApiError('Request failed', { status });
+    get.mockRejectedValue(error);
+
+    const { result } = renderHook(() => usePost('10'), { wrapper });
+
+    await waitFor(() => expect(result.current.isError).toBe(true));
+    expect(result.current.error).toBe(error);
+    expect(result.current.data).toBeUndefined();
   });
 
   it('uses separate paginated caches when the active tag changes', async () => {
