@@ -62,8 +62,12 @@ NB: All feature MVPs will have the following:
 * [User Profile Page Plan][user-profile-plan]
 * [User Profile Page Closeout][user-profile-closeout]
 * [Automatic Pagination Plan][automatic-pagination-plan]
+* [Dedicated Post Page Plan][dedicated-post-page-plan]
+* [Comments Plan][comments-plan]
 
 [api-endpoints]: ./api-endpoints.md
+[dedicated-post-page-plan]: ./dedicated-post-page-plan.md
+[comments-plan]: ./comments-plan.md
 [automatic-pagination-plan]: ./automatic-pagination-plan.md
 [backend-production-readiness]: ./backend-production-readiness.md
 [behavior-smoke-checks]: ./behavior-smoke-checks.md
