@@ -1,4 +1,9 @@
-import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient
+} from '@tanstack/react-query';
 
 import { apiEndpoints } from '../config/api_endpoints';
 import { destroy, get, patch, post } from '../util/api_client';
@@ -109,6 +114,14 @@ const removePostFromCache = (feed, deletedPost) => {
     })
   };
 };
+
+export const usePost = id => (
+  useQuery({
+    enabled: Boolean(id),
+    queryKey: queryKeys.post(id),
+    queryFn: () => get(apiEndpoints.posts.detail(id))
+  })
+);
 
 export const usePosts = tag => (
   useInfiniteQuery(infinitePostsOptions({
