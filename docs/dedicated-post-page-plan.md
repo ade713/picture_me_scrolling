@@ -1,6 +1,7 @@
 # Dedicated Post Page Plan
 
-Status: implementation and phase 1-4 automated closeout complete; closeout PR pending.
+Status: implementation and phase 1-4 automated closeout complete; closeout PR #185
+merged on 2026-09-08. Live coverage limitations are recorded below.
 
 ## Implementation Progress
 

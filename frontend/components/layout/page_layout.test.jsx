@@ -47,6 +47,7 @@ describe('PageLayout', () => {
     expect(backLink).toHaveAttribute('href', '/users/2?tag=sunset');
     await user.click(backLink);
     expect(onBackClick).toHaveBeenCalledTimes(1);
-    expect(screen.getByRole('main').parentElement).toHaveClass('page-layout', 'post-page');
+    expect(screen.getByRole('main').parentElement)
+      .toHaveClass('page-layout', 'post-page');
   });
 });
