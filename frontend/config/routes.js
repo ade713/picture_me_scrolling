@@ -3,6 +3,8 @@ export const routes = Object.freeze({
   dashboardTag: tag => `/dashboard?tag=${encodeURIComponent(tag)}`,
   forgotPassword: '/forgot-password',
   home: '/',
+  post: '/posts/:postId',
+  postDetail: id => `/posts/${id}`,
   profile: '/users/:id',
   resetPassword: '/reset-password/:token',
   settings: '/settings',
