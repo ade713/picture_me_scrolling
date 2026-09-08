@@ -1,0 +1,76 @@
+.post-page {
+  min-height: 100vh;
+  color: black;
+  background-color: white;
+  font-family: 'Muli', sans-serif;
+}
+
+.post-page-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 52px;
+  padding-left: 16px;
+  color: white;
+  background-color: black;
+}
+
+.post-page-brand {
+  border-radius: 3px;
+  font-family: 'Mogra', cursive;
+  font-size: 25px;
+  line-height: 1;
+}
+
+.post-page-brand:hover {
+  color: #DE0F01;
+}
+
+.post-page-main {
+  box-sizing: border-box;
+  width: min(100%, 1000px);
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.post-page-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-bottom: 1px solid currentColor;
+  font-weight: 700;
+}
+
+.post-page-back-link:hover {
+  color: #CE0063;
+}
+
+.post-page-brand:focus-visible,
+.post-page-back-link:focus-visible {
+  outline: 3px solid #CE0063;
+  outline-offset: 3px;
+}
+
+.post-page-content {
+  width: 100%;
+  max-width: 621px;
+  margin: 28px auto 0;
+}
+
+.post-page-state {
+  margin-top: 28px;
+  padding: 48px 24px;
+  text-align: center;
+}
+
+.post-page-state h1 {
+  font-family: 'Yanone Kaffeesatz', sans-serif;
+  font-size: 38px;
+  line-height: 1.1;
+}
+
+@include mobile {
+  .post-page-main {
+    padding: 28px 12px;
+  }
+}
