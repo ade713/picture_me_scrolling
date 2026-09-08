@@ -304,4 +304,33 @@ describe('post hooks', () => {
       });
     });
   });
+
+  it('preserves detail and feed caches when deletion fails', async () => {
+    const existingPost = { id: 10, title: 'Still here' };
+    const feed = {
+      pageParams: [1],
+      pages: [{
+        posts: { 10: existingPost }, post_ids: [10],
+        pagination: { total_count: 1 }
+      }]
+    };
+    const collectionKeys = [queryKeys.posts, queryKeys.userPosts(42)];
+    collectionKeys.forEach(key => queryClient.setQueryData(key, feed));
+    queryClient.setQueryData(queryKeys.post(10), existingPost);
+    const error = new ApiError('Unable to delete post', { status: 500 });
+    destroy.mockRejectedValue(error);
+    const onSuccess = vi.fn();
+    const { result } = renderHook(() => useDeletePost(), { wrapper });
+
+    await act(async () => {
+      await expect(result.current.mutateAsync(existingPost, { onSuccess }))
+        .rejects.toBe(error);
+    });
+
+    expect(onSuccess).not.toHaveBeenCalled();
+    expect(queryClient.getQueryData(queryKeys.post(10))).toEqual(existingPost);
+    collectionKeys.forEach(key => {
+      expect(queryClient.getQueryData(key)).toEqual(feed);
+    });
+  });
 });

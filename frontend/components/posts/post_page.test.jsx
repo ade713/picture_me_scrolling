@@ -147,12 +147,15 @@ describe('PostPage', () => {
     scrollY.mockRestore();
   });
 
-  it('returns to the originating feed after successful deletion', async () => {
+  it.each([
+    ['/dashboard?tag=sunset', routes.dashboard],
+    ['/users/2?tag=sunset', routes.profile]
+  ])('returns to %s after successful deletion', async (origin, route) => {
     const user = userEvent.setup();
     render(
-      <MemoryRouter initialEntries={['/dashboard?tag=sunset']}>
+      <MemoryRouter initialEntries={[origin]}>
         <Routes>
-          <Route path={routes.dashboard} element={
+          <Route path={route} element={
             <PostDetailLink postId={42}>View post</PostDetailLink>
           } />
           <Route path={routes.post} element={<PostPage />} />
