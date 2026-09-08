@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
 import { postTypes } from '../../config/post_types';
+import { postPageMessages } from '../../config/post_page';
+import PostDetailLink from './post_detail_link';
 import { useCurrentUser } from '../../query/session_hooks';
 import { useDeletePost,
          useLikePost,
@@ -28,7 +30,7 @@ const POST_BODY_COMPONENTS = {
   [postTypes.video]: VideoPost
 };
 
-const FeedItem = ({ post, priorityMedia = false }) => {
+const FeedItem = ({ post, priorityMedia = false, onDeleted, showDetailLink = true }) => {
   const currentUser = useCurrentUser();
   const deletePost = useDeletePost();
   const followUser = useFollowUser();
@@ -42,7 +44,7 @@ const FeedItem = ({ post, priorityMedia = false }) => {
   const closeDeleteConfirmation = () => setDeleteConfirmationPost(null);
 
   const confirmDeletePost = () => {
-    deletePost.mutate(deleteConfirmationPost);
+    deletePost.mutate(deleteConfirmationPost, { onSuccess: onDeleted });
     closeDeleteConfirmation();
   };
 
@@ -77,6 +79,11 @@ const FeedItem = ({ post, priorityMedia = false }) => {
         post={ post }
         priorityMedia={ priorityMedia }
       />
+      {showDetailLink && (
+        <div className="post-detail-navigation">
+          <PostDetailLink postId={post.id}>{postPageMessages.viewPost}</PostDetailLink>
+        </div>
+      )}
       { editingPost && (
         <EditPostForm
           isOpen={ Boolean(editingPost) }

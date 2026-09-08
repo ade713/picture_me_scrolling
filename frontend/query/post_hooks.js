@@ -181,9 +181,13 @@ export const useDeletePost = () => {
   return useMutation({
     mutationFn: deletedPost => destroy(apiEndpoints.posts.detail(deletedPost.id)),
     onSuccess: deletedPost => {
-      queryClient.setQueryData(queryKeys.posts, posts => (
+      queryClient.setQueriesData({ queryKey: queryKeys.posts }, posts => (
         removePostFromCache(posts, deletedPost)
       ));
+      queryClient.removeQueries({
+        queryKey: queryKeys.post(deletedPost.id),
+        exact: true
+      });
       queryClient.invalidateQueries({ queryKey: queryKeys.posts });
     }
   });
@@ -197,9 +201,7 @@ export const useUpdatePost = () => {
       patch(apiEndpoints.posts.detail(id), postRequestBody(updatedPost))
     ),
     onSuccess: updatedPost => {
-      queryClient.setQueryData(queryKeys.posts, posts => (
-        updatePostInCache(posts, updatedPost)
-      ));
+      updatePostCollections(queryClient, updatedPost);
       queryClient.setQueryData(queryKeys.post(updatedPost.id), updatedPost);
       queryClient.invalidateQueries({ queryKey: queryKeys.posts });
     }
