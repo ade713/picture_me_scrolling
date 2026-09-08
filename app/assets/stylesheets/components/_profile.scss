@@ -1,57 +1,5 @@
-.profile-page {
-  box-sizing: border-box;
-  min-height: 100vh;
-  color: black;
-  background-color: white;
-  font-family: 'Muli', sans-serif;
-}
-
-.profile-nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-  min-height: 52px;
-  padding-left: 16px;
-  color: white;
-  background-color: black;
+.profile-page .page-layout-nav {
   border-bottom: 1px solid black;
-}
-
-.profile-brand {
-  border-radius: 3px;
-  font-family: 'Mogra', cursive;
-  font-size: 25px;
-  line-height: 1;
-}
-
-.profile-brand:hover {
-  color: #DE0F01;
-}
-
-.profile-main {
-  box-sizing: border-box;
-  width: min(100%, 1000px);
-  margin: 0 auto;
-  padding: 40px 20px;
-}
-
-.profile-back-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border-bottom: 1px solid currentColor;
-  font-weight: 700;
-}
-
-.profile-back-link:hover {
-  color: #CE0063;
-}
-
-.profile-brand:focus-visible,
-.profile-back-link:focus-visible {
-  outline: 3px solid #CE0063;
-  outline-offset: 3px;
 }
 
 .profile-state {
@@ -214,10 +162,6 @@
 }
 
 @include mobile {
-  .profile-main {
-    padding: 28px 12px;
-  }
-
   .profile-state,
   .profile-header {
     padding: 36px 16px;
