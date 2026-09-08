@@ -1,9 +1,21 @@
 # Dedicated Post Page Plan
 
-Status: phase 1-1 implemented; focused tests passed. Page implementation has
-not started.
+Status: phases 1-1 and 1-2 implemented; phase 1-2 automated checks passed.
 
 ## Implementation Progress
+
+Phase 1-2 adds the protected `#/posts/:postId` page with the existing FeedItem,
+account menu, dashboard links, shared loading dots, and not-found/error states.
+The page uses its own responsive stylesheet and retains semantic list markup for
+FeedItem. Tags use the existing default dashboard tag-filter destination.
+Feed entry links, deletion navigation, and cross-view action/scroll acceptance
+checks remain in phase 1-3. No comments UI is included.
+
+Phase 1-2 verification: all 224 frontend tests passed across 32 files with two
+workers, including six new page tests. Production Webpack build, Rails stylesheet
+compilation, and diff whitespace checks passed. Existing bundle-size and
+Rails/Sass deprecation warnings remain. Live browser/keyboard checks have not
+been performed for this page yet.
 
 Phase 1-1 adds `usePost` using the existing detail endpoint and shared API client.
 Detail query keys normalize IDs so route strings and numeric mutation IDs share
@@ -15,7 +27,8 @@ Focused hook/controller tests cover requests, cache isolation, and errors.
 Verification: 11 post-hook tests and 29 post-controller tests (169 assertions)
 passed. The full frontend suite did not complete locally: the default run
 reported failures in form/tag tests, and a two-worker retry stalled.
-Both runs were stopped; full-suite verification remains outstanding.
+Both runs were stopped. The later phase 1-2 full-suite run passed as recorded
+above; the earlier stalls were not diagnosed by this work.
 
 ## Goal and Sequence
 
@@ -62,9 +75,9 @@ dashboard-only assumptions.
 
 ## Delivery Structure
 
-Phase 1-1 is implemented; remaining parts are planned. Keep PRs focused and use
-logical review checkpoints and commits. Split a part before implementation if
-it becomes unexpectedly large.
+Phases 1-1 and 1-2 are implemented; remaining parts are planned. Keep PRs focused
+and use logical review checkpoints and commits. Split a part before implementation
+if it becomes unexpectedly large.
 
 | PR | Scope |
 | --- | --- |
@@ -84,7 +97,23 @@ it becomes unexpectedly large.
 - Keep current implementation docs accurate as work lands; capture relevant UI
   screenshots in a temporary directory for selection into PR UI sections.
 
+## Technical-Debt Follow-up
+
+Consider extracting a shared page layout for the post and profile pages after
+this focused PR. Both duplicate the brand/account-menu header, dashboard back
+link, and associated styles. Consolidate those shared elements while preserving
+page-specific content, layout, and navigation behavior. This refactor is deferred,
+not part of phase 1-2.
+
+After this feature, scan the app for inline numeric HTTP status codes and replace
+them with descriptive named constants (for example, `HTTP_NOT_FOUND`). Review
+existing local status constants for shared ownership where genuinely reused.
+Keep Rails symbolic statuses such as `:not_found`; they already express intent.
+Behavior tests may retain literal expected codes to independently verify the
+API contract. This app-wide cleanup is outside the current page PR.
+
 ## Next Feature
+
 
 After this page ships, implement the [Comments Plan](./comments-plan.md). Its feed
 previews will link here via "View all comments". Comment likes and actions within
