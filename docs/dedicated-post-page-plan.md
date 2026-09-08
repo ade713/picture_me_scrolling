@@ -160,12 +160,14 @@ PageLayout for the brand/account-menu header, back link, main container, and
 shared responsive styles. Post-specific history handling stays in PostPage;
 profile-specific content and the existing header border remain unchanged.
 
-After this feature, scan the app for inline numeric HTTP status codes and replace
-them with descriptive named constants (for example, `HTTP_NOT_FOUND`). Review
-existing local status constants for shared ownership where genuinely reused.
-Keep Rails symbolic statuses such as `:not_found`; they already express intent.
-Behavior tests may retain literal expected codes to independently verify the
-API contract. This app-wide cleanup is outside the current page PR.
+HTTP status-code cleanup is implemented in `refactor-http-status-code-constants`
+(not yet merged). The application-code scan found the profile page's inline 404
+and the post page's local `HTTP_NOT_FOUND`. Both now import `HTTP_NOT_FOUND` from
+`frontend/config/http_status.js`. `HTTP_NO_CONTENT` remains local to the API
+client because it already has a descriptive name and only one consumer.
+Rails symbolic statuses such as `:not_found` remain unchanged. Behavior tests
+retain literal expected codes to independently verify the API contract. No
+unused status constants were added, and non-HTTP numbers were left out of scope.
 
 ## Next Feature
 

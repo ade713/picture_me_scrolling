@@ -2,6 +2,7 @@ import React, { useLayoutEffect } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { BACK_TO_DASHBOARD_LABEL } from '../../config/app';
+import { HTTP_NOT_FOUND } from '../../config/http_status';
 import { postPageMessages } from '../../config/post_page';
 import { routes } from '../../config/routes';
 import { usePost } from '../../query/post_hooks';
@@ -11,8 +12,6 @@ import FeedItem from '../feed/feed_item';
 import LoadingIndicator, {
   loadingIndicatorVariants
 } from '../loading/loading_indicator';
-
-const HTTP_NOT_FOUND = 404;
 
 const PostPage = () => {
   const { postId } = useParams();
