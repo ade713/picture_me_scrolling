@@ -175,6 +175,29 @@ Use the seeded guest account:
   - Expected: the deleted post disappears from the feed without a manual
     refresh.
 
+## Dedicated Post Page Smoke
+
+- Open text, quote, photo, audio, and video post titles or "View post" from both
+  dashboard and profile feeds. Link-post titles should retain their external URL.
+- Open a detail URL directly and reload it. Confirm the shared loading dots,
+  post rendering, and dashboard fallback; unknown IDs show "Post not found".
+- Exercise a request failure: show "Unable to load post." without server details.
+- Tab through navigation and post controls; activate links with Enter and buttons
+  with Enter/Space. Check visible focus, dialog focus trapping, Escape, and focus
+  restoration. Check narrow-screen layout without horizontal overflow.
+- Open a post from a scrolled/filtered feed, return using Back to feed or browser
+  Back, then Forward. Confirm the filter and previous feed position are restored.
+- Like/unlike another author's post; verify detail and feed agree without reload.
+- Edit a disposable owned post; confirm detail/dashboard/profile updates.
+- Delete a disposable post from dashboard-origin, profile-origin, and direct-entry
+  detail routes. Confirm successful return to the origin or dashboard fallback.
+  A failed delete must not navigate or remove cached post data.
+- Confirm non-owners lack edit/delete controls and signed-out access redirects.
+
+Use only approved disposable posts for destructive checks. Prior completed live
+checks and remaining limitations are recorded in the dedicated post-page plan;
+this checklist is not itself evidence that a check has been run.
+
 ## Tag Filter Smoke
 
 - Select a displayed tag.

@@ -1,8 +1,21 @@
 # Dedicated Post Page Plan
 
-Status: phases 1-1 through 1-3 implemented; automated checks passed.
+Status: implementation and phase 1-4 automated closeout complete; closeout PR pending.
 
 ## Implementation Progress
+
+Phase 1-4 consolidates the completed phase 1-3 browser/keyboard evidence rather
+than repeating it. Regression tests now cover profile-origin deletion navigation
+and failed-delete cache preservation. The shared component hierarchy and smoke
+checklists document the delivered page. No additional production behavior or
+visual changes are introduced in this phase.
+
+Phase 1-4 verification: all 230 frontend tests passed across 32 files with two
+workers; `git diff --check` passed. Prior production-build, stylesheet, and live
+browser results remain recorded below. No fresh live pass was run during this
+documentation/test-only phase. Live network-failure and profile-origin deletion
+scenarios remain unexercised; page errors and profile deletion navigation have
+automated coverage. Comments implementation has not started.
 
 Phase 1-3 adds title links and a consistent "View post" link to shared feed
 rendering. Link posts are the exception: their title retains the external URL,
@@ -56,8 +69,8 @@ phase 1-3. No comments UI is included.
 Phase 1-2 verification: all 224 frontend tests passed across 32 files with two
 workers, including six new page tests. Production Webpack build, Rails stylesheet
 compilation, and diff whitespace checks passed. Existing bundle-size and
-Rails/Sass deprecation warnings remain. Live browser/keyboard checks have not
-been performed for this page yet.
+Rails/Sass deprecation warnings remain. Subsequent live browser/keyboard results
+are recorded under phase 1-3 above.
 
 Phase 1-1 adds `usePost` using the existing detail endpoint and shared API client.
 Detail query keys normalize IDs so route strings and numeric mutation IDs share
@@ -103,23 +116,20 @@ will later render below the existing post, without replacing the page structure.
 
 ## Architecture and Implementation Checks
 
-The API already registers a post `show` route. Confirm its response and access
-rules meet the page's requirements before adding backend changes. Preserve the
-existing authenticated visibility policy rather than requiring a follow.
+The post `show` route supplies the existing post rendering contract and JSON 404
+for unknown IDs. Authenticated viewers do not need to follow the author.
 
 TanStack Query owns the single-post request, cache, loading, and error state.
 Reuse existing API, route, query-key, and label conventions. Like/edit/delete
 mutations must keep detail and existing feed caches consistent. Avoid copying
 post components or introducing unrelated abstractions.
 
-During implementation, confirm detail-page tag destinations, direct-entry back
-navigation, and post-response errors against existing route conventions. Keep
-these decisions explicit in the relevant PR rather than silently inheriting
-dashboard-only assumptions.
+Detail tags lead to dashboard tag filters. Direct entry provides a dashboard
+fallback, while feed entry retains its origin and filter in navigation state.
 
 ## Delivery Structure
 
-Phases 1-1 through 1-3 are implemented; phase 1-4 remains. Keep PRs focused
+Phases 1-1 through 1-4 are implemented. Keep PRs focused
 and use logical review checkpoints and commits. Split a part before implementation
 if it becomes unexpectedly large.
 
@@ -157,7 +167,6 @@ Behavior tests may retain literal expected codes to independently verify the
 API contract. This app-wide cleanup is outside the current page PR.
 
 ## Next Feature
-
 
 After this page ships, implement the [Comments Plan](./comments-plan.md). Its feed
 previews will link here via "View all comments". Comment likes and actions within
