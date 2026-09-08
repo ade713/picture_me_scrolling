@@ -2,9 +2,10 @@ import React from 'react';
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
-import { ApiError, get, patch, post } from '../util/api_client';
+import { ApiError, destroy, get, patch, post } from '../util/api_client';
 import {
   useLikePost,
+  useDeletePost,
   usePost,
   usePosts,
   useUpdatePost,
@@ -251,6 +252,7 @@ describe('post hooks', () => {
       }]
     };
     queryClient.setQueryData(queryKeys.posts, feed);
+    queryClient.setQueryData(queryKeys.userPosts(42, 'photography'), feed);
     queryClient.setQueryData(queryKeys.post(originalPost.id), originalPost);
     patch.mockResolvedValue(updatedPost);
 
@@ -271,5 +273,35 @@ describe('post hooks', () => {
     ).toEqual(updatedPost);
     expect(queryClient.getQueryData(queryKeys.post(originalPost.id)))
       .toEqual(updatedPost);
+    expect(queryClient.getQueryData(queryKeys.userPosts(42, 'photography'))
+      .pages[0].posts[originalPost.id]).toEqual(updatedPost);
+  });
+
+  it('removes a deleted post from detail and all cached feed variants', async () => {
+    const deletedPost = { id: 10 };
+    const collectionKeys = [
+      queryKeys.posts, queryKeys.postsFeed('sunset'), queryKeys.userPosts(42)
+    ];
+    const feed = {
+      pages: [{
+        posts: { 10: deletedPost }, post_ids: [10],
+        pagination: { total_count: 1 }
+      }],
+      pageParams: [1]
+    };
+    collectionKeys.forEach(key => queryClient.setQueryData(key, feed));
+    queryClient.setQueryData(queryKeys.post('10'), deletedPost);
+    destroy.mockResolvedValue(deletedPost);
+    const { result } = renderHook(() => useDeletePost(), { wrapper });
+
+    await act(async () => result.current.mutateAsync(deletedPost));
+
+    expect(destroy).toHaveBeenCalledWith('/api/posts/10');
+    expect(queryClient.getQueryData(queryKeys.post('10'))).toBeUndefined();
+    collectionKeys.forEach(key => {
+      expect(queryClient.getQueryData(key).pages[0]).toEqual({
+        posts: {}, post_ids: [], pagination: { total_count: 0 }
+      });
+    });
   });
 });

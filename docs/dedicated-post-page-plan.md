@@ -1,15 +1,57 @@
 # Dedicated Post Page Plan
 
-Status: phases 1-1 and 1-2 implemented; phase 1-2 automated checks passed.
+Status: phases 1-1 through 1-3 implemented; automated checks passed.
 
 ## Implementation Progress
+
+Phase 1-3 adds title links and a consistent "View post" link to shared feed
+rendering. Link posts are the exception: their title retains the external URL,
+and only "View post" opens the dedicated page. There is no additional "Open link"
+action. Detail pages omit self-navigation links.
+Entry links preserve the originating route and tag filter in navigation state;
+Back to feed uses history, and direct entry falls back to the dashboard.
+Successful deletion replaces the detail route with the originating feed (or
+dashboard fallback), never navigating before deletion succeeds. Edit/delete
+updates now cover all cached post collections, with deleted detail cache removal.
+The page resets scroll on fresh entry and participates in shared history scroll
+restoration. The phase 1-3 live smoke results are recorded below.
+
+Phase 1-3 verification: all 228 frontend tests passed across 32 files. Production
+Webpack build, Rails stylesheet compilation, and diff checks passed. Existing
+bundle-size and Rails/Sass deprecation warnings remain.
+
+Live in-app browser smoke pass (2026-09-08):
+
+- Keyboard title/View post activation worked; link-post titles retained external
+  destinations and detail pages omitted self-navigation links.
+- Detail tab order reached brand, account menu, Back, author, relationship,
+  tags, and like controls. Space toggled a like; its changed state appeared on
+  the dashboard. The test like was reverted.
+- Dashboard return restored its internal feed scroll to 724px. Filtered profile
+  return preserved `?tag=demo_feed` and restored window scroll to 1295px.
+  Browser Forward reopened the detail page.
+- Edit Escape restored focus to Edit. Delete confirmation initially focused No,
+  trapped Tab between No/Yes, and Escape restored focus to Delete.
+- An approved disposable local post was created, edited, and deleted. Its edit
+  appeared on detail/dashboard; successful deletion returned to the dashboard
+  and removed its feed entry. Direct navigation to its deleted URL showed
+  "Post not found" with a working dashboard fallback. Existing posts were not
+  edited or deleted.
+- Desktop and 390px mobile link-post layouts were checked; mobile had no
+  horizontal overflow. Temporary viewport override was reset.
+- Screenshots were saved outside the repo in
+  `/private/tmp/picmes-post-smoke-GbKkbq` for PR selection.
+
+These were browser-driven keyboard events, not a separate physical-keyboard
+user check. Network-failure UI and deletion originating from a profile were not
+exercised live in this pass; automated coverage remains separate.
 
 Phase 1-2 adds the protected `#/posts/:postId` page with the existing FeedItem,
 account menu, dashboard links, shared loading dots, and not-found/error states.
 The page uses its own responsive stylesheet and retains semantic list markup for
 FeedItem. Tags use the existing default dashboard tag-filter destination.
-Feed entry links, deletion navigation, and cross-view action/scroll acceptance
-checks remain in phase 1-3. No comments UI is included.
+Feed entry links and action/navigation integration were subsequently added in
+phase 1-3. No comments UI is included.
 
 Phase 1-2 verification: all 224 frontend tests passed across 32 files with two
 workers, including six new page tests. Production Webpack build, Rails stylesheet
@@ -43,6 +85,8 @@ an empty comments section or comments infrastructure during this work.
 - Preserve likes, author-profile links, tags, and owner-only edit/delete controls.
 - Add a clickable title wherever a title is displayed and a consistent
   "View post" link on every post in dashboard/profile feeds.
+- Link posts are the exception: their title opens the external URL; only
+  "View post" opens the dedicated page.
 - Both entry points open the same post page. Do not make the entire card clickable
   or interfere with media and existing controls.
 - Provide loading, not-found, and generic error states. Reuse the shared loading
@@ -75,7 +119,7 @@ dashboard-only assumptions.
 
 ## Delivery Structure
 
-Phases 1-1 and 1-2 are implemented; remaining parts are planned. Keep PRs focused
+Phases 1-1 through 1-3 are implemented; phase 1-4 remains. Keep PRs focused
 and use logical review checkpoints and commits. Split a part before implementation
 if it becomes unexpectedly large.
 

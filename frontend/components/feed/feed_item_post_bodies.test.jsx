@@ -109,6 +109,12 @@ describe('FeedItem post bodies', () => {
       expect(screen.getByRole('link', { name: "View Athos's profile" })
         .querySelector('img')).toHaveAttribute('src', '/avatars/athos.png');
       expect(screen.getByText(`Likes: ${basePost.likes}`)).toBeInTheDocument();
+      if (post.post_type !== 'link') {
+        expect(screen.getByRole('link', { name: 'All for one' }))
+          .toHaveAttribute('href', '/posts/10');
+      }
+      expect(screen.getByRole('link', { name: 'View post' }))
+        .toHaveAttribute('href', '/posts/10');
       assertions(container);
     });
   });

@@ -7,6 +7,10 @@ import { routes } from '../../config/routes';
 import { usePost } from '../../query/post_hooks';
 import { useCurrentUser } from '../../query/session_hooks';
 import { ProtectedRoute } from '../../util/route_util';
+import {
+  ScrollRestorationProvider, useScrollRestoration
+} from '../../util/scroll_restoration';
+import PostDetailLink from '../feed/post_detail_link';
 import PostPage from './post_page';
 
 vi.mock('../../query/post_hooks', () => ({ usePost: vi.fn() }));
@@ -16,8 +20,11 @@ vi.mock('../dashboard/account_menu', () => ({
 }));
 // Post rendering/actions have their own tests; verify page composition here.
 vi.mock('../feed/feed_item', () => ({
-  default: ({ post, priorityMedia }) => (
-    <li data-testid="post" data-priority-media={priorityMedia}>{post.title}</li>
+  default: ({ post, priorityMedia, onDeleted }) => (
+    <li data-testid="post" data-priority-media={priorityMedia}>
+      {post.title}
+      <button onClick={onDeleted}>Simulate successful deletion</button>
+    </li>
   )
 }));
 
@@ -40,6 +47,7 @@ const renderPage = () => render(
 
 describe('PostPage', () => {
   beforeEach(() => {
+    vi.spyOn(window, 'scrollTo').mockImplementation(() => {});
     useCurrentUser.mockReturnValue({ data: { id: 1 } });
     usePost.mockReturnValue({
       data: { id: 42, title: 'A single post' },
@@ -48,7 +56,10 @@ describe('PostPage', () => {
     });
   });
 
-  afterEach(() => vi.clearAllMocks());
+  afterEach(() => {
+    vi.clearAllMocks();
+    vi.restoreAllMocks();
+  });
 
   it('loads the route ID and renders one existing post with priority media', () => {
     renderPage();
@@ -101,5 +112,62 @@ describe('PostPage', () => {
 
     expect(screen.getByRole('heading', { name: 'Log in' })).toBeInTheDocument();
     expect(usePost).not.toHaveBeenCalled();
+  });
+
+  it('returns to the originating filtered profile and restores its position', async () => {
+    const user = userEvent.setup();
+    let position = 0;
+    const scrollY = vi.spyOn(window, 'scrollY', 'get')
+      .mockImplementation(() => position);
+    const Feed = () => {
+      useScrollRestoration({ restoreByRoute: true });
+      return <PostDetailLink postId={42}>View post</PostDetailLink>;
+    };
+    render(
+      <MemoryRouter initialEntries={['/users/2?tag=sunset']}>
+        <ScrollRestorationProvider>
+          <Routes>
+            <Route path={routes.profile} element={<Feed />} />
+            <Route path={routes.post} element={<PostPage />} />
+          </Routes>
+        </ScrollRestorationProvider>
+      </MemoryRouter>
+    );
+    position = 640;
+    await user.click(screen.getByRole('link', { name: 'View post' }));
+    expect(window.scrollTo).toHaveBeenLastCalledWith({
+      top: 0, left: 0, behavior: 'auto'
+    });
+    expect(screen.getByRole('link', { name: 'Back to feed' }))
+      .toHaveAttribute('href', '/users/2?tag=sunset');
+    await user.click(screen.getByRole('link', { name: 'Back to feed' }));
+    expect(window.scrollTo).toHaveBeenLastCalledWith({
+      top: 640, left: 0, behavior: 'auto'
+    });
+    scrollY.mockRestore();
+  });
+
+  it('returns to the originating feed after successful deletion', async () => {
+    const user = userEvent.setup();
+    render(
+      <MemoryRouter initialEntries={['/dashboard?tag=sunset']}>
+        <Routes>
+          <Route path={routes.dashboard} element={
+            <PostDetailLink postId={42}>View post</PostDetailLink>
+          } />
+          <Route path={routes.post} element={<PostPage />} />
+        </Routes>
+      </MemoryRouter>
+    );
+    await user.click(screen.getByRole('link', { name: 'View post' }));
+    await user.click(screen.getByRole('button', { name: 'Simulate successful deletion' }));
+    expect(screen.getByRole('link', { name: 'View post' })).toBeInTheDocument();
+  });
+
+  it('falls back to the dashboard after direct-entry deletion', async () => {
+    const user = userEvent.setup();
+    renderPage();
+    await user.click(screen.getByRole('button', { name: 'Simulate successful deletion' }));
+    expect(screen.getByRole('heading', { name: 'Dashboard' })).toBeInTheDocument();
   });
 });

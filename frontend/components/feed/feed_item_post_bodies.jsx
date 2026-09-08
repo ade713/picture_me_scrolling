@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { imageLoadingProps } from '../../util/media_loading_util';
+import PostDetailLink from './post_detail_link';
 
 export const AudioPost = ({ footer, header, post }) => (
   <div className="post-audio">
@@ -11,7 +12,7 @@ export const AudioPost = ({ footer, header, post }) => (
       </audio>
     </div>
     <div className="post-caption">
-      { post.title }
+      <PostDetailLink postId={post.id}>{post.title}</PostDetailLink>
     </div>
     { footer }
   </div>
@@ -26,7 +27,7 @@ export const LinkPost = ({ footer, header, post }) => (
         href={ post.url }
         target="_blank"
         rel="noopener noreferrer">
-        { post.title }
+        {post.title}
       </a>
     </div>
     { footer }
@@ -43,7 +44,7 @@ export const PhotoPost = ({ footer, header, post, priorityMedia = false }) => (
         src={ post.image_url } />
     </div>
     <div className="post-caption">
-      { post.title }
+      <PostDetailLink postId={post.id}>{post.title}</PostDetailLink>
     </div>
     { footer }
   </div>
@@ -54,7 +55,7 @@ export const QuotePost = ({ footer, header, post }) => (
     { header }
     <div className="post-content">
       <div className="quote">
-        { post.title }
+        <PostDetailLink postId={post.id}>{post.title}</PostDetailLink>
       </div>
       <div className="source">
         { post.body }
@@ -69,7 +70,7 @@ export const TextPost = ({ footer, header, post }) => (
     { header }
     <div className="post-content">
       <div className="post-title">
-        { post.title }
+        <PostDetailLink postId={post.id}>{post.title}</PostDetailLink>
       </div>
       <div className="post-body">
         { post.body }
@@ -88,7 +89,7 @@ export const VideoPost = ({ footer, header, post }) => (
       </video>
     </div>
     <div className="post-caption">
-      { post.title }
+      <PostDetailLink postId={post.id}>{post.title}</PostDetailLink>
     </div>
     { footer }
   </div>

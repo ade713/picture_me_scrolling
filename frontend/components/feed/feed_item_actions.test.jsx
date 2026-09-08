@@ -131,7 +131,8 @@ describe('FeedItem actions', () => {
       author_id: currentUser.id
     };
 
-    renderFeedItem(authoredPost);
+    const onDeleted = vi.fn();
+    renderFeedItem(authoredPost, { onDeleted });
 
     await user.click(screen.getByRole('button', { name: deletePostButtonName }));
 
@@ -140,7 +141,10 @@ describe('FeedItem actions', () => {
 
     await user.click(screen.getByRole('button', { name: 'Yes' }));
 
-    expect(deletePost.mutate).toHaveBeenCalledWith(authoredPost);
+    expect(deletePost.mutate).toHaveBeenCalledWith(authoredPost, { onSuccess: onDeleted });
+    expect(onDeleted).not.toHaveBeenCalled();
+    deletePost.mutate.mock.calls[0][1].onSuccess(authoredPost);
+    expect(onDeleted).toHaveBeenCalledWith(authoredPost);
     expect(screen.queryByRole('dialog', { name: 'Delete post?' })).not.toBeInTheDocument();
   });
 
