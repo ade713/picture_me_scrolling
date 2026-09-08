@@ -1,6 +1,7 @@
 # Dedicated Post Page Plan
 
-Status: implementation and phase 1-4 automated closeout complete; closeout PR pending.
+Status: implementation and phase 1-4 automated closeout complete; closeout PR #185
+merged on 2026-09-08. Live coverage limitations are recorded below.
 
 ## Implementation Progress
 
@@ -153,11 +154,11 @@ if it becomes unexpectedly large.
 
 ## Technical-Debt Follow-up
 
-Consider extracting a shared page layout for the post and profile pages after
-this focused PR. Both duplicate the brand/account-menu header, dashboard back
-link, and associated styles. Consolidate those shared elements while preserving
-page-specific content, layout, and navigation behavior. This refactor is deferred,
-not part of phase 1-2.
+Shared page-layout extraction is implemented in the follow-up branch
+`refactor-shared-page-layout` (not yet merged). PostPage and ProfilePage use
+PageLayout for the brand/account-menu header, back link, main container, and
+shared responsive styles. Post-specific history handling stays in PostPage;
+profile-specific content and the existing header border remain unchanged.
 
 After this feature, scan the app for inline numeric HTTP status codes and replace
 them with descriptive named constants (for example, `HTTP_NOT_FOUND`). Review

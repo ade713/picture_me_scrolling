@@ -2,6 +2,11 @@
 
 ## Application Routes
 
+`ProfilePage` and `PostPage` share `PageLayout`, which owns their brand/account-menu
+header, configurable back link, and main content shell. Pages retain ownership
+of queries, content, and navigation behavior; the layout does not inspect routes
+or manage scroll restoration.
+
 - `AuthForm`
   - signup, login, guest login, and forgotten-password entry point
 - `Dashboard`

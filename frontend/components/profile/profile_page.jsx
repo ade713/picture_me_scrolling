@@ -1,16 +1,14 @@
 import React from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
-import { APP_NAME, BACK_TO_DASHBOARD_LABEL } from '../../config/app';
 import {
   profileMessages,
   profileViews
 } from '../../config/user_profile';
-import { routes } from '../../config/routes';
 import { useCurrentUser } from '../../query/session_hooks';
 import { useFollowUser, useUnfollowUser, useUser } from '../../query/user_hooks';
 import { useScrollRestoration } from '../../util/scroll_restoration';
-import AccountMenu from '../dashboard/account_menu';
+import PageLayout from '../layout/page_layout';
 import LoadingIndicator, {
   loadingIndicatorVariants
 } from '../loading/loading_indicator';
@@ -88,21 +86,9 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="profile-page">
-      <header className="profile-nav">
-        <Link className="profile-brand" to={routes.dashboard}>{APP_NAME}</Link>
-        <AccountMenu />
-      </header>
-
-      <main className="profile-main">
-        <Link className="profile-back-link" to={routes.dashboard}>
-          <span aria-hidden="true">←</span>
-          {BACK_TO_DASHBOARD_LABEL}
-        </Link>
-
-        {renderProfileState()}
-      </main>
-    </div>
+    <PageLayout className="profile-page">
+      {renderProfileState()}
+    </PageLayout>
   );
 };
 

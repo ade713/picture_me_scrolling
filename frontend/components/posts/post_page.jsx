@@ -1,12 +1,12 @@
 import React, { useLayoutEffect } from 'react';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
-import { APP_NAME, BACK_TO_DASHBOARD_LABEL } from '../../config/app';
+import { BACK_TO_DASHBOARD_LABEL } from '../../config/app';
 import { postPageMessages } from '../../config/post_page';
 import { routes } from '../../config/routes';
 import { usePost } from '../../query/post_hooks';
 import { useScrollRestoration } from '../../util/scroll_restoration';
-import AccountMenu from '../dashboard/account_menu';
+import PageLayout from '../layout/page_layout';
 import FeedItem from '../feed/feed_item';
 import LoadingIndicator, {
   loadingIndicatorVariants
@@ -80,23 +80,14 @@ const PostPage = () => {
   };
 
   return (
-    <div className="post-page">
-      <header className="post-page-nav">
-        <Link className="post-page-brand" to={routes.dashboard}>{APP_NAME}</Link>
-        <AccountMenu />
-      </header>
-      <main className="post-page-main">
-        <Link
-          className="post-page-back-link"
-          to={returnDestination}
-          onClick={handleBackClick}
-        >
-          <span aria-hidden="true">←</span>
-          {hasFeedOrigin ? postPageMessages.backToFeed : BACK_TO_DASHBOARD_LABEL}
-        </Link>
-        {renderPostState()}
-      </main>
-    </div>
+    <PageLayout
+      className="post-page"
+      backDestination={returnDestination}
+      backLabel={hasFeedOrigin ? postPageMessages.backToFeed : BACK_TO_DASHBOARD_LABEL}
+      onBackClick={handleBackClick}
+    >
+      {renderPostState()}
+    </PageLayout>
   );
 };
 
