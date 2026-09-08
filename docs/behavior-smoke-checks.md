@@ -115,6 +115,19 @@ Post behavior:
 - Delete one of the current user's posts.
   - Expected: the deleted post disappears from the feed without refreshing.
 
+Dedicated post pages:
+
+- Open a post from dashboard/profile feeds using a title or "View post".
+  Link-post titles still open the external resource.
+- Return to a filtered/scrolled feed and use browser Back/Forward.
+  Expected: the originating filter and feed position are preserved.
+- Exercise likes and edits across detail and collection views, and delete only
+  an approved disposable post. Expected: caches agree and navigation occurs only
+  after successful deletion, with a dashboard fallback for direct entry.
+- Check loading dots, missing-post and request-error states, owner permissions,
+  keyboard/dialog focus, and narrow-screen rendering. See the dedicated post-page
+  section in `frontend-smoke-checklist.md` for detailed steps.
+
 Tag behavior:
 
 - Create and edit posts with tags across all six post types.

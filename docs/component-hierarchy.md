@@ -21,6 +21,10 @@
   - `ProfileFollowing`
     - `ProfileRelationshipUsers`
     - `ProfileUserCard`
+- `PostPage`
+  - `AccountMenu`
+  - shared `LoadingIndicator` and page error states
+  - `FeedItem` and post-type bodies, including owner actions
 - `SettingsPage`
   - `AvatarSettingsForm`
   - `EmailSettingsForm`
@@ -45,6 +49,7 @@ Path                       | Component                  | Access
 `/signup`                  | `AuthForm`                 | logged out
 `/dashboard`               | `Dashboard`                | authenticated
 `/users/:id`               | `ProfilePage`              | authenticated
+`/posts/:postId`           | `PostPage`                 | authenticated
 `/settings`                | `SettingsPage`             | authenticated
 `/verify-email/:token`     | `EmailVerificationPage`    | public
 `/forgot-password`         | `ForgotPasswordPage`       | logged out
@@ -52,3 +57,9 @@ Path                       | Component                  | Access
 
 The application uses `HashRouter`, so deployed URLs include `#/` before these
 frontend paths.
+
+Dashboard/profile post titles and shared `PostDetailLink` entry points open the
+dedicated post page. Link-post titles retain their external URL; "View post"
+provides the internal destination. Detail pages reuse post rendering without
+self-navigation links. TanStack Query owns detail and collection data; mutation
+updates keep these caches consistent. Comments are a separate upcoming feature.
