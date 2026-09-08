@@ -1,6 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 
+import { HTTP_NOT_FOUND } from '../../config/http_status';
 import {
   profileMessages,
   profileViews
@@ -41,7 +42,7 @@ const ProfilePage = () => {
     }
 
     if (profileQuery.isError) {
-      const message = profileQuery.error?.status === 404
+      const message = profileQuery.error?.status === HTTP_NOT_FOUND
         ? profileMessages.notFound
         : profileMessages.loadError;
 
