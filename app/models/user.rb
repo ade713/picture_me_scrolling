@@ -77,6 +77,7 @@ class User < ApplicationRecord
     source: :posts
 
   has_one :email_verification_token, dependent: :destroy
+  has_many :comments, inverse_of: :user
   has_one :password_reset_token, dependent: :destroy
 
   def recommended_follow_users(limit: DEFAULT_RECOMMENDED_FOLLOW_LIMIT)

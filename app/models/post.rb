@@ -42,6 +42,7 @@ class Post < ApplicationRecord
     source: :user
 
   has_many :post_tags, dependent: :destroy
+  has_many :comments, inverse_of: :post
   has_many :tags, through: :post_tags
 
   def likers_ids
