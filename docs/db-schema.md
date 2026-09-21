@@ -35,6 +35,26 @@ url         | text      |
 body        | text      | not null
 author_id   | integer   | not null, foreign key, indexed
 
+## comments
+column name | data type | details
+------------|-----------|--------
+id          | bigint    | not null, primary key
+body        | text      | nullable for deleted placeholders
+user_id     | integer   | nullable for anonymous placeholders, foreign key, indexed
+post_id     | integer   | not null, foreign key
+parent_id   | bigint    | nullable self-referencing foreign key; null for top-level comments
+deleted_at  | datetime  | nullable deletion marker
+created_at  | datetime  | not null
+updated_at  | datetime  | not null
+
+Multiple comments by the same user on a post are allowed. Composite indexes on
+`(post_id, parent_id, created_at, id)` and `(parent_id, created_at, id)` support
+thread collections with deterministic ordering. Foreign keys currently restrict
+deletion of referenced records; they do not cascade through reply threads.
+Phase 1-2 adds active-comment validation and reply rules. Phase 1-3 adds
+transactional user/post/comment deletion and anonymous placeholder handling.
+Nullable storage alone does not implement that lifecycle.
+
 ## tags
 column name | data type | details
 ------------|-----------|--------

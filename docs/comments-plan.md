@@ -1,6 +1,7 @@
 # Comments Plan
 
-Status: planned; implementation has not started.
+Status: Phase 1-1 storage implemented on `comments-phase-1-1-storage`; not yet
+merged. Validation and deletion lifecycle remain in Phases 1-2 and 1-3.
 
 Prerequisite: complete and ship the [Dedicated Post Page](./dedicated-post-page-plan.md).
 
@@ -154,7 +155,15 @@ that branch, not `main`; merge the finished feature into `main` only after
 acceptance checks. Keep CI running on implementation PRs. Confirm the final
 deployment/migration sequence before release.
 
-All parts below are planned. These are reviewable scope boundaries, not mandatory
+The integration branch is `feature/comments`. Implementation PRs target this
+branch, and CI includes pull requests against it. Phase 1-1 adds nullable
+body/author storage for placeholders and restrictive foreign keys; it does not
+yet enable comment mutations or deletion handling. Until Phase 1-3, deleting
+referenced users, posts, or parents is blocked by the database. Collection indexes
+support post/parent filtering and timestamp/ID ordering; revisit them alongside
+the actual read queries.
+
+Remaining parts below are planned. These are reviewable scope boundaries, not mandatory
 PR sizes. Split unexpectedly large parts before implementation; combine only
 genuinely small related pieces. Continue logical commits and user review
 checkpoints. Do not mix unrelated cleanup into feature PRs.
