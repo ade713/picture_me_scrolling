@@ -155,13 +155,13 @@ if it becomes unexpectedly large.
 ## Technical-Debt Follow-up
 
 Shared page-layout extraction is implemented in the follow-up branch
-`refactor-shared-page-layout` (not yet merged). PostPage and ProfilePage use
+`refactor-shared-page-layout` (merged in PR #186). PostPage and ProfilePage use
 PageLayout for the brand/account-menu header, back link, main container, and
 shared responsive styles. Post-specific history handling stays in PostPage;
 profile-specific content and the existing header border remain unchanged.
 
 HTTP status-code cleanup is implemented in `refactor-http-status-code-constants`
-(not yet merged). The application-code scan found the profile page's inline 404
+(merged in PR #187). The application-code scan found the profile page's inline 404
 and the post page's local `HTTP_NOT_FOUND`. Both now import `HTTP_NOT_FOUND` from
 `frontend/config/http_status.js`. `HTTP_NO_CONTENT` remains local to the API
 client because it already has a descriptive name and only one consumer.

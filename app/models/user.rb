@@ -76,6 +76,8 @@ class User < ApplicationRecord
     through: :followee_users,
     source: :posts
 
+  has_many :comments, inverse_of: :user
+
   has_one :email_verification_token, dependent: :destroy
   has_one :password_reset_token, dependent: :destroy
 
