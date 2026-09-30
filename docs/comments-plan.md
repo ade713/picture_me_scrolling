@@ -1,7 +1,8 @@
 # Comments Plan
 
-Status: Phase 1-1 storage implemented on `comments-phase-1-1-storage`; not yet
-merged. Validation and deletion lifecycle remain in Phases 1-2 and 1-3.
+Status: Phase 1-1 storage merged into `feature/comments` in PR #188.
+Phase 1-2 validation is implemented on `comments-phase-1-2-validation`, not yet
+merged. Deletion lifecycle remains in Phase 1-3.
 
 Prerequisite: complete and ship the [Dedicated Post Page](./dedicated-post-page-plan.md).
 
@@ -40,6 +41,13 @@ indexes; finalize exact indexes with the read queries. Active comments require
 an author and body even though placeholder storage permits their removal.
 
 ## Validation and Permissions
+
+Phase 1-2 adds active-author/body validation, the 1,000-character body limit,
+and parent existence, same-post, single-level, self-reference, and deleted-parent
+checks. Existing replies remain editable after their parent becomes a placeholder.
+Bodies remain plain text; safe rendering belongs to the UI phase. These model
+checks do not replace Phase 1-3 transactional concurrency protection or the
+later API's author-derived parameters, permissions, and body-only updates.
 
 - Plain text only, rendered without interpreting HTML.
 - Reject blank and whitespace-only content; maximum 1,000 characters.
