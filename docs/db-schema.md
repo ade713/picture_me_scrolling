@@ -41,7 +41,7 @@ column name | data type | details
 id          | bigint    | not null, primary key
 body        | text      | nullable for deleted placeholders
 user_id     | integer   | nullable for anonymous placeholders, foreign key, indexed
-post_id     | integer   | not null, foreign key
+post_id     | integer   | not null, foreign key, cascades on post deletion
 parent_id   | bigint    | nullable self-referencing foreign key; null for top-level comments
 deleted_at  | datetime  | nullable deletion marker
 created_at  | datetime  | not null
@@ -49,11 +49,13 @@ updated_at  | datetime  | not null
 
 Multiple comments by the same user on a post are allowed. Composite indexes on
 `(post_id, parent_id, created_at, id)` and `(parent_id, created_at, id)` support
-thread collections with deterministic ordering. Foreign keys currently restrict
-deletion of referenced records; they do not cascade through reply threads.
-Phase 1-2 implements active-comment validation and reply rules. Phase 1-3 adds
-transactional user/post/comment deletion and anonymous placeholder handling.
-Nullable storage alone does not implement that lifecycle.
+thread collections with deterministic ordering. Post deletion cascades to the
+entire discussion. User and parent foreign keys remain restrictive so they
+cannot cascade away another author's replies. `CommentDeletion` handles
+childless deletion, anonymous placeholders, and last-reply cleanup;
+`User#destroy` invokes that lifecycle for authored comments. Comment writes
+and deletions coordinate through post locks. Active comments require body/author;
+deleted placeholders require both to be absent.
 
 ## tags
 column name | data type | details

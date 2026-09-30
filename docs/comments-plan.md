@@ -1,8 +1,9 @@
 # Comments Plan
 
 Status: Phase 1-1 storage merged into `feature/comments` in PR #188.
-Phase 1-2 validation is implemented on `comments-phase-1-2-validation`, not yet
-merged. Deletion lifecycle remains in Phase 1-3.
+Phase 1-2 validation merged into `feature/comments` in PR #189.
+Phase 1-3 deletion lifecycle is implemented on
+`comments-phase-1-3-deletion-lifecycle`, not yet merged.
 
 Prerequisite: complete and ship the [Dedicated Post Page](./dedicated-post-page-plan.md).
 
@@ -46,7 +47,7 @@ Phase 1-2 adds active-author/body validation, the 1,000-character body limit,
 and parent existence, same-post, single-level, self-reference, and deleted-parent
 checks. Existing replies remain editable after their parent becomes a placeholder.
 Bodies remain plain text; safe rendering belongs to the UI phase. These model
-checks do not replace Phase 1-3 transactional concurrency protection or the
+checks work alongside Phase 1-3 transactional concurrency protection and the
 later API's author-derived parameters, permissions, and body-only updates.
 
 - Plain text only, rendered without interpreting HTML.
@@ -63,6 +64,21 @@ later API's author-derived parameters, permissions, and body-only updates.
 - Enforce permissions on the server, not merely by hiding controls.
 
 ## Deletion Lifecycle
+
+Phase 1-3 implements `CommentDeletion` for user-facing comment removal. Future
+API actions must call this service rather than directly destroying comment rows.
+`User#destroy` removes authored comment content through the same service.
+Direct SQL/user `delete` bypasses callbacks and remains restricted by foreign keys.
+The post foreign key now cascades: the existing post `delete` path removes all
+discussion rows without relying on callbacks. User and parent foreign keys do
+not cascade through other authors' replies.
+
+Comment saves and service deletions serialize on the post row. New comments also
+lock their author first, matching user-deletion lock order. Saves revalidate
+fresh parent state under the lock, and stale edits cannot restore deleted text.
+User cleanup acquires discussion locks in post-ID order. This conservative
+per-post locking favors correctness over simultaneous writes on the same post;
+revisit only if discussion traffic warrants finer-grained locking.
 
 - Delete a comment without replies outright.
 - For a parent with replies, clear its original text and author association,
@@ -164,10 +180,10 @@ acceptance checks. Keep CI running on implementation PRs. Confirm the final
 deployment/migration sequence before release.
 
 The integration branch is `feature/comments`. Implementation PRs target this
-branch, and CI includes pull requests against it. Phase 1-1 adds nullable
-body/author storage for placeholders and restrictive foreign keys; it does not
-yet enable comment mutations or deletion handling. Until Phase 1-3, deleting
-referenced users, posts, or parents is blocked by the database. Collection indexes
+branch, and CI includes pull requests against it. Phase 1-1 added nullable
+body/author storage for placeholders and restrictive foreign keys. Phase 1-3
+adds lifecycle handling and post-only cascading deletion; comment API mutations
+are still future work. Collection indexes
 support post/parent filtering and timestamp/ID ordering; revisit them alongside
 the actual read queries.
 
