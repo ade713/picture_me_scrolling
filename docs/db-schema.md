@@ -51,7 +51,7 @@ Multiple comments by the same user on a post are allowed. Composite indexes on
 `(post_id, parent_id, created_at, id)` and `(parent_id, created_at, id)` support
 thread collections with deterministic ordering. Foreign keys currently restrict
 deletion of referenced records; they do not cascade through reply threads.
-Phase 1-2 adds active-comment validation and reply rules. Phase 1-3 adds
+Phase 1-2 implements active-comment validation and reply rules. Phase 1-3 adds
 transactional user/post/comment deletion and anonymous placeholder handling.
 Nullable storage alone does not implement that lifecycle.
 
