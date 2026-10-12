@@ -37,8 +37,16 @@
 - Empty results return an empty comments object and ID array. Returns `401`
   without a session, `404` for an unknown post, and `422` with
   `Comment cursor is invalid` for malformed or wrong-post cursors.
-- Read-only in Phase 2-1: creation, editing, deletion, and reply endpoints follow
-  in later phases.
+- `POST /api/posts/:post_id/comments` — create a top-level comment, accepting
+  `comment[body]` only. Authentication is required; following the author is not.
+  The post comes from the URL and the author from the session. Client-supplied
+  identity, parent, and deletion attributes are ignored.
+- Creation returns `201 Created` with the comment object directly (the same
+  fields as a list entry, with `reply_count: 0`). Blank/whitespace-only bodies
+  and bodies exceeding 1,000 characters return `422` with validation messages
+  as an array. Unknown posts return `404`; unauthenticated requests return `401`.
+  The `comment` parameter object is required by Rails strong parameters.
+- Editing, deletion, and reply endpoints follow in later phases.
 
 ### Session
 - `POST /api/session`
