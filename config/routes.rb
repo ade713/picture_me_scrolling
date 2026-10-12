@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     resource :password_reset, only: [:create, :update]
     resource :session, only: [:create, :destroy]
     resources :posts, only: [:create, :index, :show, :update, :destroy] do
+      resources :comments, only: [:index]
       resource :like, only: [:create, :destroy]
     end
   end
