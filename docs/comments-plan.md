@@ -4,8 +4,9 @@ Status: Phase 1-1 storage merged into `feature/comments` in PR #188.
 Phase 1-2 validation merged into `feature/comments` in PR #189.
 Phase 1-3 deletion lifecycle merged into `feature/comments` in PR #190.
 Phase 1 is complete on the integration branch, not released to production.
-Phase 2-1 paginated reads are implemented and committed on
-`comments-phase-2-1-paginated-reads`, not yet merged.
+Phase 2-1 paginated reads merged into `feature/comments` in PR #191.
+Phase 2-2 top-level comment creation is implemented on
+`comments-phase-2-2-creation`, not yet merged.
 
 Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
 all 9 focused query/API tests (63 assertions) passed afterward.
@@ -47,6 +48,14 @@ indexes; finalize exact indexes with the read queries. Active comments require
 an author and body even though placeholder storage permits their removal.
 
 ## Validation and Permissions
+
+Phase 2-2 adds authenticated `POST /api/posts/:post_id/comments`, accepting only
+`comment[body]`. The URL determines the post and the session determines the author;
+client identity, parent, and deletion attributes are ignored. Success returns
+the serialized comment directly with `201 Created`, using the same fields as
+list entries. Validation failures return a message array with `422`; unknown
+posts return `404`, and unauthenticated requests return `401`. No follow is
+required. Reply creation and edit/delete API actions remain later work.
 
 Phase 1-2 adds active-author/body validation, the 1,000-character body limit,
 and parent existence, same-post, single-level, self-reference, and deleted-parent

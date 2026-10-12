@@ -6,7 +6,82 @@ class Api::CommentsControllerTest < ActionDispatch::IntegrationTest
     post api_session_url, params: { user: { username: @viewer.username, password: 'password' } }
   end
 
-  test 'requires authentication' do
+  test 'creation requires authentication' do
+    delete api_session_url
+
+    assert_no_difference 'Comment.count' do
+      post api_post_comments_url(posts(:one)), params: { comment: { body: 'Hello' } }
+    end
+
+    assert_response :unauthorized
+    assert_equal ['You must be logged in'], response.parsed_body
+  end
+
+  test 'creates and serializes a top-level comment without following the post author' do
+    assert_no_difference 'Follow.count' do
+      assert_difference 'Comment.count', 1 do
+        post api_post_comments_url(posts(:one)), params: { comment: { body: 'My comment' } }
+      end
+    end
+
+    assert_response :created
+    data = response.parsed_body
+    comment = Comment.find(data['id'])
+    assert_equal @viewer, comment.user
+    assert_equal posts(:one), comment.post
+    assert_nil comment.parent_id
+    assert_equal 'My comment', data['body']
+    assert_equal @viewer.id, data.dig('author', 'id')
+    assert_equal %w[avatar_url id username], data['author'].keys.sort
+    assert_equal 0, data['reply_count']
+    refute data['deleted']
+    assert_not_nil data['created_at']
+
+    get api_post_comments_url(posts(:one))
+    assert_response :success
+    assert_equal data, response.parsed_body['comments'][comment.id.to_s]
+  end
+
+  test 'ignores client-supplied identity, parent, and deletion attributes' do
+    parent = Comment.create!(post: posts(:one), user: users(:one), body: 'Parent')
+
+    post api_post_comments_url(posts(:one)), params: {
+      comment: { body: 'Safe', user_id: users(:two).id, post_id: posts(:two).id,
+                 parent_id: parent.id, deleted_at: Time.current.iso8601 }
+    }
+
+    assert_response :created
+    comment = Comment.find(response.parsed_body['id'])
+    assert_equal @viewer, comment.user
+    assert_equal posts(:one), comment.post
+    assert_nil comment.parent_id
+    assert_nil comment.deleted_at
+  end
+
+  test 'returns validation errors without persisting invalid comments' do
+    [
+      [" \n\t", "Body can't be blank"],
+      ['a' * 1_001, 'Body is too long (maximum is 1000 characters)']
+    ].each do |body, expected_error|
+      assert_no_difference 'Comment.count' do
+        post api_post_comments_url(posts(:one)), params: { comment: { body: body } }
+      end
+
+      assert_response :unprocessable_entity
+      assert_equal [expected_error], response.parsed_body
+    end
+  end
+
+  test 'creation returns not found for an unknown post' do
+    assert_no_difference 'Comment.count' do
+      post api_post_comments_url(post_id: -1), params: { comment: { body: 'Hello' } }
+    end
+
+    assert_response :not_found
+    assert_equal ['Post not found'], response.parsed_body
+  end
+
+  test 'index requires authentication' do
     delete api_session_url
     get api_post_comments_url(posts(:one))
     assert_response :unauthorized
