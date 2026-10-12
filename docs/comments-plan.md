@@ -2,8 +2,13 @@
 
 Status: Phase 1-1 storage merged into `feature/comments` in PR #188.
 Phase 1-2 validation merged into `feature/comments` in PR #189.
-Phase 1-3 deletion lifecycle is implemented on
-`comments-phase-1-3-deletion-lifecycle`, not yet merged.
+Phase 1-3 deletion lifecycle merged into `feature/comments` in PR #190.
+Phase 1 is complete on the integration branch, not released to production.
+Phase 2-1 paginated reads are implemented and committed on
+`comments-phase-2-1-paginated-reads`, not yet merged.
+
+Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
+all 9 focused query/API tests (63 assertions) passed afterward.
 
 Prerequisite: complete and ship the [Dedicated Post Page](./dedicated-post-page-plan.md).
 
@@ -146,6 +151,17 @@ pagination strategy appropriate to these changing collections during query work.
 Top-level page size remains an implementation choice using existing conventions;
 the preview/reply sizes above are agreed product behavior.
 
+Phase 2-1 uses oldest-first `(created_at, id)` cursor pagination for top-level
+comments. Pass the returned opaque `next_cursor` as `after`; it is signed and
+bound to the post, but does not require the anchor comment to still exist.
+`per_page` follows the existing query defaults (20, bounded to 1–50).
+Metadata is `per_page`, `has_more`, and `next_cursor`, without offset-page totals.
+The response uses `comments` keyed by ID and ordered `comment_ids`; each comment
+includes public author identity (or null for a placeholder), body, timestamps,
+post/parent IDs, deletion state, and a batched `reply_count`. Replies are not
+embedded. Authentication is required, following the post author is not.
+The replies endpoint and its reverse-pagination contract remain Phase 4-1 work.
+
 ## Feed Previews
 
 Dashboard and profile posts show the latest three active top-level comments,
@@ -193,6 +209,8 @@ genuinely small related pieces. Continue logical commits and user review
 checkpoints. Do not mix unrelated cleanup into feature PRs.
 
 ### Phase 1: Data Model
+
+Complete: PRs #188, #189, and #190 are merged into `feature/comments`.
 
 | PR | Scope |
 | --- | --- |

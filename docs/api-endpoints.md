@@ -20,6 +20,26 @@
 - `GET /api/users/:user_id/following` - return users followed by the requested
   user with stable newest-relationship-first ordering and pagination
 
+### Comments
+
+- `GET /api/posts/:post_id/comments` — authenticated, top-level comments only,
+  oldest first by `created_at` then `id`; following the author is not required.
+- Optional `per_page` defaults to 20 and is bounded to 1–50, matching existing
+  pagination normalization. Pass `pagination.next_cursor` as `after` for the next
+  batch. The signed, post-bound cursor works even if its anchor is deleted.
+- Returns `comments` keyed by ID, ordered `comment_ids`, and `pagination` with
+  `per_page`, `has_more`, and `next_cursor` (null at the end). No page-number
+  or total-count fields are returned for this cursor-based collection.
+- Each comment contains `id`, `post_id`, `parent_id`, `created_at`, `updated_at`,
+  `deleted`, `body`, `author`, and `reply_count`. Active authors expose only
+  `id`, `username`, and `avatar_url`. Deleted placeholders return null for
+  both author and body. Reply counts are batched; replies are not embedded.
+- Empty results return an empty comments object and ID array. Returns `401`
+  without a session, `404` for an unknown post, and `422` with
+  `Comment cursor is invalid` for malformed or wrong-post cursors.
+- Read-only in Phase 2-1: creation, editing, deletion, and reply endpoints follow
+  in later phases.
+
 ### Session
 - `POST /api/session`
 - `DELETE /api/session`
