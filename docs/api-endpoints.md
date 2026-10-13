@@ -46,7 +46,20 @@
   and bodies exceeding 1,000 characters return `422` with validation messages
   as an array. Unknown posts return `404`; unauthenticated requests return `401`.
   The `comment` parameter object is required by Rails strong parameters.
-- Editing, deletion, and reply endpoints follow in later phases.
+- `PATCH /api/comments/:id` — authenticated author-only body update using
+  `comment[body]`. Returns `200 OK` with the serialized comment and actual
+  `reply_count`, or `422` with validation messages; invalid edits do not change
+  stored content. Identity, post, parent, and deletion fields cannot be updated.
+- `DELETE /api/comments/:id` — authenticated author-only removal through the
+  comment lifecycle service. Returns `204 No Content` whether the row is removed
+  or converted to an anonymous placeholder. Deleting a final reply also removes
+  its deleted parent placeholder. Clients should refresh affected collections
+  and counts rather than expecting a response body.
+- Both mutation endpoints return `401` without authentication and JSON `404`
+  (`["Comment not found"]`) for missing, deleted, or non-owned comments. Owning
+  the post grants no permission over another author's comments. Existing replies
+  remain editable/deletable by their authors beneath deleted parent placeholders.
+- Reply reads and creation follow in later phases.
 
 ### Session
 - `POST /api/session`
