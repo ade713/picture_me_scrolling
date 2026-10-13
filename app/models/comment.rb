@@ -1,5 +1,6 @@
 class Comment < ApplicationRecord
   MAXIMUM_BODY_LENGTH = 1_000
+  NOT_FOUND_ERROR = 'Comment not found'.freeze
   PARENT_REQUIRED_ERROR = 'must exist'.freeze
   PARENT_POST_ERROR = 'must belong to the same post'.freeze
   PARENT_DEPTH_ERROR = 'must be a top-level comment'.freeze

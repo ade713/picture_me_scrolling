@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     resource :email_verification, only: [:create, :update]
     resource :password_reset, only: [:create, :update]
     resource :session, only: [:create, :destroy]
+    resources :comments, only: [:update, :destroy]
     resources :posts, only: [:create, :index, :show, :update, :destroy] do
       resources :comments, only: [:index, :create]
       resource :like, only: [:create, :destroy]
