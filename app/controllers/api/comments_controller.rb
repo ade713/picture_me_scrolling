@@ -1,6 +1,7 @@
 class Api::CommentsController < ApplicationController
   before_action :require_logged_in
-  before_action :load_post
+  before_action :load_post, only: [:index, :create]
+  before_action :load_owned_comment, only: [:update, :destroy]
 
   def index
     @comments, @pagination, @reply_counts = PostCommentsQuery.call(
@@ -21,7 +22,33 @@ class Api::CommentsController < ApplicationController
     end
   end
 
+  def update
+    if @comment.update(comment_params)
+      render :show
+    else
+      render json: @comment.errors.full_messages, status: :unprocessable_entity
+    end
+  rescue ActiveRecord::RecordNotFound
+    render_comment_not_found
+  end
+
+  def destroy
+    CommentDeletion.new(comment: @comment).call
+    head :no_content
+  rescue ActiveRecord::RecordNotFound
+    render_comment_not_found
+  end
+
   private
+
+  def load_owned_comment
+    @comment = current_user.comments.where(deleted_at: nil).find_by(id: params[:id])
+    render_comment_not_found unless @comment
+  end
+
+  def render_comment_not_found
+    render json: [Comment::NOT_FOUND_ERROR], status: :not_found
+  end
 
   def load_post
     @post = Post.find_by(id: params[:post_id])

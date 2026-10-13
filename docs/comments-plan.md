@@ -5,8 +5,9 @@ Phase 1-2 validation merged into `feature/comments` in PR #189.
 Phase 1-3 deletion lifecycle merged into `feature/comments` in PR #190.
 Phase 1 is complete on the integration branch, not released to production.
 Phase 2-1 paginated reads merged into `feature/comments` in PR #191.
-Phase 2-2 top-level comment creation is implemented on
-`comments-phase-2-2-creation`, not yet merged.
+Phase 2-2 top-level comment creation merged into `feature/comments` in PR #192.
+Phase 2-3 author-only editing and deletion are implemented on
+`comments-phase-2-3-edit-delete`, not yet merged.
 
 Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
 all 9 focused query/API tests (63 assertions) passed afterward.
@@ -55,7 +56,17 @@ client identity, parent, and deletion attributes are ignored. Success returns
 the serialized comment directly with `201 Created`, using the same fields as
 list entries. Validation failures return a message array with `422`; unknown
 posts return `404`, and unauthenticated requests return `401`. No follow is
-required. Reply creation and edit/delete API actions remain later work.
+required. Reply creation remains later work.
+
+Phase 2-3 adds `PATCH /api/comments/:id` and `DELETE /api/comments/:id`.
+Both look up active comments through the authenticated author's comments,
+including existing replies. Missing, deleted, and non-owned targets return the
+same JSON `404` response. Post ownership grants no additional permission.
+PATCH permits body only, returns the serialized comment with its actual reply
+count, and returns `422` on validation failure without changing saved content.
+DELETE uses `CommentDeletion` and returns `204 No Content` for both hard deletion
+and placeholder conversion. Clients must refresh affected collections/reply
+counts after deletion, including possible last-reply placeholder removal.
 
 Phase 1-2 adds active-author/body validation, the 1,000-character body limit,
 and parent existence, same-post, single-level, self-reference, and deleted-parent
@@ -228,6 +239,11 @@ Complete: PRs #188, #189, and #190 are merged into `feature/comments`.
 | 1-3: Add Comment Deletion Lifecycle | Placeholders, childless deletion, user/post deletion, last-reply cleanup, concurrency/lifecycle tests. |
 
 ### Phase 2: Top-Level Comments API
+
+Implementation complete; Phase 2-3 still requires PR review, CI, and merge into
+`feature/comments` before phase closeout. All 274 Rails tests passed before the
+final test-assertion cleanup; all 8 mutation tests (46 assertions) passed afterward.
+Phase 3-1 query integration is next. Reply reads/creation remain Phase 4 work.
 
 | PR | Scope |
 | --- | --- |
