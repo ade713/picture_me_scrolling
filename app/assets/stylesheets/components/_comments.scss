@@ -1,0 +1,75 @@
+.post-comments {
+  margin-top: 32px;
+  padding: 24px 16px;
+  border-top: 1px solid black;
+
+  h2 {
+    font-family: 'Yanone Kaffeesatz', sans-serif;
+    font-size: 32px;
+    margin-bottom: 16px;
+  }
+}
+
+.comments-state {
+  padding: 24px 0;
+  text-align: center;
+}
+
+.comment-item {
+  padding: 16px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.comment-identity {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+
+  time {
+    font-size: 14px;
+    color: #555;
+  }
+}
+
+.comment-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+  color: black;
+  cursor: pointer;
+
+  img {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border: 1px solid black;
+    border-radius: 3px;
+  }
+
+  span { overflow-wrap: anywhere; }
+  &:hover { text-decoration: underline; }
+  &:focus-visible {
+    outline: 3px solid #CE0063;
+    outline-offset: 3px;
+  }
+}
+
+.comment-body {
+  margin-top: 12px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.comment-deleted,
+.comment-reply-count {
+  color: #555;
+}
+
+.comment-reply-count {
+  margin-top: 8px;
+  font-size: 14px;
+}
