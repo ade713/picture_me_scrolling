@@ -5,8 +5,10 @@ import { MemoryRouter } from 'react-router-dom';
 
 import { usePostComments } from '../../query/comment_hooks';
 import PostComments from './post_comments';
+import CommentForm from './comment_form';
 
 vi.mock('../../query/comment_hooks', () => ({ usePostComments: vi.fn() }));
+vi.mock('./comment_form', () => ({ default: vi.fn(() => null) }));
 
 const comment = {
   id: 1, body: '<strong>Plain text</strong>', created_at: '2026-10-14T12:00:00Z',
@@ -17,6 +19,7 @@ const renderComments = () => render(<MemoryRouter><PostComments postId={42} /></
 
 describe('PostComments', () => {
   beforeEach(() => {
+    CommentForm.mockImplementation(() => null);
     usePostComments.mockReturnValue({ data: { comments: [comment] }, fetchNextPage: vi.fn() });
     vi.stubGlobal('IntersectionObserver', undefined);
   });
@@ -89,5 +92,43 @@ describe('PostComments', () => {
     renderComments();
     await userEvent.setup().click(screen.getByRole('button', { name: 'Load more comments' }));
     expect(fetchNextPage).toHaveBeenCalledTimes(1);
+  });
+
+  it('keeps new submissions visible until loaded, then retires their local copies', async () => {
+    const submitted = { ...comment, id: 2, body: 'New comment' };
+    CommentForm.mockImplementation(({ onCreated }) => (
+      <button onClick={() => onCreated(submitted)}>Submit fixture</button>
+    ));
+    const view = renderComments();
+    await userEvent.setup().click(screen.getByText('Submit fixture'));
+    expect(screen.getByText('Your new comments')).toBeInTheDocument();
+    expect(screen.getAllByText('New comment')).toHaveLength(1);
+
+    usePostComments.mockReturnValue({ data: { comments: [comment, submitted] } });
+    view.rerender(<MemoryRouter><PostComments postId={42} /></MemoryRouter>);
+    expect(screen.queryByText('Your new comments')).not.toBeInTheDocument();
+    expect(screen.getAllByText('New comment')).toHaveLength(1);
+
+    usePostComments.mockReturnValue({ data: { comments: [comment] } });
+    view.rerender(<MemoryRouter><PostComments postId={42} /></MemoryRouter>);
+    expect(screen.queryByText('New comment')).not.toBeInTheDocument();
+  });
+
+  it('preserves multiple submissions even when the discussion cannot load', async () => {
+    usePostComments.mockReturnValue({ isError: true });
+    let nextId = 2;
+    CommentForm.mockImplementation(({ onCreated }) => (
+      <button onClick={() => {
+        onCreated({ ...comment, id: nextId, body: `Submission ${nextId}` });
+        nextId += 1;
+      }}>Submit fixture</button>
+    ));
+    renderComments();
+    const user = userEvent.setup();
+    await user.click(screen.getByText('Submit fixture'));
+    await user.click(screen.getByText('Submit fixture'));
+    expect(screen.getByText('Submission 2')).toBeInTheDocument();
+    expect(screen.getByText('Submission 3')).toBeInTheDocument();
+    expect(screen.getByRole('alert')).toHaveTextContent('Unable to load comments.');
   });
 });
