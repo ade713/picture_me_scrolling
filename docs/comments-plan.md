@@ -9,8 +9,9 @@ Phase 2-2 top-level comment creation merged into `feature/comments` in PR #192.
 Phase 2-3 author-only editing and deletion merged into `feature/comments` in PR #193.
 Phase 2 is complete on the integration branch, not released to production.
 Phase 3-1 frontend query integration merged into `feature/comments` in PR #194.
-Phase 3-2 read-only comment display is implemented on
-`comments-phase-3-2-display`, not yet merged.
+Phase 3-2 read-only comment display merged into `feature/comments` in PR #195.
+Phase 3-3 comment creation is implemented on
+`comments-phase-3-3-create-form`, pending review and merge.
 
 Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
 all 9 focused query/API tests (63 assertions) passed afterward.
@@ -283,12 +284,27 @@ and only cached post collections containing that post. Invalidation is awaited
 so pending state includes active refetches. Failed mutations leave caches intact.
 
 Creation exposes the returned object through the mutation result without
-injecting it into partially loaded cursor pages. Phase 3-3 must retain successful
-submissions for separate display until they appear in loaded pages, deduplicate
-them by ID, and handle multiple submissions; invalidation alone does not meet the
+injecting it into partially loaded cursor pages. Phase 3-3 retains successful
+submissions for separate display until they appear in loaded pages, deduplicates
+them by ID, and handles multiple submissions; invalidation alone does not meet the
 new-comment visibility requirement. Delete refetches rather than assuming the
 row disappeared, because the server may retain a placeholder. Per-parent reply
-queries and their mutation integration remain Phase 4 work. No UI is added here.
+queries and their mutation integration remain Phase 4 work.
+
+Phase 3-3 adds a textarea with a visually hidden label and the placeholder
+“Write your comment”. Its character counter turns red above the 1,000-character
+limit. Blank/over-limit submission guards, pending controls, and the shared
+loading indicator provide validation and submission feedback. Failed
+requests retain the draft; success clears it, announces completion, and restores
+focus to the textarea. Rails remains authoritative for validation.
+
+The composer is fixed to the viewport bottom, aligned with the post column, with
+a compact resizable textarea and bounded height. A measured spacer reserves its
+height so it does not obscure the last comment, including when feedback appears.
+New comments appear in a separate “Your new comments” section until loaded cursor pages contain
+them. Local copies are then retired to prevent duplicates or resurrection after
+deletion. Live browser/keyboard verification, including mobile keyboard behavior,
+remains outstanding for this phase.
 
 | PR | Scope |
 | --- | --- |
@@ -296,6 +312,21 @@ queries and their mutation integration remain Phase 4 work. No UI is added here.
 | 3-2: Display Comments | Lists/items, identity links, timestamps, placeholders, loading/empty/error states, pagination. |
 | 3-3: Add Comment Form | Body input, character guidance, pending/validation behavior, draft retention, new-comment visibility. |
 | 3-4: Add Edit and Delete Controls | Author controls, edit/cancel, confirmation, focus and interaction tests. |
+
+### Follow-up After Phase 3-4: Newest-First Comment Ordering
+
+After completing Phase 3 and before starting Phase 4, change top-level comments
+to newest-first so the latest comments appear near the top. The oldest-first
+descriptions above document the current implementation, not the intended final
+ordering after this follow-up.
+
+- Update backend ordering and cursor comparisons together, keeping deterministic
+  `(created_at, id)` ordering and loading older comments on subsequent pages.
+- Review new-comment visibility and deduplication with the newest-first first page.
+- Update query/API and frontend pagination tests, including equal timestamps and
+  multiple pages, and reconcile the ordering documentation.
+- Keep this scoped to top-level discussion comments; reply and feed-preview
+  ordering remain unchanged unless separately agreed.
 
 ### Follow-up After Phase 3-4: Automatically Link Comment URLs
 
