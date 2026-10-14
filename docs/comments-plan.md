@@ -8,8 +8,9 @@ Phase 2-1 paginated reads merged into `feature/comments` in PR #191.
 Phase 2-2 top-level comment creation merged into `feature/comments` in PR #192.
 Phase 2-3 author-only editing and deletion merged into `feature/comments` in PR #193.
 Phase 2 is complete on the integration branch, not released to production.
-Phase 3-1 frontend query integration is implemented on
-`comments-phase-3-1-query-integration`, not yet merged.
+Phase 3-1 frontend query integration merged into `feature/comments` in PR #194.
+Phase 3-2 read-only comment display is implemented on
+`comments-phase-3-2-display`, not yet merged.
 
 Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
 all 9 focused query/API tests (63 assertions) passed afterward.
@@ -255,6 +256,25 @@ Reply reads/creation remain Phase 4 work.
 
 ### Phase 3: Comments on the Post Page
 
+Phase 3-2 displays comments below the loaded post. Active entries show linked
+author identity, a square avatar, local date/time, plain-text body, and reply
+counts. Placeholders omit author identity and original text. Comments reuse the
+shared loading indicator and automatic pagination, with keyboard-operable manual
+fallback/retry. Cached comments remain visible on subsequent request failures.
+Creation, editing/deletion controls, and reply expansion are not included yet.
+Responsive styling is implemented; a live browser/responsive smoke pass remains
+to be performed before visual closeout.
+All 247 frontend tests passed before the final test cleanup; all 18 focused
+comment/post-page tests passed afterward. Production build and Rails stylesheet
+compilation passed, with bundle-size and existing deprecation warnings.
+
+Temporary local review data is available through `DemoCommentSeed.run` in
+development: 23 top-level entries for three frontend pages, an empty discussion,
+varied text and wrapping examples, singular/plural reply counts, and a deleted
+placeholder. The helper is temporary and must be removed when Phase 6-1 adds
+permanent comment support to the existing seed workflow. Loading/error states
+require browser checks rather than seed records.
+
 Phase 3-1 adds `usePostComments`, `useCreateComment`, `useUpdateComment`, and
 `useDeleteComment`. Reads use the opaque next cursor with 10 comments per request
 and keys normalized by post ID. Failed next-page requests preserve loaded pages.
@@ -276,6 +296,18 @@ queries and their mutation integration remain Phase 4 work. No UI is added here.
 | 3-2: Display Comments | Lists/items, identity links, timestamps, placeholders, loading/empty/error states, pagination. |
 | 3-3: Add Comment Form | Body input, character guidance, pending/validation behavior, draft retention, new-comment visibility. |
 | 3-4: Add Edit and Delete Controls | Author controls, edit/cancel, confirmation, focus and interaction tests. |
+
+### Follow-up After Phase 3-4: Automatically Link Comment URLs
+
+After completing Phase 3-4 and before starting Phase 4, add a focused follow-up
+PR to make HTTP/HTTPS URLs clickable in comments while keeping stored content
+plain text. Use shared comment-body rendering so replies can reuse it in Phase 4.
+Do not add Markdown, raw HTML rendering, link previews, or backend URL fetching.
+Restrict generated links to `http://` and `https://`, open them in a new tab with
+`rel="noopener noreferrer ugc"`, and provide underlined styling, visible keyboard
+focus, and wrapping for long URLs. Cover URL parsing, unsafe schemes, punctuation,
+plain-text preservation, and keyboard behavior in tests. Until this follow-up,
+URLs remain plain text.
 
 ### Phase 4: Replies
 
