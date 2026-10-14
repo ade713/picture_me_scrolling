@@ -6,8 +6,10 @@ Phase 1-3 deletion lifecycle merged into `feature/comments` in PR #190.
 Phase 1 is complete on the integration branch, not released to production.
 Phase 2-1 paginated reads merged into `feature/comments` in PR #191.
 Phase 2-2 top-level comment creation merged into `feature/comments` in PR #192.
-Phase 2-3 author-only editing and deletion are implemented on
-`comments-phase-2-3-edit-delete`, not yet merged.
+Phase 2-3 author-only editing and deletion merged into `feature/comments` in PR #193.
+Phase 2 is complete on the integration branch, not released to production.
+Phase 3-1 frontend query integration is implemented on
+`comments-phase-3-1-query-integration`, not yet merged.
 
 Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
 all 9 focused query/API tests (63 assertions) passed afterward.
@@ -219,7 +221,7 @@ The integration branch is `feature/comments`. Implementation PRs target this
 branch, and CI includes pull requests against it. Phase 1-1 added nullable
 body/author storage for placeholders and restrictive foreign keys. Phase 1-3
 adds lifecycle handling and post-only cascading deletion; comment API mutations
-are still future work. Collection indexes
+are implemented through Phase 2. Collection indexes
 support post/parent filtering and timestamp/ID ordering; revisit them alongside
 the actual read queries.
 
@@ -240,10 +242,10 @@ Complete: PRs #188, #189, and #190 are merged into `feature/comments`.
 
 ### Phase 2: Top-Level Comments API
 
-Implementation complete; Phase 2-3 still requires PR review, CI, and merge into
-`feature/comments` before phase closeout. All 274 Rails tests passed before the
+Complete: PRs #191, #192, and #193 are merged into `feature/comments`.
+All 274 Rails tests passed before the
 final test-assertion cleanup; all 8 mutation tests (46 assertions) passed afterward.
-Phase 3-1 query integration is next. Reply reads/creation remain Phase 4 work.
+Reply reads/creation remain Phase 4 work.
 
 | PR | Scope |
 | --- | --- |
@@ -252,6 +254,21 @@ Phase 3-1 query integration is next. Reply reads/creation remain Phase 4 work.
 | 2-3: Add Comment Editing and Deletion | Author-only mutations, lifecycle integration, deleted-comment handling, API documentation. |
 
 ### Phase 3: Comments on the Post Page
+
+Phase 3-1 adds `usePostComments`, `useCreateComment`, `useUpdateComment`, and
+`useDeleteComment`. Reads use the opaque next cursor with 10 comments per request
+and keys normalized by post ID. Failed next-page requests preserve loaded pages.
+Successful mutations invalidate that post's comment queries, its detail query,
+and only cached post collections containing that post. Invalidation is awaited
+so pending state includes active refetches. Failed mutations leave caches intact.
+
+Creation exposes the returned object through the mutation result without
+injecting it into partially loaded cursor pages. Phase 3-3 must retain successful
+submissions for separate display until they appear in loaded pages, deduplicate
+them by ID, and handle multiple submissions; invalidation alone does not meet the
+new-comment visibility requirement. Delete refetches rather than assuming the
+row disappeared, because the server may retain a placeholder. Per-parent reply
+queries and their mutation integration remain Phase 4 work. No UI is added here.
 
 | PR | Scope |
 | --- | --- |
