@@ -39,17 +39,17 @@ describe("comment hooks", () => {
     vi.resetAllMocks();
   });
 
-  it("loads ordered comments using an encoded cursor and stops at the final page", async () => {
-    get.mockResolvedValueOnce(page([{ id: 1 }], "cursor+/=")).mockResolvedValueOnce(page([{ id: 2 }]));
+  it("preserves newest-first API order across pages and stops at the final page", async () => {
+    get.mockResolvedValueOnce(page([{ id: 2 }], "cursor+/=")).mockResolvedValueOnce(page([{ id: 1 }]));
     const { result } = renderHook(() => usePostComments(10), { wrapper });
 
-    await waitFor(() => expect(result.current.data?.comments).toEqual([{ id: 1 }]));
+    await waitFor(() => expect(result.current.data?.comments).toEqual([{ id: 2 }]));
     expect(get).toHaveBeenNthCalledWith(1, "/api/posts/10/comments?per_page=10", { signal: expect.any(AbortSignal) });
     await act(async () => {
       await result.current.fetchNextPage();
     });
     expect(result.current.error).toBeNull();
-    await waitFor(() => expect(result.current.data.comments).toEqual([{ id: 1 }, { id: 2 }]));
+    await waitFor(() => expect(result.current.data.comments).toEqual([{ id: 2 }, { id: 1 }]));
     expect(get).toHaveBeenNthCalledWith(2, "/api/posts/10/comments?per_page=10&after=cursor%2B%2F%3D", {
       signal: expect.any(AbortSignal),
     });

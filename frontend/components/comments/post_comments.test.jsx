@@ -110,10 +110,12 @@ describe('PostComments', () => {
     expect(screen.getByText('Your new comments')).toBeInTheDocument();
     expect(screen.getAllByText('New comment')).toHaveLength(1);
 
-    usePostComments.mockReturnValue({ data: { comments: [comment, submitted] } });
+    usePostComments.mockReturnValue({ data: { comments: [submitted, comment] } });
     view.rerender(<MemoryRouter><PostComments postId={42} /></MemoryRouter>);
     expect(screen.queryByText('Your new comments')).not.toBeInTheDocument();
     expect(screen.getAllByText('New comment')).toHaveLength(1);
+    expect(Array.from(view.container.querySelectorAll('.comment-body'), element => element.textContent))
+      .toEqual(['New comment', comment.body]);
 
     usePostComments.mockReturnValue({ data: { comments: [comment] } });
     view.rerender(<MemoryRouter><PostComments postId={42} /></MemoryRouter>);
@@ -135,6 +137,9 @@ describe('PostComments', () => {
     await user.click(screen.getByText('Submit fixture'));
     expect(screen.getByText('Submission 2')).toBeInTheDocument();
     expect(screen.getByText('Submission 3')).toBeInTheDocument();
+    expect(screen.getAllByText(/^Submission /).map(element => element.textContent)).toEqual([
+      'Submission 3', 'Submission 2'
+    ]);
     expect(screen.getByRole('alert')).toHaveTextContent('Unable to load comments.');
   });
 

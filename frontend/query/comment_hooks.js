@@ -50,8 +50,8 @@ export const useCreateComment = (postId) => {
 
   return useMutation({
     mutationFn: (body) => post(apiEndpoints.comments.collection(postId), { comment: { body } }),
-    // Leave cursor pages intact: the returned comment may be beyond unloaded
-    // comments. The form can display mutation.data separately until it is loaded.
+    // Refetch cursor pages: new comments normally appear on the newest-first page.
+    // The discussion keeps a local fallback until the returned comment is loaded.
     onSuccess: () => refreshCommentConsumers(queryClient, postId),
   });
 };
