@@ -21,7 +21,7 @@ export const commentMessages = Object.freeze({
   created: 'Comment posted.',
   submitting: 'Posting comment…',
   submittedHeading: 'Your new comments',
-  submittedGuidance: 'Shown separately until you reach them in the discussion below.',
+  submittedGuidance: 'Shown separately until they appear in the refreshed discussion below.',
   heading: 'Comments',
   loading: 'Loading comments…',
   loadingMore: 'Loading more comments…',

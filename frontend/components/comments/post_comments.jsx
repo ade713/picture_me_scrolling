@@ -32,7 +32,7 @@ const PostComments = ({ postId }) => {
 
   const handleCreated = comment => {
     setSubmittedComments(previous => [
-      ...previous.filter(submitted => submitted.id !== comment.id), comment
+      comment, ...previous.filter(submitted => submitted.id !== comment.id)
     ]);
   };
 
