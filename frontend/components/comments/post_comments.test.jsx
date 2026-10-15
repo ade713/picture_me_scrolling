@@ -1,13 +1,18 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import Modal from 'react-modal';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter } from 'react-router-dom';
 
-import { usePostComments } from '../../query/comment_hooks';
+import { useDeleteComment, usePostComments, useUpdateComment } from '../../query/comment_hooks';
+import { useCurrentUser } from '../../query/session_hooks';
 import PostComments from './post_comments';
 import CommentForm from './comment_form';
 
-vi.mock('../../query/comment_hooks', () => ({ usePostComments: vi.fn() }));
+vi.mock('../../query/comment_hooks', () => ({
+  usePostComments: vi.fn(), useUpdateComment: vi.fn(), useDeleteComment: vi.fn()
+}));
+vi.mock('../../query/session_hooks', () => ({ useCurrentUser: vi.fn() }));
 vi.mock('./comment_form', () => ({ default: vi.fn(() => null) }));
 
 const comment = {
@@ -19,6 +24,7 @@ const renderComments = () => render(<MemoryRouter><PostComments postId={42} /></
 
 describe('PostComments', () => {
   beforeEach(() => {
+    useCurrentUser.mockReturnValue({ data: null });
     CommentForm.mockImplementation(() => null);
     usePostComments.mockReturnValue({ data: { comments: [comment] }, fetchNextPage: vi.fn() });
     vi.stubGlobal('IntersectionObserver', undefined);
@@ -53,7 +59,7 @@ describe('PostComments', () => {
     usePostComments.mockReturnValue(state);
     renderComments();
     expect(screen.getByText(text)).toBeInTheDocument();
-    if (role) expect(screen.getByRole(role)).toHaveTextContent(text);
+    if (role) expect(screen.getByText(text).closest(`[role="${role}"]`)).toBeInTheDocument();
   });
 
   it('keeps cached comments visible alongside a background-refetch error', () => {
@@ -130,5 +136,31 @@ describe('PostComments', () => {
     expect(screen.getByText('Submission 2')).toBeInTheDocument();
     expect(screen.getByText('Submission 3')).toBeInTheDocument();
     expect(screen.getByRole('alert')).toHaveTextContent('Unable to load comments.');
+  });
+
+  it('updates and removes a new submission outside the loaded pages', async () => {
+    useCurrentUser.mockReturnValue({ data: { id: 7 } });
+    usePostComments.mockReturnValue({ data: { comments: [] } });
+    const updated = { ...comment, body: 'Updated submission' };
+    useUpdateComment.mockReturnValue({ reset: vi.fn(), mutateAsync: vi.fn().mockResolvedValue(updated) });
+    useDeleteComment.mockReturnValue({ reset: vi.fn(), mutateAsync: vi.fn().mockResolvedValue(null) });
+    CommentForm.mockImplementation(({ onCreated }) => (
+      <button onClick={() => onCreated(comment)}>Submit fixture</button>
+    ));
+    const view = renderComments();
+    Modal.setAppElement(view.container);
+    const user = userEvent.setup();
+    await user.click(screen.getByText('Submit fixture'));
+    await user.click(screen.getByRole('button', { name: 'Edit comment' }));
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: updated.body } });
+    await user.click(screen.getByRole('button', { name: 'Save comment' }));
+    expect(screen.getByText(updated.body)).toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('Comment updated.');
+    await user.click(screen.getByRole('button', { name: 'Delete comment' }));
+    await user.click(screen.getByRole('button', { name: 'Yes' }));
+    expect(screen.queryByText(updated.body)).not.toBeInTheDocument();
+    expect(screen.queryByText('Your new comments')).not.toBeInTheDocument();
+    expect(screen.getByText('No comments yet')).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByRole('heading', { name: 'Comments' })).toHaveFocus());
   });
 });

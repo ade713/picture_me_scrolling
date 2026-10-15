@@ -10,8 +10,9 @@ Phase 2-3 author-only editing and deletion merged into `feature/comments` in PR 
 Phase 2 is complete on the integration branch, not released to production.
 Phase 3-1 frontend query integration merged into `feature/comments` in PR #194.
 Phase 3-2 read-only comment display merged into `feature/comments` in PR #195.
-Phase 3-3 comment creation is implemented on
-`comments-phase-3-3-create-form`, pending review and merge.
+Phase 3-3 comment creation merged into `feature/comments` in PR #196.
+Phase 3-4 author edit/delete controls are implemented on
+`comments-phase-3-4-edit-delete`, pending review and merge.
 
 Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
 all 9 focused query/API tests (63 assertions) passed afterward.
@@ -312,6 +313,20 @@ remains outstanding for this phase.
 | 3-2: Display Comments | Lists/items, identity links, timestamps, placeholders, loading/empty/error states, pagination. |
 | 3-3: Add Comment Form | Body input, character guidance, pending/validation behavior, draft retention, new-comment visibility. |
 | 3-4: Add Edit and Delete Controls | Author controls, edit/cancel, confirmation, focus and interaction tests. |
+
+Phase 3-4 uses right-aligned pencil and trash icons matching post controls, with
+accessible labels and tooltips. It adds author-only inline editing with character-limit guidance, pending
+guards, draft retention on failure, and cancel/save focus restoration. Deletion
+uses the existing confirmation-dialog styling and focus trapping, initially
+focuses the safe cancel action, and keeps failed requests retryable. Successful
+deletion refetches authoritative comments (including deleted-parent placeholders)
+and moves focus to the discussion heading. Locally displayed new submissions
+also update or disappear after successful mutations. Rails still enforces all
+permissions. Live browser/keyboard and responsive checks remain outstanding.
+
+Phase 3-4 verification: all 262 frontend tests passed, along with the production
+Webpack build, Rails stylesheet compilation, and whitespace checks. Existing
+bundle-size and Rails/Sass deprecation warnings remain unchanged in scope.
 
 ### Follow-up After Phase 3-4: Newest-First Comment Ordering
 

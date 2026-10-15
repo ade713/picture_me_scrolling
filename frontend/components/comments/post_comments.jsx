@@ -1,4 +1,4 @@
-import React, { useEffect, useId, useState } from 'react';
+import React, { useEffect, useId, useRef, useState } from 'react';
 
 import { buttonLabels } from '../../config/button_labels';
 import { commentMessages } from '../../config/comments';
@@ -10,6 +10,8 @@ import CommentForm from './comment_form';
 
 const PostComments = ({ postId }) => {
   const headingId = useId();
+  const heading = useRef(null);
+  const [feedback, setFeedback] = useState('');
   const query = usePostComments(postId);
   const [submittedComments, setSubmittedComments] = useState([]);
   const comments = query.data?.comments || [];
@@ -34,6 +36,22 @@ const PostComments = ({ postId }) => {
     ]);
   };
 
+  const handleUpdated = updated => {
+    setSubmittedComments(previous => previous.map(comment => comment.id === updated.id ? updated : comment));
+    setFeedback(commentMessages.saved);
+  };
+
+  const handleDeleted = id => {
+    setSubmittedComments(previous => previous.filter(comment => comment.id !== id));
+    setFeedback(commentMessages.removed);
+    window.requestAnimationFrame(() => heading.current?.focus());
+  };
+
+  const renderComment = comment => (
+    <CommentItem key={comment.id} comment={comment} postId={postId}
+      onUpdated={handleUpdated} onDeleted={handleDeleted} />
+  );
+
   const renderComments = () => {
     if (query.isPending) return <LoadingIndicator label={commentMessages.loading} />;
 
@@ -48,7 +66,7 @@ const PostComments = ({ postId }) => {
         )}
         {comments.length ? (
           <ul className="comment-list">
-            {comments.map(comment => <CommentItem key={comment.id} comment={comment} />)}
+            {comments.map(renderComment)}
           </ul>
         ) : !visibleSubmissions.length && <p className="comments-state">{commentMessages.empty}</p>}
         <AutomaticPagination
@@ -67,13 +85,14 @@ const PostComments = ({ postId }) => {
 
   return (
     <section className="post-comments" aria-labelledby={headingId}>
-      <h2 id={headingId}>{commentMessages.heading}</h2>
+      <h2 id={headingId} ref={heading} tabIndex={-1}>{commentMessages.heading}</h2>
+      <p role="status" className="visually-hidden">{feedback}</p>
       {visibleSubmissions.length > 0 && (
         <section className="comment-submissions" aria-labelledby={`${headingId}-submitted`}>
           <h3 id={`${headingId}-submitted`}>{commentMessages.submittedHeading}</h3>
           <p>{commentMessages.submittedGuidance}</p>
           <ul>
-            {visibleSubmissions.map(comment => <CommentItem key={comment.id} comment={comment} />)}
+            {visibleSubmissions.map(renderComment)}
           </ul>
         </section>
       )}
