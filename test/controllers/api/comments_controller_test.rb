@@ -97,7 +97,7 @@ class Api::CommentsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     data = response.parsed_body
-    assert_equal [parent.id, active.id], data['comment_ids']
+    assert_equal [active.id, parent.id], data['comment_ids']
     placeholder = data['comments'][parent.id.to_s]
     assert placeholder['deleted']
     assert_nil placeholder['author']
@@ -115,11 +115,11 @@ class Api::CommentsControllerTest < ActionDispatch::IntegrationTest
     get api_post_comments_url(posts(:one)), params: { per_page: 1 }
     assert_response :success
     data = response.parsed_body
-    assert_equal [comments.first.id], data['comment_ids']
+    assert_equal [comments.last.id], data['comment_ids']
 
     get api_post_comments_url(posts(:one)), params: { after: data.dig('pagination', 'next_cursor'), per_page: 1 }
     assert_response :success
-    assert_equal [comments.last.id], response.parsed_body['comment_ids']
+    assert_equal [comments.first.id], response.parsed_body['comment_ids']
   end
 
   test 'returns an empty collection' do

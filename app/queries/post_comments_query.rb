@@ -2,7 +2,7 @@ class PostCommentsQuery
   include QueryPagination
 
   INVALID_CURSOR_ERROR = 'Comment cursor is invalid'.freeze
-  CURSOR_PURPOSE = 'post_comments'.freeze
+  CURSOR_PURPOSE = 'post_comments_newest_first'.freeze
   class InvalidCursorError < StandardError; end
 
   def self.call(post:, after: nil, per_page: nil)
@@ -16,7 +16,7 @@ class PostCommentsQuery
   end
 
   def call
-    comments = comments_after_cursor.order(:created_at, :id)
+    comments = comments_after_cursor.order(created_at: :desc, id: :desc)
                       .includes(user: { avatar_attachment: :blob })
                       .limit(normalized_per_page + 1).to_a
     has_more = comments.length > normalized_per_page
@@ -44,7 +44,7 @@ class PostCommentsQuery
     cursor = verifier.verified(after, purpose: CURSOR_PURPOSE)
     raise InvalidCursorError, INVALID_CURSOR_ERROR unless cursor && cursor['post_id'] == post.id
 
-    records.where('(created_at, id) > (?, ?)', cursor['created_at'], cursor['id'])
+    records.where('(created_at, id) < (?, ?)', cursor['created_at'], cursor['id'])
   end
 
   def verifier
