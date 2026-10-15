@@ -11,8 +11,9 @@ Phase 2 is complete on the integration branch, not released to production.
 Phase 3-1 frontend query integration merged into `feature/comments` in PR #194.
 Phase 3-2 read-only comment display merged into `feature/comments` in PR #195.
 Phase 3-3 comment creation merged into `feature/comments` in PR #196.
-Phase 3-4 author edit/delete controls are implemented on
-`comments-phase-3-4-edit-delete`, pending review and merge.
+Phase 3-4 author edit/delete controls are integrated into `feature/comments`.
+The newest-first ordering follow-up is implemented on
+`comments-newest-first-ordering`, pending review and merge.
 
 Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
 all 9 focused query/API tests (63 assertions) passed afterward.
@@ -135,7 +136,7 @@ Render comments beneath the post; do not introduce a discussion modal. Show an
 avatar, linked username, body, timestamp, Reply action, and author-only controls
 where applicable. Deleted placeholders omit identity and mutation controls.
 
-Top-level comments display oldest-to-newest, loading newer pages as the reader
+Top-level comments display newest-to-oldest, loading older pages as the reader
 continues. Reuse the app's pagination/loading conventions and shared animated
 dots. Provide empty, failure, pending, and accessible feedback states.
 
@@ -176,8 +177,8 @@ pagination strategy appropriate to these changing collections during query work.
 Top-level page size remains an implementation choice using existing conventions;
 the preview/reply sizes above are agreed product behavior.
 
-Phase 2-1 uses oldest-first `(created_at, id)` cursor pagination for top-level
-comments. Pass the returned opaque `next_cursor` as `after`; it is signed and
+Top-level comments use newest-first `(created_at, id)` cursor pagination.
+Pass the returned opaque `next_cursor` as `after`; it is signed and
 bound to the post, but does not require the anchor comment to still exist.
 `per_page` follows the existing query defaults (20, bounded to 1–50).
 Metadata is `per_page`, `has_more`, and `next_cursor`, without offset-page totals.
@@ -330,17 +331,20 @@ bundle-size and Rails/Sass deprecation warnings remain unchanged in scope.
 
 ### Follow-up After Phase 3-4: Newest-First Comment Ordering
 
-After completing Phase 3 and before starting Phase 4, change top-level comments
-to newest-first so the latest comments appear near the top. The oldest-first
-descriptions above document the current implementation, not the intended final
-ordering after this follow-up.
+Implemented after Phase 3: top-level comments display newest-first so the latest
+comments appear near the top. Both ordering keys descend and subsequent pages
+select older tuples. The cursor purpose is changed to reject incompatible
+oldest-first cursors; existing open discussions need a refresh to restart paging.
+New submissions normally appear in the refetched first page. The separate local
+section remains a newest-first fallback if the refetch fails or does not include
+them, and retires entries once loaded to prevent duplicates.
 
-- Update backend ordering and cursor comparisons together, keeping deterministic
+- Updated backend ordering and cursor comparisons together, keeping deterministic
   `(created_at, id)` ordering and loading older comments on subsequent pages.
-- Review new-comment visibility and deduplication with the newest-first first page.
-- Update query/API and frontend pagination tests, including equal timestamps and
-  multiple pages, and reconcile the ordering documentation.
-- Keep this scoped to top-level discussion comments; reply and feed-preview
+- Reviewed new-comment visibility and deduplication with the newest-first first page.
+- Updated query/API and frontend pagination tests, including equal timestamps and
+  multiple pages, and reconciled the ordering documentation.
+- Kept this scoped to top-level discussion comments; reply and feed-preview
   ordering remain unchanged unless separately agreed.
 
 ### Follow-up After Phase 3-4: Automatically Link Comment URLs

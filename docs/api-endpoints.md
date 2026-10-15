@@ -23,7 +23,7 @@
 ### Comments
 
 - `GET /api/posts/:post_id/comments` — authenticated, top-level comments only,
-  oldest first by `created_at` then `id`; following the author is not required.
+  newest first by `created_at` then `id` (both descending); following the author is not required.
 - Optional `per_page` defaults to 20 and is bounded to 1–50, matching existing
   pagination normalization. Pass `pagination.next_cursor` as `after` for the next
   batch. The signed, post-bound cursor works even if its anchor is deleted.
