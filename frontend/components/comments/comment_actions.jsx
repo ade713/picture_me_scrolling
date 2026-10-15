@@ -32,25 +32,30 @@ const CommentActions = ({ comment, postId, onUpdated, onDeleted }) => {
   const save = async event => {
     event.preventDefault();
     if (saveDisabled) return;
+    let updated;
     try {
-      const updated = await update.mutateAsync({ id: comment.id, body });
-      onUpdated(updated);
-      closeEditor();
+      updated = await update.mutateAsync({ id: comment.id, body });
     } catch {
       // The mutation exposes the error; preserve the draft for retry.
+      return;
     }
+
+    onUpdated(updated);
+    closeEditor();
   };
 
   const remove = async () => {
     if (deletion.isPending) return;
     try {
       await deletion.mutateAsync(comment.id);
-      setConfirming(false);
-      // Runs even if authoritative refetching has already unmounted this item.
-      onDeleted(comment.id);
     } catch {
       // Keep the confirmation open with its retryable error.
+      return;
     }
+
+    setConfirming(false);
+    // Runs even if authoritative refetching has already unmounted this item.
+    onDeleted(comment.id);
   };
 
   return (
