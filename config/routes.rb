@@ -19,7 +19,9 @@ Rails.application.routes.draw do
     resource :email_verification, only: [:create, :update]
     resource :password_reset, only: [:create, :update]
     resource :session, only: [:create, :destroy]
-    resources :comments, only: [:update, :destroy]
+    resources :comments, only: [:update, :destroy] do
+      resources :replies, only: [:index, :create], controller: 'comment_replies'
+    end
     resources :posts, only: [:create, :index, :show, :update, :destroy] do
       resources :comments, only: [:index, :create]
       resource :like, only: [:create, :destroy]
