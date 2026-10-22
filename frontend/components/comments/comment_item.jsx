@@ -5,6 +5,7 @@ import { commentDateOptions, commentMessages } from '../../config/comments';
 import { routes } from '../../config/routes';
 import { useCurrentUser } from '../../query/session_hooks';
 import CommentActions from './comment_actions';
+import CommentBody from './comment_body';
 
 const CommentItem = ({ comment, postId, onUpdated, onDeleted }) => {
   const currentUser = useCurrentUser();
@@ -25,7 +26,7 @@ const CommentItem = ({ comment, postId, onUpdated, onDeleted }) => {
               {new Date(comment.created_at).toLocaleString(undefined, commentDateOptions)}
             </time>
           </div>
-          <p className="comment-body">{comment.body}</p>
+          <CommentBody body={comment.body} />
           {isAuthor && (
             <CommentActions
               comment={comment}

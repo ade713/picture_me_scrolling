@@ -208,6 +208,18 @@
   margin-top: 12px;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+    border-radius: 3px;
+
+    &:focus-visible {
+      outline: 3px solid #CE0063;
+      outline-offset: 3px;
+    }
+  }
 }
 
 .comment-deleted,
