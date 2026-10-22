@@ -13,8 +13,9 @@ Phase 3-2 read-only comment display merged into `feature/comments` in PR #195.
 Phase 3-3 comment creation merged into `feature/comments` in PR #196.
 Phase 3-4 author edit/delete controls are integrated into `feature/comments`.
 The newest-first ordering follow-up is integrated into `feature/comments`.
-Comment URL auto-linking is implemented on `comments-url-auto-linking`, pending
-review and merge.
+Comment URL auto-linking is integrated into `feature/comments`.
+Phase 4-1 replies API is implemented on `comments-phase-4-1-replies-api`, pending
+review and merge. Reply UI remains Phase 4-2/4-3 work.
 
 Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
 all 9 focused query/API tests (63 assertions) passed afterward.
@@ -154,9 +155,10 @@ restoration, keyboard operation, labels, character guidance, and mobile layout.
 
 - Replies are collapsed initially. Do not fetch a preview for every parent.
 - Clicking "View replies" fetches the latest three replies for that comment.
-- Display those replies chronologically beneath the parent, slightly indented.
-- "Show older replies" explicitly fetches three more and prepends them.
+- Display replies oldest-to-newest beneath the parent, slightly indented.
+- "Show older replies" explicitly fetches three more and prepends them above.
 - Preserve the reader's visible position when older replies are prepended.
+- Successful new replies should be visible at the bottom of the loaded replies.
 - Each parent has independent pagination/cache state.
 - Paginate top-level comments and replies separately, never an arbitrary flattened
   tree that splits parents and children across pages.
@@ -170,7 +172,12 @@ GET /api/comments/:comment_id/replies
 
 The first returns only top-level comments; the second only the parent's direct
 replies. Return pagination metadata and reply counts without embedding whole
-threads. Finalize mutation routes and exact response shape during API design.
+threads. Phase 4-1 adds `POST /api/comments/:comment_id/replies` accepting only
+`comment[body]`, returning the same serialized object as top-level creation.
+Collection responses reuse `comments`, `comment_ids`, and pagination metadata.
+The default batch is three replies (bounded page sizes 1–50). Each batch is
+chronological; `next_cursor` is supplied as `before` to fetch and prepend older
+batches. Signed cursors are scoped to the parent and use creation time plus ID.
 
 Use deterministic ordering with an ID tie-breaker. Ensure inserts/deletions
 between requests do not produce duplicate or skipped older replies; select a
@@ -187,7 +194,8 @@ The response uses `comments` keyed by ID and ordered `comment_ids`; each comment
 includes public author identity (or null for a placeholder), body, timestamps,
 post/parent IDs, deletion state, and a batched `reply_count`. Replies are not
 embedded. Authentication is required, following the post author is not.
-The replies endpoint and its reverse-pagination contract remain Phase 4-1 work.
+The replies endpoint and older-batch cursor contract are implemented in Phase 4-1;
+frontend query integration and reply expansion remain Phase 4-2 work.
 
 ## Feed Previews
 
@@ -250,7 +258,7 @@ Complete: PRs #188, #189, and #190 are merged into `feature/comments`.
 Complete: PRs #191, #192, and #193 are merged into `feature/comments`.
 All 274 Rails tests passed before the
 final test-assertion cleanup; all 8 mutation tests (46 assertions) passed afterward.
-Reply reads/creation remain Phase 4 work.
+Reply reads and creation are implemented separately in Phase 4-1.
 
 | PR | Scope |
 | --- | --- |
@@ -265,7 +273,8 @@ author identity, a square avatar, local date/time, plain-text body, and reply
 counts. Placeholders omit author identity and original text. Comments reuse the
 shared loading indicator and automatic pagination, with keyboard-operable manual
 fallback/retry. Cached comments remain visible on subsequent request failures.
-Creation, editing/deletion controls, and reply expansion are not included yet.
+Creation and author editing/deletion controls were added in Phases 3-3 and 3-4.
+Reply expansion remains Phase 4-2 work.
 Responsive styling is implemented; a live browser/responsive smoke pass remains
 to be performed before visual closeout.
 All 247 frontend tests passed before the final test cleanup; all 18 focused
@@ -292,7 +301,8 @@ submissions for separate display until they appear in loaded pages, deduplicates
 them by ID, and handles multiple submissions; invalidation alone does not meet the
 new-comment visibility requirement. Delete refetches rather than assuming the
 row disappeared, because the server may retain a placeholder. Per-parent reply
-queries and their mutation integration remain Phase 4 work.
+frontend queries and mutation integration remain Phase 4-2/4-3 work; the backend
+reply endpoints are implemented in Phase 4-1.
 
 Phase 3-3 adds a textarea with a visually hidden label and the placeholder
 “Write your comment”. Its character counter turns red above the 1,000-character
@@ -372,6 +382,14 @@ keyboard focus/activation. Live browser and responsive checks remain pending.
 | 4-1: Add Replies API | Paginated reads and creation using shared comment behavior, parent checks, deletion-race coverage. |
 | 4-2: Display Replies on Demand | Expansion, three-reply pages, independent query state, chronological display, prepend-position preservation. |
 | 4-3: Add Reply Interactions | Form, shared edit/delete controls, count updates, new-reply visibility, deleted-parent handling. |
+
+Phase 4-1 reuses comment serialization, validation, and the existing post-lock
+coordination for creation versus parent deletion. Deleted parents remain readable
+but reject new replies; missing or nested parents return 404. The existing cached
+parent and concurrent deletion tests exercise the shared model write path.
+Query/API tests cover chronological batches, tied timestamps, deleted cursor
+anchors, newer inserts, cursor isolation, authentication, and identity spoofing.
+No schema changes or frontend controls are introduced in this phase.
 
 Replies are included before the MVP ships.
 
