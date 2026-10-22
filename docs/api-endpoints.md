@@ -22,6 +22,26 @@
 
 ### Comments
 
+- `GET /api/comments/:comment_id/replies` — authenticated direct replies to a
+  top-level comment, including deleted-parent placeholders. Returns the latest
+  three by default, ordered oldest-to-newest within the batch. `per_page` is
+  bounded to 1–50. Pass `pagination.next_cursor` as `before` to retrieve older
+  replies and prepend that batch above the loaded replies. Cursors are signed and parent-bound, use
+  `(created_at, id)` ordering, and remain valid after anchor deletion.
+  New replies do not shift older pages; refresh to retrieve newer replies.
+- The replies collection reuses `comments`, ordered `comment_ids`, and
+  `pagination: { per_page, has_more, next_cursor }`. Reply entries use the same
+  serialization as comments, with `reply_count: 0`. Empty collections use `{}`
+  and `[]`. Invalid or wrong-parent cursors return `422` with
+  `Reply cursor is invalid`.
+- `POST /api/comments/:comment_id/replies` — accepts `comment[body]` only and
+  returns the serialized reply with `201`. Author identity comes from the session;
+  parent and post come from the URL parent. Shared body validation and deleted
+  parent checks return `422`. Existing replies beneath deleted parents remain
+  readable but new replies are rejected. No follow relationship is required.
+- Both reply endpoints return `401` without a session and `404` for missing
+  parents or reply IDs used as parents. Replies use the existing comment
+  `PATCH`/`DELETE` endpoints below; no nested replies are supported.
 - `GET /api/posts/:post_id/comments` — authenticated, top-level comments only,
   newest first by `created_at` then `id` (both descending); following the author is not required.
 - Optional `per_page` defaults to 20 and is bounded to 1–50, matching existing
