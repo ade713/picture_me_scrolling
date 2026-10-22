@@ -12,8 +12,9 @@ Phase 3-1 frontend query integration merged into `feature/comments` in PR #194.
 Phase 3-2 read-only comment display merged into `feature/comments` in PR #195.
 Phase 3-3 comment creation merged into `feature/comments` in PR #196.
 Phase 3-4 author edit/delete controls are integrated into `feature/comments`.
-The newest-first ordering follow-up is implemented on
-`comments-newest-first-ordering`, pending review and merge.
+The newest-first ordering follow-up is integrated into `feature/comments`.
+Comment URL auto-linking is implemented on `comments-url-auto-linking`, pending
+review and merge.
 
 Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
 all 9 focused query/API tests (63 assertions) passed afterward.
@@ -349,15 +350,20 @@ them, and retires entries once loaded to prevent duplicates.
 
 ### Follow-up After Phase 3-4: Automatically Link Comment URLs
 
-After completing Phase 3-4 and before starting Phase 4, add a focused follow-up
-PR to make HTTP/HTTPS URLs clickable in comments while keeping stored content
-plain text. Use shared comment-body rendering so replies can reuse it in Phase 4.
-Do not add Markdown, raw HTML rendering, link previews, or backend URL fetching.
-Restrict generated links to `http://` and `https://`, open them in a new tab with
-`rel="noopener noreferrer ugc"`, and provide underlined styling, visible keyboard
-focus, and wrapping for long URLs. Cover URL parsing, unsafe schemes, punctuation,
-plain-text preservation, and keyboard behavior in tests. Until this follow-up,
-URLs remain plain text.
+Implemented after Phase 3-4 and before Phase 4: shared `CommentBody` rendering
+makes explicit HTTP/HTTPS URLs clickable while keeping stored content plain text.
+Replies can reuse the renderer in Phase 4. Bare domains, email addresses, invalid
+URLs, and other schemes remain text. No Markdown, raw HTML rendering, link
+previews, backend URL fetching, or new dependencies were added.
+
+Links open in a new tab with `rel="noopener noreferrer ugc"`. They are underlined,
+have visible rounded keyboard focus, and inherit long-text wrapping. Sentence
+punctuation and unmatched closing brackets stay outside links; balanced brackets
+within URLs are preserved. All original text, including whitespace and literal
+HTML, is retained through React text rendering.
+
+Tests cover destinations, protocols, punctuation, plain-text preservation, and
+keyboard focus/activation. Live browser and responsive checks remain pending.
 
 ### Phase 4: Replies
 
