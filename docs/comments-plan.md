@@ -452,13 +452,23 @@ count adjustments or artificial cursor-page entries are introduced.
 
 Reply form transitions use named handlers, and reply controls have an explicit
 styling class so their styles do not affect nested author actions. The parent
-discussion owns deletion announcements and focus restoration; reply threads clear
-stale feedback instead of announcing the same deletion twice.
+discussion owns deletion announcements; reply threads clear stale feedback instead
+of announcing the same deletion twice. Reply deletion focuses the previous reply's
+author, or the parent for the first reply, without scrolling. If the parent also
+disappears, focus falls back to the previous top-level comment, then the Comments
+heading. Deleted-parent placeholders are programmatically focusable. Top-level
+deletion retains its existing heading-focus behavior.
 
-Phase 4-3 live browser, keyboard, and responsive checks remain pending. The
-temporary local seed helper remains outside version control.
-Automated verification: all 284 frontend tests passed, including count-refresh
-and placeholder-removal coverage.
+Focused native Chrome verification passed on local post 515: deleting the second
+disposable reply focused the previous reply's author, and deleting the first
+focused its parent author. Keyboard confirmation worked, visible focus outlines
+appeared, and before/after screenshots showed no viewport jump. The disposable
+parent and both replies were removed afterward; existing content was untouched.
+Broader Phase 4-3 live coverage, responsive checks, and deleted-parent fallback
+browser checks remain pending. The temporary local seed helper stays uncommitted.
+Automated verification: all 288 frontend tests passed, including count-refresh,
+placeholder-removal, and reply-deletion focus fallback coverage. All five focused
+focus-restoration tests passed after adding deleted-parent placeholder coverage.
 Production Webpack build, Rails stylesheet compilation, and diff checks passed.
 Existing bundle-size, browser-mapping, Rails cache-format, and Sass import warnings
 remain follow-up work, not failures introduced by reply interactions.
