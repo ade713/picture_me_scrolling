@@ -61,6 +61,20 @@ describe('FeedItem actions', () => {
     vi.clearAllMocks();
   });
 
+  it('shows previews on feed cards but not the dedicated post card', () => {
+    const post = { comment_previews: [
+      { id: 1, body: 'A feed preview', author: { id: 3, username: 'Reader' } }
+    ] };
+    const { rerender } = renderFeedItem(post);
+    expect(screen.getByText('A feed preview')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'View all comments' })).toBeInTheDocument();
+
+    rerender(feedItemElement(post, { showFeedExtras: false }));
+    expect(screen.queryByText('A feed preview')).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'View all comments' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('link', { name: 'Add a comment' })).not.toBeInTheDocument();
+  });
+
   it('calls follow and unfollow mutations with the author id', async () => {
     const user = userEvent.setup();
     const { rerender } = renderFeedItem({ followed: false });
