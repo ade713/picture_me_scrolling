@@ -20,8 +20,12 @@ Phase 4-3 reply interactions are integrated into `feature/comments` in PR #202.
 Phase 4 implementation is complete on the integration branch, not released to
 production. Remaining live checks are recorded below for release readiness.
 Phase 5-1 bounded comment previews are integrated into `feature/comments` in PR #204.
-Phase 5-2 preview UI is implemented on `comments-phase-5-2-feed-previews`, updated
-from the integration branch; review and live visual checks are pending.
+Phase 5-2 preview UI is integrated into `feature/comments` in PR #205.
+Phase 5 implementation is complete on the integration branch, not released to
+production. A focused local preview smoke pass completed on November 13, 2026;
+remaining release checks are recorded in the frontend smoke checklist.
+Next: Phase 6-1 representative seed discussions, followed by Phase 6-2 release
+checks and the final integration PR to `main`.
 
 Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
 all 9 focused query/API tests (63 assertions) passed afterward.
@@ -484,6 +488,10 @@ remain follow-up work, not failures introduced by reply interactions.
 
 ### Phase 5: Feed Previews
 
+Implementation complete: PRs #204 and #205 are merged into `feature/comments`.
+See the [frontend smoke checklist](./frontend-smoke-checklist.md#comment-feed-previews)
+for remaining preview checks; integration does not imply those checks have passed.
+
 | PR | Scope |
 | --- | --- |
 | 5-1: Add Bounded Comment Previews | Efficient post-response previews, query-growth coverage, API tests. |
@@ -517,10 +525,21 @@ text (including URLs), wrap long words, and are visually clamped to three lines;
 the full discussion retains URL auto-linking. No mutation controls are included.
 All 294 frontend tests passed, including keyboard navigation, feed-origin state,
 empty/missing preview data, text safety, and dedicated-page exclusion. Production
-build and Rails stylesheet compilation passed with existing warnings. Live
-visual, responsive, and keyboard smoke checks remain pending.
+build and Rails stylesheet compilation passed with existing warnings. A focused
+local Chrome smoke pass on November 13, 2026 confirmed dashboard/profile empty
+and three-comment previews, square avatars, visible keyboard focus, Enter
+navigation into the discussion, filtered-dashboard return navigation, and no
+duplicate previews on dedicated post pages. Existing multiline preview content
+remained contained in a 375px emulated view, although the page appeared scaled
+down; this is not a full mobile accessibility sign-off. Mutation-refresh,
+single-comment/long-content edge cases, filtered-profile navigation, and network
+inspection remain open in the frontend smoke checklist.
 
 ### Phase 6: Release Readiness
+
+Not started. Replace the temporary local comment seed helper with repeatable
+main seed scenarios in Phase 6-1 before removing that helper. Preserve unrelated
+local data and use disposable records for destructive smoke checks.
 
 | PR | Scope |
 | --- | --- |
@@ -531,6 +550,16 @@ Save relevant smoke screenshots in a temporary directory for selection into PR
 UI sections. Record actual completed checks, not merely planned coverage.
 
 ## Follow-ups After MVP
+
+### Potential Post Rendering Context Cleanup
+
+Consider moving database lookups out of `app/views/api/posts/_post.json.jbuilder`
+into a consistent rendering-context preparation step for both collection and
+single-post responses. Address comment previews, like counts, viewer likes, and
+follow state together rather than introducing a preview-only abstraction.
+Preserve response fields, batched loading, and bounded preview queries, with
+regression coverage for response behavior and query growth. This is optional
+future cleanup, not a blocker for Phase 5 or the comments MVP.
 
 ### Comment Likes
 
