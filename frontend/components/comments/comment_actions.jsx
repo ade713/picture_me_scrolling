@@ -5,6 +5,7 @@ import { buttonLabels } from '../../config/button_labels';
 import { commentMessages, MAXIMUM_COMMENT_LENGTH } from '../../config/comments';
 import { useDeleteComment, useUpdateComment } from '../../query/comment_hooks';
 import LoadingIndicator from '../loading/loading_indicator';
+import { captureReplyDeletionFocus } from './reply_deletion_focus';
 
 const CommentActions = ({ comment, postId, onUpdated, onDeleted }) => {
   const [editing, setEditing] = useState(false);
@@ -46,6 +47,7 @@ const CommentActions = ({ comment, postId, onUpdated, onDeleted }) => {
 
   const remove = async () => {
     if (deletion.isPending) return;
+    const restoreReplyFocus = captureReplyDeletionFocus(editButton.current);
     try {
       await deletion.mutateAsync(comment.id);
     } catch {
@@ -56,6 +58,7 @@ const CommentActions = ({ comment, postId, onUpdated, onDeleted }) => {
     setConfirming(false);
     // Runs even if authoritative refetching has already unmounted this item.
     onDeleted(comment.id);
+    restoreReplyFocus?.();
   };
 
   return (
@@ -117,6 +120,7 @@ const CommentActions = ({ comment, postId, onUpdated, onDeleted }) => {
       )}
       {confirming && (
         <Modal isOpen contentLabel={commentMessages.deleteHeading}
+          preventScroll
           className="delete-post-confirmation-panel"
           overlayClassName="delete-post-confirmation"
           shouldCloseOnOverlayClick={false}

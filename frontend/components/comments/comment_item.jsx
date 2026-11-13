@@ -14,7 +14,7 @@ const CommentItem = ({ comment, postId, onUpdated, onDeleted, children }) => {
   return (
     <li className="comment-item">
       {comment.deleted ? (
-        <p className="comment-deleted">{commentMessages.deleted}</p>
+        <p className="comment-deleted" tabIndex={-1}>{commentMessages.deleted}</p>
       ) : (
         <>
           <div className="comment-identity">
