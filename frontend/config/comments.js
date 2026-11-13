@@ -4,7 +4,7 @@ export const commentMessages = Object.freeze({
   formLabel: 'Add a comment',
   viewReplies: 'View replies',
   hideReplies: 'Hide replies',
-  moreReplies: 'Show more replies',
+  moreReplies: 'View more replies',
   loadingReplies: 'Loading replies…',
   repliesError: 'Unable to load replies.',
   noReplies: 'No replies yet',

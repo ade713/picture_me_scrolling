@@ -127,7 +127,7 @@ revisit only if discussion traffic warrants finer-grained locking.
 - Disable new replies to deleted parents: hide Reply and reject server requests,
   including submissions from forms opened before deletion.
 - Existing replies remain readable and editable/deletable by their authors.
-  "View replies" and "Show more replies" remain available.
+  "View replies" and "View more replies" remain available.
 
 Use transactional lifecycle handling and appropriate database constraints.
 Coordinate reply creation with parent deletion so concurrent requests cannot
@@ -158,7 +158,7 @@ restoration, keyboard operation, labels, character guidance, and mobile layout.
 - Replies are collapsed initially. Do not fetch a preview for every parent.
 - Clicking "View replies" fetches the oldest five replies for that comment.
 - Display replies oldest-to-newest beneath the parent, slightly indented.
-- "Show more replies" sits below the loaded replies, explicitly fetches five
+- "View more replies" sits below the loaded replies, explicitly fetches five
   newer replies, and appends them below.
 - Its pagination controls remain in normal document flow below the reply list,
   without sticking to the viewport. The comment form remains fixed.
@@ -402,11 +402,11 @@ Replies are included before the MVP ships.
 Phase 4-2 adds collapsed View replies/Hide replies controls beneath parents with
 replies, including deleted placeholders. Expansion mounts a per-parent infinite
 query with five replies per request. Pages are displayed oldest-to-newest, with
-newer batches appended by an explicit Show more replies action. Query keys nest
+newer batches appended by an explicit View more replies action. Query keys nest
 under the post comments family so existing invalidation reaches expanded threads.
 Collapse removes the query observer without discarding cached data.
 
-Show more replies sits below the list in normal document flow, not sticky to the
+View more replies sits below the list in normal document flow, not sticky to the
 viewport. The previously introduced sticky-offset height callback is removed. Final-page
 focus restoration does not override another control focused during the request.
 The temporary, untracked local showcase helper includes a 50-reply thread for
@@ -421,7 +421,7 @@ visual movement, avoiding double compensation for browser scroll anchoring.
 User-confirmed live browser verification passed for oldest-first batches of five,
 appending newer replies below the list, and preserving the previous batch's last
 reply position. An independent native Chrome check also confirmed replies 1–5
-load first, Tab reaches Show more replies with a visible focus outline, and Enter
+load first, Tab reaches View more replies with a visible focus outline, and Enter
 appends replies 6–10 while reply 5 remains at the same viewport position.
 Full keyboard coverage (including final-page focus) and responsive checks remain pending.
 

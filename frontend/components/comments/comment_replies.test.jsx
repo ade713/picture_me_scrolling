@@ -58,7 +58,7 @@ describe('CommentReplies', () => {
     const view = mount();
     const user = userEvent.setup();
     await user.click(screen.getByRole('button', { name: 'View replies' }));
-    const moreButton = await screen.findByRole('button', { name: 'Show more replies' });
+    const moreButton = await screen.findByRole('button', { name: 'View more replies' });
     expect(screen.getByRole('list').compareDocumentPosition(moreButton) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
     await user.click(moreButton);
     await screen.findByText('Reply 10');
@@ -66,7 +66,7 @@ describe('CommentReplies', () => {
       .toEqual([...firstBatch, ...nextBatch].map(item => item.body));
     expect(get).toHaveBeenLastCalledWith('/api/comments/1/replies?per_page=5&after=next%2B%2F%3D', { signal: expect.any(AbortSignal) });
     expect(scroll).toHaveBeenCalledWith(0, 120);
-    expect(screen.queryByRole('button', { name: 'Show more replies' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'View more replies' })).not.toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Author 5' })).toHaveFocus();
   });
 
@@ -79,7 +79,7 @@ describe('CommentReplies', () => {
     mount(<><button type="button">Other control</button><CommentReplies postId={42} commentId={1} /></>);
     const user = userEvent.setup();
     await user.click(screen.getByRole('button', { name: 'View replies' }));
-    await user.click(await screen.findByRole('button', { name: 'Show more replies' }));
+    await user.click(await screen.findByRole('button', { name: 'View more replies' }));
     await user.click(screen.getByRole('button', { name: 'Other control' }));
     await act(async () => resolveNext(page([reply(2, 'Next reply')])));
     await screen.findByText('Next reply');
@@ -96,7 +96,7 @@ describe('CommentReplies', () => {
     mount();
     const user = userEvent.setup();
     await user.click(screen.getByRole('button', { name: 'View replies' }));
-    await user.click(await screen.findByRole('button', { name: 'Show more replies' }));
+    await user.click(await screen.findByRole('button', { name: 'View more replies' }));
     // A reader scrolls while waiting. Preserve this position, not the click-time one.
     top = 60;
     fireEvent.scroll(window);
@@ -118,7 +118,7 @@ describe('CommentReplies', () => {
     await user.click(screen.getByRole('button', { name: 'View replies' }));
     await user.click(await screen.findByRole('button', { name: 'Try again' }));
     await screen.findByText('First reply');
-    await user.click(screen.getByRole('button', { name: 'Show more replies' }));
+    await user.click(screen.getByRole('button', { name: 'View more replies' }));
     await screen.findByRole('button', { name: 'Retry loading' });
     expect(screen.getByText('First reply')).toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Retry loading' }));
