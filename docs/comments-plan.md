@@ -19,7 +19,8 @@ Phase 4-2 on-demand reply display is integrated into `feature/comments`.
 Phase 4-3 reply interactions are integrated into `feature/comments` in PR #202.
 Phase 4 implementation is complete on the integration branch, not released to
 production. Remaining live checks are recorded below for release readiness.
-Next: Phase 5-1 bounded comment previews.
+Phase 5-1 bounded comment previews are implemented on
+`comments-phase-5-1-bounded-previews`, pending review.
 
 Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
 all 9 focused query/API tests (63 assertions) passed afterward.
@@ -464,7 +465,7 @@ deletion retains its existing heading-focus behavior.
 Post-Phase 4 cleanup extracts `ReplyList` into `reply_list.jsx`, keeping reply
 fetching, pagination, scroll anchoring, and list rendering separate from
 `CommentReplies` thread/form state. Behavior and existing test coverage are
-unchanged. The extraction is on `extract-comment-reply-list`, pending review;
+unchanged. The extraction is integrated into `feature/comments` in PR #203;
 all 47 comments tests passed after the refactor, and diff checks passed.
 
 Focused native Chrome verification passed on local post 515: deleting the second
@@ -487,6 +488,23 @@ remain follow-up work, not failures introduced by reply interactions.
 | --- | --- |
 | 5-1: Add Bounded Comment Previews | Efficient post-response previews, query-growth coverage, API tests. |
 | 5-2: Display Feed Comment Previews | Shared dashboard/profile preview UI and navigation into the dedicated post page. |
+
+Phase 5-1 adds `comment_previews` to shared post responses. A window-function
+query ranks active top-level comments per post by newest creation time and ID,
+limits each post to three records in SQL, then returns those records in ascending
+order for display. Authors and avatar attachments are preloaded in batches.
+Collection rendering shares one preview lookup; single-post responses use the
+same query for one post. No migration, per-card request, preview controls, or
+frontend rendering is included in this phase.
+
+Preview entries contain ID, body, creation timestamp, and public author identity.
+Empty posts return an empty array; replies and deleted placeholders are excluded.
+Focused query/controller verification passed after cleanup: 40 tests, 220 assertions, including
+ordering ties, per-post limits, query-growth checks, and feed/profile/detail API
+coverage with attached avatars. Before cleanup, the full Rails suite passed:
+290 tests, 1,417 assertions. Diff checks
+passed. Existing Rails cache-format and Sass import deprecations remain unrelated
+follow-up work.
 
 ### Phase 6: Release Readiness
 

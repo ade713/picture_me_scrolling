@@ -184,6 +184,15 @@ with `Password reset link has expired`. Password validation errors also return
 - `DELETE /api/posts/:id`
 
 Post payloads include `tags` as an alphabetized array of normalized tag names.
+They also include `comment_previews`, an array of at most three latest active
+top-level comments, ordered oldest-to-newest within that selection (creation time,
+then ID). Replies and deleted placeholders are excluded. Each preview contains
+`id`, `body`, `created_at`, and public `author` fields (`id`, `username`,
+`avatar_url`). Posts without matching comments return `comment_previews: []`.
+This applies to dashboard/profile collections and single-post responses. Preview
+selection is bounded in SQL and authors/avatars are batch-loaded for collections;
+the preview does not contain discussion pagination or reply counts.
+
 For example, a post payload contains:
 
 ```json

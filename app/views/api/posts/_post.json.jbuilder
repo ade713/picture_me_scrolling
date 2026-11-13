@@ -4,6 +4,14 @@ json.image_url post.image.attached? ? url_for(post.image) : nil
 json.author post.author.username
 json.tags post.tags.map(&:name).sort
 
+comment_previews = @comment_previews || CommentPreviewsQuery.call(post_ids: [post.id])
+json.comment_previews comment_previews.fetch(post.id, []) do |comment|
+  json.extract! comment, :id, :body, :created_at
+  json.author do
+    json.partial! 'api/users/user', user: comment.user
+  end
+end
+
 if @followed_author_ids
   json.followed @followed_author_ids.include?(post.author_id)
 else

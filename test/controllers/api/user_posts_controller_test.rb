@@ -27,6 +27,18 @@ class Api::UserPostsControllerTest < ActionDispatch::IntegrationTest
     assert_equal ['You must be logged in'], response_json
   end
 
+  test 'profile posts include previews without requiring a follow' do
+    comment = Comment.create!(post: @newer_post, user: @other_user, body: 'Profile preview')
+
+    get api_user_posts_url(@profile_user)
+
+    assert_response :success
+    preview = response_posts.fetch(@newer_post.id.to_s).fetch('comment_previews')
+    assert_equal [comment.id], preview.map { |item| item['id'] }
+    assert_equal @other_user.id, preview.first.dig('author', 'id')
+    assert_empty response_posts.fetch(@older_post.id.to_s).fetch('comment_previews')
+  end
+
   test 'index returns serialized posts for the requested user' do
     @newer_post.tags << tags(:photography)
     Like.create!(user: @viewer, post: @newer_post)
