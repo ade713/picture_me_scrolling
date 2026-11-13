@@ -266,6 +266,51 @@ this checklist is not itself evidence that a check has been run.
   - Expected: usernames wrap, counts and controls remain visible, and no
     horizontal overflow appears.
 
+## Comment Feed Previews
+
+These checks apply to the comments integration branch until release. Automated
+coverage does not mark live checks complete.
+
+### Latest Local Pass — November 13, 2026
+
+Tested in native Chrome on `localhost:3000`, using existing local data without
+creating, editing, or deleting records:
+
+- Dashboard and profile `/users/107`: posts 516/517 showed "Add a comment";
+  post 515 showed the latest three active top-level comments oldest-to-newest,
+  without reply bodies or deleted placeholders.
+- Preview avatars were square and shared a profile link with the username.
+  Tabbing showed a visible focus outline; Enter on "View all comments" opened
+  post 515 with the profile Back to feed destination and no duplicate preview.
+- "Add a comment" from `/dashboard?tag=lovetesting` opened post 517's empty
+  discussion and retained the filtered dashboard Back to feed destination.
+- Desktop and 375px emulated profile views contained the existing preview text,
+  multiline URL text, avatars, and discussion link without visible clipping.
+  The emulated page appeared scaled down, so actual mobile readability and
+  long-content stress cases still need verification.
+
+Still pending: a single-comment example, filtered-profile return navigation,
+live create/edit/delete preview refresh, long usernames/unbroken words and
+three-line truncation stress cases, and Network-panel confirmation of no
+per-card comment requests. No preview defect was observed in the tested scope.
+
+### Full Release Checklist
+
+- Check dashboard and profile posts with zero, one, and more than three active
+  top-level comments. Expect the latest three in oldest-to-newest display order;
+  replies and deleted placeholders must not appear.
+- Confirm square avatars and usernames share a single profile link. Tab through
+  author links and activate discussion navigation with Enter; focus should be visible.
+- Open "View all comments" or "Add a comment" from a tag-filtered dashboard and
+  profile feed. Confirm the dedicated post page and Back to feed destination,
+  with no duplicate preview above the full discussion.
+- Create, edit, and delete disposable comments on the post page, then return to
+  the feed. Confirm previews refresh without stale or duplicate entries.
+- At narrow and wide viewport sizes, check long usernames, long words, and
+  multiline bodies. Avatars must stay square; preview text is clamped to three
+  visible lines, with no horizontal overflow or clipped navigation controls.
+- Confirm loading feed cards does not issue a separate comments request per card.
+
 ## API Coverage Backstop
 
 Run the focused backend coverage when checking behavior without a browser:
