@@ -1,23 +1,23 @@
 class CommentRepliesQuery
   include QueryPagination
 
-  DEFAULT_REPLIES_PER_PAGE = 3
-  CURSOR_PURPOSE = 'comment_replies_older'.freeze
+  DEFAULT_REPLIES_PER_PAGE = 5
+  CURSOR_PURPOSE = 'comment_replies_oldest_first'.freeze
   INVALID_CURSOR_ERROR = 'Reply cursor is invalid'.freeze
   class InvalidCursorError < StandardError; end
 
-  def self.call(parent:, before: nil, per_page: nil)
-    new(parent: parent, before: before, per_page: per_page).call
+  def self.call(parent:, after: nil, per_page: nil)
+    new(parent: parent, after: after, per_page: per_page).call
   end
 
-  def initialize(parent:, before: nil, per_page: nil)
+  def initialize(parent:, after: nil, per_page: nil)
     @parent = parent
-    @before = before
+    @after = after
     @per_page = per_page
   end
 
   def call
-    replies = replies_before_cursor.order(created_at: :desc, id: :desc)
+    replies = replies_after_cursor.order(created_at: :asc, id: :asc)
                                   .includes(user: { avatar_attachment: :blob })
                                   .limit(normalized_per_page + 1).to_a
     has_more = replies.length > normalized_per_page
@@ -28,28 +28,27 @@ class CommentRepliesQuery
       next_cursor: has_more ? cursor_for(replies.last) : nil
     }
 
-    # Select the newest batch, but render each batch chronologically.
-    [replies.reverse, pagination]
+    [replies, pagination]
   end
 
   private
 
-  attr_reader :parent, :before, :per_page
+  attr_reader :parent, :after, :per_page
 
   def normalized_per_page
     integer_param(per_page, DEFAULT_REPLIES_PER_PAGE).clamp(MIN_PER_PAGE, MAX_PER_PAGE)
   end
 
-  def replies_before_cursor
+  def replies_after_cursor
     records = parent.replies
-    return records unless before.present?
+    return records unless after.present?
 
-    raise InvalidCursorError, INVALID_CURSOR_ERROR unless before.is_a?(String)
+    raise InvalidCursorError, INVALID_CURSOR_ERROR unless after.is_a?(String)
 
-    cursor = verifier.verified(before, purpose: CURSOR_PURPOSE)
+    cursor = verifier.verified(after, purpose: CURSOR_PURPOSE)
     raise InvalidCursorError, INVALID_CURSOR_ERROR unless cursor && cursor['parent_id'] == parent.id
 
-    records.where('(created_at, id) < (?, ?)', cursor['created_at'], cursor['id'])
+    records.where('(created_at, id) > (?, ?)', cursor['created_at'], cursor['id'])
   end
 
   def verifier

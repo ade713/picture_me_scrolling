@@ -4,7 +4,7 @@ class Api::CommentRepliesController < ApplicationController
 
   def index
     @comments, @pagination = CommentRepliesQuery.call(
-      parent: @parent, before: params[:before], per_page: params[:per_page]
+      parent: @parent, after: params[:after], per_page: params[:per_page]
     )
     @reply_counts = {} # Replies cannot have children.
     render 'api/comments/index'
