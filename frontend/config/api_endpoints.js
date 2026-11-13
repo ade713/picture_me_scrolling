@@ -7,6 +7,11 @@ export const apiEndpoints = Object.freeze({
   emailVerification: '/api/email_verification',
   passwordReset: '/api/password_reset',
   comments: Object.freeze({
+    repliesPage: ({ commentId, after, perPage }) => {
+      const searchParams = new URLSearchParams({ per_page: perPage });
+      if (after) searchParams.set('after', after);
+      return `/api/comments/${commentId}/replies?${searchParams.toString()}`;
+    },
     collection: postId => `/api/posts/${postId}/comments`,
     detail: id => `/api/comments/${id}`,
     page: ({ postId, after, perPage }) => {

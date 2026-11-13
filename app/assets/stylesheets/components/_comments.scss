@@ -222,6 +222,37 @@
   }
 }
 
+.comment-replies {
+  margin-top: 12px;
+
+  button {
+    margin: 8px 0;
+    padding: 8px 12px;
+    border: 1px solid black;
+    border-radius: 3px;
+    cursor: pointer;
+
+    &:hover:not(:disabled) { box-shadow: 2px 2px 0 black; }
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+    &:focus-visible { outline: 3px solid #CE0063; outline-offset: 3px; }
+  }
+}
+
+.comment-reply-list {
+  margin-left: 16px;
+  padding-left: 12px;
+  border-left: 1px solid #ddd;
+  overflow-anchor: none;
+}
+
+.comment-replies-pagination {
+  width: fit-content;
+  max-width: 100%;
+  padding: 0 4px;
+  background: white;
+  border-radius: 3px;
+}
+
 .comment-deleted,
 .comment-reply-count {
   color: #555;

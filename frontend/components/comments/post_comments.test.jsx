@@ -87,7 +87,8 @@ describe('PostComments', () => {
     expect(screen.getByText(comment.body)).toBeInTheDocument();
     await user.tab();
     await user.tab();
-    expect(screen.getByRole('button')).toHaveFocus();
+    await user.tab();
+    expect(screen.getByRole('button', { name: 'Retry loading' })).toHaveFocus();
     await user.keyboard('{Enter}');
     expect(fetchNextPage).toHaveBeenCalledTimes(1);
   });

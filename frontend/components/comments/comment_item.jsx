@@ -7,7 +7,7 @@ import { useCurrentUser } from '../../query/session_hooks';
 import CommentActions from './comment_actions';
 import CommentBody from './comment_body';
 
-const CommentItem = ({ comment, postId, onUpdated, onDeleted }) => {
+const CommentItem = ({ comment, postId, onUpdated, onDeleted, readOnly = false, children }) => {
   const currentUser = useCurrentUser();
   const isAuthor = !comment.deleted && Boolean(currentUser.data) && currentUser.data.id === comment.author?.id;
 
@@ -27,7 +27,7 @@ const CommentItem = ({ comment, postId, onUpdated, onDeleted }) => {
             </time>
           </div>
           <CommentBody body={comment.body} />
-          {isAuthor && (
+          {isAuthor && !readOnly && (
             <CommentActions
               comment={comment}
               postId={postId}
@@ -40,6 +40,7 @@ const CommentItem = ({ comment, postId, onUpdated, onDeleted }) => {
       {comment.reply_count > 0 && (
         <p className="comment-reply-count">{commentMessages.replyCount(comment.reply_count)}</p>
       )}
+      {children}
     </li>
   );
 };

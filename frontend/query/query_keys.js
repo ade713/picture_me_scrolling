@@ -2,6 +2,7 @@ export const queryKeys = {
   currentUser: ['currentUser'],
   comments: ['comments'],
   postComments: postId => [...queryKeys.comments, String(postId)],
+  commentReplies: (postId, commentId) => [...queryKeys.postComments(postId), 'replies', String(commentId)],
   posts: ['posts'],
   postsFeed: tag => tag ? [...queryKeys.posts, { tag }] : queryKeys.posts,
   post: id => [...queryKeys.posts, 'detail', String(id)],
