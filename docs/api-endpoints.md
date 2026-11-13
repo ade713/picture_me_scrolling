@@ -80,7 +80,7 @@
   (`["Comment not found"]`) for missing, deleted, or non-owned comments. Owning
   the post grants no permission over another author's comments. Existing replies
   remain editable/deletable by their authors beneath deleted parent placeholders.
-- Reply reads and creation follow in later phases.
+- Reply reads and creation are available through the parent-scoped endpoints above.
 
 ### Session
 - `POST /api/session`
