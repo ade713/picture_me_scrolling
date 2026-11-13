@@ -71,7 +71,7 @@ const PostPage = () => {
             key={postQuery.data.id}
             post={postQuery.data}
             priorityMedia
-            showDetailLink={false}
+            showFeedExtras={false}
             onDeleted={() => navigate(returnDestination, { replace: true })}
           />
         </ul>

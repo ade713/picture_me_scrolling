@@ -20,6 +20,7 @@ import { DeletePostConfirmation,
          PostFrame,
          PostHeader } from './feed_item_parts';
 import EditPostForm from '../posts/edit_post_form';
+import CommentPreview from '../comments/comment_preview';
 
 const POST_BODY_COMPONENTS = {
   [postTypes.audio]: AudioPost,
@@ -30,7 +31,7 @@ const POST_BODY_COMPONENTS = {
   [postTypes.video]: VideoPost
 };
 
-const FeedItem = ({ post, priorityMedia = false, onDeleted, showDetailLink = true }) => {
+const FeedItem = ({ post, priorityMedia = false, onDeleted, showFeedExtras = true }) => {
   const currentUser = useCurrentUser();
   const deletePost = useDeletePost();
   const followUser = useFollowUser();
@@ -79,10 +80,13 @@ const FeedItem = ({ post, priorityMedia = false, onDeleted, showDetailLink = tru
         post={ post }
         priorityMedia={ priorityMedia }
       />
-      {showDetailLink && (
-        <div className="post-detail-navigation">
-          <PostDetailLink postId={post.id}>{postPageMessages.viewPost}</PostDetailLink>
-        </div>
+      {showFeedExtras && (
+        <>
+          <div className="post-detail-navigation">
+            <PostDetailLink postId={post.id}>{postPageMessages.viewPost}</PostDetailLink>
+          </div>
+          <CommentPreview postId={post.id} comments={post.comment_previews} />
+        </>
       )}
       { editingPost && (
         <EditPostForm
