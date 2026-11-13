@@ -15,9 +15,9 @@ Phase 3-4 author edit/delete controls are integrated into `feature/comments`.
 The newest-first ordering follow-up is integrated into `feature/comments`.
 Comment URL auto-linking is integrated into `feature/comments`.
 Phase 4-1 replies API is integrated into `feature/comments`.
-Phase 4-2 on-demand reply display is implemented on
-`comments-phase-4-2-reply-display`, pending review and merge.
-Reply mutations remain Phase 4-3 work.
+Phase 4-2 on-demand reply display is integrated into `feature/comments`.
+Phase 4-3 reply interactions are implemented on
+`comments-phase-4-3-reply-interactions`, pending review and live checks.
 
 Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
 all 9 focused query/API tests (63 assertions) passed afterward.
@@ -307,8 +307,8 @@ submissions for separate display until they appear in loaded pages, deduplicates
 them by ID, and handles multiple submissions; invalidation alone does not meet the
 new-comment visibility requirement. Delete refetches rather than assuming the
 row disappeared, because the server may retain a placeholder. Per-parent reply
-frontend queries are implemented in Phase 4-2; reply mutation integration remains
-Phase 4-3 work. The backend reply endpoints are implemented in Phase 4-1.
+frontend queries are implemented in Phase 4-2; reply mutation integration is
+implemented in Phase 4-3. The backend reply endpoints are implemented in Phase 4-1.
 
 Phase 3-3 adds a textarea with a visually hidden label and the placeholder
 “Write your comment”. Its character counter turns red above the 1,000-character
@@ -412,7 +412,7 @@ focus restoration does not override another control focused during the request.
 The temporary, untracked local showcase helper includes a 50-reply thread for
 manual pagination checks; it is not part of this PR or the permanent seed workflow.
 
-The read-only reply list reuses comment identity, timestamps, body auto-linking,
+The Phase 4-2 read-only reply list reuses comment identity, timestamps, body auto-linking,
 and styling. Pending, empty, initial-error/retry, and next-page-error/retry states
 are included. Loading newer replies anchors the last previously loaded reply
 and corrects any visual displacement; tests cover that adjustment and final-page behavior.
@@ -431,6 +431,47 @@ passed during pagination styling work. Diff checks passed.
 The focused reply query/API suite passed (10 tests, 77 assertions). Final cleanup
 aligns test fixture names with oldest-first pagination and removes an unrelated
 comment-form formatting change. The temporary seed helper stays uncommitted.
+
+Phase 4-3 adds an inline Reply form to active top-level comments, including those
+without replies. Opening the form expands that thread. The form focuses its
+textarea, validates the shared 1,000-character limit, blocks duplicate pending
+submissions, retains failed drafts, and restores focus to Reply on cancellation.
+Deleted parents hide Reply and close any open form; server validation still
+rejects submissions against stale/deleted parents.
+
+Replies reuse author-only edit/delete icons, inline editing, and confirmation
+dialogs. No nested Reply action is rendered. Reply mutations invalidate the
+parent discussion (including all expanded reply queries) and affected post
+consumers, refreshing authoritative reply counts and deleted-parent placeholders.
+
+New submissions outside loaded cursor pages appear below pagination in a labeled
+"Your new replies" section, with guidance explaining the unloaded gap. They remain
+editable/deletable and survive thread collapse. Once loaded normally, their local
+copies are retired so subsequent deletion cannot resurrect them. No optimistic
+count adjustments or artificial cursor-page entries are introduced.
+
+Reply form transitions use named handlers, and reply controls have an explicit
+styling class so their styles do not affect nested author actions. The parent
+discussion owns deletion announcements; reply threads clear stale feedback instead
+of announcing the same deletion twice. Reply deletion focuses the previous reply's
+author, or the parent for the first reply, without scrolling. If the parent also
+disappears, focus falls back to the previous top-level comment, then the Comments
+heading. Deleted-parent placeholders are programmatically focusable. Top-level
+deletion retains its existing heading-focus behavior.
+
+Focused native Chrome verification passed on local post 515: deleting the second
+disposable reply focused the previous reply's author, and deleting the first
+focused its parent author. Keyboard confirmation worked, visible focus outlines
+appeared, and before/after screenshots showed no viewport jump. The disposable
+parent and both replies were removed afterward; existing content was untouched.
+Broader Phase 4-3 live coverage, responsive checks, and deleted-parent fallback
+browser checks remain pending. The temporary local seed helper stays uncommitted.
+Automated verification: all 288 frontend tests passed, including count-refresh,
+placeholder-removal, and reply-deletion focus fallback coverage. All five focused
+focus-restoration tests passed after adding deleted-parent placeholder coverage.
+Production Webpack build, Rails stylesheet compilation, and diff checks passed.
+Existing bundle-size, browser-mapping, Rails cache-format, and Sass import warnings
+remain follow-up work, not failures introduced by reply interactions.
 
 ### Phase 5: Feed Previews
 

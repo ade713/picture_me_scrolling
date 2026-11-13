@@ -2,6 +2,15 @@ export const MAXIMUM_COMMENT_LENGTH = 1_000;
 
 export const commentMessages = Object.freeze({
   formLabel: 'Add a comment',
+  reply: 'Reply',
+  replyLabel: 'Add a reply',
+  replyPlaceholder: 'Write your reply',
+  postReply: 'Post reply',
+  postingReply: 'Posting reply…',
+  replyCreated: 'Reply posted.',
+  replyError: 'Unable to post reply. Please try again.',
+  submittedRepliesHeading: 'Your new replies',
+  submittedRepliesGuidance: 'Shown separately until you load the replies preceding them.',
   viewReplies: 'View replies',
   hideReplies: 'Hide replies',
   moreReplies: 'View more replies',

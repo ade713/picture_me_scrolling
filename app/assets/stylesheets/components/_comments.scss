@@ -225,7 +225,9 @@
 .comment-replies {
   margin-top: 12px;
 
-  button {
+  .comment-replies-button + .comment-replies-button { margin-left: 12px; }
+
+  .comment-replies-button {
     margin: 8px 0;
     padding: 8px 12px;
     border: 1px solid black;

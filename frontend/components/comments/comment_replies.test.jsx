@@ -8,7 +8,7 @@ import { queryKeys } from '../../query/query_keys';
 import CommentReplies from './comment_replies';
 
 vi.mock('../../util/api_client', () => ({ get: vi.fn() }));
-vi.mock('../../query/session_hooks', () => ({ useCurrentUser: () => ({ data: { id: 7 } }) }));
+vi.mock('../../query/session_hooks', () => ({ useCurrentUser: () => ({ data: { id: 99 } }) }));
 
 const reply = (id, body) => ({ id, body, created_at: '2026-10-21T12:00:00Z', reply_count: 0,
   author: { id: 7, username: `Author ${id}`, avatar_url: '/avatar.png' } });
@@ -24,15 +24,16 @@ describe('CommentReplies', () => {
     client = new QueryClient({ defaultOptions: { queries: { retry: false } } });
   });
   afterEach(() => { client.clear(); vi.resetAllMocks(); vi.restoreAllMocks(); vi.unstubAllGlobals(); });
-  const mount = (children = <CommentReplies postId={42} commentId={1} />) => render(
+  const mount = (children = <CommentReplies postId={42} commentId={1} replyCount={5} />) => render(
     <QueryClientProvider client={client}><MemoryRouter>{children}</MemoryRouter></QueryClientProvider>
   );
 
-  it('fetches only on keyboard expansion and keeps reply display read-only', async () => {
+  it('fetches only on keyboard expansion and keeps reply other authors’ replies read-only', async () => {
     get.mockResolvedValue(page([reply(3, 'Visit https://example.com')]));
     mount();
     expect(get).not.toHaveBeenCalled();
     const user = userEvent.setup();
+    await user.tab();
     await user.tab();
     await user.keyboard('{Enter}');
     await screen.findByRole('link', { name: 'https://example.com' });
@@ -76,7 +77,7 @@ describe('CommentReplies', () => {
       .mockImplementationOnce(() => new Promise(resolve => { resolveNext = resolve; }));
     vi.spyOn(window, 'scrollBy').mockImplementation(() => {});
     vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({ top: 100, bottom: 200 });
-    mount(<><button type="button">Other control</button><CommentReplies postId={42} commentId={1} /></>);
+    mount(<><button type="button">Other control</button><CommentReplies postId={42} commentId={1} replyCount={5} /></>);
     const user = userEvent.setup();
     await user.click(screen.getByRole('button', { name: 'View replies' }));
     await user.click(await screen.findByRole('button', { name: 'View more replies' }));
@@ -127,13 +128,13 @@ describe('CommentReplies', () => {
 
   it('isolates parent caches and supports empty replies', async () => {
     get.mockImplementation(url => Promise.resolve(page(url.includes('/1/') ? [reply(3, 'First thread')] : [])));
-    mount(<><section aria-label="First"><CommentReplies postId={42} commentId={1} /></section>
-      <section aria-label="Second"><CommentReplies postId={42} commentId={2} /></section></>);
+    mount(<><section aria-label="First"><CommentReplies postId={42} commentId={1} replyCount={5} /></section>
+      <section aria-label="Second"><CommentReplies postId={42} commentId={2} replyCount={1} /></section></>);
     const user = userEvent.setup();
-    await user.click(within(screen.getByRole('region', { name: 'First' })).getByRole('button'));
+    await user.click(within(screen.getByRole('region', { name: 'First' })).getByRole('button', { name: 'View replies' }));
     await screen.findByText('First thread');
     expect(get).toHaveBeenCalledTimes(1);
-    await user.click(within(screen.getByRole('region', { name: 'Second' })).getByRole('button'));
+    await user.click(within(screen.getByRole('region', { name: 'Second' })).getByRole('button', { name: 'View replies' }));
     await screen.findByText('No replies yet');
     expect(client.getQueryData(queryKeys.commentReplies(42, 1)).pages[0].comment_ids).toEqual([3]);
     expect(client.getQueryData(queryKeys.commentReplies(42, 2)).pages[0].comment_ids).toEqual([]);

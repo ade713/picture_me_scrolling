@@ -48,10 +48,15 @@ const PostComments = ({ postId }) => {
     window.requestAnimationFrame(() => heading.current?.focus());
   };
 
+  const handleReplyDeleted = () => {
+    setFeedback(commentMessages.removed);
+  };
+
   const renderComment = comment => (
     <CommentItem key={comment.id} comment={comment} postId={postId}
       onUpdated={handleUpdated} onDeleted={handleDeleted}>
-      {comment.reply_count > 0 && <CommentReplies postId={postId} commentId={comment.id} />}
+      <CommentReplies postId={postId} commentId={comment.id}
+        replyCount={comment.reply_count} deleted={comment.deleted} onDeleted={handleReplyDeleted} />
     </CommentItem>
   );
 
