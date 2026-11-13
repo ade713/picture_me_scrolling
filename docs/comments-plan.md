@@ -16,8 +16,10 @@ The newest-first ordering follow-up is integrated into `feature/comments`.
 Comment URL auto-linking is integrated into `feature/comments`.
 Phase 4-1 replies API is integrated into `feature/comments`.
 Phase 4-2 on-demand reply display is integrated into `feature/comments`.
-Phase 4-3 reply interactions are implemented on
-`comments-phase-4-3-reply-interactions`, pending review and live checks.
+Phase 4-3 reply interactions are integrated into `feature/comments` in PR #202.
+Phase 4 implementation is complete on the integration branch, not released to
+production. Remaining live checks are recorded below for release readiness.
+Next: Phase 5-1 bounded comment previews.
 
 Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
 all 9 focused query/API tests (63 assertions) passed afterward.
@@ -458,6 +460,12 @@ author, or the parent for the first reply, without scrolling. If the parent also
 disappears, focus falls back to the previous top-level comment, then the Comments
 heading. Deleted-parent placeholders are programmatically focusable. Top-level
 deletion retains its existing heading-focus behavior.
+
+Post-Phase 4 cleanup extracts `ReplyList` into `reply_list.jsx`, keeping reply
+fetching, pagination, scroll anchoring, and list rendering separate from
+`CommentReplies` thread/form state. Behavior and existing test coverage are
+unchanged. The extraction is on `extract-comment-reply-list`, pending review;
+all 47 comments tests passed after the refactor, and diff checks passed.
 
 Focused native Chrome verification passed on local post 515: deleting the second
 disposable reply focused the previous reply's author, and deleting the first
