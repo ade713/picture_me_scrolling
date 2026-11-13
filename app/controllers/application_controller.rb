@@ -39,5 +39,6 @@ class ApplicationController < ActionController::Base
                                        .where(followee_id: author_ids)
                                        .pluck(:followee_id)
     @post_like_counts = Like.where(post_id: post_ids).group(:post_id).count
+    @comment_previews = CommentPreviewsQuery.call(post_ids: post_ids)
   end
 end
