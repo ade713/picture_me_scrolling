@@ -88,6 +88,7 @@ describe('PostComments', () => {
     await user.tab();
     await user.tab();
     await user.tab();
+    await user.tab();
     expect(screen.getByRole('button', { name: 'Retry loading' })).toHaveFocus();
     await user.keyboard('{Enter}');
     expect(fetchNextPage).toHaveBeenCalledTimes(1);
@@ -161,7 +162,7 @@ describe('PostComments', () => {
     fireEvent.change(screen.getByRole('textbox'), { target: { value: updated.body } });
     await user.click(screen.getByRole('button', { name: 'Save comment' }));
     expect(screen.getByText(updated.body)).toBeInTheDocument();
-    expect(screen.getByRole('status')).toHaveTextContent('Comment updated.');
+    expect(screen.getByText('Comment updated.')).toHaveAttribute('role', 'status');
     await user.click(screen.getByRole('button', { name: 'Delete comment' }));
     await user.click(screen.getByRole('button', { name: 'Yes' }));
     expect(screen.queryByText(updated.body)).not.toBeInTheDocument();
