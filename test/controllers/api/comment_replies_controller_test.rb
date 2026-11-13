@@ -38,7 +38,7 @@ class Api::CommentRepliesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'reads direct replies beneath a deleted parent without following' do
-    replies = 4.times.map { create_reply }
+    replies = 6.times.map { create_reply }
     other = Comment.create!(post: posts(:two), user: users(:one), body: 'Other')
     create_reply(parent: other, post: other.post)
     CommentDeletion.new(comment: @parent).call
@@ -46,12 +46,12 @@ class Api::CommentRepliesControllerTest < ActionDispatch::IntegrationTest
     get api_comment_replies_url(@parent)
     assert_response :success
     data = response.parsed_body
-    assert_equal replies.last(3).map(&:id), data['comment_ids']
-    assert_equal 3, data.dig('pagination', 'per_page')
-    assert_equal users(:two).id, data.dig('comments', replies.last.id.to_s, 'author', 'id')
-    get api_comment_replies_url(@parent), params: { before: data.dig('pagination', 'next_cursor') }
+    assert_equal replies.first(5).map(&:id), data['comment_ids']
+    assert_equal 5, data.dig('pagination', 'per_page')
+    assert_equal users(:two).id, data.dig('comments', replies.first.id.to_s, 'author', 'id')
+    get api_comment_replies_url(@parent), params: { after: data.dig('pagination', 'next_cursor') }
     assert_response :success
-    assert_equal [replies.first.id], response.parsed_body['comment_ids']
+    assert_equal [replies.last.id], response.parsed_body['comment_ids']
     refute response.parsed_body.dig('pagination', 'has_more')
   end
 
@@ -87,7 +87,7 @@ class Api::CommentRepliesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_equal({}, response.parsed_body['comments'])
     assert_empty response.parsed_body['comment_ids']
-    get api_comment_replies_url(@parent), params: { before: 'invalid' }
+    get api_comment_replies_url(@parent), params: { after: 'invalid' }
     assert_response :unprocessable_entity
     assert_equal ['Reply cursor is invalid'], response.parsed_body
   end

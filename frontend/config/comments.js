@@ -2,6 +2,12 @@ export const MAXIMUM_COMMENT_LENGTH = 1_000;
 
 export const commentMessages = Object.freeze({
   formLabel: 'Add a comment',
+  viewReplies: 'View replies',
+  hideReplies: 'Hide replies',
+  moreReplies: 'View more replies',
+  loadingReplies: 'Loading replies…',
+  repliesError: 'Unable to load replies.',
+  noReplies: 'No replies yet',
   editLabel: 'Edit comment',
   edit: 'Edit comment',
   cancel: 'Cancel',

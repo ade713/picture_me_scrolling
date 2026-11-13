@@ -23,12 +23,13 @@
 ### Comments
 
 - `GET /api/comments/:comment_id/replies` — authenticated direct replies to a
-  top-level comment, including deleted-parent placeholders. Returns the latest
-  three by default, ordered oldest-to-newest within the batch. `per_page` is
-  bounded to 1–50. Pass `pagination.next_cursor` as `before` to retrieve older
-  replies and prepend that batch above the loaded replies. Cursors are signed and parent-bound, use
+  top-level comment, including deleted-parent placeholders. Returns the oldest
+  five by default, ordered oldest-to-newest. `per_page` is
+  bounded to 1–50. Pass `pagination.next_cursor` as `after` to retrieve newer
+  replies and append that batch below the loaded replies. Cursors are signed and parent-bound, use
   `(created_at, id)` ordering, and remain valid after anchor deletion.
-  New replies do not shift older pages; refresh to retrieve newer replies.
+  New replies do not shift existing cursor boundaries. Refresh after reaching
+  the end to discover subsequent replies. Previous reverse-order cursors are invalid.
 - The replies collection reuses `comments`, ordered `comment_ids`, and
   `pagination: { per_page, has_more, next_cursor }`. Reply entries use the same
   serialization as comments, with `reply_count: 0`. Empty collections use `{}`

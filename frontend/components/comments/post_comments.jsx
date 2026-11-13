@@ -7,6 +7,7 @@ import LoadingIndicator from '../loading/loading_indicator';
 import AutomaticPagination from '../pagination/automatic_pagination';
 import CommentItem from './comment_item';
 import CommentForm from './comment_form';
+import CommentReplies from './comment_replies';
 
 const PostComments = ({ postId }) => {
   const headingId = useId();
@@ -49,7 +50,9 @@ const PostComments = ({ postId }) => {
 
   const renderComment = comment => (
     <CommentItem key={comment.id} comment={comment} postId={postId}
-      onUpdated={handleUpdated} onDeleted={handleDeleted} />
+      onUpdated={handleUpdated} onDeleted={handleDeleted}>
+      {comment.reply_count > 0 && <CommentReplies postId={postId} commentId={comment.id} />}
+    </CommentItem>
   );
 
   const renderComments = () => {

@@ -14,8 +14,10 @@ Phase 3-3 comment creation merged into `feature/comments` in PR #196.
 Phase 3-4 author edit/delete controls are integrated into `feature/comments`.
 The newest-first ordering follow-up is integrated into `feature/comments`.
 Comment URL auto-linking is integrated into `feature/comments`.
-Phase 4-1 replies API is implemented on `comments-phase-4-1-replies-api`, pending
-review and merge. Reply UI remains Phase 4-2/4-3 work.
+Phase 4-1 replies API is integrated into `feature/comments`.
+Phase 4-2 on-demand reply display is implemented on
+`comments-phase-4-2-reply-display`, pending review and merge.
+Reply mutations remain Phase 4-3 work.
 
 Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
 all 9 focused query/API tests (63 assertions) passed afterward.
@@ -125,7 +127,7 @@ revisit only if discussion traffic warrants finer-grained locking.
 - Disable new replies to deleted parents: hide Reply and reject server requests,
   including submissions from forms opened before deletion.
 - Existing replies remain readable and editable/deletable by their authors.
-  "View replies" and "Show older replies" remain available.
+  "View replies" and "View more replies" remain available.
 
 Use transactional lifecycle handling and appropriate database constraints.
 Coordinate reply creation with parent deletion so concurrent requests cannot
@@ -154,10 +156,14 @@ restoration, keyboard operation, labels, character guidance, and mobile layout.
 ## Replies and Pagination
 
 - Replies are collapsed initially. Do not fetch a preview for every parent.
-- Clicking "View replies" fetches the latest three replies for that comment.
+- Clicking "View replies" fetches the oldest five replies for that comment.
 - Display replies oldest-to-newest beneath the parent, slightly indented.
-- "Show older replies" explicitly fetches three more and prepends them above.
-- Preserve the reader's visible position when older replies are prepended.
+- "View more replies" sits below the loaded replies, explicitly fetches five
+  newer replies, and appends them below.
+- Its pagination controls remain in normal document flow below the reply list,
+  without sticking to the viewport. The comment form remains fixed.
+- Preserve the last previously loaded reply's screen position when newer replies
+  are appended; do not scroll to the newly added replies or the moved button.
 - Successful new replies should be visible at the bottom of the loaded replies.
 - Each parent has independent pagination/cache state.
 - Paginate top-level comments and replies separately, never an arbitrary flattened
@@ -175,12 +181,12 @@ replies. Return pagination metadata and reply counts without embedding whole
 threads. Phase 4-1 adds `POST /api/comments/:comment_id/replies` accepting only
 `comment[body]`, returning the same serialized object as top-level creation.
 Collection responses reuse `comments`, `comment_ids`, and pagination metadata.
-The default batch is three replies (bounded page sizes 1–50). Each batch is
-chronological; `next_cursor` is supplied as `before` to fetch and prepend older
+The default batch is five replies (bounded page sizes 1–50). Each batch is
+chronological; `next_cursor` is supplied as `after` to fetch and append newer
 batches. Signed cursors are scoped to the parent and use creation time plus ID.
 
 Use deterministic ordering with an ID tie-breaker. Ensure inserts/deletions
-between requests do not produce duplicate or skipped older replies; select a
+between requests do not produce duplicate or skipped replies; select a
 pagination strategy appropriate to these changing collections during query work.
 Top-level page size remains an implementation choice using existing conventions;
 the preview/reply sizes above are agreed product behavior.
@@ -194,8 +200,8 @@ The response uses `comments` keyed by ID and ordered `comment_ids`; each comment
 includes public author identity (or null for a placeholder), body, timestamps,
 post/parent IDs, deletion state, and a batched `reply_count`. Replies are not
 embedded. Authentication is required, following the post author is not.
-The replies endpoint and older-batch cursor contract are implemented in Phase 4-1;
-frontend query integration and reply expansion remain Phase 4-2 work.
+The replies endpoint is implemented in Phase 4-1; Phase 4-2 updates its cursor contract to fetch newer batches;
+frontend query integration and reply expansion are implemented in Phase 4-2.
 
 ## Feed Previews
 
@@ -274,7 +280,7 @@ counts. Placeholders omit author identity and original text. Comments reuse the
 shared loading indicator and automatic pagination, with keyboard-operable manual
 fallback/retry. Cached comments remain visible on subsequent request failures.
 Creation and author editing/deletion controls were added in Phases 3-3 and 3-4.
-Reply expansion remains Phase 4-2 work.
+Reply expansion is implemented separately in Phase 4-2.
 Responsive styling is implemented; a live browser/responsive smoke pass remains
 to be performed before visual closeout.
 All 247 frontend tests passed before the final test cleanup; all 18 focused
@@ -301,8 +307,8 @@ submissions for separate display until they appear in loaded pages, deduplicates
 them by ID, and handles multiple submissions; invalidation alone does not meet the
 new-comment visibility requirement. Delete refetches rather than assuming the
 row disappeared, because the server may retain a placeholder. Per-parent reply
-frontend queries and mutation integration remain Phase 4-2/4-3 work; the backend
-reply endpoints are implemented in Phase 4-1.
+frontend queries are implemented in Phase 4-2; reply mutation integration remains
+Phase 4-3 work. The backend reply endpoints are implemented in Phase 4-1.
 
 Phase 3-3 adds a textarea with a visually hidden label and the placeholder
 “Write your comment”. Its character counter turns red above the 1,000-character
@@ -380,7 +386,7 @@ keyboard focus/activation. Live browser and responsive checks remain pending.
 | PR | Scope |
 | --- | --- |
 | 4-1: Add Replies API | Paginated reads and creation using shared comment behavior, parent checks, deletion-race coverage. |
-| 4-2: Display Replies on Demand | Expansion, three-reply pages, independent query state, chronological display, prepend-position preservation. |
+| 4-2: Display Replies on Demand | Expansion, five-reply pages, independent query state, oldest-first display, append-position preservation. |
 | 4-3: Add Reply Interactions | Form, shared edit/delete controls, count updates, new-reply visibility, deleted-parent handling. |
 
 Phase 4-1 reuses comment serialization, validation, and the existing post-lock
@@ -392,6 +398,39 @@ anchors, newer inserts, cursor isolation, authentication, and identity spoofing.
 No schema changes or frontend controls are introduced in this phase.
 
 Replies are included before the MVP ships.
+
+Phase 4-2 adds collapsed View replies/Hide replies controls beneath parents with
+replies, including deleted placeholders. Expansion mounts a per-parent infinite
+query with five replies per request. Pages are displayed oldest-to-newest, with
+newer batches appended by an explicit View more replies action. Query keys nest
+under the post comments family so existing invalidation reaches expanded threads.
+Collapse removes the query observer without discarding cached data.
+
+View more replies sits below the list in normal document flow, not sticky to the
+viewport. The previously introduced sticky-offset height callback is removed. Final-page
+focus restoration does not override another control focused during the request.
+The temporary, untracked local showcase helper includes a 50-reply thread for
+manual pagination checks; it is not part of this PR or the permanent seed workflow.
+
+The read-only reply list reuses comment identity, timestamps, body auto-linking,
+and styling. Pending, empty, initial-error/retry, and next-page-error/retry states
+are included. Loading newer replies anchors the last previously loaded reply
+and corrects any visual displacement; tests cover that adjustment and final-page behavior.
+The anchor follows scrolling during pending requests and corrects only remaining
+visual movement, avoiding double compensation for browser scroll anchoring.
+User-confirmed live browser verification passed for oldest-first batches of five,
+appending newer replies below the list, and preserving the previous batch's last
+reply position. An independent native Chrome check also confirmed replies 1–5
+load first, Tab reaches View more replies with a visible focus outline, and Enter
+appends replies 6–10 while reply 5 remains at the same viewport position.
+Full keyboard coverage (including final-page focus) and responsive checks remain pending.
+
+Phase 4-2 verification: all 278 frontend tests passed after the five-reply pagination
+and scroll-anchor updates. Production build passed during implementation; stylesheet compilation
+passed during pagination styling work. Diff checks passed.
+The focused reply query/API suite passed (10 tests, 77 assertions). Final cleanup
+aligns test fixture names with oldest-first pagination and removes an unrelated
+comment-form formatting change. The temporary seed helper stays uncommitted.
 
 ### Phase 5: Feed Previews
 
