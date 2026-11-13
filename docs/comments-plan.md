@@ -19,8 +19,9 @@ Phase 4-2 on-demand reply display is integrated into `feature/comments`.
 Phase 4-3 reply interactions are integrated into `feature/comments` in PR #202.
 Phase 4 implementation is complete on the integration branch, not released to
 production. Remaining live checks are recorded below for release readiness.
-Phase 5-1 bounded comment previews are implemented on
-`comments-phase-5-1-bounded-previews`, pending review.
+Phase 5-1 bounded comment previews are integrated into `feature/comments` in PR #204.
+Phase 5-2 preview UI is implemented on `comments-phase-5-2-feed-previews`, updated
+from the integration branch; review and live visual checks are pending.
 
 Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
 all 9 focused query/API tests (63 assertions) passed afterward.
@@ -214,9 +215,8 @@ deleted placeholder as a content preview.
 
 Previews are read-only: author links and "View all comments" navigate to profiles
 or the dedicated post page. No create, reply, edit, or delete controls appear in
-the preview during the MVP. Decide the no-comments navigation copy during UI
-implementation; "Add a comment" linking to the post page was suggested, not yet
-specifically selected.
+the preview during the MVP. Phase 5-2 uses "Add a comment" to link to the post
+page when no previews are present; it does not open an inline form.
 
 Fetch bounded previews efficiently with post collections. Avoid per-post query
 growth, fetching all comments and trimming in Ruby, or per-card frontend requests.
@@ -505,6 +505,20 @@ coverage with attached avatars. Before cleanup, the full Rails suite passed:
 290 tests, 1,417 assertions. Diff checks
 passed. Existing Rails cache-format and Sass import deprecations remain unrelated
 follow-up work.
+
+Phase 5-2 adds shared `CommentPreview` rendering to dashboard/profile cards,
+without additional requests or repeating previews on the dedicated post page.
+Small square avatars and author names share one profile link and keyboard focus
+target. Images are lazy-loaded with empty alt text to avoid repeating the visible
+username. The `showFeedExtras` prop controls both post navigation and previews,
+excluding both on the dedicated post card. Discussion links preserve filtered feed
+origins through existing post-detail navigation state. Bodies render as plain
+text (including URLs), wrap long words, and are visually clamped to three lines;
+the full discussion retains URL auto-linking. No mutation controls are included.
+All 294 frontend tests passed, including keyboard navigation, feed-origin state,
+empty/missing preview data, text safety, and dedicated-page exclusion. Production
+build and Rails stylesheet compilation passed with existing warnings. Live
+visual, responsive, and keyboard smoke checks remain pending.
 
 ### Phase 6: Release Readiness
 
