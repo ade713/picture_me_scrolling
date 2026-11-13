@@ -3,7 +3,7 @@ import { act, renderHook, waitFor } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 import { ApiError, destroy, get, patch, post } from "../util/api_client";
-import { useCreateComment, useDeleteComment, usePostComments, useUpdateComment } from "./comment_hooks";
+import { useCreateComment, useCreateReply, useDeleteComment, usePostComments, useUpdateComment } from "./comment_hooks";
 import { queryKeys } from "./query_keys";
 
 vi.mock("../util/api_client", async (importOriginal) => ({
@@ -101,6 +101,7 @@ describe("comment hooks", () => {
 
   it.each([
     ["create", useCreateComment, post, "New body", "/api/posts/10/comments", { comment: { body: "New body" } }],
+    ["reply", postId => useCreateReply(postId, 1), post, "Reply body", "/api/comments/1/replies", { comment: { body: "Reply body" } }],
     ["update", useUpdateComment, patch, { id: 3, body: "Edited" }, "/api/comments/3", { comment: { body: "Edited" } }],
     ["delete", useDeleteComment, destroy, 3, "/api/comments/3", undefined],
   ])(
@@ -109,6 +110,8 @@ describe("comment hooks", () => {
       const loaded = { pages: [page([{ id: 1 }], "next")], pageParams: [null] };
       client.setQueryData(queryKeys.postComments(10), loaded);
       client.setQueryData(queryKeys.postComments(20), loaded);
+      client.setQueryData(queryKeys.commentReplies(10, 1), loaded);
+      client.setQueryData(queryKeys.commentReplies(20, 1), loaded);
       client.setQueryData(queryKeys.post(10), { id: 10 });
       client.setQueryData(queryKeys.post(20), { id: 20 });
       client.setQueryData(queryKeys.posts, { pages: [{ posts: { 10: { id: 10 } } }] });
@@ -125,10 +128,10 @@ describe("comment hooks", () => {
       await waitFor(() => expect(result.current.isSuccess).toBe(true));
       expect(result.current.data).toEqual(response);
       expect(client.getQueryData(queryKeys.postComments(10))).toEqual(loaded);
-      [queryKeys.postComments(10), queryKeys.post(10), queryKeys.posts].forEach((key) => {
+      [queryKeys.postComments(10), queryKeys.commentReplies(10, 1), queryKeys.post(10), queryKeys.posts].forEach((key) => {
         expect(client.getQueryState(key).isInvalidated).toBe(true);
       });
-      [queryKeys.postComments(20), queryKeys.post(20), queryKeys.userPosts(20)].forEach((key) => {
+      [queryKeys.postComments(20), queryKeys.commentReplies(20, 1), queryKeys.post(20), queryKeys.userPosts(20)].forEach((key) => {
         expect(client.getQueryState(key).isInvalidated).toBe(false);
       });
     },
@@ -148,5 +151,29 @@ describe("comment hooks", () => {
     expect(result.current.error).toBe(error);
     expect(client.getQueryData(queryKeys.postComments(10))).toEqual(loaded);
     expect(client.getQueryState(queryKeys.postComments(10)).isInvalidated).toBe(false);
+  });
+
+  it("refreshes visible parent counts after reply creation and removes deleted-parent placeholders after final-reply deletion", async () => {
+    get.mockResolvedValue(page([{ id: 1, reply_count: 0 }]));
+    const { result } = renderHook(() => ({
+      comments: usePostComments(10),
+      creation: useCreateReply(10, 1),
+      deletion: useDeleteComment(10),
+    }), { wrapper });
+    await waitFor(() => expect(result.current.comments.data?.comments[0].reply_count).toBe(0));
+
+    post.mockResolvedValue({ id: 2, parent_id: 1 });
+    get.mockResolvedValue(page([{ id: 1, reply_count: 1 }]));
+    await act(async () => { await result.current.creation.mutateAsync("A reply"); });
+    await waitFor(() => expect(result.current.comments.data.comments[0].reply_count).toBe(1));
+
+    // Model a parent deleted elsewhere while its last reply remains visible.
+    get.mockResolvedValue(page([{ id: 1, deleted: true, reply_count: 1 }]));
+    await act(async () => { await result.current.comments.refetch(); });
+    await waitFor(() => expect(result.current.comments.data.comments[0].deleted).toBe(true));
+    destroy.mockResolvedValue(null);
+    get.mockResolvedValue(page([]));
+    await act(async () => { await result.current.deletion.mutateAsync(2); });
+    await waitFor(() => expect(result.current.comments.data.comments).toEqual([]));
   });
 });

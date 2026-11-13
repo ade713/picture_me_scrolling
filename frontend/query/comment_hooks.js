@@ -56,6 +56,16 @@ export const useCreateComment = (postId) => {
   });
 };
 
+export const useCreateReply = (postId, commentId) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (body) => post(apiEndpoints.comments.replies(commentId), { comment: { body } }),
+    // Refresh parent counts, expanded threads, and post consumers together.
+    onSuccess: () => refreshCommentConsumers(queryClient, postId),
+  });
+};
+
 export const useUpdateComment = (postId) => {
   const queryClient = useQueryClient();
 
