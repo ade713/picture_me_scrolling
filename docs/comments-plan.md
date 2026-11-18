@@ -531,16 +531,37 @@ and three-comment previews, square avatars, visible keyboard focus, Enter
 navigation into the discussion, filtered-dashboard return navigation, and no
 duplicate previews on dedicated post pages. Existing multiline preview content
 remained contained in a 375px emulated view, although the page appeared scaled
-down; this is not a full mobile accessibility sign-off. Mutation-refresh,
-single-comment/long-content edge cases, filtered-profile navigation, and network
-inspection remain open in the frontend smoke checklist.
+down; this was not a full mobile accessibility sign-off. Checks outstanding at
+that time were carried into Phase 6-2; see its release smoke record for current results.
 
 ### Phase 6: Release Readiness
 
-Phase 6-1 is implemented on `comments-phase-6-1-demo-discussions`, pending review.
+Phase 6-1 is integrated into `feature/comments` through PR #207.
 `DemoSeed.run` now invokes permanent discussion scenarios through
 `DemoDiscussionSeed`; the temporary local helper is retired. No local or
-production data was seeded during implementation. Phase 6-2 remains pending.
+production data was seeded during implementation.
+
+Phase 6-2 is in progress on `comments-phase-6-2-release-checks`. Automated suites,
+the production build, and core functional browser checks passed on November 17,
+2026. With user approval, the permanent scenarios were seeded locally; disposable
+smoke-test records were removed and existing comments were untouched.
+See the [release smoke record](./frontend-smoke-checklist.md#phase-6-2-local-release-checks--november-17-2026)
+for detailed results, automated coverage, and remaining work. Existing Rails
+cache-format, Sass import, browser-baseline-data, and bundle-size warnings remain
+follow-ups.
+
+Mobile inspection found the page scaled down at a 375px emulated width. The shared
+application layout has no viewport meta tag. Correcting that affects all pages
+and needs app-wide responsive regression checks before mobile sign-off. By agreement,
+fixes for issues discovered during Phase 6-2 will be grouped in a dedicated follow-up
+PR, separate from this verification/documentation branch. The viewport issue is
+the first recorded item; deferring its fix does not mark mobile checks as passed.
+The final functional check passed: deleting the first reply beneath a deleted
+parent focused the retained placeholder; deleting its final reply removed that
+placeholder and focused the Comments heading. All disposable records were removed.
+Functional verification for this PR is complete. The viewport fix and comprehensive
+responsive/mobile pass remain in the dedicated follow-up PR; the feature is not
+yet signed off for release to `main`.
 
 Run the non-destructive seed workflow locally:
 
