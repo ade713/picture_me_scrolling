@@ -356,6 +356,26 @@ do not substitute for the remaining live checks.
 
 ### Release Checklist
 
+Viewport follow-up (`comments-release-responsive-fixes`): the shared shell now
+uses device width and initial scale 1, leaving user zoom available. Local Chrome
+emulation checked dashboard previews (including long-word/paragraph truncation),
+profile header/tabs, guest settings, and the fixed comment form at 375px; long
+comment bodies and expanded reply controls were also inspected at 320px. The
+scaled-down desktop rendering is resolved in these views. No records were changed.
+
+The expanded emulated pass covered login/signup, recovery form and confirmation,
+reset form (without entering a password), invalid verification-link feedback,
+text/photo post modals, relationship pagination, lower settings forms, account
+menu, tablet (768×1024), and landscape (667×375). No horizontal clipping was
+observed in those views. At 320px, reply actions were initially obscured by the
+fixed comment form. Focus scrolling now reveals the inline editor above it,
+or just the focused control when the editor is too tall. Live keyboard checks
+confirmed opening a reply and tabbing to Cancel/enabled Post reply keeps them
+visible; the unsaved draft was cancelled. All 55 comment-component tests passed.
+Real-device virtual keyboard/safe-area behavior remains unverified. Landscape's
+fixed form occupies roughly half the short viewport but remains usable.
+Screenshots were inspected in the tool, not saved as files.
+
 - Check dashboard and profile posts with zero, one, and more than three active
   top-level comments. Expect the latest three in oldest-to-newest display order;
   replies and deleted placeholders must not appear.

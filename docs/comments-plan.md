@@ -541,7 +541,7 @@ Phase 6-1 is integrated into `feature/comments` through PR #207.
 `DemoDiscussionSeed`; the temporary local helper is retired. No local or
 production data was seeded during implementation.
 
-Phase 6-2 is in progress on `comments-phase-6-2-release-checks`. Automated suites,
+Phase 6-2 functional-check documentation is integrated through PR #208. Automated suites,
 the production build, and core functional browser checks passed on November 17,
 2026. With user approval, the permanent scenarios were seeded locally; disposable
 smoke-test records were removed and existing comments were untouched.
@@ -562,6 +562,23 @@ placeholder and focused the Comments heading. All disposable records were remove
 Functional verification for this PR is complete. The viewport fix and comprehensive
 responsive/mobile pass remain in the dedicated follow-up PR; the feature is not
 yet signed off for release to `main`.
+
+The follow-up is implemented on `comments-release-responsive-fixes`: the shared
+layout now declares `width=device-width, initial-scale=1` without disabling zoom.
+A shell-response regression test passed (1 test, 3 assertions). Local Chrome
+emulation confirmed readable 375px dashboard previews, profile header/tabs, guest
+settings, and the fixed comment form; long comment bodies and reply controls also
+fit at 320px. The expanded emulated pass covered authentication/recovery pages,
+text/photo post modals, relationship lists and pagination, lower settings forms,
+the account menu, tablet (768×1024), and landscape (667×375) layouts.
+It found reply actions obscured by the fixed comment form when opening/tabbing
+at 320px. The follow-up now scrolls focused inline editors above the fixed form,
+prioritizing the focused control when the editor cannot fit. Live 320px keyboard
+checks confirmed the textarea, Cancel, and enabled Post reply stay visible;
+the draft was cancelled without submission. All 55 comment-component tests passed.
+Landscape remains usable but the fixed form occupies roughly half its short
+viewport. Real-device virtual keyboard and safe-area checks remain outstanding;
+emulation is not physical-device sign-off.
 
 Run the non-destructive seed workflow locally:
 
