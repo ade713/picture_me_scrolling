@@ -18,14 +18,19 @@ Phase 4-1 replies API is integrated into `feature/comments`.
 Phase 4-2 on-demand reply display is integrated into `feature/comments`.
 Phase 4-3 reply interactions are integrated into `feature/comments` in PR #202.
 Phase 4 implementation is complete on the integration branch, not released to
-production. Remaining live checks are recorded below for release readiness.
+production. Release-check results are recorded in Phase 6 below.
 Phase 5-1 bounded comment previews are integrated into `feature/comments` in PR #204.
 Phase 5-2 preview UI is integrated into `feature/comments` in PR #205.
 Phase 5 implementation is complete on the integration branch, not released to
 production. A focused local preview smoke pass completed on November 13, 2026;
 remaining release checks are recorded in the frontend smoke checklist.
-Next: Phase 6-1 representative seed discussions, followed by Phase 6-2 release
-checks and the final integration PR to `main`.
+Phase 6-1 representative seed discussions are integrated through PR #207.
+Phase 6-2 functional release checks are recorded through PR #208; responsive
+fixes and emulated mobile checks are integrated through PR #209.
+Implementation and local browser/emulated checks are complete. Release PR
+[#210](https://github.com/ade713/picture_me_scrolling/pull/210) targets `main`.
+Physical-phone virtual-keyboard and safe-area confirmation remains outstanding;
+the phone could not reach the local server. Production deployment is not confirmed.
 
 Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
 all 9 focused query/API tests (63 assertions) passed afterward.
@@ -288,17 +293,17 @@ shared loading indicator and automatic pagination, with keyboard-operable manual
 fallback/retry. Cached comments remain visible on subsequent request failures.
 Creation and author editing/deletion controls were added in Phases 3-3 and 3-4.
 Reply expansion is implemented separately in Phase 4-2.
-Responsive styling is implemented; a live browser/responsive smoke pass remains
-to be performed before visual closeout.
+Responsive styling is implemented; subsequent live browser and emulated
+responsive results are recorded in Phase 6 below.
 All 247 frontend tests passed before the final test cleanup; all 18 focused
 comment/post-page tests passed afterward. Production build and Rails stylesheet
 compilation passed, with bundle-size and existing deprecation warnings.
 
-Temporary local review data is available through `DemoCommentSeed.run` in
+During Phase 3, temporary local review data was available through `DemoCommentSeed.run` in
 development: 23 top-level entries for three frontend pages, an empty discussion,
 varied text and wrapping examples, singular/plural reply counts, and a deleted
-placeholder. The helper is temporary and must be removed when Phase 6-1 adds
-permanent comment support to the existing seed workflow. Loading/error states
+placeholder. Phase 6-1 retired this helper in favor of permanent
+`DemoDiscussionSeed` support through `DemoSeed.run`. Loading/error states
 require browser checks rather than seed records.
 
 Phase 3-1 adds `usePostComments`, `useCreateComment`, `useUpdateComment`, and
@@ -329,8 +334,8 @@ a compact resizable textarea and bounded height. A measured spacer reserves its
 height so it does not obscure the last comment, including when feedback appears.
 New comments appear in a separate “Your new comments” section until loaded cursor pages contain
 them. Local copies are then retired to prevent duplicates or resurrection after
-deletion. Live browser/keyboard verification, including mobile keyboard behavior,
-remains outstanding for this phase.
+deletion. Live browser/keyboard and emulated responsive verification completed
+in Phase 6; physical-phone keyboard behavior remains outstanding.
 
 | PR | Scope |
 | --- | --- |
@@ -347,7 +352,8 @@ focuses the safe cancel action, and keeps failed requests retryable. Successful
 deletion refetches authoritative comments (including deleted-parent placeholders)
 and moves focus to the discussion heading. Locally displayed new submissions
 also update or disappear after successful mutations. Rails still enforces all
-permissions. Live browser/keyboard and responsive checks remain outstanding.
+permissions. Subsequent live browser/keyboard and emulated responsive results
+are recorded in Phase 6 below.
 
 Phase 3-4 verification: all 262 frontend tests passed, along with the production
 Webpack build, Rails stylesheet compilation, and whitespace checks. Existing
@@ -386,7 +392,8 @@ within URLs are preserved. All original text, including whitespace and literal
 HTML, is retained through React text rendering.
 
 Tests cover destinations, protocols, punctuation, plain-text preservation, and
-keyboard focus/activation. Live browser and responsive checks remain pending.
+keyboard focus/activation. Subsequent live browser and emulated responsive
+checks are recorded in Phase 6 below.
 
 ### Phase 4: Replies
 
@@ -430,7 +437,8 @@ appending newer replies below the list, and preserving the previous batch's last
 reply position. An independent native Chrome check also confirmed replies 1–5
 load first, Tab reaches View more replies with a visible focus outline, and Enter
 appends replies 6–10 while reply 5 remains at the same viewport position.
-Full keyboard coverage (including final-page focus) and responsive checks remain pending.
+Final-page keyboard focus and emulated responsive checks subsequently completed
+in Phase 6; see the release smoke record.
 
 Phase 4-2 verification: all 278 frontend tests passed after the five-reply pagination
 and scroll-anchor updates. Production build passed during implementation; stylesheet compilation
@@ -477,8 +485,9 @@ disposable reply focused the previous reply's author, and deleting the first
 focused its parent author. Keyboard confirmation worked, visible focus outlines
 appeared, and before/after screenshots showed no viewport jump. The disposable
 parent and both replies were removed afterward; existing content was untouched.
-Broader Phase 4-3 live coverage, responsive checks, and deleted-parent fallback
-browser checks remain pending. The temporary local seed helper stays uncommitted.
+Broader Phase 4-3 live coverage, emulated responsive checks, and deleted-parent
+fallback checks subsequently completed in Phase 6. Phase 6-1 retired the temporary
+seed helper in favor of the permanent demo runner.
 Automated verification: all 288 frontend tests passed, including count-refresh,
 placeholder-removal, and reply-deletion focus fallback coverage. All five focused
 focus-restoration tests passed after adding deleted-parent placeholder coverage.
@@ -550,20 +559,16 @@ for detailed results, automated coverage, and remaining work. Existing Rails
 cache-format, Sass import, browser-baseline-data, and bundle-size warnings remain
 follow-ups.
 
-Mobile inspection found the page scaled down at a 375px emulated width. The shared
-application layout has no viewport meta tag. Correcting that affects all pages
-and needs app-wide responsive regression checks before mobile sign-off. By agreement,
-fixes for issues discovered during Phase 6-2 will be grouped in a dedicated follow-up
-PR, separate from this verification/documentation branch. The viewport issue is
-the first recorded item; deferring its fix does not mark mobile checks as passed.
+Initial mobile inspection found the page scaled down at a 375px emulated width
+because the shared layout lacked a viewport meta tag. PR #209 corrected this and
+recorded the expanded responsive checks described below.
 The final functional check passed: deleting the first reply beneath a deleted
 parent focused the retained placeholder; deleting its final reply removed that
 placeholder and focused the Comments heading. All disposable records were removed.
-Functional verification for this PR is complete. The viewport fix and comprehensive
-responsive/mobile pass remain in the dedicated follow-up PR; the feature is not
-yet signed off for release to `main`.
+Functional verification and the browser-emulated responsive pass are complete.
+Physical-device confirmation remains outstanding, so this is not full mobile sign-off.
 
-The follow-up is implemented on `comments-release-responsive-fixes`: the shared
+The follow-up merged into `feature/comments` through PR #209: the shared
 layout now declares `width=device-width, initial-scale=1` without disabling zoom.
 A shell-response regression test passed (1 test, 3 assertions). Local Chrome
 emulation confirmed readable 375px dashboard previews, profile header/tabs, guest
@@ -575,7 +580,8 @@ It found reply actions obscured by the fixed comment form when opening/tabbing
 at 320px. The follow-up now scrolls focused inline editors above the fixed form,
 prioritizing the focused control when the editor cannot fit. Live 320px keyboard
 checks confirmed the textarea, Cancel, and enabled Post reply stay visible;
-the draft was cancelled without submission. All 55 comment-component tests passed.
+the draft was cancelled without submission. All 56 comment-component tests passed
+after cleanup and the focus-event integration test.
 Landscape remains usable but the fixed form occupies roughly half its short
 viewport. Real-device virtual keyboard and safe-area checks remain outstanding;
 emulation is not physical-device sign-off.
@@ -605,7 +611,7 @@ destructive and is not the command for refreshing these production-safe demos.
 
 Focused seed coverage passed: 4 tests, 38 assertions, including repeatability,
 scenario relationships, preservation of edits, and unrelated-record safety.
-Live verification of the permanent seed dataset belongs to Phase 6-2.
+Live verification of the permanent seed dataset completed in Phase 6-2.
 
 | PR | Scope |
 | --- | --- |

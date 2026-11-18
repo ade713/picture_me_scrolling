@@ -315,13 +315,12 @@ Passed in this session:
   the filtered profile removed the disposable entry and restored the next preview.
   No existing comment was edited or deleted.
 - At 375px emulated width, long preview bodies were clamped and contained, but
-  the entire page was scaled down. The application layout lacks a viewport meta
-  tag; mobile readability is **not** signed off.
+  the entire page was scaled down. The application layout lacked a viewport meta
+  tag at this point; PR #209 subsequently fixed this (see below).
 
-Follow-up fixes: use a dedicated PR for issues found during this check, starting
-with the missing viewport meta tag and app-wide responsive regression review.
-No application fix is included in this verification/documentation branch. Mobile
-sign-off remains pending until the fix is verified.
+The verification-only PR #208 deferred application fixes to PR #209, now merged
+into `feature/comments`. Its viewport and editor-focus fixes and expanded
+emulated checks are recorded below. Physical-device sign-off remains outstanding.
 
 The continued functional pass also confirmed:
 
@@ -346,9 +345,9 @@ The continued functional pass also confirmed:
   removed the placeholder, restored No comments yet, and focused the Comments
   heading. All three disposable records were removed; existing data was untouched.
 
-Functional checks for this PR are complete. Remaining in the dedicated follow-up
-PR: the viewport fix and comprehensive responsive/mobile pass. Screenshots
-were inspected through the browser tool but were not saved as files.
+Functional checks for PR #208 are complete. PR #209 subsequently completed the
+viewport/editor-focus fixes and browser-emulated responsive pass. Screenshots
+from this initial functional session were inspected but not saved as files.
 
 Automated backstop: 291 Rails tests / 1,436 assertions and 294 frontend tests
 passed; production Webpack build passed with existing warnings. These results
@@ -356,7 +355,7 @@ do not substitute for the remaining live checks.
 
 ### Release Checklist
 
-Viewport follow-up (`comments-release-responsive-fixes`): the shared shell now
+Viewport follow-up (PR #209, merged into `feature/comments`): the shared shell now
 uses device width and initial scale 1, leaving user zoom available. Local Chrome
 emulation checked dashboard previews (including long-word/paragraph truncation),
 profile header/tabs, guest settings, and the fixed comment form at 375px; long
@@ -371,10 +370,21 @@ observed in those views. At 320px, reply actions were initially obscured by the
 fixed comment form. Focus scrolling now reveals the inline editor above it,
 or just the focused control when the editor is too tall. Live keyboard checks
 confirmed opening a reply and tabbing to Cancel/enabled Post reply keeps them
-visible; the unsaved draft was cancelled. All 55 comment-component tests passed.
-Real-device virtual keyboard/safe-area behavior remains unverified. Landscape's
+visible; the unsaved draft was cancelled. All 56 comment-component tests passed
+after cleanup and the focus-event integration test.
+Real-device virtual keyboard/safe-area behavior remains unverified: the phone
+could not reach the local server, so no physical-device result is claimed. Landscape's
 fixed form occupies roughly half the short viewport but remains usable.
-Screenshots were inspected in the tool, not saved as files.
+Three viewport-only screenshots were subsequently saved locally in
+`/private/tmp/comments-pr209-screenshots.lSJw19`: the 375px phone feed, opened
+320px reply editor, and controls after tabbing. These are temporary local files,
+not repository assets; the captures do not retain the keyboard focus outline.
+
+Release PR [#210](https://github.com/ade713/picture_me_scrolling/pull/210) is open
+from `feature/comments` to `main`. Before deployment, confirm the comments
+migrations run before the new code serves requests. Production deployment and
+optional `DemoSeed.run` population are not yet confirmed. The checklist below
+remains a reusable regression checklist, not a list of unperformed Phase 6 tasks.
 
 - Check dashboard and profile posts with zero, one, and more than three active
   top-level comments. Expect the latest three in oldest-to-newest display order;
