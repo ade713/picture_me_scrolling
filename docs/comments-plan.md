@@ -556,8 +556,12 @@ and needs app-wide responsive regression checks before mobile sign-off. By agree
 fixes for issues discovered during Phase 6-2 will be grouped in a dedicated follow-up
 PR, separate from this verification/documentation branch. The viewport issue is
 the first recorded item; deferring its fix does not mark mobile checks as passed.
-Live retained-deleted-parent focus verification and mobile sign-off remain open;
-the feature is not yet signed off for release to `main`.
+The final functional check passed: deleting the first reply beneath a deleted
+parent focused the retained placeholder; deleting its final reply removed that
+placeholder and focused the Comments heading. All disposable records were removed.
+Functional verification for this PR is complete. The viewport fix and comprehensive
+responsive/mobile pass remain in the dedicated follow-up PR; the feature is not
+yet signed off for release to `main`.
 
 Run the non-destructive seed workflow locally:
 

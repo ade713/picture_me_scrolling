@@ -340,8 +340,14 @@ The continued functional pass also confirmed:
   recommended users; profile navigation showed user details plus paginated posts.
   Neither feed issued per-card comments requests.
 
-Remaining: retained-deleted-parent deletion-focus verification, plus the deferred
-viewport fix and comprehensive responsive/mobile pass. Screenshots
+- Final deleted-parent focus check on local post 491: created one disposable
+  parent and two replies, then deleted the parent. Deleting the first reply
+  focused the retained Comment deleted placeholder. Deleting the final reply
+  removed the placeholder, restored No comments yet, and focused the Comments
+  heading. All three disposable records were removed; existing data was untouched.
+
+Functional checks for this PR are complete. Remaining in the dedicated follow-up
+PR: the viewport fix and comprehensive responsive/mobile pass. Screenshots
 were inspected through the browser tool but were not saved as files.
 
 Automated backstop: 291 Rails tests / 1,436 assertions and 294 frontend tests
