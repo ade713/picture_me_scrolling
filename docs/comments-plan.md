@@ -1,6 +1,39 @@
 # Comments Plan
 
-Status: planned; implementation has not started.
+Status: Phase 1-1 storage merged into `feature/comments` in PR #188.
+Phase 1-2 validation merged into `feature/comments` in PR #189.
+Phase 1-3 deletion lifecycle merged into `feature/comments` in PR #190.
+Phase 1 is complete on the integration branch, not released to production.
+Phase 2-1 paginated reads merged into `feature/comments` in PR #191.
+Phase 2-2 top-level comment creation merged into `feature/comments` in PR #192.
+Phase 2-3 author-only editing and deletion merged into `feature/comments` in PR #193.
+Phase 2 is complete on the integration branch, not released to production.
+Phase 3-1 frontend query integration merged into `feature/comments` in PR #194.
+Phase 3-2 read-only comment display merged into `feature/comments` in PR #195.
+Phase 3-3 comment creation merged into `feature/comments` in PR #196.
+Phase 3-4 author edit/delete controls are integrated into `feature/comments`.
+The newest-first ordering follow-up is integrated into `feature/comments`.
+Comment URL auto-linking is integrated into `feature/comments`.
+Phase 4-1 replies API is integrated into `feature/comments`.
+Phase 4-2 on-demand reply display is integrated into `feature/comments`.
+Phase 4-3 reply interactions are integrated into `feature/comments` in PR #202.
+Phase 4 implementation is complete on the integration branch, not released to
+production. Release-check results are recorded in Phase 6 below.
+Phase 5-1 bounded comment previews are integrated into `feature/comments` in PR #204.
+Phase 5-2 preview UI is integrated into `feature/comments` in PR #205.
+Phase 5 implementation is complete on the integration branch, not released to
+production. A focused local preview smoke pass completed on November 13, 2026;
+remaining release checks are recorded in the frontend smoke checklist.
+Phase 6-1 representative seed discussions are integrated through PR #207.
+Phase 6-2 functional release checks are recorded through PR #208; responsive
+fixes and emulated mobile checks are integrated through PR #209.
+Implementation and local browser/emulated checks are complete. Release PR
+[#210](https://github.com/ade713/picture_me_scrolling/pull/210) targets `main`.
+Physical-phone virtual-keyboard and safe-area confirmation remains outstanding;
+the phone could not reach the local server. Production deployment is not confirmed.
+
+Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
+all 9 focused query/API tests (63 assertions) passed afterward.
 
 Prerequisite: complete and ship the [Dedicated Post Page](./dedicated-post-page-plan.md).
 
@@ -40,6 +73,31 @@ an author and body even though placeholder storage permits their removal.
 
 ## Validation and Permissions
 
+Phase 2-2 adds authenticated `POST /api/posts/:post_id/comments`, accepting only
+`comment[body]`. The URL determines the post and the session determines the author;
+client identity, parent, and deletion attributes are ignored. Success returns
+the serialized comment directly with `201 Created`, using the same fields as
+list entries. Validation failures return a message array with `422`; unknown
+posts return `404`, and unauthenticated requests return `401`. No follow is
+required. Reply creation remains later work.
+
+Phase 2-3 adds `PATCH /api/comments/:id` and `DELETE /api/comments/:id`.
+Both look up active comments through the authenticated author's comments,
+including existing replies. Missing, deleted, and non-owned targets return the
+same JSON `404` response. Post ownership grants no additional permission.
+PATCH permits body only, returns the serialized comment with its actual reply
+count, and returns `422` on validation failure without changing saved content.
+DELETE uses `CommentDeletion` and returns `204 No Content` for both hard deletion
+and placeholder conversion. Clients must refresh affected collections/reply
+counts after deletion, including possible last-reply placeholder removal.
+
+Phase 1-2 adds active-author/body validation, the 1,000-character body limit,
+and parent existence, same-post, single-level, self-reference, and deleted-parent
+checks. Existing replies remain editable after their parent becomes a placeholder.
+Bodies remain plain text; safe rendering belongs to the UI phase. These model
+checks work alongside Phase 1-3 transactional concurrency protection and the
+later API's author-derived parameters, permissions, and body-only updates.
+
 - Plain text only, rendered without interpreting HTML.
 - Reject blank and whitespace-only content; maximum 1,000 characters.
 - Frontend guidance and validation mirror authoritative backend rules.
@@ -55,6 +113,21 @@ an author and body even though placeholder storage permits their removal.
 
 ## Deletion Lifecycle
 
+Phase 1-3 implements `CommentDeletion` for user-facing comment removal. Future
+API actions must call this service rather than directly destroying comment rows.
+`User#destroy` removes authored comment content through the same service.
+Direct SQL/user `delete` bypasses callbacks and remains restricted by foreign keys.
+The post foreign key now cascades: the existing post `delete` path removes all
+discussion rows without relying on callbacks. User and parent foreign keys do
+not cascade through other authors' replies.
+
+Comment saves and service deletions serialize on the post row. New comments also
+lock their author first, matching user-deletion lock order. Saves revalidate
+fresh parent state under the lock, and stale edits cannot restore deleted text.
+User cleanup acquires discussion locks in post-ID order. This conservative
+per-post locking favors correctness over simultaneous writes on the same post;
+revisit only if discussion traffic warrants finer-grained locking.
+
 - Delete a comment without replies outright.
 - For a parent with replies, clear its original text and author association,
   retain a deletion marker, and display "Comment deleted". Do not keep the
@@ -67,7 +140,7 @@ an author and body even though placeholder storage permits their removal.
 - Disable new replies to deleted parents: hide Reply and reject server requests,
   including submissions from forms opened before deletion.
 - Existing replies remain readable and editable/deletable by their authors.
-  "View replies" and "Show older replies" remain available.
+  "View replies" and "View more replies" remain available.
 
 Use transactional lifecycle handling and appropriate database constraints.
 Coordinate reply creation with parent deletion so concurrent requests cannot
@@ -80,7 +153,7 @@ Render comments beneath the post; do not introduce a discussion modal. Show an
 avatar, linked username, body, timestamp, Reply action, and author-only controls
 where applicable. Deleted placeholders omit identity and mutation controls.
 
-Top-level comments display oldest-to-newest, loading newer pages as the reader
+Top-level comments display newest-to-oldest, loading older pages as the reader
 continues. Reuse the app's pagination/loading conventions and shared animated
 dots. Provide empty, failure, pending, and accessible feedback states.
 
@@ -96,10 +169,15 @@ restoration, keyboard operation, labels, character guidance, and mobile layout.
 ## Replies and Pagination
 
 - Replies are collapsed initially. Do not fetch a preview for every parent.
-- Clicking "View replies" fetches the latest three replies for that comment.
-- Display those replies chronologically beneath the parent, slightly indented.
-- "Show older replies" explicitly fetches three more and prepends them.
-- Preserve the reader's visible position when older replies are prepended.
+- Clicking "View replies" fetches the oldest five replies for that comment.
+- Display replies oldest-to-newest beneath the parent, slightly indented.
+- "View more replies" sits below the loaded replies, explicitly fetches five
+  newer replies, and appends them below.
+- Its pagination controls remain in normal document flow below the reply list,
+  without sticking to the viewport. The comment form remains fixed.
+- Preserve the last previously loaded reply's screen position when newer replies
+  are appended; do not scroll to the newly added replies or the moved button.
+- Successful new replies should be visible at the bottom of the loaded replies.
 - Each parent has independent pagination/cache state.
 - Paginate top-level comments and replies separately, never an arbitrary flattened
   tree that splits parents and children across pages.
@@ -113,13 +191,30 @@ GET /api/comments/:comment_id/replies
 
 The first returns only top-level comments; the second only the parent's direct
 replies. Return pagination metadata and reply counts without embedding whole
-threads. Finalize mutation routes and exact response shape during API design.
+threads. Phase 4-1 adds `POST /api/comments/:comment_id/replies` accepting only
+`comment[body]`, returning the same serialized object as top-level creation.
+Collection responses reuse `comments`, `comment_ids`, and pagination metadata.
+The default batch is five replies (bounded page sizes 1–50). Each batch is
+chronological; `next_cursor` is supplied as `after` to fetch and append newer
+batches. Signed cursors are scoped to the parent and use creation time plus ID.
 
 Use deterministic ordering with an ID tie-breaker. Ensure inserts/deletions
-between requests do not produce duplicate or skipped older replies; select a
+between requests do not produce duplicate or skipped replies; select a
 pagination strategy appropriate to these changing collections during query work.
 Top-level page size remains an implementation choice using existing conventions;
 the preview/reply sizes above are agreed product behavior.
+
+Top-level comments use newest-first `(created_at, id)` cursor pagination.
+Pass the returned opaque `next_cursor` as `after`; it is signed and
+bound to the post, but does not require the anchor comment to still exist.
+`per_page` follows the existing query defaults (20, bounded to 1–50).
+Metadata is `per_page`, `has_more`, and `next_cursor`, without offset-page totals.
+The response uses `comments` keyed by ID and ordered `comment_ids`; each comment
+includes public author identity (or null for a placeholder), body, timestamps,
+post/parent IDs, deletion state, and a batched `reply_count`. Replies are not
+embedded. Authentication is required, following the post author is not.
+The replies endpoint is implemented in Phase 4-1; Phase 4-2 updates its cursor contract to fetch newer batches;
+frontend query integration and reply expansion are implemented in Phase 4-2.
 
 ## Feed Previews
 
@@ -129,9 +224,8 @@ deleted placeholder as a content preview.
 
 Previews are read-only: author links and "View all comments" navigate to profiles
 or the dedicated post page. No create, reply, edit, or delete controls appear in
-the preview during the MVP. Decide the no-comments navigation copy during UI
-implementation; "Add a comment" linking to the post page was suggested, not yet
-specifically selected.
+the preview during the MVP. Phase 5-2 uses "Add a comment" to link to the post
+page when no previews are present; it does not open an inline form.
 
 Fetch bounded previews efficiently with post collections. Avoid per-post query
 growth, fetching all comments and trimming in Ruby, or per-card frontend requests.
@@ -154,12 +248,22 @@ that branch, not `main`; merge the finished feature into `main` only after
 acceptance checks. Keep CI running on implementation PRs. Confirm the final
 deployment/migration sequence before release.
 
-All parts below are planned. These are reviewable scope boundaries, not mandatory
+The integration branch is `feature/comments`. Implementation PRs target this
+branch, and CI includes pull requests against it. Phase 1-1 added nullable
+body/author storage for placeholders and restrictive foreign keys. Phase 1-3
+adds lifecycle handling and post-only cascading deletion; comment API mutations
+are implemented through Phase 2. Collection indexes
+support post/parent filtering and timestamp/ID ordering; revisit them alongside
+the actual read queries.
+
+Remaining parts below are planned. These are reviewable scope boundaries, not mandatory
 PR sizes. Split unexpectedly large parts before implementation; combine only
 genuinely small related pieces. Continue logical commits and user review
 checkpoints. Do not mix unrelated cleanup into feature PRs.
 
 ### Phase 1: Data Model
+
+Complete: PRs #188, #189, and #190 are merged into `feature/comments`.
 
 | PR | Scope |
 | --- | --- |
@@ -169,6 +273,11 @@ checkpoints. Do not mix unrelated cleanup into feature PRs.
 
 ### Phase 2: Top-Level Comments API
 
+Complete: PRs #191, #192, and #193 are merged into `feature/comments`.
+All 274 Rails tests passed before the
+final test-assertion cleanup; all 8 mutation tests (46 assertions) passed afterward.
+Reply reads and creation are implemented separately in Phase 4-1.
+
 | PR | Scope |
 | --- | --- |
 | 2-1: Add Paginated Comment Reads | Query, deterministic ordering, serialization, author details, reply counts, focused controller/query tests. |
@@ -177,6 +286,57 @@ checkpoints. Do not mix unrelated cleanup into feature PRs.
 
 ### Phase 3: Comments on the Post Page
 
+Phase 3-2 displays comments below the loaded post. Active entries show linked
+author identity, a square avatar, local date/time, plain-text body, and reply
+counts. Placeholders omit author identity and original text. Comments reuse the
+shared loading indicator and automatic pagination, with keyboard-operable manual
+fallback/retry. Cached comments remain visible on subsequent request failures.
+Creation and author editing/deletion controls were added in Phases 3-3 and 3-4.
+Reply expansion is implemented separately in Phase 4-2.
+Responsive styling is implemented; subsequent live browser and emulated
+responsive results are recorded in Phase 6 below.
+All 247 frontend tests passed before the final test cleanup; all 18 focused
+comment/post-page tests passed afterward. Production build and Rails stylesheet
+compilation passed, with bundle-size and existing deprecation warnings.
+
+During Phase 3, temporary local review data was available through `DemoCommentSeed.run` in
+development: 23 top-level entries for three frontend pages, an empty discussion,
+varied text and wrapping examples, singular/plural reply counts, and a deleted
+placeholder. Phase 6-1 retired this helper in favor of permanent
+`DemoDiscussionSeed` support through `DemoSeed.run`. Loading/error states
+require browser checks rather than seed records.
+
+Phase 3-1 adds `usePostComments`, `useCreateComment`, `useUpdateComment`, and
+`useDeleteComment`. Reads use the opaque next cursor with 10 comments per request
+and keys normalized by post ID. Failed next-page requests preserve loaded pages.
+Successful mutations invalidate that post's comment queries, its detail query,
+and only cached post collections containing that post. Invalidation is awaited
+so pending state includes active refetches. Failed mutations leave caches intact.
+
+Creation exposes the returned object through the mutation result without
+injecting it into partially loaded cursor pages. Phase 3-3 retains successful
+submissions for separate display until they appear in loaded pages, deduplicates
+them by ID, and handles multiple submissions; invalidation alone does not meet the
+new-comment visibility requirement. Delete refetches rather than assuming the
+row disappeared, because the server may retain a placeholder. Per-parent reply
+frontend queries are implemented in Phase 4-2; reply mutation integration is
+implemented in Phase 4-3. The backend reply endpoints are implemented in Phase 4-1.
+
+Phase 3-3 adds a textarea with a visually hidden label and the placeholder
+“Write your comment”. Its character counter turns red above the 1,000-character
+limit. Blank/over-limit submission guards, pending controls, and the shared
+loading indicator provide validation and submission feedback. Failed
+requests retain the draft; success clears it, announces completion, and restores
+focus to the textarea. Rails remains authoritative for validation.
+
+The composer is fixed to the viewport bottom, aligned with the post column, with
+a compact resizable textarea and bounded height. A measured spacer reserves its
+height so it does not obscure the last comment, including when feedback appears.
+New comments appear in a separate “Your new comments” section until loaded cursor pages contain
+them. Local copies are then retired to prevent duplicates or resurrection after
+deletion. Live browser/keyboard and emulated responsive verification completed
+in Phase 6; physical-phone keyboard behavior remains outstanding.
+
 | PR | Scope |
 | --- | --- |
 | 3-1: Add Comment Query Integration | API functions, keys, pagination and mutation hooks, scoped invalidation. |
@@ -184,24 +344,274 @@ checkpoints. Do not mix unrelated cleanup into feature PRs.
 | 3-3: Add Comment Form | Body input, character guidance, pending/validation behavior, draft retention, new-comment visibility. |
 | 3-4: Add Edit and Delete Controls | Author controls, edit/cancel, confirmation, focus and interaction tests. |
 
+Phase 3-4 uses right-aligned pencil and trash icons matching post controls, with
+accessible labels and tooltips. It adds author-only inline editing with character-limit guidance, pending
+guards, draft retention on failure, and cancel/save focus restoration. Deletion
+uses the existing confirmation-dialog styling and focus trapping, initially
+focuses the safe cancel action, and keeps failed requests retryable. Successful
+deletion refetches authoritative comments (including deleted-parent placeholders)
+and moves focus to the discussion heading. Locally displayed new submissions
+also update or disappear after successful mutations. Rails still enforces all
+permissions. Subsequent live browser/keyboard and emulated responsive results
+are recorded in Phase 6 below.
+
+Phase 3-4 verification: all 262 frontend tests passed, along with the production
+Webpack build, Rails stylesheet compilation, and whitespace checks. Existing
+bundle-size and Rails/Sass deprecation warnings remain unchanged in scope.
+
+### Follow-up After Phase 3-4: Newest-First Comment Ordering
+
+Implemented after Phase 3: top-level comments display newest-first so the latest
+comments appear near the top. Both ordering keys descend and subsequent pages
+select older tuples. The cursor purpose is changed to reject incompatible
+oldest-first cursors; existing open discussions need a refresh to restart paging.
+New submissions normally appear in the refetched first page. The separate local
+section remains a newest-first fallback if the refetch fails or does not include
+them, and retires entries once loaded to prevent duplicates.
+
+- Updated backend ordering and cursor comparisons together, keeping deterministic
+  `(created_at, id)` ordering and loading older comments on subsequent pages.
+- Reviewed new-comment visibility and deduplication with the newest-first first page.
+- Updated query/API and frontend pagination tests, including equal timestamps and
+  multiple pages, and reconciled the ordering documentation.
+- Kept this scoped to top-level discussion comments; reply and feed-preview
+  ordering remain unchanged unless separately agreed.
+
+### Follow-up After Phase 3-4: Automatically Link Comment URLs
+
+Implemented after Phase 3-4 and before Phase 4: shared `CommentBody` rendering
+makes explicit HTTP/HTTPS URLs clickable while keeping stored content plain text.
+Replies can reuse the renderer in Phase 4. Bare domains, email addresses, invalid
+URLs, and other schemes remain text. No Markdown, raw HTML rendering, link
+previews, backend URL fetching, or new dependencies were added.
+
+Links open in a new tab with `rel="noopener noreferrer ugc"`. They are underlined,
+have visible rounded keyboard focus, and inherit long-text wrapping. Sentence
+punctuation and unmatched closing brackets stay outside links; balanced brackets
+within URLs are preserved. All original text, including whitespace and literal
+HTML, is retained through React text rendering.
+
+Tests cover destinations, protocols, punctuation, plain-text preservation, and
+keyboard focus/activation. Subsequent live browser and emulated responsive
+checks are recorded in Phase 6 below.
+
 ### Phase 4: Replies
 
 | PR | Scope |
 | --- | --- |
 | 4-1: Add Replies API | Paginated reads and creation using shared comment behavior, parent checks, deletion-race coverage. |
-| 4-2: Display Replies on Demand | Expansion, three-reply pages, independent query state, chronological display, prepend-position preservation. |
+| 4-2: Display Replies on Demand | Expansion, five-reply pages, independent query state, oldest-first display, append-position preservation. |
 | 4-3: Add Reply Interactions | Form, shared edit/delete controls, count updates, new-reply visibility, deleted-parent handling. |
+
+Phase 4-1 reuses comment serialization, validation, and the existing post-lock
+coordination for creation versus parent deletion. Deleted parents remain readable
+but reject new replies; missing or nested parents return 404. The existing cached
+parent and concurrent deletion tests exercise the shared model write path.
+Query/API tests cover chronological batches, tied timestamps, deleted cursor
+anchors, newer inserts, cursor isolation, authentication, and identity spoofing.
+No schema changes or frontend controls are introduced in this phase.
 
 Replies are included before the MVP ships.
 
+Phase 4-2 adds collapsed View replies/Hide replies controls beneath parents with
+replies, including deleted placeholders. Expansion mounts a per-parent infinite
+query with five replies per request. Pages are displayed oldest-to-newest, with
+newer batches appended by an explicit View more replies action. Query keys nest
+under the post comments family so existing invalidation reaches expanded threads.
+Collapse removes the query observer without discarding cached data.
+
+View more replies sits below the list in normal document flow, not sticky to the
+viewport. The previously introduced sticky-offset height callback is removed. Final-page
+focus restoration does not override another control focused during the request.
+The temporary, untracked local showcase helper includes a 50-reply thread for
+manual pagination checks; it is not part of this PR or the permanent seed workflow.
+
+The Phase 4-2 read-only reply list reuses comment identity, timestamps, body auto-linking,
+and styling. Pending, empty, initial-error/retry, and next-page-error/retry states
+are included. Loading newer replies anchors the last previously loaded reply
+and corrects any visual displacement; tests cover that adjustment and final-page behavior.
+The anchor follows scrolling during pending requests and corrects only remaining
+visual movement, avoiding double compensation for browser scroll anchoring.
+User-confirmed live browser verification passed for oldest-first batches of five,
+appending newer replies below the list, and preserving the previous batch's last
+reply position. An independent native Chrome check also confirmed replies 1–5
+load first, Tab reaches View more replies with a visible focus outline, and Enter
+appends replies 6–10 while reply 5 remains at the same viewport position.
+Final-page keyboard focus and emulated responsive checks subsequently completed
+in Phase 6; see the release smoke record.
+
+Phase 4-2 verification: all 278 frontend tests passed after the five-reply pagination
+and scroll-anchor updates. Production build passed during implementation; stylesheet compilation
+passed during pagination styling work. Diff checks passed.
+The focused reply query/API suite passed (10 tests, 77 assertions). Final cleanup
+aligns test fixture names with oldest-first pagination and removes an unrelated
+comment-form formatting change. The temporary seed helper stays uncommitted.
+
+Phase 4-3 adds an inline Reply form to active top-level comments, including those
+without replies. Opening the form expands that thread. The form focuses its
+textarea, validates the shared 1,000-character limit, blocks duplicate pending
+submissions, retains failed drafts, and restores focus to Reply on cancellation.
+Deleted parents hide Reply and close any open form; server validation still
+rejects submissions against stale/deleted parents.
+
+Replies reuse author-only edit/delete icons, inline editing, and confirmation
+dialogs. No nested Reply action is rendered. Reply mutations invalidate the
+parent discussion (including all expanded reply queries) and affected post
+consumers, refreshing authoritative reply counts and deleted-parent placeholders.
+
+New submissions outside loaded cursor pages appear below pagination in a labeled
+"Your new replies" section, with guidance explaining the unloaded gap. They remain
+editable/deletable and survive thread collapse. Once loaded normally, their local
+copies are retired so subsequent deletion cannot resurrect them. No optimistic
+count adjustments or artificial cursor-page entries are introduced.
+
+Reply form transitions use named handlers, and reply controls have an explicit
+styling class so their styles do not affect nested author actions. The parent
+discussion owns deletion announcements; reply threads clear stale feedback instead
+of announcing the same deletion twice. Reply deletion focuses the previous reply's
+author, or the parent for the first reply, without scrolling. If the parent also
+disappears, focus falls back to the previous top-level comment, then the Comments
+heading. Deleted-parent placeholders are programmatically focusable. Top-level
+deletion retains its existing heading-focus behavior.
+
+Post-Phase 4 cleanup extracts `ReplyList` into `reply_list.jsx`, keeping reply
+fetching, pagination, scroll anchoring, and list rendering separate from
+`CommentReplies` thread/form state. Behavior and existing test coverage are
+unchanged. The extraction is integrated into `feature/comments` in PR #203;
+all 47 comments tests passed after the refactor, and diff checks passed.
+
+Focused native Chrome verification passed on local post 515: deleting the second
+disposable reply focused the previous reply's author, and deleting the first
+focused its parent author. Keyboard confirmation worked, visible focus outlines
+appeared, and before/after screenshots showed no viewport jump. The disposable
+parent and both replies were removed afterward; existing content was untouched.
+Broader Phase 4-3 live coverage, emulated responsive checks, and deleted-parent
+fallback checks subsequently completed in Phase 6. Phase 6-1 retired the temporary
+seed helper in favor of the permanent demo runner.
+Automated verification: all 288 frontend tests passed, including count-refresh,
+placeholder-removal, and reply-deletion focus fallback coverage. All five focused
+focus-restoration tests passed after adding deleted-parent placeholder coverage.
+Production Webpack build, Rails stylesheet compilation, and diff checks passed.
+Existing bundle-size, browser-mapping, Rails cache-format, and Sass import warnings
+remain follow-up work, not failures introduced by reply interactions.
+
 ### Phase 5: Feed Previews
+
+Implementation complete: PRs #204 and #205 are merged into `feature/comments`.
+See the [frontend smoke checklist](./frontend-smoke-checklist.md#comment-feed-previews)
+for remaining preview checks; integration does not imply those checks have passed.
 
 | PR | Scope |
 | --- | --- |
 | 5-1: Add Bounded Comment Previews | Efficient post-response previews, query-growth coverage, API tests. |
 | 5-2: Display Feed Comment Previews | Shared dashboard/profile preview UI and navigation into the dedicated post page. |
 
+Phase 5-1 adds `comment_previews` to shared post responses. A window-function
+query ranks active top-level comments per post by newest creation time and ID,
+limits each post to three records in SQL, then returns those records in ascending
+order for display. Authors and avatar attachments are preloaded in batches.
+Collection rendering shares one preview lookup; single-post responses use the
+same query for one post. No migration, per-card request, preview controls, or
+frontend rendering is included in this phase.
+
+Preview entries contain ID, body, creation timestamp, and public author identity.
+Empty posts return an empty array; replies and deleted placeholders are excluded.
+Focused query/controller verification passed after cleanup: 40 tests, 220 assertions, including
+ordering ties, per-post limits, query-growth checks, and feed/profile/detail API
+coverage with attached avatars. Before cleanup, the full Rails suite passed:
+290 tests, 1,417 assertions. Diff checks
+passed. Existing Rails cache-format and Sass import deprecations remain unrelated
+follow-up work.
+
+Phase 5-2 adds shared `CommentPreview` rendering to dashboard/profile cards,
+without additional requests or repeating previews on the dedicated post page.
+Small square avatars and author names share one profile link and keyboard focus
+target. Images are lazy-loaded with empty alt text to avoid repeating the visible
+username. The `showFeedExtras` prop controls both post navigation and previews,
+excluding both on the dedicated post card. Discussion links preserve filtered feed
+origins through existing post-detail navigation state. Bodies render as plain
+text (including URLs), wrap long words, and are visually clamped to three lines;
+the full discussion retains URL auto-linking. No mutation controls are included.
+All 294 frontend tests passed, including keyboard navigation, feed-origin state,
+empty/missing preview data, text safety, and dedicated-page exclusion. Production
+build and Rails stylesheet compilation passed with existing warnings. A focused
+local Chrome smoke pass on November 13, 2026 confirmed dashboard/profile empty
+and three-comment previews, square avatars, visible keyboard focus, Enter
+navigation into the discussion, filtered-dashboard return navigation, and no
+duplicate previews on dedicated post pages. Existing multiline preview content
+remained contained in a 375px emulated view, although the page appeared scaled
+down; this was not a full mobile accessibility sign-off. Checks outstanding at
+that time were carried into Phase 6-2; see its release smoke record for current results.
+
 ### Phase 6: Release Readiness
+
+Phase 6-1 is integrated into `feature/comments` through PR #207.
+`DemoSeed.run` now invokes permanent discussion scenarios through
+`DemoDiscussionSeed`; the temporary local helper is retired. No local or
+production data was seeded during implementation.
+
+Phase 6-2 functional-check documentation is integrated through PR #208. Automated suites,
+the production build, and core functional browser checks passed on November 17,
+2026. With user approval, the permanent scenarios were seeded locally; disposable
+smoke-test records were removed and existing comments were untouched.
+See the [release smoke record](./frontend-smoke-checklist.md#phase-6-2-local-release-checks--november-17-2026)
+for detailed results, automated coverage, and remaining work. Existing Rails
+cache-format, Sass import, browser-baseline-data, and bundle-size warnings remain
+follow-ups.
+
+Initial mobile inspection found the page scaled down at a 375px emulated width
+because the shared layout lacked a viewport meta tag. PR #209 corrected this and
+recorded the expanded responsive checks described below.
+The final functional check passed: deleting the first reply beneath a deleted
+parent focused the retained placeholder; deleting its final reply removed that
+placeholder and focused the Comments heading. All disposable records were removed.
+Functional verification and the browser-emulated responsive pass are complete.
+Physical-device confirmation remains outstanding, so this is not full mobile sign-off.
+
+The follow-up merged into `feature/comments` through PR #209: the shared
+layout now declares `width=device-width, initial-scale=1` without disabling zoom.
+A shell-response regression test passed (1 test, 3 assertions). Local Chrome
+emulation confirmed readable 375px dashboard previews, profile header/tabs, guest
+settings, and the fixed comment form; long comment bodies and reply controls also
+fit at 320px. The expanded emulated pass covered authentication/recovery pages,
+text/photo post modals, relationship lists and pagination, lower settings forms,
+the account menu, tablet (768×1024), and landscape (667×375) layouts.
+It found reply actions obscured by the fixed comment form when opening/tabbing
+at 320px. The follow-up now scrolls focused inline editors above the fixed form,
+prioritizing the focused control when the editor cannot fit. Live 320px keyboard
+checks confirmed the textarea, Cancel, and enabled Post reply stay visible;
+the draft was cancelled without submission. All 56 comment-component tests passed
+after cleanup and the focus-event integration test.
+Landscape remains usable but the fixed form occupies roughly half its short
+viewport. Real-device virtual keyboard and safe-area checks remain outstanding;
+emulation is not physical-device sign-off.
+
+Run the non-destructive seed workflow locally:
+
+```sh
+env -u GEM_HOME -u GEM_PATH DISABLE_SPRING=1 \
+  PATH=/Users/adefarquhar/.asdf/installs/ruby/3.2.2/bin:/usr/bin:/bin \
+  bundle exec rails runner 'DemoSeed.run'
+```
+
+The runner prints links for `Demo feed text 01` (23 top-level entries, including
+a deleted parent retaining two replies; 17-reply and single-reply threads) and
+`Demo feed quote 02` (one comment). Other demo posts, including `Demo feed text
+04`, start without comments. Guest and followed demo authors provide own/other
+author actions in the guest dashboard and author profiles. Text includes Unicode,
+URLs, literal markup, multiline paragraphs, long words, and the body-length limit.
+
+Fixed timestamps scoped by post and parent identify seed comments. Reruns retain
+edited bodies and deleted-parent placeholders, and do not delete unrelated data.
+Hard-deleted seed entries can be recreated on a later run; this is demo population,
+not deletion-history tracking. Existing user comments are not cleared to force
+empty/single-comment scenarios. Use a fresh test dataset for exact initial counts.
+Run only one seed process at a time. The existing full `db:seed` workflow remains
+destructive and is not the command for refreshing these production-safe demos.
+
+Focused seed coverage passed: 4 tests, 38 assertions, including repeatability,
+scenario relationships, preservation of edits, and unrelated-record safety.
+Live verification of the permanent seed dataset completed in Phase 6-2.
 
 | PR | Scope |
 | --- | --- |
@@ -212,6 +622,16 @@ Save relevant smoke screenshots in a temporary directory for selection into PR
 UI sections. Record actual completed checks, not merely planned coverage.
 
 ## Follow-ups After MVP
+
+### Potential Post Rendering Context Cleanup
+
+Consider moving database lookups out of `app/views/api/posts/_post.json.jbuilder`
+into a consistent rendering-context preparation step for both collection and
+single-post responses. Address comment previews, like counts, viewer likes, and
+follow state together rather than introducing a preview-only abstraction.
+Preserve response fields, batched loading, and bounded preview queries, with
+regression coverage for response behavior and query growth. This is optional
+future cleanup, not a blocker for Phase 5 or the comments MVP.
 
 ### Comment Likes
 

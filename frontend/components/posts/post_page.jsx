@@ -9,6 +9,7 @@ import { usePost } from '../../query/post_hooks';
 import { useScrollRestoration } from '../../util/scroll_restoration';
 import PageLayout from '../layout/page_layout';
 import FeedItem from '../feed/feed_item';
+import PostComments from '../comments/post_comments';
 import LoadingIndicator, {
   loadingIndicatorVariants
 } from '../loading/loading_indicator';
@@ -70,10 +71,11 @@ const PostPage = () => {
             key={postQuery.data.id}
             post={postQuery.data}
             priorityMedia
-            showDetailLink={false}
+            showFeedExtras={false}
             onDeleted={() => navigate(returnDestination, { replace: true })}
           />
         </ul>
+        <PostComments key={postQuery.data.id} postId={postQuery.data.id} />
       </section>
     );
   };

@@ -15,6 +15,9 @@ import PostPage from './post_page';
 
 vi.mock('../../query/post_hooks', () => ({ usePost: vi.fn() }));
 vi.mock('../../query/session_hooks', () => ({ useCurrentUser: vi.fn() }));
+vi.mock('../comments/post_comments', () => ({
+  default: ({ postId }) => <section data-testid="comments" data-post-id={postId}>Comments</section>
+}));
 vi.mock('../dashboard/account_menu', () => ({
   default: () => <div>Account menu</div>
 }));
@@ -65,6 +68,7 @@ describe('PostPage', () => {
     renderPage();
 
     expect(usePost).toHaveBeenCalledWith('42');
+    expect(screen.getByTestId('comments')).toHaveAttribute('data-post-id', '42');
     expect(screen.getByRole('region', { name: 'Post' })).toBeInTheDocument();
     expect(screen.getAllByRole('listitem')).toHaveLength(1);
     expect(screen.getByTestId('post')).toHaveTextContent('A single post');
@@ -80,6 +84,7 @@ describe('PostPage', () => {
     expect(screen.getByRole('status')).toHaveTextContent('Loading post…');
     expect(screen.getByRole('status')).toHaveClass('loading-indicator--large');
     expect(screen.queryByTestId('post')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('comments')).not.toBeInTheDocument();
     expect(document.querySelector('.post-page-state')).toBeNull();
   });
 

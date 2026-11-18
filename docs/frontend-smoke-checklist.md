@@ -266,6 +266,141 @@ this checklist is not itself evidence that a check has been run.
   - Expected: usernames wrap, counts and controls remain visible, and no
     horizontal overflow appears.
 
+## Comment Feed Previews
+
+These checks apply to the comments integration branch until release. Automated
+coverage does not mark live checks complete.
+
+### Latest Local Pass — November 13, 2026
+
+Tested in native Chrome on `localhost:3000`, using existing local data without
+creating, editing, or deleting records:
+
+- Dashboard and profile `/users/107`: posts 516/517 showed "Add a comment";
+  post 515 showed the latest three active top-level comments oldest-to-newest,
+  without reply bodies or deleted placeholders.
+- Preview avatars were square and shared a profile link with the username.
+  Tabbing showed a visible focus outline; Enter on "View all comments" opened
+  post 515 with the profile Back to feed destination and no duplicate preview.
+- "Add a comment" from `/dashboard?tag=lovetesting` opened post 517's empty
+  discussion and retained the filtered dashboard Back to feed destination.
+- Desktop and 375px emulated profile views contained the existing preview text,
+  multiline URL text, avatars, and discussion link without visible clipping.
+  The emulated page appeared scaled down, so actual mobile readability and
+  long-content stress cases still need verification.
+
+Pending at the end of the November 13 pass: a single-comment example, filtered-profile return navigation,
+live create/edit/delete preview refresh, long usernames/unbroken words and
+three-line truncation stress cases, and Network-panel confirmation of no
+per-card comment requests. No preview defect was observed in the tested scope.
+This is a historical record; the Phase 6-2 results below supersede its pending list.
+
+### Phase 6-2 Local Release Checks — November 17, 2026
+
+On `comments-phase-6-2-release-checks`, the permanent demo runner was executed
+locally with user approval. Native Chrome used post 488, profile 153, and the
+guest account; IDs are local examples, not production fixtures.
+
+Passed in this session:
+
+- The 17-reply thread initially displayed replies 1–5, then appended 6–10.
+- Other authors had no edit/delete controls. The guest's comments had both.
+  The deleted-parent entry retained View replies and had no Reply action.
+- Keyboard submission created a disposable top-level comment and cleared the
+  form. Inline editing saved the new body and returned focus to Edit comment.
+- The edited body appeared in the profile's three-comment preview.
+- View all comments from `users/153?tag=demo_feed` preserved that Back to feed
+  destination. No duplicated preview appeared on the dedicated post page.
+- Deletion opened with focus on No; Tab/Enter confirmed deletion. Returning to
+  the filtered profile removed the disposable entry and restored the next preview.
+  No existing comment was edited or deleted.
+- At 375px emulated width, long preview bodies were clamped and contained, but
+  the entire page was scaled down. The application layout lacked a viewport meta
+  tag at this point; PR #209 subsequently fixed this (see below).
+
+The verification-only PR #208 deferred application fixes to PR #209, now merged
+into `feature/comments`. Its viewport and editor-focus fixes and expanded
+emulated checks are recorded below. Physical-device sign-off remains outstanding.
+
+The continued functional pass also confirmed:
+
+- Reply pages appended 11–15, then 16–17; the final page removed View more
+  replies and focused the preceding batch's last author link.
+- A disposable reply was submitted by keyboard, edited, and deleted. Its count
+  changed from 17 to 18 and back; deletion focused the preceding reply's author.
+- Creating/deleting a first disposable reply on post 489 restored focus to the
+  active parent's author and returned the thread to No replies yet.
+- Scrolling loaded all 23 top-level entries, newest-first, through the oldest
+  three entries on the final page.
+- The dashboard showed post 489's single-comment preview. A disposable top-level
+  comment appeared after feed refetch, then disappeared after deletion without
+  refreshing the browser. All disposable entries from this pass were removed.
+- Network inspection of the filtered dashboard showed the posts request plus
+  recommended users; profile navigation showed user details plus paginated posts.
+  Neither feed issued per-card comments requests.
+
+- Final deleted-parent focus check on local post 491: created one disposable
+  parent and two replies, then deleted the parent. Deleting the first reply
+  focused the retained Comment deleted placeholder. Deleting the final reply
+  removed the placeholder, restored No comments yet, and focused the Comments
+  heading. All three disposable records were removed; existing data was untouched.
+
+Functional checks for PR #208 are complete. PR #209 subsequently completed the
+viewport/editor-focus fixes and browser-emulated responsive pass. Screenshots
+from this initial functional session were inspected but not saved as files.
+
+Automated backstop: 291 Rails tests / 1,436 assertions and 294 frontend tests
+passed; production Webpack build passed with existing warnings. These results
+do not substitute for the remaining live checks.
+
+### Release Checklist
+
+Viewport follow-up (PR #209, merged into `feature/comments`): the shared shell now
+uses device width and initial scale 1, leaving user zoom available. Local Chrome
+emulation checked dashboard previews (including long-word/paragraph truncation),
+profile header/tabs, guest settings, and the fixed comment form at 375px; long
+comment bodies and expanded reply controls were also inspected at 320px. The
+scaled-down desktop rendering is resolved in these views. No records were changed.
+
+The expanded emulated pass covered login/signup, recovery form and confirmation,
+reset form (without entering a password), invalid verification-link feedback,
+text/photo post modals, relationship pagination, lower settings forms, account
+menu, tablet (768×1024), and landscape (667×375). No horizontal clipping was
+observed in those views. At 320px, reply actions were initially obscured by the
+fixed comment form. Focus scrolling now reveals the inline editor above it,
+or just the focused control when the editor is too tall. Live keyboard checks
+confirmed opening a reply and tabbing to Cancel/enabled Post reply keeps them
+visible; the unsaved draft was cancelled. All 56 comment-component tests passed
+after cleanup and the focus-event integration test.
+Real-device virtual keyboard/safe-area behavior remains unverified: the phone
+could not reach the local server, so no physical-device result is claimed. Landscape's
+fixed form occupies roughly half the short viewport but remains usable.
+Three viewport-only screenshots were subsequently saved locally in
+`/private/tmp/comments-pr209-screenshots.lSJw19`: the 375px phone feed, opened
+320px reply editor, and controls after tabbing. These are temporary local files,
+not repository assets; the captures do not retain the keyboard focus outline.
+
+Release PR [#210](https://github.com/ade713/picture_me_scrolling/pull/210) is open
+from `feature/comments` to `main`. Before deployment, confirm the comments
+migrations run before the new code serves requests. Production deployment and
+optional `DemoSeed.run` population are not yet confirmed. The checklist below
+remains a reusable regression checklist, not a list of unperformed Phase 6 tasks.
+
+- Check dashboard and profile posts with zero, one, and more than three active
+  top-level comments. Expect the latest three in oldest-to-newest display order;
+  replies and deleted placeholders must not appear.
+- Confirm square avatars and usernames share a single profile link. Tab through
+  author links and activate discussion navigation with Enter; focus should be visible.
+- Open "View all comments" or "Add a comment" from a tag-filtered dashboard and
+  profile feed. Confirm the dedicated post page and Back to feed destination,
+  with no duplicate preview above the full discussion.
+- Create, edit, and delete disposable comments on the post page, then return to
+  the feed. Confirm previews refresh without stale or duplicate entries.
+- At narrow and wide viewport sizes, check long usernames, long words, and
+  multiline bodies. Avatars must stay square; preview text is clamped to three
+  visible lines, with no horizontal overflow or clipped navigation controls.
+- Confirm loading feed cards does not issue a separate comments request per card.
+
 ## API Coverage Backstop
 
 Run the focused backend coverage when checking behavior without a browser:

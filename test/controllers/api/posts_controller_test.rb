@@ -46,6 +46,27 @@ class Api::PostsControllerTest < ActionDispatch::IntegrationTest
     assert_equal ['You must be logged in'], response_json
   end
 
+  test 'feed and detail serialize bounded public comment previews' do
+    comments = 4.times.map do |index|
+      Comment.create!(post: @viewer_post, user: @viewer, body: "Preview #{index}")
+    end
+    Comment.create!(post: @viewer_post, user: @viewer, parent: comments.last, body: 'Not a preview')
+
+    get api_posts_url
+    assert_response :success
+    preview = response_json.fetch('posts').fetch(@viewer_post.id.to_s).fetch('comment_previews')
+    assert_equal comments.last(3).map(&:id), preview.map { |comment| comment['id'] }
+    assert_equal 'Preview 1', preview.first['body']
+    assert_equal comments[1].created_at.as_json, preview.first['created_at']
+    assert_equal %w[avatar_url id username], preview.first.fetch('author').keys.sort
+    assert_equal @viewer.id, preview.first.dig('author', 'id')
+    assert_empty response_json.fetch('posts').fetch(@followed_post.id.to_s).fetch('comment_previews')
+
+    get api_post_url(@viewer_post)
+    assert_response :success
+    assert_equal preview, response_json.fetch('comment_previews')
+  end
+
   test 'show requires login' do
     delete api_session_url
     get api_post_url(@viewer_post)

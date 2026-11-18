@@ -46,6 +46,7 @@ class User < ApplicationRecord
   after_update :invalidate_email_identity_tokens, if: :saved_change_to_email?
   after_initialize :ensure_session_token!
   before_destroy :remember_avatar_blob_for_purge
+  before_destroy :remove_comment_content
   after_destroy_commit :purge_destroyed_avatar
 
   has_many :posts,
@@ -75,6 +76,8 @@ class User < ApplicationRecord
   has_many :followed_posts,
     through: :followee_users,
     source: :posts
+
+  has_many :comments, inverse_of: :user
 
   has_one :email_verification_token, dependent: :destroy
   has_one :password_reset_token, dependent: :destroy
@@ -122,6 +125,15 @@ class User < ApplicationRecord
   end
 
   private
+
+  def remove_comment_content
+    # Serialize against comment creation by this author. Keep posts ordered when
+    # acquiring discussion locks across multiple posts in the same transaction.
+    lock!
+    comments.order(:post_id, :id).each do |comment|
+      CommentDeletion.new(comment: comment).call
+    end
+  end
 
   def clear_email_verification
     self.email_verified_at = nil

@@ -20,6 +20,68 @@
 - `GET /api/users/:user_id/following` - return users followed by the requested
   user with stable newest-relationship-first ordering and pagination
 
+### Comments
+
+- `GET /api/comments/:comment_id/replies` — authenticated direct replies to a
+  top-level comment, including deleted-parent placeholders. Returns the oldest
+  five by default, ordered oldest-to-newest. `per_page` is
+  bounded to 1–50. Pass `pagination.next_cursor` as `after` to retrieve newer
+  replies and append that batch below the loaded replies. Cursors are signed and parent-bound, use
+  `(created_at, id)` ordering, and remain valid after anchor deletion.
+  New replies do not shift existing cursor boundaries. Refresh after reaching
+  the end to discover subsequent replies. Previous reverse-order cursors are invalid.
+- The replies collection reuses `comments`, ordered `comment_ids`, and
+  `pagination: { per_page, has_more, next_cursor }`. Reply entries use the same
+  serialization as comments, with `reply_count: 0`. Empty collections use `{}`
+  and `[]`. Invalid or wrong-parent cursors return `422` with
+  `Reply cursor is invalid`.
+- `POST /api/comments/:comment_id/replies` — accepts `comment[body]` only and
+  returns the serialized reply with `201`. Author identity comes from the session;
+  parent and post come from the URL parent. Shared body validation and deleted
+  parent checks return `422`. Existing replies beneath deleted parents remain
+  readable but new replies are rejected. No follow relationship is required.
+- Both reply endpoints return `401` without a session and `404` for missing
+  parents or reply IDs used as parents. Replies use the existing comment
+  `PATCH`/`DELETE` endpoints below; no nested replies are supported.
+- `GET /api/posts/:post_id/comments` — authenticated, top-level comments only,
+  newest first by `created_at` then `id` (both descending); following the author is not required.
+- Optional `per_page` defaults to 20 and is bounded to 1–50, matching existing
+  pagination normalization. Pass `pagination.next_cursor` as `after` for the next
+  batch. The signed, post-bound cursor works even if its anchor is deleted.
+- Returns `comments` keyed by ID, ordered `comment_ids`, and `pagination` with
+  `per_page`, `has_more`, and `next_cursor` (null at the end). No page-number
+  or total-count fields are returned for this cursor-based collection.
+- Each comment contains `id`, `post_id`, `parent_id`, `created_at`, `updated_at`,
+  `deleted`, `body`, `author`, and `reply_count`. Active authors expose only
+  `id`, `username`, and `avatar_url`. Deleted placeholders return null for
+  both author and body. Reply counts are batched; replies are not embedded.
+- Empty results return an empty comments object and ID array. Returns `401`
+  without a session, `404` for an unknown post, and `422` with
+  `Comment cursor is invalid` for malformed or wrong-post cursors.
+- `POST /api/posts/:post_id/comments` — create a top-level comment, accepting
+  `comment[body]` only. Authentication is required; following the author is not.
+  The post comes from the URL and the author from the session. Client-supplied
+  identity, parent, and deletion attributes are ignored.
+- Creation returns `201 Created` with the comment object directly (the same
+  fields as a list entry, with `reply_count: 0`). Blank/whitespace-only bodies
+  and bodies exceeding 1,000 characters return `422` with validation messages
+  as an array. Unknown posts return `404`; unauthenticated requests return `401`.
+  The `comment` parameter object is required by Rails strong parameters.
+- `PATCH /api/comments/:id` — authenticated author-only body update using
+  `comment[body]`. Returns `200 OK` with the serialized comment and actual
+  `reply_count`, or `422` with validation messages; invalid edits do not change
+  stored content. Identity, post, parent, and deletion fields cannot be updated.
+- `DELETE /api/comments/:id` — authenticated author-only removal through the
+  comment lifecycle service. Returns `204 No Content` whether the row is removed
+  or converted to an anonymous placeholder. Deleting a final reply also removes
+  its deleted parent placeholder. Clients should refresh affected collections
+  and counts rather than expecting a response body.
+- Both mutation endpoints return `401` without authentication and JSON `404`
+  (`["Comment not found"]`) for missing, deleted, or non-owned comments. Owning
+  the post grants no permission over another author's comments. Existing replies
+  remain editable/deletable by their authors beneath deleted parent placeholders.
+- Reply reads and creation are available through the parent-scoped endpoints above.
+
 ### Session
 - `POST /api/session`
 - `DELETE /api/session`
@@ -122,6 +184,15 @@ with `Password reset link has expired`. Password validation errors also return
 - `DELETE /api/posts/:id`
 
 Post payloads include `tags` as an alphabetized array of normalized tag names.
+They also include `comment_previews`, an array of at most three latest active
+top-level comments, ordered oldest-to-newest within that selection (creation time,
+then ID). Replies and deleted placeholders are excluded. Each preview contains
+`id`, `body`, `created_at`, and public `author` fields (`id`, `username`,
+`avatar_url`). Posts without matching comments return `comment_previews: []`.
+This applies to dashboard/profile collections and single-post responses. Preview
+selection is bounded in SQL and authors/avatars are batch-loaded for collections;
+the preview does not contain discussion pagination or reply counts.
+
 For example, a post payload contains:
 
 ```json

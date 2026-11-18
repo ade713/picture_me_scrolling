@@ -41,6 +41,8 @@ class Post < ApplicationRecord
     through: :likes,
     source: :user
 
+  has_many :comments, inverse_of: :post
+
   has_many :post_tags, dependent: :destroy
   has_many :tags, through: :post_tags
 
