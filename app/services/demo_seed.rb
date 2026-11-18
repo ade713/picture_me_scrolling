@@ -54,6 +54,7 @@ module DemoSeed
     create_feed_posts(followed_users, seeded_at: seeded_at)
     create_profile_posts(followed_users.first, seeded_at: seeded_at)
     create_recommended_user_posts(recommended_users, seeded_at: seeded_at)
+    DemoDiscussionSeed.run(guest: guest, authors: followed_users)
 
     puts "Demo seed complete: #{User.where(username: demo_usernames).count} content users " \
          "and #{User.where(username: profile_usernames).count} profile users available."
