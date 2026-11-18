@@ -8,6 +8,7 @@ import AutomaticPagination from '../pagination/automatic_pagination';
 import CommentItem from './comment_item';
 import CommentForm from './comment_form';
 import CommentReplies from './comment_replies';
+import { keepCommentEditorVisible } from './keep_comment_editor_visible';
 
 const PostComments = ({ postId }) => {
   const headingId = useId();
@@ -92,7 +93,8 @@ const PostComments = ({ postId }) => {
   };
 
   return (
-    <section className="post-comments" aria-labelledby={headingId}>
+    <section className="post-comments" aria-labelledby={headingId}
+      onFocusCapture={keepCommentEditorVisible}>
       <h2 id={headingId} ref={heading} tabIndex={-1}>{commentMessages.heading}</h2>
       <p role="status" className="visually-hidden">{feedback}</p>
       {visibleSubmissions.length > 0 && (

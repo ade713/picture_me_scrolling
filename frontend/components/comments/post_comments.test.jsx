@@ -29,7 +29,26 @@ describe('PostComments', () => {
     usePostComments.mockReturnValue({ data: { comments: [comment] }, fetchNextPage: vi.fn() });
     vi.stubGlobal('IntersectionObserver', undefined);
   });
-  afterEach(() => { vi.clearAllMocks(); vi.unstubAllGlobals(); });
+  afterEach(() => { vi.restoreAllMocks(); vi.clearAllMocks(); vi.unstubAllGlobals(); });
+
+  it('scrolls an editor above the fixed form when its input receives focus', async () => {
+    useCurrentUser.mockReturnValue({ data: { id: 7 } });
+    useUpdateComment.mockReturnValue({ reset: vi.fn() });
+    useDeleteComment.mockReturnValue({ reset: vi.fn() });
+    CommentForm.mockImplementation(() => <form className="comment-form" />);
+    const scroll = vi.spyOn(window, 'scrollBy').mockImplementation(() => {});
+    vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function () {
+      if (this.classList.contains('comment-form')) return { top: 450 };
+      if (this.classList.contains('comment-edit-form')) return { top: 250, bottom: 550, height: 300 };
+      return { top: 0, bottom: 0, height: 0 };
+    });
+
+    renderComments();
+    await userEvent.setup().click(screen.getByRole('button', { name: 'Edit comment' }));
+
+    expect(screen.getByRole('textbox', { name: 'Edit comment' })).toHaveFocus();
+    expect(scroll).toHaveBeenCalledWith(0, 100);
+  });
 
   it('renders text safely, linked identity, timestamp, and reply counts', () => {
     renderComments();
