@@ -289,12 +289,66 @@ creating, editing, or deleting records:
   The emulated page appeared scaled down, so actual mobile readability and
   long-content stress cases still need verification.
 
-Still pending: a single-comment example, filtered-profile return navigation,
+Pending at the end of the November 13 pass: a single-comment example, filtered-profile return navigation,
 live create/edit/delete preview refresh, long usernames/unbroken words and
 three-line truncation stress cases, and Network-panel confirmation of no
 per-card comment requests. No preview defect was observed in the tested scope.
+This is a historical record; the Phase 6-2 results below supersede its pending list.
 
-### Full Release Checklist
+### Phase 6-2 Local Release Checks — November 17, 2026
+
+On `comments-phase-6-2-release-checks`, the permanent demo runner was executed
+locally with user approval. Native Chrome used post 488, profile 153, and the
+guest account; IDs are local examples, not production fixtures.
+
+Passed in this session:
+
+- The 17-reply thread initially displayed replies 1–5, then appended 6–10.
+- Other authors had no edit/delete controls. The guest's comments had both.
+  The deleted-parent entry retained View replies and had no Reply action.
+- Keyboard submission created a disposable top-level comment and cleared the
+  form. Inline editing saved the new body and returned focus to Edit comment.
+- The edited body appeared in the profile's three-comment preview.
+- View all comments from `users/153?tag=demo_feed` preserved that Back to feed
+  destination. No duplicated preview appeared on the dedicated post page.
+- Deletion opened with focus on No; Tab/Enter confirmed deletion. Returning to
+  the filtered profile removed the disposable entry and restored the next preview.
+  No existing comment was edited or deleted.
+- At 375px emulated width, long preview bodies were clamped and contained, but
+  the entire page was scaled down. The application layout lacks a viewport meta
+  tag; mobile readability is **not** signed off.
+
+Follow-up fixes: use a dedicated PR for issues found during this check, starting
+with the missing viewport meta tag and app-wide responsive regression review.
+No application fix is included in this verification/documentation branch. Mobile
+sign-off remains pending until the fix is verified.
+
+The continued functional pass also confirmed:
+
+- Reply pages appended 11–15, then 16–17; the final page removed View more
+  replies and focused the preceding batch's last author link.
+- A disposable reply was submitted by keyboard, edited, and deleted. Its count
+  changed from 17 to 18 and back; deletion focused the preceding reply's author.
+- Creating/deleting a first disposable reply on post 489 restored focus to the
+  active parent's author and returned the thread to No replies yet.
+- Scrolling loaded all 23 top-level entries, newest-first, through the oldest
+  three entries on the final page.
+- The dashboard showed post 489's single-comment preview. A disposable top-level
+  comment appeared after feed refetch, then disappeared after deletion without
+  refreshing the browser. All disposable entries from this pass were removed.
+- Network inspection of the filtered dashboard showed the posts request plus
+  recommended users; profile navigation showed user details plus paginated posts.
+  Neither feed issued per-card comments requests.
+
+Remaining: retained-deleted-parent deletion-focus verification, plus the deferred
+viewport fix and comprehensive responsive/mobile pass. Screenshots
+were inspected through the browser tool but were not saved as files.
+
+Automated backstop: 291 Rails tests / 1,436 assertions and 294 frontend tests
+passed; production Webpack build passed with existing warnings. These results
+do not substitute for the remaining live checks.
+
+### Release Checklist
 
 - Check dashboard and profile posts with zero, one, and more than three active
   top-level comments. Expect the latest three in oldest-to-newest display order;
