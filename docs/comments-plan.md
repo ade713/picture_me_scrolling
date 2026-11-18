@@ -537,9 +537,37 @@ inspection remain open in the frontend smoke checklist.
 
 ### Phase 6: Release Readiness
 
-Not started. Replace the temporary local comment seed helper with repeatable
-main seed scenarios in Phase 6-1 before removing that helper. Preserve unrelated
-local data and use disposable records for destructive smoke checks.
+Phase 6-1 is implemented on `comments-phase-6-1-demo-discussions`, pending review.
+`DemoSeed.run` now invokes permanent discussion scenarios through
+`DemoDiscussionSeed`; the temporary local helper is retired. No local or
+production data was seeded during implementation. Phase 6-2 remains pending.
+
+Run the non-destructive seed workflow locally:
+
+```sh
+env -u GEM_HOME -u GEM_PATH DISABLE_SPRING=1 \
+  PATH=/Users/adefarquhar/.asdf/installs/ruby/3.2.2/bin:/usr/bin:/bin \
+  bundle exec rails runner 'DemoSeed.run'
+```
+
+The runner prints links for `Demo feed text 01` (23 top-level entries, including
+a deleted parent retaining two replies; 17-reply and single-reply threads) and
+`Demo feed quote 02` (one comment). Other demo posts, including `Demo feed text
+04`, start without comments. Guest and followed demo authors provide own/other
+author actions in the guest dashboard and author profiles. Text includes Unicode,
+URLs, literal markup, multiline paragraphs, long words, and the body-length limit.
+
+Fixed timestamps scoped by post and parent identify seed comments. Reruns retain
+edited bodies and deleted-parent placeholders, and do not delete unrelated data.
+Hard-deleted seed entries can be recreated on a later run; this is demo population,
+not deletion-history tracking. Existing user comments are not cleared to force
+empty/single-comment scenarios. Use a fresh test dataset for exact initial counts.
+Run only one seed process at a time. The existing full `db:seed` workflow remains
+destructive and is not the command for refreshing these production-safe demos.
+
+Focused seed coverage passed: 4 tests, 38 assertions, including repeatability,
+scenario relationships, preservation of edits, and unrelated-record safety.
+Live verification of the permanent seed dataset belongs to Phase 6-2.
 
 | PR | Scope |
 | --- | --- |
