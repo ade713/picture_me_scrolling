@@ -12,7 +12,7 @@ const CommentItem = ({ comment, postId, onUpdated, onDeleted, children }) => {
   const isAuthor = !comment.deleted && Boolean(currentUser.data) && currentUser.data.id === comment.author?.id;
 
   return (
-    <li className="comment-item">
+    <li className="comment-item" data-comment-id={comment.id}>
       {comment.deleted ? (
         <p className="comment-deleted" tabIndex={-1}>{commentMessages.deleted}</p>
       ) : (

@@ -13,18 +13,12 @@ const ReplyForm = ({ postId, commentId, onCreated, onCancel }) => {
   const submitDisabled = creation.isPending || !body.trim() || isOverLimit;
 
   useEffect(() => { input.current?.focus(); }, []);
-  useEffect(() => {
-    if (creation.isSuccess) input.current?.focus();
-  }, [creation.isSuccess]);
 
   const submit = event => {
     event.preventDefault();
     if (submitDisabled) return;
     creation.mutate(body, {
-      onSuccess: reply => {
-        setBody('');
-        onCreated(reply);
-      }
+      onSuccess: onCreated
     });
   };
 
@@ -37,7 +31,7 @@ const ReplyForm = ({ postId, commentId, onCreated, onCancel }) => {
         aria-invalid={isOverLimit || creation.isError}
         aria-describedby={`${id}-count${creation.isError ? ` ${id}-errors` : ''}`}
         onChange={event => {
-          if (creation.isError || creation.isSuccess) creation.reset();
+          if (creation.isError) creation.reset();
           setBody(event.target.value);
         }} />
       <p id={`${id}-count`} className={`comment-character-count${isOverLimit ? ' comment-character-count-over-limit' : ''}`}>
@@ -46,7 +40,6 @@ const ReplyForm = ({ postId, commentId, onCreated, onCancel }) => {
       {creation.isError && <div id={`${id}-errors`} role="alert">
         {(creation.error?.errors || [commentMessages.replyError]).map(error => <p key={error}>{error}</p>)}
       </div>}
-      {creation.isSuccess && <p role="status">{commentMessages.replyCreated}</p>}
       {creation.isPending && <LoadingIndicator label={commentMessages.postingReply} />}
       <div className="comment-actions">
         <button type="button" disabled={creation.isPending} onClick={onCancel}>{commentMessages.cancel}</button>
