@@ -140,9 +140,10 @@ describe('reply interactions', () => {
     await user.click(screen.getByRole('button', { name: 'Post reply' }));
     await screen.findByText('New reply outside pages');
     patch.mockResolvedValue(reply(50, 'Edited fallback reply'));
-    await user.click(screen.getByRole('button', { name: 'Edit comment' }));
-    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Edited fallback reply' } });
-    await user.click(screen.getByRole('button', { name: 'Save comment' }));
+    expect(screen.getByRole('button', { name: 'Edit reply' })).toHaveAttribute('title', 'Edit reply');
+    await user.click(screen.getByRole('button', { name: 'Edit reply' }));
+    fireEvent.change(screen.getByRole('textbox', { name: 'Edit reply' }), { target: { value: 'Edited fallback reply' } });
+    await user.click(screen.getByRole('button', { name: 'Save reply' }));
     await screen.findByText('Edited fallback reply');
 
     destroy.mockResolvedValue(null);
@@ -167,13 +168,13 @@ describe('reply interactions', () => {
     await user.click(screen.getByRole('button', { name: 'View replies' }));
     await screen.findByText('My existing reply');
     expect(screen.queryByRole('button', { name: 'Reply', exact: true })).not.toBeInTheDocument();
-    expect(screen.getAllByRole('button', { name: 'Edit comment' })).toHaveLength(1);
+    expect(screen.getAllByRole('button', { name: 'Edit reply' })).toHaveLength(1);
 
     get.mockResolvedValue(page([reply(2, 'Edited reply'), reply(3, 'Someone else', 8)]));
     patch.mockResolvedValue(reply(2, 'Edited reply'));
-    await user.click(screen.getByRole('button', { name: 'Edit comment' }));
+    await user.click(screen.getByRole('button', { name: 'Edit reply' }));
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Edited reply' } });
-    await user.click(screen.getByRole('button', { name: 'Save comment' }));
+    await user.click(screen.getByRole('button', { name: 'Save reply' }));
     await screen.findByText('Edited reply');
     expect(patch).toHaveBeenCalledWith('/api/comments/2', { comment: { body: 'Edited reply' } });
 
