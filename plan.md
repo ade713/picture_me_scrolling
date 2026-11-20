@@ -1008,6 +1008,17 @@ errors. User-model coverage also confirms newly assigned test passwords use the
 minimum BCrypt cost while password authentication and validation behavior
 remain unchanged.
 
+## Completed Feature: Comments and Replies
+
+Status: released through PR #210 and confirmed working in production. PR #211
+reply-form feedback, disabled-button styling, and reply-specific editing labels
+are merged and verified in production as of November 19, 2026.
+
+Implementation history, release checks, and follow-ups are recorded in
+[`docs/comments-plan.md`](./docs/comments-plan.md). Comment likes and actions in
+feed previews remain future scope. The specific physical-phone virtual-keyboard
+and safe-area check remains unverified, separate from confirmed production behavior.
+
 ## Completed Feature: Post Tags
 
 Status: complete and verified. Delivered behavior and deferred follow-ups are
