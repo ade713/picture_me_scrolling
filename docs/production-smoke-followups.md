@@ -31,6 +31,12 @@ broader release.
 
 ## Open Bugs / Buggy Behavior
 
+Comments production update (November 19, 2026): PR #210 is deployed and the user
+confirmed the feature working. PR #211 is merged and its reply-form closure,
+disabled-submit styling, and reply editing wording are verified in production.
+The separate physical-phone virtual-keyboard/safe-area check remains unverified;
+it is a verification follow-up, not a confirmed bug.
+
 - None at this time.
 
 ## Resolved During Production Smoke
@@ -48,6 +54,9 @@ addressed:
 - Authored post deletes require confirmation before the delete mutation runs.
 - Icon-only actions have accessible labels, native title tooltips, and clearer
   hover/focus states.
+- Successful reply submissions now close the form while retaining feedback and
+  focus. Disabled reply/edit submit buttons match the existing disabled style;
+  reply editing uses Edit reply and Save reply (PR #211).
 
 ## Release Documentation
 

@@ -268,7 +268,7 @@ this checklist is not itself evidence that a check has been run.
 
 ## Comment Feed Previews
 
-These checks apply to the comments integration branch until release. Automated
+These checks apply to the released comments feature. Automated
 coverage does not mark live checks complete.
 
 ### Latest Local Pass — November 13, 2026
@@ -380,11 +380,19 @@ Three viewport-only screenshots were subsequently saved locally in
 320px reply editor, and controls after tabbing. These are temporary local files,
 not repository assets; the captures do not retain the keyboard focus outline.
 
-Release PR [#210](https://github.com/ade713/picture_me_scrolling/pull/210) is open
-from `feature/comments` to `main`. Before deployment, confirm the comments
-migrations run before the new code serves requests. Production deployment and
-optional `DemoSeed.run` population are not yet confirmed. The checklist below
+Release PR [#210](https://github.com/ade713/picture_me_scrolling/pull/210) merged
+from `feature/comments` to `main`; the user confirmed the feature working in
+production. PR #211 also merged, with its reply-form closure, disabled-button
+styling, and reply-specific editing labels verified in production on November 19,
+2026. Optional production `DemoSeed.run` population and the specific physical-phone
+keyboard/safe-area check are not confirmed by this record. The checklist below
 remains a reusable regression checklist, not a list of unperformed Phase 6 tasks.
+
+- Post a reply: the form closes, the thread remains expanded, and focus moves to
+  the new reply without forcing a scroll. Reopening starts with an empty draft.
+- Fail a reply submission: the form remains open with its draft and error feedback.
+- Confirm disabled Post reply and Save reply use the filled disabled style; reply
+  editing uses Edit reply/Save reply while top-level comments retain comment wording.
 
 - Check dashboard and profile posts with zero, one, and more than three active
   top-level comments. Expect the latest three in oldest-to-newest display order;

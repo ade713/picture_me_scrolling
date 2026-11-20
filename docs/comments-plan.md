@@ -1,13 +1,17 @@
 # Comments Plan
 
-Status: Phase 1-1 storage merged into `feature/comments` in PR #188.
+Status: comments MVP released through PR #210 and confirmed working in production.
+PR #211 is merged; its reply-form and button-label/style updates were verified
+in production by the user on November 19, 2026.
+
+Implementation history: Phase 1-1 storage merged into `feature/comments` in PR #188.
 Phase 1-2 validation merged into `feature/comments` in PR #189.
 Phase 1-3 deletion lifecycle merged into `feature/comments` in PR #190.
-Phase 1 is complete on the integration branch, not released to production.
+Phase 1 is complete and released.
 Phase 2-1 paginated reads merged into `feature/comments` in PR #191.
 Phase 2-2 top-level comment creation merged into `feature/comments` in PR #192.
 Phase 2-3 author-only editing and deletion merged into `feature/comments` in PR #193.
-Phase 2 is complete on the integration branch, not released to production.
+Phase 2 is complete and released.
 Phase 3-1 frontend query integration merged into `feature/comments` in PR #194.
 Phase 3-2 read-only comment display merged into `feature/comments` in PR #195.
 Phase 3-3 comment creation merged into `feature/comments` in PR #196.
@@ -17,20 +21,20 @@ Comment URL auto-linking is integrated into `feature/comments`.
 Phase 4-1 replies API is integrated into `feature/comments`.
 Phase 4-2 on-demand reply display is integrated into `feature/comments`.
 Phase 4-3 reply interactions are integrated into `feature/comments` in PR #202.
-Phase 4 implementation is complete on the integration branch, not released to
-production. Release-check results are recorded in Phase 6 below.
+Phase 4 is complete and released. Release-check results are recorded in Phase 6 below.
 Phase 5-1 bounded comment previews are integrated into `feature/comments` in PR #204.
 Phase 5-2 preview UI is integrated into `feature/comments` in PR #205.
-Phase 5 implementation is complete on the integration branch, not released to
-production. A focused local preview smoke pass completed on November 13, 2026;
-remaining release checks are recorded in the frontend smoke checklist.
+Phase 5 is complete and released. A focused local preview smoke pass completed
+on November 13, 2026; release checks are recorded in the frontend smoke checklist.
 Phase 6-1 representative seed discussions are integrated through PR #207.
 Phase 6-2 functional release checks are recorded through PR #208; responsive
 fixes and emulated mobile checks are integrated through PR #209.
 Implementation and local browser/emulated checks are complete. Release PR
-[#210](https://github.com/ade713/picture_me_scrolling/pull/210) targets `main`.
+[#210](https://github.com/ade713/picture_me_scrolling/pull/210) merged into `main`
+and was deployed successfully.
 Physical-phone virtual-keyboard and safe-area confirmation remains outstanding;
-the phone could not reach the local server. Production deployment is not confirmed.
+the phone could not reach the local server during that check. General production
+verification does not substitute for that specific device check.
 
 Phase 2-1 verification: all 261 Rails tests passed before readability cleanup;
 all 9 focused query/API tests (63 assertions) passed afterward.
@@ -620,6 +624,23 @@ Live verification of the permanent seed dataset completed in Phase 6-2.
 
 Save relevant smoke screenshots in a temporary directory for selection into PR
 UI sections. Record actual completed checks, not merely planned coverage.
+
+### Production Closeout and Reply Polish
+
+The user confirmed the comments feature working in production after PR #210.
+PR [#211](https://github.com/ade713/picture_me_scrolling/pull/211) subsequently
+merged and its updates were verified in production on November 19, 2026:
+
+- Successful replies close the form, retain the expanded thread and success
+  announcement, and focus the new reply without forcing a scroll.
+- Failed submissions preserve the draft; reopening starts a fresh form.
+- Disabled Post reply and Save comment/Save reply buttons use the same filled
+  appearance as disabled Post comment, without changing Cancel styling.
+- Reply editing uses Edit reply, Save reply, and Saving reply wording, including
+  accessible labels and the edit tooltip; top-level comment wording is unchanged.
+
+The MVP is released. Comment likes and feed-preview actions remain separate
+future work; the specific physical-device keyboard/safe-area check remains unverified.
 
 ## Follow-ups After MVP
 
