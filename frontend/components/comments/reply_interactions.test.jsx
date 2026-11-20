@@ -66,8 +66,17 @@ describe('reply interactions', () => {
     expect(within(submissions).getByText('My new reply')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'View more replies' })).toBeInTheDocument();
     expect(post).toHaveBeenLastCalledWith('/api/comments/1/replies', { comment: { body: 'My new reply' } });
-    expect(input).toHaveValue('');
-    expect(input).toHaveFocus();
+    expect(screen.queryByRole('textbox', { name: 'Add a reply' })).not.toBeInTheDocument();
+    expect(within(submissions).getByRole('link', { name: 'Author 7' })).toHaveFocus();
+    expect(screen.getByRole('status')).toHaveTextContent('Reply posted.');
+    expect(screen.getByRole('button', { name: 'Reply', exact: true })).toHaveAttribute('aria-expanded', 'false');
+
+    // A new reply starts with a fresh draft and no stale success announcement.
+    await user.click(screen.getByRole('button', { name: 'Reply', exact: true }));
+    expect(screen.getByRole('textbox', { name: 'Add a reply' })).toHaveValue('');
+    expect(screen.getByRole('textbox', { name: 'Add a reply' })).toHaveFocus();
+    expect(screen.queryByText('Reply posted.')).not.toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: 'Cancel' }));
 
     // Collapse/reopen retains the fallback; loading its real page retires it.
     await user.click(screen.getByRole('button', { name: 'Hide replies' }));
@@ -81,6 +90,28 @@ describe('reply interactions', () => {
       pages: [page([])], pageParams: [null]
     }));
     await waitFor(() => expect(screen.queryByText('My new reply')).not.toBeInTheDocument());
+  });
+
+  it('focuses a newly created reply already in the loaded list without a fallback duplicate', async () => {
+    const user = userEvent.setup();
+    const createdReply = reply(50, 'Already loaded reply');
+    let resolve;
+    post.mockImplementationOnce(() => new Promise(done => { resolve = done; }));
+    render(tree());
+    await user.click(screen.getByRole('button', { name: 'Reply', exact: true }));
+    await screen.findByText('Existing reply');
+    fireEvent.change(screen.getByRole('textbox'), { target: { value: createdReply.body } });
+    await user.click(screen.getByRole('button', { name: 'Post reply' }));
+
+    // The successful mutation refetches replies before submission feedback runs.
+    get.mockResolvedValue(page([reply(2, 'Existing reply', 8), createdReply]));
+    await act(async () => resolve(createdReply));
+
+    await waitFor(() => expect(screen.getByRole('link', { name: 'Author 7' })).toHaveFocus());
+    expect(screen.getAllByText(createdReply.body)).toHaveLength(1);
+    expect(screen.queryByRole('region', { name: 'Your new replies' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('textbox')).not.toBeInTheDocument();
+    expect(screen.getByRole('status')).toHaveTextContent('Reply posted.');
   });
 
   it('cancels with restored focus and removes an open form when the parent is deleted', async () => {
@@ -108,12 +139,11 @@ describe('reply interactions', () => {
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'New reply outside pages' } });
     await user.click(screen.getByRole('button', { name: 'Post reply' }));
     await screen.findByText('New reply outside pages');
-    await user.click(screen.getByRole('button', { name: 'Cancel' }));
-
     patch.mockResolvedValue(reply(50, 'Edited fallback reply'));
-    await user.click(screen.getByRole('button', { name: 'Edit comment' }));
-    fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Edited fallback reply' } });
-    await user.click(screen.getByRole('button', { name: 'Save comment' }));
+    expect(screen.getByRole('button', { name: 'Edit reply' })).toHaveAttribute('title', 'Edit reply');
+    await user.click(screen.getByRole('button', { name: 'Edit reply' }));
+    fireEvent.change(screen.getByRole('textbox', { name: 'Edit reply' }), { target: { value: 'Edited fallback reply' } });
+    await user.click(screen.getByRole('button', { name: 'Save reply' }));
     await screen.findByText('Edited fallback reply');
 
     destroy.mockResolvedValue(null);
@@ -138,13 +168,13 @@ describe('reply interactions', () => {
     await user.click(screen.getByRole('button', { name: 'View replies' }));
     await screen.findByText('My existing reply');
     expect(screen.queryByRole('button', { name: 'Reply', exact: true })).not.toBeInTheDocument();
-    expect(screen.getAllByRole('button', { name: 'Edit comment' })).toHaveLength(1);
+    expect(screen.getAllByRole('button', { name: 'Edit reply' })).toHaveLength(1);
 
     get.mockResolvedValue(page([reply(2, 'Edited reply'), reply(3, 'Someone else', 8)]));
     patch.mockResolvedValue(reply(2, 'Edited reply'));
-    await user.click(screen.getByRole('button', { name: 'Edit comment' }));
+    await user.click(screen.getByRole('button', { name: 'Edit reply' }));
     fireEvent.change(screen.getByRole('textbox'), { target: { value: 'Edited reply' } });
-    await user.click(screen.getByRole('button', { name: 'Save comment' }));
+    await user.click(screen.getByRole('button', { name: 'Save reply' }));
     await screen.findByText('Edited reply');
     expect(patch).toHaveBeenCalledWith('/api/comments/2', { comment: { body: 'Edited reply' } });
 

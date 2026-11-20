@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useId, useRef, useState } from "react";
+import React, { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { commentMessages } from "../../config/comments";
 import ReplyForm from "./reply_form";
 import ReplyList from "./reply_list";
@@ -10,6 +10,8 @@ const CommentReplies = ({ postId, commentId, replyCount = 0, deleted = false, on
   const [feedback, setFeedback] = useState("");
   const replyButton = useRef(null);
   const toggleButton = useRef(null);
+  const thread = useRef(null);
+  const pendingFocusReplyId = useRef(null);
   const id = useId();
   const retireLoadedReplies = useCallback((replies) => {
     setSubmittedReplies((previous) => {
@@ -31,6 +33,7 @@ const CommentReplies = ({ postId, commentId, replyCount = 0, deleted = false, on
   };
 
   const openReplyForm = () => {
+    setFeedback("");
     setReplying(true);
     setExpanded(true);
   };
@@ -41,9 +44,23 @@ const CommentReplies = ({ postId, commentId, replyCount = 0, deleted = false, on
   };
 
   const handleCreated = (reply) => {
+    pendingFocusReplyId.current = reply.id;
     setSubmittedReplies((previous) => [...previous.filter((item) => item.id !== reply.id), reply]);
     setExpanded(true);
+    setReplying(false);
+    setFeedback(commentMessages.replyCreated);
   };
+
+  useLayoutEffect(() => {
+    if (pendingFocusReplyId.current === null) return;
+    const author = thread.current?.querySelector(
+      `[data-comment-id="${pendingFocusReplyId.current}"] .comment-author`,
+    );
+    if (author) {
+      author.focus({ preventScroll: true });
+      pendingFocusReplyId.current = null;
+    }
+  });
 
   useEffect(() => {
     if (deleted && replying) {
@@ -53,7 +70,7 @@ const CommentReplies = ({ postId, commentId, replyCount = 0, deleted = false, on
   }, [deleted, replying]);
 
   return (
-    <div className='comment-replies'>
+    <div ref={thread} className='comment-replies'>
       <p role='status' className='visually-hidden'>
         {feedback}
       </p>

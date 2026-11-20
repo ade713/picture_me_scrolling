@@ -127,6 +127,13 @@
   }
 }
 
+.comment-edit-form .comment-actions button[type='submit']:disabled {
+  background: black;
+  color: white;
+  border-color: black;
+  box-shadow: none;
+}
+
 .comment-edit-form {
   display: flex;
   flex-direction: column;

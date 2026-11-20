@@ -20,6 +20,8 @@ const CommentActions = ({ comment, postId, onUpdated, onDeleted }) => {
   const count = Array.from(body).length;
   const isOverLimit = count > MAXIMUM_COMMENT_LENGTH;
   const saveDisabled = update.isPending || !body.trim() || isOverLimit;
+  const isReply = comment.parent_id != null;
+  const editLabel = isReply ? commentMessages.editReply : commentMessages.edit;
 
   useEffect(() => {
     if (editing) input.current?.focus();
@@ -68,8 +70,8 @@ const CommentActions = ({ comment, postId, onUpdated, onDeleted }) => {
           ref={editButton}
           type="button"
           className="edit-post-btn"
-          aria-label={commentMessages.edit}
-          title={commentMessages.edit}
+          aria-label={editLabel}
+          title={editLabel}
           disabled={editing}
           onClick={() => {
             update.reset();
@@ -93,7 +95,7 @@ const CommentActions = ({ comment, postId, onUpdated, onDeleted }) => {
       </div>
       {editing && (
         <form className="comment-edit-form" onSubmit={save}>
-          <label htmlFor={id}>{commentMessages.editLabel}</label>
+          <label htmlFor={id}>{editLabel}</label>
           <textarea id={id} ref={input} value={body} required disabled={update.isPending}
             aria-invalid={isOverLimit || update.isError}
             aria-describedby={`${id}-count${update.isError ? ` ${id}-errors` : ''}`}
@@ -107,13 +109,13 @@ const CommentActions = ({ comment, postId, onUpdated, onDeleted }) => {
           {update.isError && <div id={`${id}-errors`} role="alert">
             {(update.error?.errors || [commentMessages.updateError]).map(error => <p key={error}>{error}</p>)}
           </div>}
-          {update.isPending && <LoadingIndicator label={commentMessages.saving} />}
+          {update.isPending && <LoadingIndicator label={isReply ? commentMessages.savingReply : commentMessages.saving} />}
           <div className="comment-actions">
             <button type="button" disabled={update.isPending} onClick={closeEditor}>
               {commentMessages.cancel}
             </button>
             <button type="submit" disabled={saveDisabled}>
-              {commentMessages.save}
+              {isReply ? commentMessages.saveReply : commentMessages.save}
             </button>
           </div>
         </form>

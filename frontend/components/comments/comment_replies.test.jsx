@@ -39,7 +39,7 @@ describe('CommentReplies', () => {
     await screen.findByRole('link', { name: 'https://example.com' });
     expect(get).toHaveBeenCalledWith('/api/comments/1/replies?per_page=5', { signal: expect.any(AbortSignal) });
     expect(screen.getByRole('button', { name: 'Hide replies' })).toHaveAttribute('aria-expanded', 'true');
-    expect(screen.queryByRole('button', { name: 'Edit comment' })).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Edit reply' })).not.toBeInTheDocument();
     await user.click(screen.getByRole('button', { name: 'Hide replies' }));
     expect(screen.queryByText('Visit')).not.toBeInTheDocument();
     expect(client.getQueryData(queryKeys.commentReplies(42, 1))).toBeDefined();
